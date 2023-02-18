@@ -7,32 +7,39 @@ const uint8_t FRAME_INTERVAL = 17;
 const size_t SCREEN_WIDTH = 1024;
 const size_t SCREEN_HEIGHT = 512;
 
-int main() {
-    SDL_Window* window = nullptr;
-    SDL_Renderer* renderer = nullptr;
+// Global variables
+SDL_Window* gWindow;
+SDL_Renderer* gRenderer;
 
+void initialization() {
     if (SDL_Init(SDL_INIT_VIDEO < 0)) {
         std::cout << "SDL video system could not be initialized: " << SDL_GetError();
-        return -1;
     } else {
         std::cout << "SDL video system initialized" << std::endl;
     }
 
-    window = SDL_CreateWindow("C++ SDL2 Window",
+    gWindow = SDL_CreateWindow("C++ SDL2 Window",
             0,
             0,
             SCREEN_WIDTH,
             SCREEN_HEIGHT,
             SDL_WINDOW_SHOWN);
 
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    gRenderer = SDL_CreateRenderer(gWindow, -1, SDL_RENDERER_ACCELERATED);
+}
+
+int main() {
+    gWindow = nullptr;
+    gRenderer = nullptr;
+
+    initialization();
 
     bool drawSquare = false;
     bool gameIsRunning = true;
     
     while (gameIsRunning) {
-        SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
-        SDL_RenderClear(renderer);
+        SDL_SetRenderDrawColor(gRenderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
+        SDL_RenderClear(gRenderer);
 
         SDL_Event event;
 
@@ -52,23 +59,23 @@ int main() {
 
         // Rendering
         if (drawSquare) {
-            SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+            SDL_SetRenderDrawColor(gRenderer, 255, 255, 255, 255);
 
             // TODO: Replace this with actual rectangle
             // Listen I'm still learning
             for (int i = -25; i < 25; i++) {
-                SDL_RenderDrawLine(renderer, x-25, y+i, x+25, y+i);
+                SDL_RenderDrawLine(gRenderer, x-25, y+i, x+25, y+i);
             }
         }
 
         // TODO: Better frame timing solution
         SDL_Delay(FRAME_INTERVAL);
 
-        SDL_RenderPresent(renderer);        
+        SDL_RenderPresent(gRenderer);        
     }
 
-    SDL_DestroyWindow(window);
-
+    SDL_DestroyWindow(gWindow);
     SDL_Quit();
+
     return 0;
 }
