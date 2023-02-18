@@ -30,7 +30,7 @@ int main() {
     bool drawSquare = false;
     bool gameIsRunning = true;
     
-    while(gameIsRunning) {
+    while (gameIsRunning) {
         SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
         SDL_RenderClear(renderer);
 
