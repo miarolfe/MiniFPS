@@ -63,8 +63,15 @@ int main() {
 
             // TODO: Replace this with actual rectangle
             // Listen I'm still learning
+
+            SDL_Rect rect;
+
+            rect.x = x-12;
+            rect.y = y-12;
+            rect.w = 24;
+            rect.h = 24;
             for (int i = -25; i < 25; i++) {
-                SDL_RenderDrawLine(gRenderer, x-25, y+i, x+25, y+i);
+                SDL_RenderDrawRect(gRenderer, &rect);
             }
         }
 
