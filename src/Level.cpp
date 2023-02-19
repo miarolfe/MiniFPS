@@ -34,4 +34,6 @@ bool png_to_matrix(std::vector<std::vector<Uint32>>& matrix, const std::string& 
 //            << static_cast<int>(a) << std::endl;
         }
     }
+
+    return successfulLoadAndConversion;
 }
