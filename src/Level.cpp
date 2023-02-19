@@ -60,9 +60,9 @@ void Level::print() {
     {
         for (int j = 0; j < matrix[i].size(); j++)
         {
-            if (matrix[i][j] == RGBA_BLACK) {
+            if (get(j, i) == RGBA_BLACK) {
                 std::cout << "* ";
-            } else if (matrix[i][j] == RGBA_WHITE) {
+            } else if (get(j, i) == RGBA_WHITE) {
                 std::cout << "  ";
             } else {
                 std::cerr << "Invalid pixel" << std::endl;
