@@ -1,0 +1,8 @@
+# ninja log v5
+2	21	1676818198390368671	CMakeFiles/mini_fps.dir/src/Level.cpp.o	c089131bc78aa150
+0	37	1676819220133085638	build.ninja	5fa3544e788e18f0
+0	347	1676818182051932746	CMakeFiles/mini_fps.dir/src/main.cpp.o	fbfdeaa59e9bdf4e
+21	55	1676818198424354910	mini_fps	26ecaf43a035b049
+6	80	1676819222283046871	CMakeFiles/mini_fps.dir/src/Level.cpp.o	7c07cfdb7507b24c
+5	375	1676819222576877440	CMakeFiles/mini_fps.dir/src/main.cpp.o	6e4eb82e6b5c2b04
+375	416	1676819222619055775	mini_fps	626d8759f9134130

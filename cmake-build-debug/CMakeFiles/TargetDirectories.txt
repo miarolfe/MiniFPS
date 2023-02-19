@@ -1,0 +1,3 @@
+/Users/peterrolfe/Development/C-Plus-Plus/mini-fps/cmake-build-debug/CMakeFiles/mini_fps.dir
+/Users/peterrolfe/Development/C-Plus-Plus/mini-fps/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/peterrolfe/Development/C-Plus-Plus/mini-fps/cmake-build-debug/CMakeFiles/rebuild_cache.dir
