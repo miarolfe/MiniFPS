@@ -8,24 +8,41 @@ const uint8_t FRAME_INTERVAL = 17;
 const size_t SCREEN_WIDTH = 1024;
 const size_t SCREEN_HEIGHT = 512;
 
-void initialize_sdl() {
+bool initialize_sdl() {
+    bool successful_initialization = true;
+
     if (SDL_Init(SDL_INIT_VIDEO < 0)) {
         std::cout << "SDL video system could not be initialized: " << SDL_GetError();
+        successful_initialization = false;
     } else {
         std::cout << "SDL video system initialized" << std::endl;
     }
+
+    return successful_initialization;
 }
 
 void initialize_window_and_renderer(SDL_Window** window, SDL_Renderer** renderer) {
-    *window  = SDL_CreateWindow("mini-fps",
+    bool successful_initialization = true;
+
+    *window = SDL_CreateWindow("mini-fps",
             0,
             0,
             SCREEN_WIDTH,
             SCREEN_HEIGHT,
             SDL_WINDOW_SHOWN);
 
+    if (*window == nullptr) {
+        successful_initialization = false;
+    }
+
     *renderer = SDL_CreateRenderer(*window, -1, SDL_RENDERER_ACCELERATED);
-}
+
+    if (*renderer = nullptr) {
+        successful_initialization = false;
+    }
+
+    return successful_initialization;
+ }
 
 void handle_input(bool& drawSquare, bool& gameIsRunning, int& x, int& y) {
     SDL_Event event;
@@ -62,12 +79,20 @@ void draw(SDL_Renderer* renderer, const bool drawSquare, const int x, const int 
 }
 
 int main() {
-    initialize_sdl();
+    if (!initialize_sdl()) {
+        std::cerr << "SDL could not be initialized" << std::endl;
+    } else {
+        std::cout << "SDL initialized" << std::endl;
+    }
 
     SDL_Window* window = nullptr;
     SDL_Renderer* renderer = nullptr;
 
-    initialize_window_and_renderer(&window, &renderer);
+    if (!initialize_window_and_renderer(&window, &renderer)) {
+        std::cerr << "Window and/or renderer could not be initialized" << std::endl;
+    } else {
+        std::cout << "Window and renderer initialized" << std::endl;
+    }
 
     bool drawSquare = false;
     bool gameIsRunning = true;
