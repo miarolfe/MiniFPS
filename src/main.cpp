@@ -1,5 +1,8 @@
 #include <iostream>
 #include <SDL.h>
+#include <SDL_image.h>
+
+#include "Level.h"
 
 // ~60 fps
 const uint8_t FRAME_INTERVAL = 17;
@@ -11,11 +14,8 @@ const size_t SCREEN_HEIGHT = 512;
 bool initialize_sdl() {
     bool successful_initialization = true;
 
-    if (SDL_Init(SDL_INIT_VIDEO < 0)) {
-        std::cout << "SDL video system could not be initialized: " << SDL_GetError();
+    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         successful_initialization = false;
-    } else {
-        std::cout << "SDL video system initialized" << std::endl;
     }
 
     return successful_initialization;
@@ -43,6 +43,16 @@ bool initialize_window_and_renderer(SDL_Window** window, SDL_Renderer** renderer
 
     return successful_initialization;
  }
+
+ bool initialize_sdl_image() {
+    bool successful_initialization = true;
+
+    if (!IMG_Init(IMG_INIT_PNG)) {
+        successful_initialization = false;
+    }
+
+    return successful_initialization;
+}
 
 void handle_input(bool& drawSquare, bool& gameIsRunning, int& x, int& y) {
     SDL_Event event;
@@ -80,7 +90,7 @@ void draw(SDL_Renderer* renderer, const bool drawSquare, const int x, const int 
 
 int main() {
     if (!initialize_sdl()) {
-        std::cerr << "SDL could not be initialized" << std::endl;
+        std::cerr << "SDL could not be initialized:" << SDL_GetError();
     } else {
         std::cout << "SDL initialized" << std::endl;
     }
@@ -94,9 +104,25 @@ int main() {
         std::cout << "Window and renderer initialized" << std::endl;
     }
 
+    if (!initialize_sdl_image()) {
+        std::cerr << "SDL_image could not be initialized" << std::endl;
+    } else {
+        std::cout << "SDL_image initialized" << std::endl;
+    }
+
     bool drawSquare = false;
     bool gameIsRunning = true;
     int x, y;
+
+    std::vector<std::vector<Uint32>> matrix(0);
+    bool pngToMatrixSuccess = png_to_matrix(matrix, "test.png");
+
+    for (size_t matrixY = 0; matrixY < matrix.size(); matrixY++) {
+        for (size_t matrixX = 0; matrixX < matrix[matrixY].size(); matrixX++) {
+            // std::cout << matrix[matrixY][matrixX] << "\t\t\t\t\t\t";
+        }
+        // std::cout << std::endl;
+    }
     
     while (gameIsRunning) {
         handle_input(drawSquare, gameIsRunning, x, y);
@@ -108,6 +134,8 @@ int main() {
 
     SDL_DestroyWindow(window);
     SDL_Quit();
+
+
 
     return 0;
 }

@@ -11,7 +11,7 @@ find_package(SDL2 REQUIRED)
 
 add_executable(mini_fps
         src/main.cpp
-        src/Level.cpp)
+        src/Level.cpp src/Level.h)
 
 target_link_libraries(
         mini_fps PRIVATE
