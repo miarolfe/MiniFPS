@@ -21,7 +21,7 @@ bool initialize_sdl() {
     return successful_initialization;
 }
 
-void initialize_window_and_renderer(SDL_Window** window, SDL_Renderer** renderer) {
+bool initialize_window_and_renderer(SDL_Window** window, SDL_Renderer** renderer) {
     bool successful_initialization = true;
 
     *window = SDL_CreateWindow("mini-fps",
@@ -37,7 +37,7 @@ void initialize_window_and_renderer(SDL_Window** window, SDL_Renderer** renderer
 
     *renderer = SDL_CreateRenderer(*window, -1, SDL_RENDERER_ACCELERATED);
 
-    if (*renderer = nullptr) {
+    if (*renderer == nullptr) {
         successful_initialization = false;
     }
 
