@@ -45,6 +45,24 @@ void handle_input(bool& drawSquare, bool& gameIsRunning, int& x, int& y) {
     }
 }
 
+void draw(SDL_Renderer* renderer, const bool drawSquare, const int x, const int y) {
+    SDL_SetRenderDrawColor(gRenderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
+    SDL_RenderClear(gRenderer);
+        
+    if (drawSquare) {
+        SDL_SetRenderDrawColor(gRenderer, 255, 255, 255, 255);
+
+        SDL_Rect rect;
+        rect.x = x-12;
+        rect.y = y-12;
+        rect.w = 24;
+        rect.h = 24;
+        SDL_RenderFillRect(gRenderer, &rect);
+    }
+
+    SDL_RenderPresent(gRenderer);     
+}
+
 int main() {
     gWindow = nullptr;
     gRenderer = nullptr;
@@ -57,26 +75,10 @@ int main() {
     
     while (gameIsRunning) {
         handle_input(drawSquare, gameIsRunning, x, y);
-
-        // Rendering
-        SDL_SetRenderDrawColor(gRenderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
-        SDL_RenderClear(gRenderer);
-        
-        if (drawSquare) {
-            SDL_SetRenderDrawColor(gRenderer, 255, 255, 255, 255);
-
-            SDL_Rect rect;
-            rect.x = x-12;
-            rect.y = y-12;
-            rect.w = 24;
-            rect.h = 24;
-            SDL_RenderFillRect(gRenderer, &rect);
-        }
+        draw(gRenderer, drawSquare, x, y);
 
         // TODO: Better frame timing solution
-        SDL_Delay(FRAME_INTERVAL);
-
-        SDL_RenderPresent(gRenderer);        
+        SDL_Delay(FRAME_INTERVAL);   
     }
 
     SDL_DestroyWindow(gWindow);
