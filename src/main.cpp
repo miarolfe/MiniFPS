@@ -8,13 +8,15 @@ const uint8_t FRAME_INTERVAL = 17;
 const size_t SCREEN_WIDTH = 1024;
 const size_t SCREEN_HEIGHT = 512;
 
-void initialize_window_and_renderer(SDL_Window** window, SDL_Renderer** renderer) {
+void initialize_sdl() {
     if (SDL_Init(SDL_INIT_VIDEO < 0)) {
         std::cout << "SDL video system could not be initialized: " << SDL_GetError();
     } else {
         std::cout << "SDL video system initialized" << std::endl;
     }
+}
 
+void initialize_window_and_renderer(SDL_Window** window, SDL_Renderer** renderer) {
     *window  = SDL_CreateWindow("mini-fps",
             0,
             0,
@@ -60,6 +62,8 @@ void draw(SDL_Renderer* renderer, const bool drawSquare, const int x, const int 
 }
 
 int main() {
+    initialize_sdl();
+
     SDL_Window* window = nullptr;
     SDL_Renderer* renderer = nullptr;
 
