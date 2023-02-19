@@ -14,7 +14,7 @@ add_executable(
         src/main.cpp
         src/Level.cpp
         src/Level.h
-)
+        src/Color.h)
 
 target_link_libraries(
         mini_fps PRIVATE

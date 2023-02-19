@@ -3,6 +3,9 @@
 #include <string>
 #include <SDL_image.h>
 
+#include "Level.h"
+#include "Color.h"
+
 bool png_to_matrix(std::vector<std::vector<Uint32>>& matrix, const char *filePath)  {
     bool successfulLoadAndConversion = true;
 
@@ -36,4 +39,35 @@ bool png_to_matrix(std::vector<std::vector<Uint32>>& matrix, const char *filePat
     }
 
     return successfulLoadAndConversion;
+}
+
+Level::Level(const char* filePath) {
+    if (!png_to_matrix(matrix, filePath)) {
+        std::cerr << "Image could not be loaded and/or converted to a level" << std::endl;
+    } else {
+        std::cout << "Image loaded and converted" << std::endl;
+    }
+    w = matrix.size();
+    h = matrix[0].size();
+}
+
+Uint32 Level::get(const size_t x, const size_t y) {
+    return matrix[y][x];
+}
+
+void Level::print() {
+    for (int i = 0; i < matrix.size(); i++)
+    {
+        for (int j = 0; j < matrix[i].size(); j++)
+        {
+            if (matrix[i][j] == RGBA_BLACK) {
+                std::cout << "* ";
+            } else if (matrix[i][j] == RGBA_WHITE) {
+                std::cout << "  ";
+            } else {
+                std::cerr << "Invalid pixel" << std::endl;
+            }
+        }
+        std::cout << std::endl;
+    }
 }

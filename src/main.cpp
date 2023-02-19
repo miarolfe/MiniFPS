@@ -114,32 +114,12 @@ int main() {
         std::cout << "SDL_image initialized" << std::endl;
     }
 
+    Level level("../assets/testMap1.png");
+    level.print();
+
     bool drawSquare = false;
     bool gameIsRunning = true;
     int x, y;
-
-    std::vector<std::vector<Uint32>> matrix(0);
-
-    if (!png_to_matrix(matrix, "../assets/testMap1.png")) {
-        std::cerr << "Image could not be loaded and/or converted to a level" << std::endl;
-    } else {
-        std::cout << "Image loaded and converted" << std::endl;
-    }
-
-    for (int i = 0; i < matrix.size(); i++)
-    {
-        for (int j = 0; j < matrix[i].size(); j++)
-        {
-            if (matrix[i][j] == RGBA_BLACK) {
-                std::cout << "* ";
-            } else if (matrix[i][j] == RGBA_WHITE) {
-                std::cout << "  ";
-            } else {
-                std::cerr << "Invalid pixel" << std::endl;
-            }
-        }
-        std::cout << std::endl;
-    }
     
     while (gameIsRunning) {
         handle_input(drawSquare, gameIsRunning, x, y);
@@ -151,8 +131,6 @@ int main() {
 
     SDL_DestroyWindow(window);
     SDL_Quit();
-
-
 
     return 0;
 }
