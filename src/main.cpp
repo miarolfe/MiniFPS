@@ -1,6 +1,7 @@
 #include <iostream>
 #include <SDL.h>
 
+// ~60 fps
 const uint8_t FRAME_INTERVAL = 17;
 
 // TODO: Multiple resolutions
@@ -18,7 +19,7 @@ void initialization() {
         std::cout << "SDL video system initialized" << std::endl;
     }
 
-    gWindow = SDL_CreateWindow("C++ SDL2 Window",
+    gWindow = SDL_CreateWindow("mini-fps",
             0,
             0,
             SCREEN_WIDTH,
@@ -26,6 +27,22 @@ void initialization() {
             SDL_WINDOW_SHOWN);
 
     gRenderer = SDL_CreateRenderer(gWindow, -1, SDL_RENDERER_ACCELERATED);
+}
+
+void handle_input(bool& drawSquare, bool& gameIsRunning, int& x, int& y) {
+    SDL_Event event;
+    SDL_GetMouseState(&x, &y);
+
+    while (SDL_PollEvent(&event)){ 
+        // Should this be a switch statement?
+        if (event.type == SDL_QUIT) {
+            gameIsRunning= false;
+        }
+
+        if (event.type == SDL_MOUSEBUTTONDOWN) {
+            drawSquare = !drawSquare;
+        }
+    }
 }
 
 int main() {
@@ -36,43 +53,24 @@ int main() {
 
     bool drawSquare = false;
     bool gameIsRunning = true;
+    int x, y;
     
     while (gameIsRunning) {
-        SDL_SetRenderDrawColor(gRenderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
-        SDL_RenderClear(gRenderer);
-
-        SDL_Event event;
-
-        int x, y;
-        SDL_GetMouseState(&x,&y);
-
-        while (SDL_PollEvent(&event)){ 
-            // Should this be a switch statement?
-            if (event.type == SDL_QUIT) {
-                gameIsRunning= false;
-            }
-
-            if (event.type == SDL_MOUSEBUTTONDOWN) {
-                drawSquare = !drawSquare;
-            }
-        }
+        handle_input(drawSquare, gameIsRunning, x, y);
 
         // Rendering
+        SDL_SetRenderDrawColor(gRenderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
+        SDL_RenderClear(gRenderer);
+        
         if (drawSquare) {
             SDL_SetRenderDrawColor(gRenderer, 255, 255, 255, 255);
 
-            // TODO: Replace this with actual rectangle
-            // Listen I'm still learning
-
             SDL_Rect rect;
-
             rect.x = x-12;
             rect.y = y-12;
             rect.w = 24;
             rect.h = 24;
-            for (int i = -25; i < 25; i++) {
-                SDL_RenderDrawRect(gRenderer, &rect);
-            }
+            SDL_RenderFillRect(gRenderer, &rect);
         }
 
         // TODO: Better frame timing solution
