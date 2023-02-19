@@ -114,7 +114,7 @@ int main() {
         std::cout << "SDL_image initialized" << std::endl;
     }
 
-    Level level("../assets/testMap1.png");
+    Level level("../assets/testMap2.png");
     level.print();
 
     bool drawSquare = false;

@@ -56,9 +56,9 @@ Uint32 Level::get(const size_t x, const size_t y) {
 }
 
 void Level::print() {
-    for (int i = 0; i < matrix.size(); i++)
+    for (int i = 0; i < w; i++)
     {
-        for (int j = 0; j < matrix[i].size(); j++)
+        for (int j = 0; j < h; j++)
         {
             if (get(j, i) == RGBA_BLACK) {
                 std::cout << "* ";
