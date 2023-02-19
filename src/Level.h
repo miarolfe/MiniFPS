@@ -7,6 +7,6 @@
 #include <vector>
 #include <SDL.h>
 
-bool png_to_matrix(std::vector<std::vector<Uint32>>& matrix, const std::string& filePath);
+bool png_to_matrix(std::vector<std::vector<Uint32>>& matrix, const char *filePath);
 
 #endif //MINI_FPS_LEVEL_H

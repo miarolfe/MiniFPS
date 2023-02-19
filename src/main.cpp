@@ -11,6 +11,10 @@ const uint8_t FRAME_INTERVAL = 17;
 const size_t SCREEN_WIDTH = 1024;
 const size_t SCREEN_HEIGHT = 512;
 
+// Color constants
+const Uint32 RGBA_BLACK = 0xFF000000;
+const Uint32 RGBA_WHITE = 0xFFFFFFFF;
+
 bool initialize_sdl() {
     bool successful_initialization = true;
 
@@ -115,13 +119,26 @@ int main() {
     int x, y;
 
     std::vector<std::vector<Uint32>> matrix(0);
-    bool pngToMatrixSuccess = png_to_matrix(matrix, "test.png");
 
-    for (size_t matrixY = 0; matrixY < matrix.size(); matrixY++) {
-        for (size_t matrixX = 0; matrixX < matrix[matrixY].size(); matrixX++) {
-            // std::cout << matrix[matrixY][matrixX] << "\t\t\t\t\t\t";
+    if (!png_to_matrix(matrix, "../assets/testMap1.png")) {
+        std::cerr << "Image could not be loaded and/or converted to a level" << std::endl;
+    } else {
+        std::cout << "Image loaded and converted" << std::endl;
+    }
+
+    for (int i = 0; i < matrix.size(); i++)
+    {
+        for (int j = 0; j < matrix[i].size(); j++)
+        {
+            if (matrix[i][j] == RGBA_BLACK) {
+                std::cout << "* ";
+            } else if (matrix[i][j] == RGBA_WHITE) {
+                std::cout << "  ";
+            } else {
+                std::cerr << "Invalid pixel" << std::endl;
+            }
         }
-        // std::cout << std::endl;
+        std::cout << std::endl;
     }
     
     while (gameIsRunning) {

@@ -3,11 +3,11 @@
 #include <string>
 #include <SDL_image.h>
 
-bool png_to_matrix(std::vector<std::vector<Uint32>>& matrix, const std::string& filePath)  {
+bool png_to_matrix(std::vector<std::vector<Uint32>>& matrix, const char *filePath)  {
     bool successfulLoadAndConversion = true;
 
     SDL_Surface* surface;
-    surface = IMG_Load("../assets/test.png");
+    surface = IMG_Load(filePath);
     if (surface == NULL) {
         successfulLoadAndConversion = false;
     }
