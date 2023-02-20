@@ -1,4 +1,8 @@
 #include <iostream>
+
+// TEMP
+#include <unistd.h>
+
 #include <SDL.h>
 #include <SDL_image.h>
 
@@ -159,7 +163,7 @@ int main() {
         std::cout << "SDL_image initialized" << std::endl;
     }
 
-    Level level("../assets/levels/testLevel5.png");
+    Level level("../Resources/levels/testLevel5.png");
     level.print();
 
     bool gameIsRunning = true;
