@@ -31,12 +31,10 @@ bool png_to_matrix(std::vector<std::vector<Uint32>>& matrix, const char *filePat
             Uint8 r, g, b, a;
             SDL_GetRGBA(pixel, surface->format, &r, &g, &b, &a);
             matrix[y][x] = pixel;
-//            std::cout << static_cast<int>(r) << ","
-//            << static_cast<int>(g) << ","
-//            << static_cast<int>(b) << ","
-//            << static_cast<int>(a) << std::endl;
         }
     }
+
+    SDL_FreeSurface(surface);
 
     return successfulLoadAndConversion;
 }
