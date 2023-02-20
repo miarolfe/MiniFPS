@@ -117,12 +117,12 @@ void draw(SDL_Renderer* renderer, Camera camera, Level& level) {
                 // std::cout << t << std::endl;
 
                 // std::cout << (t * cos(rayAngle - camera.angle)) << std::endl;
-                size_t column_height = float(SCREEN_HEIGHT)/t * cos(rayAngle-camera.angle);
+                size_t columnHeight = float(SCREEN_HEIGHT)/t * cos(rayAngle-camera.angle);
                 SDL_Rect column;
                 column.x = ray;
-                column.y = SCREEN_HEIGHT/2 - column_height/2;
+                column.y = SCREEN_HEIGHT/2 - columnHeight/2;
                 column.w = 1;
-                column.h = column_height;
+                column.h = columnHeight;
 
                 // std::cout << column.x << " " << column.y << " " << column.w << " " << column.h << std::endl;
                 SDL_RenderFillRect(renderer, &column);
