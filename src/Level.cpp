@@ -6,7 +6,7 @@
 #include "Level.h"
 #include "Color.h"
 
-bool png_to_matrix(std::vector<std::vector<Uint32>>& matrix, const char *filePath)  {
+bool png_to_matrix(std::vector<std::vector<Uint32>>& matrix, const char *filePath, SDL_PixelFormat& pixelFormat)  {
     bool successfulLoadAndConversion = true;
 
     SDL_Surface* surface;
@@ -14,6 +14,8 @@ bool png_to_matrix(std::vector<std::vector<Uint32>>& matrix, const char *filePat
     if (surface == NULL) {
         successfulLoadAndConversion = false;
     }
+
+    pixelFormat = *SDL_AllocFormat(surface->format->format);
 
     matrix.resize(surface->h);
 
@@ -40,7 +42,7 @@ bool png_to_matrix(std::vector<std::vector<Uint32>>& matrix, const char *filePat
 }
 
 Level::Level(const char* filePath) {
-    if (!png_to_matrix(matrix, filePath)) {
+    if (!png_to_matrix(matrix, filePath, pixelFormat)) {
         std::cerr << "Image could not be loaded and/or converted to a level" << std::endl;
     } else {
         std::cout << "Image loaded and converted" << std::endl;
@@ -58,12 +60,10 @@ void Level::print() {
     {
         for (int j = 0; j < h; j++)
         {
-            if (get(j, i) == RGBA_BLACK) {
-                std::cout << "* ";
-            } else if (get(j, i) == RGBA_WHITE) {
+            if (get(j, i) == RGBA_WHITE) {
                 std::cout << "  ";
             } else {
-                std::cerr << "Invalid pixel" << std::endl;
+                std::cout << "* ";
             }
         }
         std::cout << std::endl;

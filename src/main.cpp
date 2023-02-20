@@ -104,10 +104,8 @@ void handle_input(bool& gameIsRunning, int& x, int& y, float& deltaM, float& del
 }
 
 void draw(SDL_Renderer* renderer, Camera camera, Level& level) {
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
-    SDL_RenderClear(renderer);
-
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
+    SDL_RenderClear(renderer);
 
     for (size_t ray = 0; ray < SCREEN_WIDTH; ray++) {
         float rayAngle = (camera.angle - camera.fieldOfView / 2) + (camera.fieldOfView * ray / float(SCREEN_WIDTH));
@@ -117,7 +115,11 @@ void draw(SDL_Renderer* renderer, Camera camera, Level& level) {
             float cx = camera.x + t * cos(rayAngle);
             float cy = camera.y + t * sin(rayAngle);
 
-            if (level.get(int(cx), int(cy)) == RGBA_BLACK) {
+            if (level.get(int(cx), int(cy)) != RGBA_WHITE) {
+                Uint8 r, g, b, a;
+                SDL_GetRGBA(level.get(int(cx), int(cy)), &level.pixelFormat, &r, &g, &b, &a);
+                SDL_SetRenderDrawColor(renderer, r, g, b, a);
+
                 size_t columnHeight = float(SCREEN_HEIGHT)/t * cos(rayAngle-camera.angle);
                 SDL_Rect column;
                 column.x = ray;
@@ -157,7 +159,7 @@ int main() {
         std::cout << "SDL_image initialized" << std::endl;
     }
 
-    Level level("../assets/levels/testLevel4.png");
+    Level level("../assets/levels/testLevel5.png");
     level.print();
 
     bool gameIsRunning = true;

@@ -10,6 +10,7 @@
 struct Level {
     std::vector<std::vector<Uint32>> matrix;
     size_t w, h;
+    SDL_PixelFormat pixelFormat;
     explicit Level(const char* filePath);
     Uint32 get (size_t x, size_t y);
     void print();
