@@ -77,18 +77,6 @@ void handle_input(bool& drawSquare, bool& gameIsRunning, int& x, int& y, float& 
         if (event.type == SDL_MOUSEBUTTONDOWN) {
             drawSquare = !drawSquare;
         }
-
-//        if (event.type == SDL_KEYDOWN) {
-//            if (event.key.keysym.sym == SDLK_w) {
-//                deltaY = delta;
-//            } else if (event.key.keysym.sym == SDLK_s) {
-//                deltaY = -delta;
-//            } else if (event.key.keysym.sym == SDLK_a) {
-//                deltaX = -delta;
-//            } else if (event.key.keysym.sym == SDLK_d) {
-//                deltaX = delta;
-//            }
-//        }
     }
 
     const Uint8 *currentKeyStates = SDL_GetKeyboardState(nullptr);
@@ -172,7 +160,7 @@ int main() {
         std::cout << "SDL_image initialized" << std::endl;
     }
 
-    Level level("../assets/testMap2.png");
+    Level level("../assets/levels/testLevel2.png");
     level.print();
 
     bool drawSquare = false;
