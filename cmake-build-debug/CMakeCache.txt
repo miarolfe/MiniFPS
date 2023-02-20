@@ -264,6 +264,18 @@ CPACK_SOURCE_ZIP:BOOL=OFF
 //The directory containing a CMake configuration file for SDL2.
 SDL2_DIR:PATH=/Library/Frameworks/SDL2.framework/Resources/CMake
 
+//Path to a library.
+SDL2_IMAGE_LIB:FILEPATH=/Library/Frameworks/SDL2_image.framework
+
+//Path to a library.
+SDL2_IMAGE_LIBRARY:FILEPATH=/Library/Frameworks/SDL2_image.framework
+
+//Path to a library.
+SDL2_LIB:FILEPATH=/Library/Frameworks/SDL2.framework
+
+//Path to a library.
+SDL2_LIBRARY:FILEPATH=/Library/Frameworks/SDL2.framework
+
 //Path to a file.
 SDL_IMAGE_INCLUDE_DIR:PATH=SDL_IMAGE_INCLUDE_DIR-NOTFOUND
 

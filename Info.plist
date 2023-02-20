@@ -4,13 +4,13 @@
 <plist version="1.0">
 <dict>
   <key>CFBundleName</key>
-  <string>My App</string>
+  <string>mini-fps</string>
   <key>CFBundleIdentifier</key>
-  <string>com.example.myapp</string>
+  <string>com.pjhrolfe.mini-fps</string>
   <key>CFBundleVersion</key>
-  <string>1.0</string>
+  <string>0.1</string>
   <key>CFBundleShortVersionString</key>
-  <string>1.0.0</string>
+  <string>0.1</string>
   <key>LSApplicationCategoryType</key>
   <string>public.app-category.utilities</string>
 </dict>
