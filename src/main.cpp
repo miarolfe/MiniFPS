@@ -3,6 +3,7 @@
 #include <SDL_image.h>
 
 #include "Camera.h"
+#include "Color.h"
 #include "Level.h"
 
 // ~60 fps
@@ -14,10 +15,6 @@ const uint8_t FRAME_INTERVAL = 17;
 // TODO: Multiple resolutions
 const size_t SCREEN_WIDTH = 800;
 const size_t SCREEN_HEIGHT = 600;
-
-// Color constants
-const Uint32 RGBA_BLACK = 0xFF000000;
-const Uint32 RGBA_WHITE = 0xFFFFFFFF;
 
 const float delta = 0.05;
 
@@ -168,7 +165,7 @@ int main() {
     int x, y;
     float deltaM, deltaA;
 
-    Camera camera(3.456, 2.345, 1.523, 3*M_PI/10.0);
+    Camera camera(2, 2, 1.523, 3*M_PI/10.0);
     
     while (gameIsRunning) {
         deltaM = 0;
