@@ -61,7 +61,7 @@ bool initialize_window_and_renderer(SDL_Window** window, SDL_Renderer** renderer
     return successful_initialization;
 }
 
-void handle_input(bool& gameIsRunning, int& x, int& y, float& deltaM, float& deltaA) {
+void handle_input(bool& gameIsRunning, int& x, int& y, float& deltaM, float& deltaA, bool& moveLeft, bool& moveRight) {
     SDL_Event event;
     SDL_GetMouseState(&x, &y);
 
@@ -89,6 +89,18 @@ void handle_input(bool& gameIsRunning, int& x, int& y, float& deltaM, float& del
     if (currentKeyStates[SDL_SCANCODE_E]) {
         deltaA = delta;
     }
+
+    if (currentKeyStates[SDL_SCANCODE_A]) {
+        moveLeft = true;
+    } else {
+        moveLeft = false;
+    }
+
+    if (currentKeyStates[SDL_SCANCODE_D]) {
+        moveRight = true;
+    } else {
+        moveRight = false;
+    }
 }
 
 void draw(SDL_Renderer* renderer, Camera camera, Level& level) {
@@ -101,7 +113,7 @@ void draw(SDL_Renderer* renderer, Camera camera, Level& level) {
         float rayAngle = (camera.angle - camera.fieldOfView / 2) + (camera.fieldOfView * ray / float(SCREEN_WIDTH));
 
         float t;
-        for (t = 0.25; t < 100; t += 0.005) {
+        for (t = 0; t < 100; t += 0.005) {
             float cx = camera.x + t * cos(rayAngle);
             float cy = camera.y + t * sin(rayAngle);
 
@@ -151,15 +163,28 @@ int main() {
     bool gameIsRunning = true;
     int x, y;
     float deltaM, deltaA;
+    bool moveLeft = false;
+    bool moveRight = false;
 
     Camera camera(2, 2, 1.523, 3*M_PI/10.0);
     
     while (gameIsRunning) {
         deltaM = 0;
         deltaA = 0;
-        handle_input(gameIsRunning, x, y, deltaM, deltaA);
+        handle_input(gameIsRunning, x, y, deltaM, deltaA, moveLeft, moveRight);
         camera.x += deltaM * cos(camera.angle);
         camera.y += deltaM * sin(camera.angle);
+
+        if (moveLeft) {
+            camera.x += delta * cos(camera.angle - M_PI/2);
+            camera.y += delta * sin(camera.angle - M_PI/2);
+        }
+
+        if (moveRight) {
+            camera.x += delta * cos(camera.angle + M_PI/2);
+            camera.y += delta * sin(camera.angle + M_PI/2);
+        }
+
         camera.angle += deltaA;
         draw(renderer, camera, level);
 
