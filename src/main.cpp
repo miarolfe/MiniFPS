@@ -61,7 +61,7 @@ bool initialize_window_and_renderer(SDL_Window** window, SDL_Renderer** renderer
     return successful_initialization;
 }
 
-void handle_input(bool& drawSquare, bool& gameIsRunning, int& x, int& y, float& deltaM, float& deltaA) {
+void handle_input(bool& gameIsRunning, int& x, int& y, float& deltaM, float& deltaA) {
     SDL_Event event;
     SDL_GetMouseState(&x, &y);
 
@@ -69,10 +69,6 @@ void handle_input(bool& drawSquare, bool& gameIsRunning, int& x, int& y, float& 
         // Should this be a switch statement?
         if (event.type == SDL_QUIT) {
             gameIsRunning = false;
-        }
-
-        if (event.type == SDL_MOUSEBUTTONDOWN) {
-            drawSquare = !drawSquare;
         }
     }
 
@@ -160,7 +156,6 @@ int main() {
     Level level("../assets/levels/testLevel4.png");
     level.print();
 
-    bool drawSquare = false;
     bool gameIsRunning = true;
     int x, y;
     float deltaM, deltaA;
@@ -170,7 +165,7 @@ int main() {
     while (gameIsRunning) {
         deltaM = 0;
         deltaA = 0;
-        handle_input(drawSquare, gameIsRunning, x, y, deltaM, deltaA);
+        handle_input(gameIsRunning, x, y, deltaM, deltaA);
         camera.x += deltaM * cos(camera.angle);
         camera.y += deltaM * sin(camera.angle);
         camera.angle += deltaA;
