@@ -8,9 +8,12 @@
 // ~60 fps
 const uint8_t FRAME_INTERVAL = 17;
 
+// ~120 fps
+//const uint8_t FRAME_INTERVAL = 8;
+
 // TODO: Multiple resolutions
-const size_t SCREEN_WIDTH = 1920;
-const size_t SCREEN_HEIGHT = 1080;
+const size_t SCREEN_WIDTH = 800;
+const size_t SCREEN_HEIGHT = 600;
 
 // Color constants
 const Uint32 RGBA_BLACK = 0xFF000000;
@@ -61,14 +64,14 @@ bool initialize_window_and_renderer(SDL_Window** window, SDL_Renderer** renderer
     return successful_initialization;
 }
 
-void handle_input(bool& drawSquare, bool& gameIsRunning, int& x, int& y, float& deltaX, float& deltaY) {
+void handle_input(bool& drawSquare, bool& gameIsRunning, int& x, int& y, float& deltaM, float& deltaA) {
     SDL_Event event;
     SDL_GetMouseState(&x, &y);
 
-    while (SDL_PollEvent(&event)){ 
+    while (SDL_PollEvent(&event)) {
         // Should this be a switch statement?
         if (event.type == SDL_QUIT) {
-            gameIsRunning= false;
+            gameIsRunning = false;
         }
 
         if (event.type == SDL_MOUSEBUTTONDOWN) {
@@ -88,32 +91,30 @@ void handle_input(bool& drawSquare, bool& gameIsRunning, int& x, int& y, float& 
 //        }
     }
 
-    const Uint8* currentKeyStates = SDL_GetKeyboardState( NULL );
+    const Uint8 *currentKeyStates = SDL_GetKeyboardState(nullptr);
 
     if (currentKeyStates[SDL_SCANCODE_W]) {
-        deltaY = delta;
+        deltaM = delta;
     }
 
     if (currentKeyStates[SDL_SCANCODE_S]) {
-        deltaY = -delta;
+        deltaM = -delta;
     }
 
-    if (currentKeyStates[SDL_SCANCODE_A]) {
-        deltaX = -delta;
+    if (currentKeyStates[SDL_SCANCODE_Q]) {
+        deltaA = -delta;
     }
 
-    if (currentKeyStates[SDL_SCANCODE_D]) {
-        deltaX = delta;
+    if (currentKeyStates[SDL_SCANCODE_E]) {
+        deltaA = delta;
     }
 }
 
 void draw(SDL_Renderer* renderer, Camera camera, Level& level) {
-    SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(renderer);
 
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
-    const size_t rect_w = SCREEN_WIDTH / level.w;
-    const size_t rect_h = SCREEN_HEIGHT / level.h;
 
     for (size_t ray = 0; ray < SCREEN_WIDTH; ray++) {
         float rayAngle = (camera.angle - camera.fieldOfView / 2) + (camera.fieldOfView * ray / float(SCREEN_WIDTH));
@@ -121,7 +122,7 @@ void draw(SDL_Renderer* renderer, Camera camera, Level& level) {
         // std::cout << "Camera angle: " << camera.angle << std::endl;
 
         float t;
-        for (t = 0; t < 20; t += 0.01) {
+        for (t = 0.25; t < 100; t += 0.005) {
             float cx = camera.x + t * cos(rayAngle);
             float cy = camera.y + t * sin(rayAngle);
 
@@ -129,7 +130,7 @@ void draw(SDL_Renderer* renderer, Camera camera, Level& level) {
                 // std::cout << "RGBA Black found" << std::endl;
                 // std::cout << cos(rayAngle - camera.angle) << std::endl;
                 // std::cout << t << std::endl;
-d
+
                 // std::cout << (t * cos(rayAngle - camera.angle)) << std::endl;
                 size_t column_height = float(SCREEN_HEIGHT)/t * cos(rayAngle-camera.angle);
                 SDL_Rect column;
@@ -171,22 +172,23 @@ int main() {
         std::cout << "SDL_image initialized" << std::endl;
     }
 
-    Level level("../assets/testMap1.png");
+    Level level("../assets/testMap2.png");
     level.print();
 
     bool drawSquare = false;
     bool gameIsRunning = true;
     int x, y;
-    float deltaX, deltaY;
-    Camera camera(3.456, 2.345, 1.523, M_PI/2);
-    // Camera camera(32, 32, 1.523, M_PI/3.);
+    float deltaM, deltaA;
+
+    Camera camera(3.456, 2.345, 1.523, 3*M_PI/10.0);
     
     while (gameIsRunning) {
-        deltaX = 0;
-        deltaY = 0;
-        handle_input(drawSquare, gameIsRunning, x, y, deltaX, deltaY);
-        camera.x += deltaX;
-        camera.y += deltaY;
+        deltaM = 0;
+        deltaA = 0;
+        handle_input(drawSquare, gameIsRunning, x, y, deltaM, deltaA);
+        camera.x += deltaM * cos(camera.angle);
+        camera.y += deltaM * sin(camera.angle);
+        camera.angle += deltaA;
         draw(renderer, camera, level);
 
         // TODO: Better frame timing solution

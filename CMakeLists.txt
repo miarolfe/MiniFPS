@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.23)
 project(mini_fps)
 
 set(CMAKE_CXX_STANDARD 11)
-set(SOURCE_FILES src/*.cpp)
+set(CMAKE_OSX_ARCHITECTURES arm64;x86_64)
 
 link_directories("/opt/homebrew/lib")
 include_directories("/opt/homebrew/include")
@@ -14,7 +14,10 @@ add_executable(
         src/main.cpp
         src/Level.cpp
         src/Level.h
-        src/Color.h src/Camera.h src/Camera.cpp)
+        src/Color.h
+        src/Camera.h
+        src/Camera.cpp
+)
 
 target_link_libraries(
         mini_fps PRIVATE
