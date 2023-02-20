@@ -99,8 +99,6 @@ void draw(SDL_Renderer* renderer, Camera camera, Level& level) {
 
     for (size_t ray = 0; ray < SCREEN_WIDTH; ray++) {
         float rayAngle = (camera.angle - camera.fieldOfView / 2) + (camera.fieldOfView * ray / float(SCREEN_WIDTH));
-        // std::cout << "Ray angle: " << rayAngle << std::endl;
-        // std::cout << "Camera angle: " << camera.angle << std::endl;
 
         float t;
         for (t = 0.25; t < 100; t += 0.005) {
@@ -108,11 +106,6 @@ void draw(SDL_Renderer* renderer, Camera camera, Level& level) {
             float cy = camera.y + t * sin(rayAngle);
 
             if (level.get(int(cx), int(cy)) == RGBA_BLACK) {
-                // std::cout << "RGBA Black found" << std::endl;
-                // std::cout << cos(rayAngle - camera.angle) << std::endl;
-                // std::cout << t << std::endl;
-
-                // std::cout << (t * cos(rayAngle - camera.angle)) << std::endl;
                 size_t columnHeight = float(SCREEN_HEIGHT)/t * cos(rayAngle-camera.angle);
                 SDL_Rect column;
                 column.x = ray;
@@ -120,7 +113,6 @@ void draw(SDL_Renderer* renderer, Camera camera, Level& level) {
                 column.w = 1;
                 column.h = columnHeight;
 
-                // std::cout << column.x << " " << column.y << " " << column.w << " " << column.h << std::endl;
                 SDL_RenderFillRect(renderer, &column);
                 break;
             }
