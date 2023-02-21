@@ -52,6 +52,17 @@ Level::Level(const char* filePath) {
 }
 
 Uint32 Level::get(const size_t x, const size_t y) {
+    // This can be removed once collision detection is a thing
+    if (y < 0 || y >= matrix.size()) {
+        std::cerr << "Invalid level matrix access" << std::endl;
+        return 0;
+    }
+
+    if (x < 0 || x >= matrix[y].size()) {
+        std::cerr << "Invalid level matrix access" << std::endl;
+        return 0;
+    }
+
     return matrix[y][x];
 }
 
