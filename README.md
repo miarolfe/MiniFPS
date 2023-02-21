@@ -1,6 +1,6 @@
 # mini-fps
  
-A 90s-style FPS made from scratch using C++11 and SDL2. Think *DOOM* or *Quake*.
+A 90s-style FPS made from scratch using C++11 and SDL2. Think *Wolfenstein 3D* or *DOOM*.
 
 Setup, releases, etc. to follow.
 
