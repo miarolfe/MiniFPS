@@ -20,6 +20,8 @@ const uint8_t FRAME_INTERVAL = 17;
 const size_t SCREEN_WIDTH = 800;
 const size_t SCREEN_HEIGHT = 600;
 
+const size_t RENDER_DISTANCE = 128;
+
 const float delta = 0.05;
 
 bool initialize_sdl() {
@@ -115,7 +117,7 @@ void draw(SDL_Renderer* renderer, Camera camera, Level& level) {
         float rayAngle = (camera.angle - camera.fieldOfView / 2) + (camera.fieldOfView * ray / float(SCREEN_WIDTH));
 
         float t;
-        for (t = 0; t < 100; t += 0.005) {
+        for (t = 0; t < RENDER_DISTANCE; t += 0.005) {
             float cx = camera.x + t * cos(rayAngle);
             float cy = camera.y + t * sin(rayAngle);
 
@@ -163,7 +165,7 @@ int main() {
         std::cout << "SDL_image initialized" << std::endl;
     }
 
-    Level level("../Resources/levels/testLevel5.png");
+    Level level("../Resources/levels/testLevel6.png");
     level.print();
 
     bool gameIsRunning = true;

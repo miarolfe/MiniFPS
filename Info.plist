@@ -13,5 +13,7 @@
   <string>0.1</string>
   <key>LSApplicationCategoryType</key>
   <string>public.app-category.utilities</string>
+  <key>CFBundleIconFile</key>
+  <string>testIcon.icns</string>
 </dict>
 </plist>

@@ -28,17 +28,17 @@ find_library(SDL2_IMAGE_LIB SDL2_image)
 # Bundle frameworks with the app
 set(SDL2_FRAMEWORK "${SDL2_LIB}")
 set(SDL2_IMAGE_FRAMEWORK "${SDL2_IMAGE_LIB}")
-set(MACOSX_BUNDLE_ICON_FILE "icon.icns")
 set(MACOSX_BUNDLE_BUNDLE_NAME "mini-fps")
 set(MACOSX_BUNDLE_GUI_IDENTIFIER "com.pjhrolfe.mini-fps")
 set(MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/Info.plist")
+
+set_source_files_properties(assets/testIcon.icns PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
 
 # Add the executable
 add_executable(mini-fps MACOSX_BUNDLE ${SOURCES} ${HEADERS})
 
 # Set target properties
 set_target_properties(mini-fps PROPERTIES
-        MACOSX_BUNDLE_ICON_FILE "${MACOSX_BUNDLE_ICON_FILE}"
         MACOSX_BUNDLE_BUNDLE_NAME "${MACOSX_BUNDLE_BUNDLE_NAME}"
         MACOSX_BUNDLE_GUI_IDENTIFIER "${MACOSX_BUNDLE_GUI_IDENTIFIER}"
         MACOSX_BUNDLE_INFO_PLIST "${MACOSX_BUNDLE_INFO_PLIST}"
