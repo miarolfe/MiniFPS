@@ -1,8 +1,5 @@
 #include <iostream>
 
-// TEMP
-#include <unistd.h>
-
 #include <SDL.h>
 #include <SDL_image.h>
 
@@ -20,6 +17,7 @@ const uint8_t FRAME_INTERVAL = 17;
 const size_t SCREEN_WIDTH = 1920;
 const size_t SCREEN_HEIGHT = 1080;
 
+const float RENDER_RAY_INCREMENT = 0.05f;
 const size_t RENDER_DISTANCE = 128;
 
 const float ROTATION_MODIFIER = 0.025;
@@ -120,7 +118,7 @@ void draw(SDL_Renderer* renderer, Camera camera, Level& level) {
         float rayAngle = (camera.angle - camera.fieldOfView / 2) + (camera.fieldOfView * ray / float(SCREEN_WIDTH));
 
         float t;
-        for (t = 0; t < RENDER_DISTANCE; t += 0.05) {
+        for (t = 0; t < RENDER_DISTANCE; t += RENDER_RAY_INCREMENT) {
             float cx = camera.x + t * cos(rayAngle);
             float cy = camera.y + t * sin(rayAngle);
 
@@ -173,7 +171,7 @@ int main() {
 
     bool gameIsRunning = true;
     int x, y, mouseX, mouseY;
-    float deltaM, deltaA;
+    float deltaM;
     bool moveLeft = false;
     bool moveRight = false;
 
@@ -183,7 +181,6 @@ int main() {
     
     while (gameIsRunning) {
         deltaM = 0;
-        deltaA = 0;
         mouseX = 0;
         mouseY = 0;
         handle_input(gameIsRunning, x, y, deltaM, moveLeft, moveRight, mouseX, mouseY);
@@ -200,7 +197,7 @@ int main() {
             camera.x += delta * cos(camera.angle + M_PI/2);
             camera.y += delta * sin(camera.angle + M_PI/2);
         }
-        ;
+
         draw(renderer, camera, level);
 
         // TODO: Better frame timing solution
