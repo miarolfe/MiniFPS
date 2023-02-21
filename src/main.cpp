@@ -87,6 +87,10 @@ void handle_input(bool& gameIsRunning, int& x, int& y, float& deltaM, bool& move
 
     const Uint8 *currentKeyStates = SDL_GetKeyboardState(nullptr);
 
+    if (currentKeyStates[SDL_SCANCODE_ESCAPE]) {
+        gameIsRunning = false;
+    }
+
     if (currentKeyStates[SDL_SCANCODE_W]) {
         deltaM = delta;
     }
