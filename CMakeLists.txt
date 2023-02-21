@@ -31,17 +31,19 @@ set(SDL2_IMAGE_FRAMEWORK "${SDL2_IMAGE_LIB}")
 set(MACOSX_BUNDLE_BUNDLE_NAME "mini-fps")
 set(MACOSX_BUNDLE_GUI_IDENTIFIER "com.pjhrolfe.mini-fps")
 set(MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/Info.plist")
+set(MACOSX_BUNDLE_ICON_FILE "testIcon.icns")
 
-set_source_files_properties(assets/testIcon.icns PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
+set_source_files_properties(${MACOSX_BUNDLE_ICON_FILE} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
 
 # Add the executable
-add_executable(mini-fps MACOSX_BUNDLE ${SOURCES} ${HEADERS})
+add_executable(mini-fps MACOSX_BUNDLE ${SOURCES} ${HEADERS} ${ICON})
 
 # Set target properties
 set_target_properties(mini-fps PROPERTIES
         MACOSX_BUNDLE_BUNDLE_NAME "${MACOSX_BUNDLE_BUNDLE_NAME}"
         MACOSX_BUNDLE_GUI_IDENTIFIER "${MACOSX_BUNDLE_GUI_IDENTIFIER}"
         MACOSX_BUNDLE_INFO_PLIST "${MACOSX_BUNDLE_INFO_PLIST}"
+        MACOSX_BUNDLE_ICON_FILE "${MACOSX_BUNDLE_ICON_FILE}"
         )
 
 # Include directories for SDL2 and SDL2_image
@@ -64,4 +66,5 @@ add_custom_command(TARGET mini-fps POST_BUILD
         COMMAND install_name_tool -change /Library/Frameworks/SDL2_image.framework/Versions/A/SDL2_image @executable_path/../Frameworks/SDL2_image.framework/Versions/A/SDL2_image "${CMAKE_CURRENT_BINARY_DIR}/mini-fps.app/Contents/MacOS/mini-fps"
         COMMAND ${CMAKE_COMMAND} -E copy /Library/Frameworks/SDL2.framework "${CMAKE_CURRENT_BINARY_DIR}/mini-fps.app/Contents/Frameworks/SDL2.framework"
         COMMAND ${CMAKE_COMMAND} -E copy /Library/Frameworks/SDL2_image.framework "${CMAKE_CURRENT_BINARY_DIR}/mini-fps.app/Contents/Frameworks/SDL2_image.framework"
+        COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_SOURCE_DIR}/testIcon.icns" "${CMAKE_CURRENT_BINARY_DIR}/mini-fps.app/Contents/Resources"
         )

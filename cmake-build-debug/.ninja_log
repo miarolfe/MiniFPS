@@ -1,13 +1,9 @@
 # ninja log v5
-3	575	1676913650713276575	CMakeFiles/mini_fps.dir/src/Level.cpp.o	544eb9e3ee7ce787
-0	50	1676984349122142588	build.ninja	5fa3544e788e18f0
-8	161	1676890151612403387	CMakeFiles/mini_fps.dir/src/Camera.cpp.o	b6387172c81841ac
-3	664	1676926182622600907	CMakeFiles/mini-fps.dir/src/Level.cpp.o	cbb10c70e43ebfc9
-3	689	1676916096822656598	CMakeFiles/mini_fps.dir/src/main.cpp.o	1b57b851f97f15ba
+7	715	1676986828603975892	CMakeFiles/mini-fps.dir/src/main.cpp.o	2bbbf63a00e7aa96
+2	115	1676992594804949964	mini-fps.app/Contents/MacOS/mini-fps	23cb7a61ca8c427b
 3	33	1676926478187447762	CMakeFiles/mini-fps.dir/src/Camera.cpp.o	5e11b4b748cfa601
-2	153	1676926680608081603	mini-fps.app/Contents/MacOS/mini-fps	c06a19ce60cc847c
-2	656	1676926182614316093	CMakeFiles/mini-fps.dir/src/main.cpp.o	2bbbf63a00e7aa96
-2	125	1676984374165761937	mini-fps.app/Contents/MacOS/mini-fps	c06a19ce60cc847c
-3	857	1676985702230628908	CMakeFiles/mini-fps.dir/src/main.cpp.o	2bbbf63a00e7aa96
-857	964	1676985702330955972	mini-fps.app/Contents/MacOS/mini-fps	c06a19ce60cc847c
-2	173	1676985973208917916	mini-fps.app/Contents/MacOS/mini-fps	c06a19ce60cc847c
+3	689	1676916096822656598	CMakeFiles/mini_fps.dir/src/main.cpp.o	1b57b851f97f15ba
+3	664	1676926182622600907	CMakeFiles/mini-fps.dir/src/Level.cpp.o	cbb10c70e43ebfc9
+8	161	1676890151612403387	CMakeFiles/mini_fps.dir/src/Camera.cpp.o	b6387172c81841ac
+0	41	1676993018919265544	build.ninja	5fa3544e788e18f0
+3	575	1676913650713276575	CMakeFiles/mini_fps.dir/src/Level.cpp.o	544eb9e3ee7ce787
