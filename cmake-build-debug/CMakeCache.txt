@@ -261,11 +261,17 @@ CPACK_SOURCE_TZ:BOOL=ON
 //Enable to build ZIP source packages
 CPACK_SOURCE_ZIP:BOOL=OFF
 
+//The directory containing a CMake configuration file for SDL2.
+SDL2_DIR:PATH=/Library/Frameworks/SDL2.framework/Resources/CMake
+
 //Path to a library.
 SDL2_IMAGE_LIB:FILEPATH=/Library/Frameworks/SDL2_image.framework
 
 //Path to a library.
 SDL2_LIB:FILEPATH=/Library/Frameworks/SDL2.framework
+
+//The directory containing a CMake configuration file for SDL2_image.
+SDL2_image_DIR:PATH=/Library/Frameworks/SDL2_image.framework/Resources/CMake
 
 //Value Computed by CMake
 mini-fps_BINARY_DIR:STATIC=/Users/peterrolfe/Development/C-Plus-Plus/mini-fps/cmake-build-debug

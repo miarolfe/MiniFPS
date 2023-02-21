@@ -3,6 +3,7 @@ project(mini-fps)
 
 include(CPack)
 
+set(CMAKE_BUILD_TYPE "Release")
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_OSX_ARCHITECTURES arm64;x86_64)
 set(RESOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/assets")

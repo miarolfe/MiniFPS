@@ -17,11 +17,12 @@ const uint8_t FRAME_INTERVAL = 17;
 //const uint8_t FRAME_INTERVAL = 8;
 
 // TODO: Multiple resolutions
-const size_t SCREEN_WIDTH = 800;
-const size_t SCREEN_HEIGHT = 600;
+const size_t SCREEN_WIDTH = 1920;
+const size_t SCREEN_HEIGHT = 1080;
 
 const size_t RENDER_DISTANCE = 128;
 
+const float ROTATION_MODIFIER = 0.025;
 const float delta = 0.05;
 
 bool initialize_sdl() {
@@ -67,7 +68,7 @@ bool initialize_window_and_renderer(SDL_Window** window, SDL_Renderer** renderer
     return successful_initialization;
 }
 
-void handle_input(bool& gameIsRunning, int& x, int& y, float& deltaM, float& deltaA, bool& moveLeft, bool& moveRight) {
+void handle_input(bool& gameIsRunning, int& x, int& y, float& deltaM, bool& moveLeft, bool& moveRight, int& mouseX, int &mouseY) {
     SDL_Event event;
     SDL_GetMouseState(&x, &y);
 
@@ -75,6 +76,12 @@ void handle_input(bool& gameIsRunning, int& x, int& y, float& deltaM, float& del
         // Should this be a switch statement?
         if (event.type == SDL_QUIT) {
             gameIsRunning = false;
+        }
+
+        if (event.type == SDL_MOUSEMOTION)
+        {
+            mouseX = event.motion.xrel;
+            mouseY = event.motion.yrel;
         }
     }
 
@@ -86,14 +93,6 @@ void handle_input(bool& gameIsRunning, int& x, int& y, float& deltaM, float& del
 
     if (currentKeyStates[SDL_SCANCODE_S]) {
         deltaM = -delta;
-    }
-
-    if (currentKeyStates[SDL_SCANCODE_Q]) {
-        deltaA = -delta;
-    }
-
-    if (currentKeyStates[SDL_SCANCODE_E]) {
-        deltaA = delta;
     }
 
     if (currentKeyStates[SDL_SCANCODE_A]) {
@@ -117,7 +116,7 @@ void draw(SDL_Renderer* renderer, Camera camera, Level& level) {
         float rayAngle = (camera.angle - camera.fieldOfView / 2) + (camera.fieldOfView * ray / float(SCREEN_WIDTH));
 
         float t;
-        for (t = 0; t < RENDER_DISTANCE; t += 0.005) {
+        for (t = 0; t < RENDER_DISTANCE; t += 0.05) {
             float cx = camera.x + t * cos(rayAngle);
             float cy = camera.y + t * sin(rayAngle);
 
@@ -165,23 +164,28 @@ int main() {
         std::cout << "SDL_image initialized" << std::endl;
     }
 
-    Level level("../Resources/levels/testLevel6.png");
+    Level level("../Resources/levels/testLevel5.png");
     level.print();
 
     bool gameIsRunning = true;
-    int x, y;
+    int x, y, mouseX, mouseY;
     float deltaM, deltaA;
     bool moveLeft = false;
     bool moveRight = false;
 
     Camera camera(2, 2, 1.523, 3*M_PI/10.0);
+
+    SDL_SetRelativeMouseMode(SDL_TRUE);
     
     while (gameIsRunning) {
         deltaM = 0;
         deltaA = 0;
-        handle_input(gameIsRunning, x, y, deltaM, deltaA, moveLeft, moveRight);
+        mouseX = 0;
+        mouseY = 0;
+        handle_input(gameIsRunning, x, y, deltaM, moveLeft, moveRight, mouseX, mouseY);
         camera.x += deltaM * cos(camera.angle);
         camera.y += deltaM * sin(camera.angle);
+        camera.angle += mouseX * delta * ROTATION_MODIFIER;
 
         if (moveLeft) {
             camera.x += delta * cos(camera.angle - M_PI/2);
@@ -192,8 +196,7 @@ int main() {
             camera.x += delta * cos(camera.angle + M_PI/2);
             camera.y += delta * sin(camera.angle + M_PI/2);
         }
-
-        camera.angle += deltaA;
+        ;
         draw(renderer, camera, level);
 
         // TODO: Better frame timing solution
