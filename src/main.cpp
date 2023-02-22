@@ -8,20 +8,20 @@
 #include "Level.h"
 
 // ~60 fps
-const uint8_t FRAME_INTERVAL = 17;
+//const uint8_t FRAME_INTERVAL = 17;
 
 // ~120 fps
-//const uint8_t FRAME_INTERVAL = 8;
+const uint8_t FRAME_INTERVAL = 8;
 
 // TODO: Multiple resolutions
-const size_t SCREEN_WIDTH = 1920;
-const size_t SCREEN_HEIGHT = 1080;
+const size_t SCREEN_WIDTH = 800;
+const size_t SCREEN_HEIGHT = 600;
 
-const float RENDER_RAY_INCREMENT = 0.05f;
+const float RENDER_RAY_INCREMENT = 0.005f;
 const size_t RENDER_DISTANCE = 128;
 
 const float ROTATION_MODIFIER = 0.025;
-const float delta = 0.05;
+const float DELTA = 0.05;
 
 bool initialize_sdl() {
     bool successful_initialization = true;
@@ -90,11 +90,11 @@ void handle_input(bool& gameIsRunning, int& x, int& y, float& deltaM, bool& move
     }
 
     if (currentKeyStates[SDL_SCANCODE_W]) {
-        deltaM = delta;
+        deltaM = DELTA;
     }
 
     if (currentKeyStates[SDL_SCANCODE_S]) {
-        deltaM = -delta;
+        deltaM = -DELTA;
     }
 
     if (currentKeyStates[SDL_SCANCODE_A]) {
@@ -144,6 +144,11 @@ void draw(SDL_Renderer* renderer, Camera camera, Level& level) {
     SDL_RenderPresent(renderer);     
 }
 
+void quit(SDL_Window* window) {
+    SDL_DestroyWindow(window);
+    SDL_Quit();
+}
+
 int main() {
     if (!initialize_sdl()) {
         std::cerr << "SDL could not be initialized:" << SDL_GetError();
@@ -167,6 +172,7 @@ int main() {
     }
 
     Level level("../Resources/levels/testLevel7.png");
+
     level.print();
 
     bool gameIsRunning = true;
@@ -180,22 +186,29 @@ int main() {
     SDL_SetRelativeMouseMode(SDL_TRUE);
     
     while (gameIsRunning) {
+        std::cout << "(" << camera.x << ", " << camera.y << ")" << std::endl;
+
         deltaM = 0;
         mouseX = 0;
         mouseY = 0;
         handle_input(gameIsRunning, x, y, deltaM, moveLeft, moveRight, mouseX, mouseY);
+
+        // Collision detection idea
+        // if abs(camera.x - round(camera.x)) < THRESHOLD
+        //      ...
+
         camera.x += deltaM * cos(camera.angle);
         camera.y += deltaM * sin(camera.angle);
-        camera.angle += mouseX * delta * ROTATION_MODIFIER;
+        camera.angle += mouseX * DELTA * ROTATION_MODIFIER;
 
         if (moveLeft) {
-            camera.x += delta * cos(camera.angle - M_PI/2);
-            camera.y += delta * sin(camera.angle - M_PI/2);
+            camera.x += DELTA * cos(camera.angle - M_PI / 2);
+            camera.y += DELTA * sin(camera.angle - M_PI / 2);
         }
 
         if (moveRight) {
-            camera.x += delta * cos(camera.angle + M_PI/2);
-            camera.y += delta * sin(camera.angle + M_PI/2);
+            camera.x += DELTA * cos(camera.angle + M_PI / 2);
+            camera.y += DELTA * sin(camera.angle + M_PI / 2);
         }
 
         draw(renderer, camera, level);
