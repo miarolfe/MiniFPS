@@ -7,6 +7,10 @@
 #include "Color.h"
 #include "Level.h"
 
+// TODO: Separate rendering from update logic
+// TODO: Textured walls
+// TODO: Windows build
+
 // ~60 fps
 //const uint8_t FRAME_INTERVAL = 17;
 
@@ -181,12 +185,12 @@ int main() {
     bool moveLeft = false;
     bool moveRight = false;
 
-    Camera camera(2, 2, 1.523, 3*M_PI/10.0);
+    Camera playerCamera(2, 2, 1.523, 3*M_PI/10.0);
 
     SDL_SetRelativeMouseMode(SDL_TRUE);
     
     while (gameIsRunning) {
-        std::cout << "(" << camera.x << ", " << camera.y << ")" << std::endl;
+        std::cout << "(" << playerCamera.x << ", " << playerCamera.y << ")" << std::endl;
 
         deltaM = 0;
         mouseX = 0;
@@ -197,28 +201,27 @@ int main() {
         // if abs(camera.x - round(camera.x)) < THRESHOLD
         //      ...
 
-        camera.x += deltaM * cos(camera.angle);
-        camera.y += deltaM * sin(camera.angle);
-        camera.angle += mouseX * DELTA * ROTATION_MODIFIER;
+        playerCamera.x += deltaM * cos(playerCamera.angle);
+        playerCamera.y += deltaM * sin(playerCamera.angle);
+        playerCamera.angle += mouseX * DELTA * ROTATION_MODIFIER;
 
         if (moveLeft) {
-            camera.x += DELTA * cos(camera.angle - M_PI / 2);
-            camera.y += DELTA * sin(camera.angle - M_PI / 2);
+            playerCamera.x += DELTA * cos(playerCamera.angle - M_PI / 2);
+            playerCamera.y += DELTA * sin(playerCamera.angle - M_PI / 2);
         }
 
         if (moveRight) {
-            camera.x += DELTA * cos(camera.angle + M_PI / 2);
-            camera.y += DELTA * sin(camera.angle + M_PI / 2);
+            playerCamera.x += DELTA * cos(playerCamera.angle + M_PI / 2);
+            playerCamera.y += DELTA * sin(playerCamera.angle + M_PI / 2);
         }
 
-        draw(renderer, camera, level);
+        draw(renderer, playerCamera, level);
 
         // TODO: Better frame timing solution
         SDL_Delay(FRAME_INTERVAL);
     }
 
-    SDL_DestroyWindow(window);
-    SDL_Quit();
+    quit(window);
 
     return 0;
 }
