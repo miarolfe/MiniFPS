@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.23)
-project(mini-fps)
+project(mini-fps LANGUAGES CXX)
 
 set(CMAKE_BUILD_TYPE "Release")
 set(CMAKE_CXX_STANDARD 11)
@@ -69,5 +69,26 @@ if(APPLE)
             COMMAND ${CMAKE_COMMAND} -E copy_directory /Library/Frameworks/SDL2.framework "${CMAKE_CURRENT_BINARY_DIR}/mini-fps.app/Contents/Frameworks/SDL2.framework"
             COMMAND ${CMAKE_COMMAND} -E copy_directory /Library/Frameworks/SDL2_image.framework "${CMAKE_CURRENT_BINARY_DIR}/mini-fps.app/Contents/Frameworks/SDL2_image.framework"
             COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_SOURCE_DIR}/testIcon.icns" "${CMAKE_CURRENT_BINARY_DIR}/mini-fps.app/Contents/Resources"
+            )
+endif()
+
+if(WIN32)
+    set(CMAKE_WIN32_EXECUTABLE ON)
+    add_executable(mini-fps ${SOURCES} ${HEADERS})
+
+    target_link_libraries(mini-fps
+            "${CMAKE_SOURCE_DIR}/lib/SDL2.dll"
+            "${CMAKE_SOURCE_DIR}/lib/SDL2_image.dll"
+            )
+
+    include_directories("${CMAKE_SOURCE_DIR}/include")
+    message("PATH IS ${CMAKE_CXX_COMPILER_LIBCXX}")
+    add_custom_command(TARGET mini-fps POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E make_directory "$<TARGET_FILE_DIR:mini-fps>/assets"
+            COMMAND ${CMAKE_COMMAND} -E copy_directory "${RESOURCES_DIR}" "$<TARGET_FILE_DIR:mini-fps>/assets"
+            COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/lib/SDL2.dll" "$<TARGET_FILE_DIR:mini-fps>"
+            COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/lib/SDL2_image.dll" "$<TARGET_FILE_DIR:mini-fps>"
+            COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CXX_COMPILER_LIBCXX}/libstdc++-6.dll" "$<TARGET_FILE_DIR:mini-fps>"
+            COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CXX_COMPILER_LIBCXX}/libgcc_s_seh-1.dll" "$<TARGET_FILE_DIR:mini-fps>"
             )
 endif()
