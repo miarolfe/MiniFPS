@@ -168,9 +168,19 @@ int main() {
         mouseY = 0;
         handle_input(gameIsRunning, x, y, deltaM, moveLeft, moveRight, mouseX, mouseY);
 
-        // Collision detection idea
-        // if abs(camera.x - round(camera.x)) < THRESHOLD
-        //      ...
+        int roundedPlayerCameraX = round(playerCamera.x);
+        int roundedPlayerCameraY = round(playerCamera.y);
+
+        // Wall collision detection
+        for (size_t nearbyX = roundedPlayerCameraX-1; nearbyX <= roundedPlayerCameraX+1; nearbyX++) {
+            for (size_t nearbyY = roundedPlayerCameraY-1; nearbyY <= roundedPlayerCameraY+1; nearbyY++) {
+                if (level.get(nearbyX, nearbyY) != RGBA_WHITE) {
+                    if (playerCamera.x >= nearbyX && playerCamera.x <= nearbyX+1 && playerCamera.y >= nearbyY && playerCamera.y <= nearbyY+1) {
+                        std::cerr << "In a wall!" << std::endl;
+                    }
+                }
+            }
+        }
 
         playerCamera.x += deltaM * cos(playerCamera.angle);
         playerCamera.y += deltaM * sin(playerCamera.angle);
