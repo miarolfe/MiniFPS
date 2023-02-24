@@ -1,5 +1,3 @@
-/Users/peterrolfe/Development/C-Plus-Plus/mini-fps/cmake-build-debug/CMakeFiles/mini-fps.dir
-/Users/peterrolfe/Development/C-Plus-Plus/mini-fps/cmake-build-debug/CMakeFiles/package.dir
-/Users/peterrolfe/Development/C-Plus-Plus/mini-fps/cmake-build-debug/CMakeFiles/package_source.dir
-/Users/peterrolfe/Development/C-Plus-Plus/mini-fps/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/peterrolfe/Development/C-Plus-Plus/mini-fps/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+C:/Users/meatk/OneDrive/Documents/GitHub/mini-fps/cmake-build-debug/CMakeFiles/mini-fps.dir
+C:/Users/meatk/OneDrive/Documents/GitHub/mini-fps/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/meatk/OneDrive/Documents/GitHub/mini-fps/cmake-build-debug/CMakeFiles/rebuild_cache.dir

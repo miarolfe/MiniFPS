@@ -1,4 +1,6 @@
+#define SDL_MAIN_HANDLED
 #include <iostream>
+#include <cmath>
 
 #include <SDL.h>
 #include <SDL_image.h>
@@ -146,7 +148,11 @@ int main() {
         std::cout << "SDL_image initialized" << std::endl;
     }
 
-    Level level("../Resources/levels/testLevel7.png");
+    // Mac path
+    // Level level("../Resources/levels/testLevel7.png");
+
+    // Windows path
+    Level level("assets/levels/testLevel7.png");
 
     level.print();
 
@@ -167,7 +173,7 @@ int main() {
         mouseX = 0;
         mouseY = 0;
         handle_input(gameIsRunning, x, y, deltaM, moveLeft, moveRight, mouseX, mouseY);
-
+        
         int roundedPlayerCameraX = round(playerCamera.x);
         int roundedPlayerCameraY = round(playerCamera.y);
 
