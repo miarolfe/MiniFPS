@@ -17,7 +17,8 @@ set(
         src/Camera.h
         src/Color.h
         src/Level.h
-)
+        src/Renderer.h
+        src/Renderer.cpp)
 
 if(APPLE)
     set(CMAKE_OSX_ARCHITECTURES arm64;x86_64)

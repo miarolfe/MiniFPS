@@ -8,6 +8,7 @@
 #include "Camera.h"
 #include "Color.h"
 #include "Level.h"
+#include "Renderer.h"
 
 // TODO: Separate rendering from update logic
 // TODO: Textured walls
@@ -28,6 +29,8 @@ const size_t RENDER_DISTANCE = 128;
 
 const float ROTATION_MODIFIER = 0.025;
 const float DELTA = 0.05;
+
+// TEMP - move this to separate file
 
 bool initialize_sdl() {
     bool successful_initialization = true;
@@ -116,39 +119,7 @@ void handle_input(bool& gameIsRunning, int& x, int& y, float& deltaM, bool& move
     }
 }
 
-void draw(SDL_Renderer* renderer, Camera camera, Level& level) {
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
-    SDL_RenderClear(renderer);
 
-    for (size_t ray = 0; ray < SCREEN_WIDTH; ray++) {
-        float rayAngle = (camera.angle - camera.fieldOfView / 2) + (camera.fieldOfView * ray / float(SCREEN_WIDTH));
-
-        float t;
-        for (t = 0; t < RENDER_DISTANCE; t += RENDER_RAY_INCREMENT) {
-            float cx = camera.x + t * cos(rayAngle);
-            float cy = camera.y + t * sin(rayAngle);
-
-            if (level.get(int(cx), int(cy)) != RGBA_WHITE) {
-                Uint8 r, g, b, a;
-                SDL_GetRGBA(level.get(int(cx), int(cy)), &level.pixelFormat, &r, &g, &b, &a);
-                SDL_SetRenderDrawColor(renderer, r, g, b, a);
-
-                size_t columnHeight = float(SCREEN_HEIGHT)/t * cos(rayAngle-camera.angle);
-                SDL_Rect column;
-                column.x = ray;
-                column.y = SCREEN_HEIGHT/2 - columnHeight/2;
-                column.w = 1;
-                column.h = columnHeight;
-
-                SDL_RenderFillRect(renderer, &column);
-                break;
-            }
-        }
-
-    }
-
-    SDL_RenderPresent(renderer);     
-}
 
 void quit(SDL_Window* window) {
     SDL_DestroyWindow(window);
@@ -191,7 +162,7 @@ int main() {
     bool moveLeft = false;
     bool moveRight = false;
 
-    Camera playerCamera(2, 2, 1.523, 3*M_PI/10.0);
+    Camera playerCamera(2, 2, 1.523, 3*M_PI/10.0, SCREEN_WIDTH, SCREEN_HEIGHT, RENDER_RAY_INCREMENT, RENDER_DISTANCE);
 
     SDL_SetRelativeMouseMode(SDL_TRUE);
     
@@ -202,6 +173,20 @@ int main() {
         mouseX = 0;
         mouseY = 0;
         handle_input(gameIsRunning, x, y, deltaM, moveLeft, moveRight, mouseX, mouseY);
+        
+        int roundedPlayerCameraX = round(playerCamera.x);
+        int roundedPlayerCameraY = round(playerCamera.y);
+
+        // Wall collision detection
+        for (size_t nearbyX = roundedPlayerCameraX-1; nearbyX <= roundedPlayerCameraX+1; nearbyX++) {
+            for (size_t nearbyY = roundedPlayerCameraY-1; nearbyY <= roundedPlayerCameraY+1; nearbyY++) {
+                if (level.get(nearbyX, nearbyY) != RGBA_WHITE) {
+                    if (playerCamera.x >= nearbyX && playerCamera.x <= nearbyX+1 && playerCamera.y >= nearbyY && playerCamera.y <= nearbyY+1) {
+                        std::cerr << "In a wall!" << std::endl;
+                    }
+                }
+            }
+        }
 
         playerCamera.x += deltaM * cos(playerCamera.angle);
         playerCamera.y += deltaM * sin(playerCamera.angle);
