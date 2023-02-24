@@ -73,7 +73,9 @@ if(APPLE)
 endif()
 
 if(WIN32)
-    set(CMAKE_WIN32_EXECUTABLE ON)
+    # set(CMAKE_CXX_COMPILER_LIBCXX "C:/Program Files/JetBrains/CLion 2022.3.2/bin/mingw/bin")
+    # set(CMAKE_WIN32_EXECUTABLE ON)
+
     add_executable(mini-fps ${SOURCES} ${HEADERS})
 
     target_link_libraries(mini-fps
@@ -81,14 +83,15 @@ if(WIN32)
             "${CMAKE_SOURCE_DIR}/lib/SDL2_image.dll"
             )
 
+    target_link_options(mini-fps PRIVATE
+            -static-libstdc++
+    )
+
     include_directories("${CMAKE_SOURCE_DIR}/include")
-    message("PATH IS ${CMAKE_CXX_COMPILER_LIBCXX}")
     add_custom_command(TARGET mini-fps POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E make_directory "$<TARGET_FILE_DIR:mini-fps>/assets"
             COMMAND ${CMAKE_COMMAND} -E copy_directory "${RESOURCES_DIR}" "$<TARGET_FILE_DIR:mini-fps>/assets"
             COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/lib/SDL2.dll" "$<TARGET_FILE_DIR:mini-fps>"
             COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/lib/SDL2_image.dll" "$<TARGET_FILE_DIR:mini-fps>"
-            COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CXX_COMPILER_LIBCXX}/libstdc++-6.dll" "$<TARGET_FILE_DIR:mini-fps>"
-            COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CXX_COMPILER_LIBCXX}/libgcc_s_seh-1.dll" "$<TARGET_FILE_DIR:mini-fps>"
             )
 endif()

@@ -177,7 +177,11 @@ int main() {
         std::cout << "SDL_image initialized" << std::endl;
     }
 
-    Level level("../Resources/levels/testLevel7.png");
+    // Mac path
+    // Level level("../Resources/levels/testLevel7.png");
+
+    // Windows path
+    Level level("assets/levels/testLevel7.png");
 
     level.print();
 
@@ -198,10 +202,6 @@ int main() {
         mouseX = 0;
         mouseY = 0;
         handle_input(gameIsRunning, x, y, deltaM, moveLeft, moveRight, mouseX, mouseY);
-
-        // Collision detection idea
-        // if abs(camera.x - round(camera.x)) < THRESHOLD
-        //      ...
 
         playerCamera.x += deltaM * cos(playerCamera.angle);
         playerCamera.y += deltaM * sin(playerCamera.angle);
