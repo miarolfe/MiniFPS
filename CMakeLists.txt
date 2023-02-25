@@ -76,6 +76,7 @@ endif()
 if(WIN32)
     # set(CMAKE_CXX_COMPILER_LIBCXX "C:/Program Files/JetBrains/CLion 2022.3.2/bin/mingw/bin")
     # set(CMAKE_WIN32_EXECUTABLE ON)
+    # mwindows?
 
     add_executable(mini-fps ${SOURCES} ${HEADERS})
 
@@ -86,6 +87,7 @@ if(WIN32)
 
     target_link_options(mini-fps PRIVATE
             -static-libstdc++
+            -mwindows
     )
 
     include_directories("${CMAKE_SOURCE_DIR}/include")
