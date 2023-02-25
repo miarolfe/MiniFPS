@@ -12,7 +12,6 @@
 
 // TODO: Separate rendering from update logic
 // TODO: Textured walls
-// TODO: Windows build
 
 // ~60 fps
 //const uint8_t FRAME_INTERVAL = 17;

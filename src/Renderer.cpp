@@ -1,3 +1,4 @@
+#include <cmath>
 #include <SDL.h>
 
 #include "Camera.h"
