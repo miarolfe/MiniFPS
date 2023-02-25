@@ -148,10 +148,10 @@ int main() {
     }
 
     // Mac path
-    // Level level("../Resources/levels/testLevel7.png");
+    Level level("../Resources/levels/testLevel7.png");
 
     // Windows path
-    Level level("assets/levels/testLevel7.png");
+    // Level level("assets/levels/testLevel7.png");
 
     level.print();
 
@@ -161,7 +161,7 @@ int main() {
     bool moveLeft = false;
     bool moveRight = false;
 
-    Camera playerCamera(2, 2, 1.523, 3*M_PI/10.0, SCREEN_WIDTH, SCREEN_HEIGHT, RENDER_RAY_INCREMENT, RENDER_DISTANCE);
+    Camera playerCamera(2, 2, 1.523, (70.0/360.0) * 2 * M_PI, SCREEN_WIDTH, SCREEN_HEIGHT, RENDER_RAY_INCREMENT, RENDER_DISTANCE, 1);
 
     SDL_SetRelativeMouseMode(SDL_TRUE);
     
@@ -176,16 +176,8 @@ int main() {
         int roundedPlayerCameraX = round(playerCamera.x);
         int roundedPlayerCameraY = round(playerCamera.y);
 
-        // Wall collision detection
-        for (size_t nearbyX = roundedPlayerCameraX-1; nearbyX <= roundedPlayerCameraX+1; nearbyX++) {
-            for (size_t nearbyY = roundedPlayerCameraY-1; nearbyY <= roundedPlayerCameraY+1; nearbyY++) {
-                if (level.get(nearbyX, nearbyY) != RGBA_WHITE) {
-                    if (playerCamera.x >= nearbyX && playerCamera.x <= nearbyX+1 && playerCamera.y >= nearbyY && playerCamera.y <= nearbyY+1) {
-                        std::cerr << "In a wall!" << std::endl;
-                    }
-                }
-            }
-        }
+        float prevPlayerCameraX = playerCamera.x;
+        float prevPlayerCameraY = playerCamera.y;
 
         playerCamera.x += deltaM * cos(playerCamera.angle);
         playerCamera.y += deltaM * sin(playerCamera.angle);
@@ -199,6 +191,18 @@ int main() {
         if (moveRight) {
             playerCamera.x += DELTA * cos(playerCamera.angle + M_PI / 2);
             playerCamera.y += DELTA * sin(playerCamera.angle + M_PI / 2);
+        }
+
+        // Wall collision detection
+        for (size_t nearbyX = roundedPlayerCameraX-1; nearbyX <= roundedPlayerCameraX+1; nearbyX++) {
+            for (size_t nearbyY = roundedPlayerCameraY-1; nearbyY <= roundedPlayerCameraY+1; nearbyY++) {
+                if (level.get(nearbyX, nearbyY) != RGBA_WHITE) {
+                    if (playerCamera.x >= nearbyX && playerCamera.x <= nearbyX+1 && playerCamera.y >= nearbyY && playerCamera.y <= nearbyY+1) {
+                        playerCamera.x = prevPlayerCameraX;
+                        playerCamera.y = prevPlayerCameraY;
+                    }
+                }
+            }
         }
 
         draw(renderer, playerCamera, level);

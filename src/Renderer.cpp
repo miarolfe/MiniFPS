@@ -22,7 +22,10 @@ void draw(SDL_Renderer* renderer, Camera camera, Level& level) {
                 SDL_GetRGBA(level.get(int(cx), int(cy)), &level.pixelFormat, &r, &g, &b, &a);
                 SDL_SetRenderDrawColor(renderer, r, g, b, a);
 
-                size_t columnHeight = float(camera.viewportWidth)/t * cos(rayAngle-camera.angle);
+                float distance = t * cos(rayAngle - camera.angle);
+
+                // size_t columnHeight = float(camera.viewportHeight)/t * cos(rayAngle-camera.angle);
+                size_t columnHeight = (camera.viewportHeight / distance) * camera.distanceToProjectionPlane;
                 SDL_Rect column;
                 column.x = ray;
                 column.y = camera.viewportHeight/2 - columnHeight/2;
