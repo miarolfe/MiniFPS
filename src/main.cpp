@@ -20,8 +20,8 @@
 const uint8_t FRAME_INTERVAL = 8;
 
 // TODO: Multiple resolutions
-const size_t SCREEN_WIDTH = 800;
-const size_t SCREEN_HEIGHT = 600;
+const size_t SCREEN_WIDTH = 1920;
+const size_t SCREEN_HEIGHT = 1080;
 
 const float RENDER_RAY_INCREMENT = 0.005f;
 const size_t RENDER_DISTANCE = 128;
@@ -147,11 +147,18 @@ int main() {
         std::cout << "SDL_image initialized" << std::endl;
     }
 
-    // Mac path
-    Level level("../Resources/levels/testLevel7.png");
+    const char * platform = SDL_GetPlatform();
 
-    // Windows path
-    // Level level("assets/levels/testLevel7.png");
+    Level level = Level(nullptr);
+
+    if (strcmp(platform, "Windows") == 0) {
+        level = Level("assets/levels/testLevel7.png");
+    } else if (strcmp(platform, "Mac OS X") == 0) {
+        level = Level("../Resources/levels/testLevel7.png");
+    } else {
+        std::cerr << "Invalid platform: " << platform << std::endl;
+        return -1;
+    }
 
     level.print();
 

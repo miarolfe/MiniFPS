@@ -42,6 +42,11 @@ bool png_to_matrix(std::vector<std::vector<Uint32>>& matrix, const char *filePat
 }
 
 Level::Level(const char* filePath) {
+    if (filePath == nullptr) {
+        std::cerr << "Null file path" << std::endl;
+        return;
+    }
+
     if (!png_to_matrix(matrix, filePath, pixelFormat)) {
         std::cerr << "Image could not be loaded and/or converted to a level" << std::endl;
     } else {
