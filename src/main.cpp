@@ -152,9 +152,9 @@ int main() {
     Level level = Level(nullptr);
 
     if (strcmp(platform, "Windows") == 0) {
-        level = Level("assets/levels/testLevel7.png");
+        level = Level("assets/levels/testLevel9.png");
     } else if (strcmp(platform, "Mac OS X") == 0) {
-        level = Level("../Resources/levels/testLevel7.png");
+        level = Level("../Resources/levels/testLevel9.png");
     } else {
         std::cerr << "Invalid platform: " << platform << std::endl;
         return -1;
@@ -173,7 +173,7 @@ int main() {
     SDL_SetRelativeMouseMode(SDL_TRUE);
     
     while (gameIsRunning) {
-        std::cout << "(" << playerCamera.x << ", " << playerCamera.y << ")" << std::endl;
+        // std::cout << "(" << playerCamera.x << ", " << playerCamera.y << ")" << std::endl;
 
         deltaM = 0;
         mouseX = 0;

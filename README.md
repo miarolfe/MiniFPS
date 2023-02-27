@@ -10,6 +10,6 @@ Setup to follow.
 
 MIT License. Go nuts :)
 
-### SDL libraries
+### SDL
 
 zlib license. Thanks to all the lovely people who've contributed to SDL!
