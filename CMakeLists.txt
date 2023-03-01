@@ -18,7 +18,8 @@ set(
         src/Color.h
         src/Level.h
         src/Renderer.h
-        src/Renderer.cpp)
+        src/Renderer.cpp
+)
 
 if(APPLE)
     set(CMAKE_OSX_ARCHITECTURES arm64;x86_64)
@@ -70,6 +71,7 @@ if(APPLE)
             COMMAND ${CMAKE_COMMAND} -E copy_directory /Library/Frameworks/SDL2.framework "${CMAKE_CURRENT_BINARY_DIR}/mini-fps.app/Contents/Frameworks/SDL2.framework"
             COMMAND ${CMAKE_COMMAND} -E copy_directory /Library/Frameworks/SDL2_image.framework "${CMAKE_CURRENT_BINARY_DIR}/mini-fps.app/Contents/Frameworks/SDL2_image.framework"
             COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_SOURCE_DIR}/testIcon.icns" "${CMAKE_CURRENT_BINARY_DIR}/mini-fps.app/Contents/Resources"
+            COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_SOURCE_DIR}/Info.plist" "${CMAKE_CURRENT_BINARY_DIR}/mini-fps.app/Contents"
             )
 endif()
 

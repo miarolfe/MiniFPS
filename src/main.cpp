@@ -45,8 +45,8 @@ bool initialize_window_and_renderer(SDL_Window** window, SDL_Renderer** renderer
     bool successful_initialization = true;
 
     *window = SDL_CreateWindow("mini-fps",
-            0,
-            0,
+            100,
+            100,
             SCREEN_WIDTH,
             SCREEN_HEIGHT,
             SDL_WINDOW_SHOWN);
@@ -154,7 +154,7 @@ int main() {
     if (strcmp(platform, "Windows") == 0) {
         level = Level("assets/levels/testLevel9.png");
     } else if (strcmp(platform, "Mac OS X") == 0) {
-        level = Level("../Resources/levels/testLevel9.png");
+        level = Level("../Resources/levels/testLevel10.png");
     } else {
         std::cerr << "Invalid platform: " << platform << std::endl;
         return -1;
@@ -204,7 +204,7 @@ int main() {
         for (size_t nearbyX = roundedPlayerCameraX-1; nearbyX <= roundedPlayerCameraX+1; nearbyX++) {
             for (size_t nearbyY = roundedPlayerCameraY-1; nearbyY <= roundedPlayerCameraY+1; nearbyY++) {
                 if (level.get(nearbyX, nearbyY) != RGBA_WHITE) {
-                    if (playerCamera.x >= nearbyX && playerCamera.x <= nearbyX+1 && playerCamera.y >= nearbyY && playerCamera.y <= nearbyY+1) {
+                    if (playerCamera.x >= nearbyX-0.05 && playerCamera.x <= nearbyX+1+0.05 && playerCamera.y >= nearbyY-0.05 && playerCamera.y <= nearbyY+1+0.05) {
                         playerCamera.x = prevPlayerCameraX;
                         playerCamera.y = prevPlayerCameraY;
                     }

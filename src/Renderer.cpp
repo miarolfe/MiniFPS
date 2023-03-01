@@ -24,7 +24,6 @@ void draw(SDL_Renderer* renderer, Camera camera, Level& level) {
 
                 float distance = t * cos(rayAngle - camera.angle);
 
-                // size_t columnHeight = float(camera.viewportHeight)/t * cos(rayAngle-camera.angle);
                 size_t columnHeight = (camera.viewportHeight / distance) * camera.distanceToProjectionPlane;
                 SDL_Rect column;
                 column.x = ray;
