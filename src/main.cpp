@@ -125,6 +125,11 @@ void quit(SDL_Window* window) {
     SDL_Quit();
 }
 
+std::string frames_per_second(const double oldTime, const double curTime) {
+    double frameTime = (curTime - oldTime) / 1000.0;
+    return "FPS: " + std::to_string(static_cast<int>((1.0/frameTime))) + "\n";
+}
+
 int main() {
     if (!initialize_sdl()) {
         std::cerr << "SDL could not be initialized:" << SDL_GetError();
@@ -189,9 +194,15 @@ int main() {
     SDL_FreeSurface(tmpTexSurface);
 
     SDL_SetRelativeMouseMode(SDL_TRUE);
+
+    double oldTime = 0;
+    double curTime = 0;
     
     while (gameIsRunning) {
-        // std::cout << "(" << playerCamera.x << ", " << playerCamera.y << ")" << std::endl;
+        oldTime = curTime;
+        curTime = SDL_GetTicks64();
+
+        std::cout << frames_per_second(oldTime, curTime);
 
         deltaM = 0;
         mouseX = 0;

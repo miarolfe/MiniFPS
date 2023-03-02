@@ -14,9 +14,12 @@ void draw(SDL_Renderer* renderer, Camera camera, Level& level, Uint32** texBuffe
         float rayAngle = (camera.angle - camera.fieldOfView / 2) + (camera.fieldOfView * ray / float(camera.viewportWidth));
 
         float t;
+        float cosRayAngle = cos(rayAngle);
+        float sinRayAngle = sin(rayAngle);
+
         for (t = 0; t < camera.maxRenderDistance; t += camera.rayIncrement) {
-            float cx = camera.x + t * cos(rayAngle);
-            float cy = camera.y + t * sin(rayAngle);
+            float cx = camera.x + t * cosRayAngle;
+            float cy = camera.y + t * sinRayAngle;
 
             if (level.get(int(cx), int(cy)) != RGBA_WHITE) {
                 Uint8 r, g, b, a;
