@@ -1,3 +1,4 @@
+#include <iostream>
 #include <cmath>
 #include <SDL.h>
 
@@ -5,7 +6,7 @@
 #include "Color.h"
 #include "Level.h"
 
-void draw(SDL_Renderer* renderer, Camera camera, Level& level) {
+void draw(SDL_Renderer* renderer, Camera camera, Level& level, Uint32** texBuffer) {
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(renderer);
 
@@ -31,7 +32,22 @@ void draw(SDL_Renderer* renderer, Camera camera, Level& level) {
                 column.w = 1;
                 column.h = columnHeight;
 
-                SDL_RenderFillRect(renderer, &column);
+                int texX = int(cx * double(32)); // replace 32 with TEX_WIDTH;
+                double step = 1.0 * 32 / columnHeight;
+                double texPos = (column.y) * step;
+
+                for (int y = column.y; y < column.y + columnHeight; y++) {
+                    int texY = (int) texPos & (32 - 1); // cast and mask in case of overflow
+                    texPos += step;
+
+                    Uint8 r, g, b, a;
+                    // std::cout << texX << " " << texY << std::endl;
+                    SDL_GetRGBA(texBuffer[texY % 32][texX % 32], &level.pixelFormat, &r, &g, &b, &a);
+                    SDL_SetRenderDrawColor(renderer, r, g, b, a);
+                    SDL_RenderDrawPoint(renderer, column.x, y);
+                }
+
+                // SDL_RenderFillRect(renderer, &column);
                 break;
             }
         }

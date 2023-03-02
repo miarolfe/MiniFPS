@@ -170,6 +170,24 @@ int main() {
 
     Camera playerCamera(2, 2, 1.523, (70.0/360.0) * 2 * M_PI, SCREEN_WIDTH, SCREEN_HEIGHT, RENDER_RAY_INCREMENT, RENDER_DISTANCE, 1);
 
+    // TEMP
+    SDL_Surface* tmpTexSurface = IMG_Load("../Resources/sprites/testWall1.png");
+    Uint32 texBuffer[32][32];
+    Uint32** ptr = new Uint32*[32];
+    for (int i = 0; i < 32; i++) {
+        ptr[i] = texBuffer[i];
+    }
+
+    Uint32* pixels = (Uint32*)tmpTexSurface->pixels;
+
+    for (int y = 0; y < 32; y++) {
+        for (int x = 0; x < 32; x++) {
+            texBuffer[y][x] = pixels[y * 32 + x];
+        }
+    }
+
+    SDL_FreeSurface(tmpTexSurface);
+
     SDL_SetRelativeMouseMode(SDL_TRUE);
     
     while (gameIsRunning) {
@@ -212,7 +230,7 @@ int main() {
             }
         }
 
-        draw(renderer, playerCamera, level);
+        draw(renderer, playerCamera, level, ptr);
 
         // TODO: Better frame timing solution
         SDL_Delay(FRAME_INTERVAL);
