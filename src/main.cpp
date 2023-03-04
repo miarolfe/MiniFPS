@@ -20,8 +20,8 @@
 const uint8_t FRAME_INTERVAL = 8;
 
 // TODO: Multiple resolutions
-const size_t SCREEN_WIDTH = 1280;
-const size_t SCREEN_HEIGHT = 720;
+const size_t SCREEN_WIDTH = 800;
+const size_t SCREEN_HEIGHT = 600;
 
 const float RENDER_RAY_INCREMENT = 0.005f;
 const size_t RENDER_DISTANCE = 128;
