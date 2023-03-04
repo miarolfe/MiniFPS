@@ -197,7 +197,9 @@ int main() {
 
     double oldTime = 0;
     double curTime = 0;
-    
+
+    SDL_Texture* frameTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, playerCamera.viewportWidth, playerCamera.viewportHeight);
+
     while (gameIsRunning) {
         oldTime = curTime;
         curTime = SDL_GetTicks64();
@@ -241,7 +243,7 @@ int main() {
             }
         }
 
-        draw(renderer, playerCamera, level, ptr);
+        draw(renderer, playerCamera, level, ptr, frameTexture);
 
         // TODO: Better frame timing solution
         SDL_Delay(FRAME_INTERVAL);

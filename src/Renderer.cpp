@@ -6,9 +6,22 @@
 #include "Color.h"
 #include "Level.h"
 
-void draw(SDL_Renderer *renderer, Camera camera, Level &level, Uint32 **texBuffer) {
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
-    SDL_RenderClear(renderer);
+void set_pixel(void* pixels, int pitch, const Uint32 color, int x, int y) {
+    Uint32* row;
+    row = (Uint32*)((Uint8*)pixels + y * pitch);
+    row[x] = color;
+}
+
+void draw(SDL_Renderer *renderer, Camera camera, Level &level, Uint32 **texBuffer, SDL_Texture* frameTexture) {
+    int pitch;
+    void* pixels;
+    SDL_LockTexture(frameTexture, nullptr, &pixels, &pitch);
+
+    for (int frameY = 0; frameY < camera.viewportHeight; frameY++) {
+        for (int frameX = 0; frameX < camera.viewportWidth; frameX++) {
+            set_pixel(pixels, pitch, 0xFFFFFFFF, frameX, frameY);
+        }
+    }
 
     for (size_t ray = 0; ray < camera.viewportWidth; ray++) {
         float rayAngle =
@@ -44,12 +57,7 @@ void draw(SDL_Renderer *renderer, Camera camera, Level &level, Uint32 **texBuffe
 
                 for (int y = drawStart; y < drawEnd; y++) {
                     int texY = ((y - drawStart) * 32) / columnHeight;
-
-                    Uint8 r, g, b, a;
-                    SDL_GetRGBA(texBuffer[texY][texX], &level.pixelFormat, &r, &g, &b, &a);
-                    SDL_SetRenderDrawColor(renderer, r, g, b, a);
-
-                    SDL_RenderDrawPoint(renderer, ray, y);
+                    set_pixel(pixels, pitch,texBuffer[texY][texX], ray, y);
                 }
 
                 break;
@@ -57,5 +65,7 @@ void draw(SDL_Renderer *renderer, Camera camera, Level &level, Uint32 **texBuffe
         }
     }
 
+    SDL_RenderCopy(renderer, frameTexture, nullptr, nullptr);
+    SDL_UnlockTexture(frameTexture);
     SDL_RenderPresent(renderer);
 }
