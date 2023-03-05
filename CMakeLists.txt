@@ -10,6 +10,8 @@ set(
         src/main.cpp
         src/Camera.cpp
         src/Level.cpp
+        src/Renderer.cpp
+        src/Utilities.cpp
 )
 
 set(
@@ -18,7 +20,7 @@ set(
         src/Color.h
         src/Level.h
         src/Renderer.h
-        src/Renderer.cpp
+        src/Utilities.h
 )
 
 if(APPLE)

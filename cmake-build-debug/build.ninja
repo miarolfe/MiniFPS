@@ -74,6 +74,13 @@ build CMakeFiles/mini-fps.dir/src/Renderer.cpp.o: CXX_COMPILER__mini-fps_Release
   OBJECT_DIR = CMakeFiles/mini-fps.dir
   OBJECT_FILE_DIR = CMakeFiles/mini-fps.dir/src
 
+build CMakeFiles/mini-fps.dir/src/Utilities.cpp.o: CXX_COMPILER__mini-fps_Release /Users/peterrolfe/Development/C-Plus-Plus/mini-fps/src/Utilities.cpp || cmake_object_order_depends_target_mini-fps
+  DEP_FILE = CMakeFiles/mini-fps.dir/src/Utilities.cpp.o.d
+  FLAGS = -O3 -DNDEBUG -arch arm64 -arch x86_64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk -F/Library/Frameworks  -std=gnu++11
+  INCLUDES = -I/Library/Frameworks/SDL2.framework/Headers -I/Library/Frameworks/SDL2_image.framework/Headers
+  OBJECT_DIR = CMakeFiles/mini-fps.dir
+  OBJECT_FILE_DIR = CMakeFiles/mini-fps.dir/src
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target mini-fps
@@ -82,7 +89,7 @@ build CMakeFiles/mini-fps.dir/src/Renderer.cpp.o: CXX_COMPILER__mini-fps_Release
 #############################################
 # Link the executable mini-fps.app/Contents/MacOS/mini-fps
 
-build mini-fps.app/Contents/MacOS/mini-fps: CXX_EXECUTABLE_LINKER__mini-fps_Release CMakeFiles/mini-fps.dir/src/main.cpp.o CMakeFiles/mini-fps.dir/src/Camera.cpp.o CMakeFiles/mini-fps.dir/src/Level.cpp.o CMakeFiles/mini-fps.dir/src/Renderer.cpp.o
+build mini-fps.app/Contents/MacOS/mini-fps: CXX_EXECUTABLE_LINKER__mini-fps_Release CMakeFiles/mini-fps.dir/src/main.cpp.o CMakeFiles/mini-fps.dir/src/Camera.cpp.o CMakeFiles/mini-fps.dir/src/Level.cpp.o CMakeFiles/mini-fps.dir/src/Renderer.cpp.o CMakeFiles/mini-fps.dir/src/Utilities.cpp.o
   FLAGS = -O3 -DNDEBUG -arch arm64 -arch x86_64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk
   LINK_LIBRARIES = -Wl,-rpath,@executable_path/../Frameworks -Wl,-rpath,/Library/Frameworks  -F/Library/Frameworks  -framework  SDL2  -framework  SDL2_image
   LINK_PATH = -F/Library/Frameworks
