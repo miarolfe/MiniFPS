@@ -17,10 +17,13 @@
 //const uint8_t FRAME_INTERVAL = 17;
 
 // ~120 fps
-const uint8_t FRAME_INTERVAL = 8;
+// const uint8_t FRAME_INTERVAL = 8;
+
+// ~240 fps
+const uint8_t FRAME_INTERVAL = 4;
 
 // TODO: Multiple resolutions
-const size_t SCREEN_WIDTH = 800;
+const size_t SCREEN_WIDTH = 600;
 const size_t SCREEN_HEIGHT = 600;
 
 const float RENDER_RAY_INCREMENT = 0.005f;
@@ -55,7 +58,7 @@ bool initialize_window_and_renderer(SDL_Window** window, SDL_Renderer** renderer
         successful_initialization = false;
     }
 
-    *renderer = SDL_CreateRenderer(*window, -1, SDL_RENDERER_ACCELERATED);
+    *renderer = SDL_CreateRenderer(*window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
     if (*renderer == nullptr) {
         successful_initialization = false;
@@ -157,7 +160,7 @@ int main() {
     Level level = Level(nullptr);
 
     if (strcmp(platform, "Windows") == 0) {
-        level = Level("assets/levels/testLevel9.png");
+        level = Level("assets/levels/testLevel10.png");
     } else if (strcmp(platform, "Mac OS X") == 0) {
         level = Level("../Resources/levels/testLevel10.png");
     } else {
@@ -185,9 +188,9 @@ int main() {
 
     Uint32* pixels = (Uint32*)tmpTexSurface->pixels;
 
-    for (int y = 0; y < 32; y++) {
-        for (int x = 0; x < 32; x++) {
-            texBuffer[y][x] = pixels[y * 32 + x];
+    for (int p = 0; p < 32; p++) {
+        for (int q = 0; q < 32; q++) {
+            texBuffer[p][q] = pixels[p * 32 + q];
         }
     }
 
@@ -246,7 +249,7 @@ int main() {
         draw(renderer, playerCamera, level, ptr, frameTexture);
 
         // TODO: Better frame timing solution
-        SDL_Delay(FRAME_INTERVAL);
+        // SDL_Delay(FRAME_INTERVAL);
     }
 
     quit(window);
