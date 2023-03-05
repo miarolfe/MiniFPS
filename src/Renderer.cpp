@@ -17,12 +17,14 @@ void draw(SDL_Renderer *renderer, Camera camera, Level &level, Uint32 **texBuffe
     void* pixels;
     SDL_LockTexture(frameTexture, nullptr, &pixels, &pitch);
 
+    // Draw ceiling
     for (int frameY = 0; frameY < camera.viewportHeight / 2; frameY++) {
         for (int frameX = 0; frameX < camera.viewportWidth; frameX++) {
             set_pixel(pixels, pitch, 0xFFFFFFFF, frameX, frameY);
         }
     }
 
+    // Draw floor
     for (int frameY = camera.viewportHeight / 2; frameY < camera.viewportHeight; frameY++) {
         for (int frameX = 0; frameX < camera.viewportWidth; frameX++) {
             set_pixel(pixels, pitch, 0xFF0000FF, frameX, frameY);
@@ -57,11 +59,14 @@ void draw(SDL_Renderer *renderer, Camera camera, Level &level, Uint32 **texBuffe
                 if (texX < 0) texX += 32;
 
                 int drawStart = (camera.viewportHeight / 2) - (columnHeight / 2);
-                if (drawStart < 0) drawStart = 0;
+
                 int drawEnd = drawStart + columnHeight;
-                if (drawEnd > camera.viewportHeight) drawEnd = camera.viewportHeight - 1;
 
                 for (int y = drawStart; y < drawEnd; y++) {
+                    if (y < 0 || y > camera.viewportHeight) {
+                        continue;
+                    }
+
                     int texY = ((y - drawStart) * 32) / columnHeight;
                     set_pixel(pixels, pitch,texBuffer[texY][texX], ray, y);
                 }

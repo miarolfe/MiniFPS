@@ -15,8 +15,8 @@
 // TODO: Separate rendering from update logic
 
 // TODO: Multiple resolutions
-const size_t SCREEN_WIDTH = 600;
-const size_t SCREEN_HEIGHT = 600;
+const size_t SCREEN_WIDTH = 1600;
+const size_t SCREEN_HEIGHT = 900;
 
 const float RENDER_RAY_INCREMENT = 0.005f;
 const size_t RENDER_DISTANCE = 128;
@@ -114,7 +114,7 @@ int main() {
                         RENDER_DISTANCE, 1);
 
     // TEMP
-    SDL_Surface *tmpTexSurface = IMG_Load("../Resources/sprites/testWall1.png");
+    SDL_Surface *tmpTexSurface = IMG_Load("../Resources/sprites/testWall2.png");
     Uint32 texBuffer[32][32];
     Uint32 **ptr = new Uint32 *[32];
     for (int i = 0; i < 32; i++) {
