@@ -1,6 +1,6 @@
 #define SDL_MAIN_HANDLED
 
-#include <iostream>
+#include  <iostream>
 #include <cmath>
 
 #include <SDL.h>
@@ -114,7 +114,7 @@ int main() {
                         RENDER_DISTANCE, 1);
 
     // TEMP
-    SDL_Surface *tmpTexSurface = IMG_Load("../Resources/sprites/testWall2.png");
+    SDL_Surface* tmpTexSurface = IMG_Load("../Resources/sprites/testWall2.png");
     Uint32 texBuffer[32][32];
     Uint32 **ptr = new Uint32 *[32];
     for (int i = 0; i < 32; i++) {
@@ -143,7 +143,7 @@ int main() {
         oldTime = curTime;
         curTime = SDL_GetTicks64();
 
-        std::cout << frames_per_second(oldTime, curTime);
+        // std::cout << frames_per_second(oldTime, curTime);
 
         deltaM = 0;
         mouseX = 0;

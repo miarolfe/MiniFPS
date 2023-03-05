@@ -8,14 +8,13 @@
 #include <SDL.h>
 
 struct Level {
-    std::vector<std::vector<Uint32>> matrix;
+    Uint32** matrix;
     size_t w, h;
     SDL_PixelFormat pixelFormat;
     explicit Level(const char* filePath);
     Uint32 get (size_t x, size_t y);
     void print();
+    bool png_to_two_dimensional_array(const char *filePath);
 };
-
-bool png_to_matrix(std::vector<std::vector<Uint32>>& matrix, const char *filePath);
 
 #endif //MINI_FPS_LEVEL_H

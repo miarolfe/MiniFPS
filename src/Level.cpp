@@ -6,7 +6,7 @@
 #include "Level.h"
 #include "Color.h"
 
-bool png_to_matrix(std::vector<std::vector<Uint32>>& matrix, const char *filePath, SDL_PixelFormat& pixelFormat)  {
+bool Level::png_to_two_dimensional_array(const char *filePath) {
     bool successfulLoadAndConversion = true;
 
     SDL_Surface* surface;
@@ -17,10 +17,13 @@ bool png_to_matrix(std::vector<std::vector<Uint32>>& matrix, const char *filePat
 
     pixelFormat = *SDL_AllocFormat(surface->format->format);
 
-    matrix.resize(surface->h);
+    w = surface->w;
+    h = surface->h;
+
+    matrix = new Uint32*[surface->h];
 
     for (size_t i = 0; i < surface->h; i++) {
-        matrix[i].resize(surface->w);
+        matrix[i] = new Uint32[surface->w];
     }
 
     int pitch = surface->pitch / sizeof(Uint32);
@@ -47,23 +50,21 @@ Level::Level(const char* filePath) {
         return;
     }
 
-    if (!png_to_matrix(matrix, filePath, pixelFormat)) {
+    if (!png_to_two_dimensional_array(filePath)) {
         std::cerr << "Image could not be loaded and/or converted to a level" << std::endl;
     } else {
         std::cout << "Image loaded and converted" << std::endl;
     }
-    w = matrix.size();
-    h = matrix[0].size();
 }
 
 Uint32 Level::get(const size_t x, const size_t y) {
     // This can be removed once collision detection is a thing
-    if (y < 0 || y >= matrix.size()) {
+    if (y < 0 || y >= h) {
         std::cerr << "Invalid level matrix access" << std::endl;
         return 0;
     }
 
-    if (x < 0 || x >= matrix[y].size()) {
+    if (x < 0 || x >= w) {
         std::cerr << "Invalid level matrix access" << std::endl;
         return 0;
     }
