@@ -17,11 +17,14 @@
 //const uint8_t FRAME_INTERVAL = 17;
 
 // ~120 fps
-const uint8_t FRAME_INTERVAL = 8;
+// const uint8_t FRAME_INTERVAL = 8;
+
+// ~240 fps
+const uint8_t FRAME_INTERVAL = 4;
 
 // TODO: Multiple resolutions
-const size_t SCREEN_WIDTH = 1280;
-const size_t SCREEN_HEIGHT = 720;
+const size_t SCREEN_WIDTH = 600;
+const size_t SCREEN_HEIGHT = 600;
 
 const float RENDER_RAY_INCREMENT = 0.005f;
 const size_t RENDER_DISTANCE = 128;
@@ -55,7 +58,7 @@ bool initialize_window_and_renderer(SDL_Window** window, SDL_Renderer** renderer
         successful_initialization = false;
     }
 
-    *renderer = SDL_CreateRenderer(*window, -1, SDL_RENDERER_ACCELERATED);
+    *renderer = SDL_CreateRenderer(*window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
     if (*renderer == nullptr) {
         successful_initialization = false;
@@ -125,6 +128,11 @@ void quit(SDL_Window* window) {
     SDL_Quit();
 }
 
+std::string frames_per_second(const double oldTime, const double curTime) {
+    double frameTime = (curTime - oldTime) / 1000.0;
+    return "FPS: " + std::to_string(static_cast<int>((1.0/frameTime))) + "\n";
+}
+
 int main() {
     if (!initialize_sdl()) {
         std::cerr << "SDL could not be initialized:" << SDL_GetError();
@@ -152,7 +160,7 @@ int main() {
     Level level = Level(nullptr);
 
     if (strcmp(platform, "Windows") == 0) {
-        level = Level("assets/levels/testLevel9.png");
+        level = Level("assets/levels/testLevel10.png");
     } else if (strcmp(platform, "Mac OS X") == 0) {
         level = Level("../Resources/levels/testLevel10.png");
     } else {
@@ -170,10 +178,36 @@ int main() {
 
     Camera playerCamera(2, 2, 1.523, (70.0/360.0) * 2 * M_PI, SCREEN_WIDTH, SCREEN_HEIGHT, RENDER_RAY_INCREMENT, RENDER_DISTANCE, 1);
 
+    // TEMP
+    SDL_Surface* tmpTexSurface = IMG_Load("../Resources/sprites/testWall1.png");
+    Uint32 texBuffer[32][32];
+    Uint32** ptr = new Uint32*[32];
+    for (int i = 0; i < 32; i++) {
+        ptr[i] = texBuffer[i];
+    }
+
+    Uint32* pixels = (Uint32*)tmpTexSurface->pixels;
+
+    for (int p = 0; p < 32; p++) {
+        for (int q = 0; q < 32; q++) {
+            texBuffer[p][q] = pixels[p * 32 + q];
+        }
+    }
+
+    SDL_FreeSurface(tmpTexSurface);
+
     SDL_SetRelativeMouseMode(SDL_TRUE);
-    
+
+    double oldTime = 0;
+    double curTime = 0;
+
+    SDL_Texture* frameTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, playerCamera.viewportWidth, playerCamera.viewportHeight);
+
     while (gameIsRunning) {
-        // std::cout << "(" << playerCamera.x << ", " << playerCamera.y << ")" << std::endl;
+        oldTime = curTime;
+        curTime = SDL_GetTicks64();
+
+        std::cout << frames_per_second(oldTime, curTime);
 
         deltaM = 0;
         mouseX = 0;
@@ -212,10 +246,10 @@ int main() {
             }
         }
 
-        draw(renderer, playerCamera, level);
+        draw(renderer, playerCamera, level, ptr, frameTexture);
 
         // TODO: Better frame timing solution
-        SDL_Delay(FRAME_INTERVAL);
+        // SDL_Delay(FRAME_INTERVAL);
     }
 
     quit(window);
