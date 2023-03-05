@@ -1,3 +1,4 @@
+#include <iostream>
 #include <string>
 
 #include <SDL.h>
@@ -56,4 +57,19 @@ void quit(SDL_Window *window) {
 std::string frames_per_second(const double oldTime, const double curTime) {
     double frameTime = (curTime - oldTime) / 1000.0;
     return "FPS: " + std::to_string(static_cast<int>((1.0 / frameTime))) + "\n";
+}
+
+std::string assets_file_path() {
+    std::string file_path;
+    const char *platform = SDL_GetPlatform();
+    if (strcmp(platform, "Windows") == 0) {
+        file_path = "assets/";
+    } else if (strcmp(platform, "Mac OS X") == 0) {
+        file_path = "../Resources/";
+    } else {
+        std::cerr << "Invalid platform: " << platform << std::endl;
+        file_path = "INVALID PLATFORM";
+    }
+
+    return file_path;
 }

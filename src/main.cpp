@@ -1,6 +1,6 @@
 #define SDL_MAIN_HANDLED
 
-#include  <iostream>
+#include <iostream>
 #include <cmath>
 
 #include <SDL.h>
@@ -69,6 +69,8 @@ void handle_input(bool &gameIsRunning, int &x, int &y, float &deltaM, bool &move
 }
 
 int main() {
+    const std::string assetsFilePath = assets_file_path();
+
     if (!initialize_sdl()) {
         std::cerr << "SDL could not be initialized:" << SDL_GetError();
     } else {
@@ -90,17 +92,9 @@ int main() {
         std::cout << "SDL_image initialized" << std::endl;
     }
 
-    Level level = Level(nullptr);
+    std::string levelFilePath = assetsFilePath + "levels/testLevel10.png";
 
-    const char *platform = SDL_GetPlatform();
-    if (strcmp(platform, "Windows") == 0) {
-        level = Level("assets/levels/testLevel10.png");
-    } else if (strcmp(platform, "Mac OS X") == 0) {
-        level = Level("../Resources/levels/testLevel10.png");
-    } else {
-        std::cerr << "Invalid platform: " << platform << std::endl;
-        return -1;
-    }
+    Level level = Level(levelFilePath.c_str());
 
     level.print();
 
@@ -114,7 +108,8 @@ int main() {
                         RENDER_DISTANCE, 1);
 
     // TEMP
-    SDL_Surface* tmpTexSurface = IMG_Load("../Resources/sprites/testWall2.png");
+    std::string texFilePath = assetsFilePath + "sprites/testWall2.png";
+    SDL_Surface* tmpTexSurface = IMG_Load(texFilePath.c_str());
     Uint32 texBuffer[32][32];
     Uint32 **ptr = new Uint32 *[32];
     for (int i = 0; i < 32; i++) {
