@@ -69,8 +69,6 @@ void handle_input(bool &gameIsRunning, int &x, int &y, float &deltaM, bool &move
 }
 
 int main() {
-    const std::string assetsFilePath = assets_file_path();
-
     if (!initialize_sdl()) {
         std::cerr << "SDL could not be initialized:" << SDL_GetError();
     } else {
@@ -79,6 +77,7 @@ int main() {
 
     SDL_Window *window = nullptr;
     SDL_Renderer *renderer = nullptr;
+    const std::string assetsFilePath = assets_file_path();
 
     if (!initialize_window_and_renderer(&window, &renderer, SCREEN_WIDTH, SCREEN_HEIGHT)) {
         std::cerr << "Window and/or renderer could not be initialized" << std::endl;
