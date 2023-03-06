@@ -12,8 +12,6 @@
 #include "Renderer.h"
 #include "Utilities.h"
 
-// TODO: Separate rendering from update logic
-
 // TODO: Multiple resolutions
 const size_t SCREEN_WIDTH = 1600;
 const size_t SCREEN_HEIGHT = 900;
@@ -21,11 +19,11 @@ const size_t SCREEN_HEIGHT = 900;
 const float RENDER_RAY_INCREMENT = 0.005f;
 const size_t RENDER_DISTANCE = 128;
 
-const float ROTATION_MODIFIER = 0.025;
-const float DELTA = 0.05;
+const float SPEED_MODIFIER = 5;
+const float ROTATION_MODIFIER = 0.5;
 
-void handle_input(bool &gameIsRunning, int &x, int &y, bool &moveLeft, bool &moveRight, bool &moveForward, bool &moveBack, int &mouseX,
-                  int &mouseY) {
+void handle_input(bool &gameIsRunning, int &x, int &y, bool &moveLeft, bool &moveRight, bool &moveForward,
+                  bool &moveBack, int &mouseX, int &mouseY) {
     SDL_Event event;
     SDL_GetMouseState(&x, &y);
 
@@ -98,7 +96,6 @@ int main() {
     std::string levelFilePath = assetsFilePath + "levels/testLevel10.png";
 
     Level level = Level(levelFilePath.c_str());
-
     level.print();
 
     bool gameIsRunning = true;
@@ -110,15 +107,15 @@ int main() {
 
     // TEMP
     std::string texFilePath = assetsFilePath + "sprites/testWall2.png";
-    SDL_Surface* tmpTexSurface = IMG_Load(texFilePath.c_str());
+    SDL_Surface *tmpTexSurface = IMG_Load(texFilePath.c_str());
     size_t texSize = tmpTexSurface->w; // Only use square textures
     Uint32 texBuffer[texSize][texSize];
-    Uint32** ptr = new Uint32* [texSize];
+    Uint32 **texBufferPtr = new Uint32 *[texSize];
     for (int i = 0; i < texSize; i++) {
-        ptr[i] = texBuffer[i];
+        texBufferPtr[i] = texBuffer[i];
     }
 
-    Uint32* pixels = (Uint32*) tmpTexSurface->pixels;
+    Uint32 *pixels = (Uint32 *) tmpTexSurface->pixels;
 
     for (int p = 0; p < texSize; p++) {
         for (int q = 0; q < texSize; q++) {
@@ -140,7 +137,9 @@ int main() {
         oldTime = curTime;
         curTime = SDL_GetTicks64();
 
-        // std::cout << frames_per_second(oldTime, curTime);
+        double frameDelta = frame_time(oldTime, curTime);
+
+        std::cout << frames_per_second(oldTime, curTime);
 
         mouseX = 0;
         mouseY = 0;
@@ -152,26 +151,26 @@ int main() {
         float prevPlayerCameraX = playerCamera.x;
         float prevPlayerCameraY = playerCamera.y;
 
-        playerCamera.angle += mouseX * DELTA * ROTATION_MODIFIER;
+        playerCamera.angle += mouseX * frameDelta * ROTATION_MODIFIER;
 
         if (moveForward) {
-            playerCamera.x += DELTA * cos(playerCamera.angle);
-            playerCamera.y += DELTA * sin(playerCamera.angle);
+            playerCamera.x += frameDelta * SPEED_MODIFIER * cos(playerCamera.angle);
+            playerCamera.y += frameDelta * SPEED_MODIFIER *  sin(playerCamera.angle);
         }
 
         if (moveBack) {
-            playerCamera.x -= DELTA * cos(playerCamera.angle);
-            playerCamera.y -= DELTA * sin(playerCamera.angle);
+            playerCamera.x -= frameDelta * SPEED_MODIFIER *  cos(playerCamera.angle);
+            playerCamera.y -= frameDelta * SPEED_MODIFIER *  sin(playerCamera.angle);
         }
 
         if (moveLeft) {
-            playerCamera.x += DELTA * cos(playerCamera.angle - M_PI / 2);
-            playerCamera.y += DELTA * sin(playerCamera.angle - M_PI / 2);
+            playerCamera.x += frameDelta * SPEED_MODIFIER *  cos(playerCamera.angle - M_PI / 2);
+            playerCamera.y += frameDelta * SPEED_MODIFIER *  sin(playerCamera.angle - M_PI / 2);
         }
 
         if (moveRight) {
-            playerCamera.x += DELTA * cos(playerCamera.angle + M_PI / 2);
-            playerCamera.y += DELTA * sin(playerCamera.angle + M_PI / 2);
+            playerCamera.x += frameDelta * SPEED_MODIFIER *  cos(playerCamera.angle + M_PI / 2);
+            playerCamera.y += frameDelta * SPEED_MODIFIER *  sin(playerCamera.angle + M_PI / 2);
         }
 
         // Wall collision detection
@@ -187,7 +186,7 @@ int main() {
             }
         }
 
-        draw(renderer, playerCamera, level, ptr, texSize, frameTexture);
+        draw(renderer, playerCamera, level, texBufferPtr, texSize, frameTexture);
     }
 
     quit(window);

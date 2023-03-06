@@ -31,6 +31,7 @@ bool initialize_window_and_renderer(SDL_Window **window, SDL_Renderer **renderer
     }
 
     *renderer = SDL_CreateRenderer(*window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    // *renderer = SDL_CreateRenderer(*window, -1, SDL_RENDERER_ACCELERATED);
 
     if (*renderer == nullptr) {
         successful_initialization = false;
@@ -55,8 +56,12 @@ void quit(SDL_Window *window) {
 }
 
 std::string frames_per_second(const double oldTime, const double curTime) {
+    return "FPS: " + std::to_string(static_cast<int>((1.0 / frame_time(oldTime, curTime)))) + "\n";
+}
+
+double frame_time(const double oldTime, const double curTime) {
     double frameTime = (curTime - oldTime) / 1000.0;
-    return "FPS: " + std::to_string(static_cast<int>((1.0 / frameTime))) + "\n";
+    return frameTime;
 }
 
 std::string assets_file_path() {
