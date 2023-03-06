@@ -109,17 +109,18 @@ int main() {
     // TEMP
     std::string texFilePath = assetsFilePath + "sprites/testWall2.png";
     SDL_Surface* tmpTexSurface = IMG_Load(texFilePath.c_str());
-    Uint32 texBuffer[32][32];
-    Uint32 **ptr = new Uint32 *[32];
-    for (int i = 0; i < 32; i++) {
+    size_t texSize = tmpTexSurface->w; // Only use square textures
+    Uint32 texBuffer[texSize][texSize];
+    Uint32** ptr = new Uint32* [texSize];
+    for (int i = 0; i < texSize; i++) {
         ptr[i] = texBuffer[i];
     }
 
-    Uint32 *pixels = (Uint32 *) tmpTexSurface->pixels;
+    Uint32* pixels = (Uint32*) tmpTexSurface->pixels;
 
-    for (int p = 0; p < 32; p++) {
-        for (int q = 0; q < 32; q++) {
-            texBuffer[p][q] = pixels[p * 32 + q];
+    for (int p = 0; p < texSize; p++) {
+        for (int q = 0; q < texSize; q++) {
+            texBuffer[p][q] = pixels[p * texSize + q];
         }
     }
 
@@ -127,8 +128,8 @@ int main() {
 
     SDL_SetRelativeMouseMode(SDL_TRUE);
 
-    double oldTime = 0;
-    double curTime = 0;
+    double oldTime, curTime;
+    curTime = 0;
 
     SDL_Texture *frameTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING,
                                                   playerCamera.viewportWidth, playerCamera.viewportHeight);
@@ -177,7 +178,7 @@ int main() {
             }
         }
 
-        draw(renderer, playerCamera, level, ptr, frameTexture);
+        draw(renderer, playerCamera, level, ptr, texSize, frameTexture);
     }
 
     quit(window);

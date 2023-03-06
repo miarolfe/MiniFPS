@@ -12,7 +12,7 @@ void set_pixel(void* pixels, int pitch, const Uint32 color, int x, int y) {
     row[x] = color;
 }
 
-void draw(SDL_Renderer *renderer, Camera camera, Level &level, Uint32 **texBuffer, SDL_Texture* frameTexture) {
+void draw(SDL_Renderer *renderer, Camera camera, Level &level, Uint32 **texBuffer, size_t texSize, SDL_Texture* frameTexture) {
     int pitch;
     void* pixels;
     SDL_LockTexture(frameTexture, nullptr, &pixels, &pitch);
@@ -50,13 +50,13 @@ void draw(SDL_Renderer *renderer, Camera camera, Level &level, Uint32 **texBuffe
 
                 float hitX = cx - floor(cx + 0.5);
                 float hitY = cy - floor(cy + 0.5);
-                int texX = hitX * 32;
+                int texX = hitX * texSize;
 
                 if (std::abs(hitY) > std::abs(hitX)) {
-                    texX = hitY * 32;
+                    texX = hitY * texSize;
                 }
 
-                if (texX < 0) texX += 32;
+                if (texX < 0) texX += texSize;
 
                 int drawStart = (camera.viewportHeight / 2) - (columnHeight / 2);
 
@@ -67,7 +67,7 @@ void draw(SDL_Renderer *renderer, Camera camera, Level &level, Uint32 **texBuffe
                         continue;
                     }
 
-                    int texY = ((y - drawStart) * 32) / columnHeight;
+                    int texY = ((y - drawStart) * texSize) / columnHeight;
                     set_pixel(pixels, pitch,texBuffer[texY][texX], ray, y);
                 }
 
