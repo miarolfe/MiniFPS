@@ -150,6 +150,7 @@ int main() {
 
         float prevPlayerCameraX = playerCamera.x;
         float prevPlayerCameraY = playerCamera.y;
+        float prevPlayerCameraAngle = playerCamera.angle;
 
         playerCamera.angle += mouseX * frameDelta * ROTATION_MODIFIER;
 
@@ -186,7 +187,13 @@ int main() {
             }
         }
 
-        draw(renderer, playerCamera, level, texBufferPtr, texSize, frameTexture);
+        // Only rerender the screen if something's changed
+        // TODO: Update this when animated sprites/enemies in game
+        if (playerCamera.angle != prevPlayerCameraAngle || playerCamera.x != prevPlayerCameraX || playerCamera.y != prevPlayerCameraY) {
+            draw(renderer, playerCamera, level, texBufferPtr, texSize, frameTexture);
+        } else {
+            SDL_Delay(1);
+        }
     }
 
     quit(window);
