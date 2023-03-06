@@ -24,7 +24,7 @@ const size_t RENDER_DISTANCE = 128;
 const float ROTATION_MODIFIER = 0.025;
 const float DELTA = 0.05;
 
-void handle_input(bool &gameIsRunning, int &x, int &y, float &deltaM, bool &moveLeft, bool &moveRight, int &mouseX,
+void handle_input(bool &gameIsRunning, int &x, int &y, bool &moveLeft, bool &moveRight, bool &moveForward, bool &moveBack, int &mouseX,
                   int &mouseY) {
     SDL_Event event;
     SDL_GetMouseState(&x, &y);
@@ -48,11 +48,15 @@ void handle_input(bool &gameIsRunning, int &x, int &y, float &deltaM, bool &move
     }
 
     if (currentKeyStates[SDL_SCANCODE_W]) {
-        deltaM = DELTA;
+        moveForward = true;
+    } else {
+        moveForward = false;
     }
 
     if (currentKeyStates[SDL_SCANCODE_S]) {
-        deltaM = -DELTA;
+        moveBack = true;
+    } else {
+        moveBack = false;
     }
 
     if (currentKeyStates[SDL_SCANCODE_A]) {
@@ -99,9 +103,7 @@ int main() {
 
     bool gameIsRunning = true;
     int x, y, mouseX, mouseY;
-    float deltaM;
-    bool moveLeft = false;
-    bool moveRight = false;
+    bool moveLeft, moveRight, moveForward, moveBack;
 
     Camera playerCamera(2, 2, 1.523, (70.0 / 360.0) * 2 * M_PI, SCREEN_WIDTH, SCREEN_HEIGHT, RENDER_RAY_INCREMENT,
                         RENDER_DISTANCE, 1);
@@ -140,10 +142,9 @@ int main() {
 
         // std::cout << frames_per_second(oldTime, curTime);
 
-        deltaM = 0;
         mouseX = 0;
         mouseY = 0;
-        handle_input(gameIsRunning, x, y, deltaM, moveLeft, moveRight, mouseX, mouseY);
+        handle_input(gameIsRunning, x, y, moveLeft, moveRight, moveForward, moveBack, mouseX, mouseY);
 
         int roundedPlayerCameraX = round(playerCamera.x);
         int roundedPlayerCameraY = round(playerCamera.y);
@@ -151,9 +152,17 @@ int main() {
         float prevPlayerCameraX = playerCamera.x;
         float prevPlayerCameraY = playerCamera.y;
 
-        playerCamera.x += deltaM * cos(playerCamera.angle);
-        playerCamera.y += deltaM * sin(playerCamera.angle);
         playerCamera.angle += mouseX * DELTA * ROTATION_MODIFIER;
+
+        if (moveForward) {
+            playerCamera.x += DELTA * cos(playerCamera.angle);
+            playerCamera.y += DELTA * sin(playerCamera.angle);
+        }
+
+        if (moveBack) {
+            playerCamera.x -= DELTA * cos(playerCamera.angle);
+            playerCamera.y -= DELTA * sin(playerCamera.angle);
+        }
 
         if (moveLeft) {
             playerCamera.x += DELTA * cos(playerCamera.angle - M_PI / 2);
