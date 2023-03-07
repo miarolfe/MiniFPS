@@ -18,6 +18,7 @@ const size_t SCREEN_HEIGHT = 900;
 
 const float RENDER_RAY_INCREMENT = 0.005f;
 const size_t RENDER_DISTANCE = 128;
+const float FIELD_OF_VIEW = 70.0f;
 
 const float SPEED_MODIFIER = 5;
 const float ROTATION_MODIFIER = 0.5;
@@ -120,7 +121,7 @@ int main() {
     int mouseX, mouseY;
     bool moveLeft, moveRight, moveForward, moveBack;
 
-    Camera playerCamera(2, 2, 1.523, (70.0 / 360.0) * 2 * M_PI, SCREEN_WIDTH, SCREEN_HEIGHT, RENDER_RAY_INCREMENT,
+    Camera playerCamera(2, 2, 1.523, (FIELD_OF_VIEW / 180.0) * M_PI, SCREEN_WIDTH, SCREEN_HEIGHT, RENDER_RAY_INCREMENT,
                         RENDER_DISTANCE, 1);
 
     // TEMP
