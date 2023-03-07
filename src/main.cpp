@@ -104,10 +104,18 @@ int main() {
 
     std::string levelFilePath = assetsFolderPath + settings.levelPath;
 
-    Uint32** wallTexBuffer;
-    size_t wallTexSize;
+    size_t wallTexSize = 32;
+    // TODO: Allow variable size textures
+    // Right now all wall textures must be the same size
+    size_t numWallTextures = settings.texturePaths.size();
+    Uint32*** wallTextureBuffers = new Uint32**[numWallTextures];
+    for (size_t buffer = 0; buffer < numWallTextures; buffer++) {
+        load_texture_to_buffer(&wallTextureBuffers[buffer], wallTexSize, assetsFolderPath, settings.texturePaths[buffer]);
+    }
 
-    load_texture_to_buffer(&wallTexBuffer, wallTexSize, assetsFolderPath, settings.texturePaths[0]);
+    Uint32** wallTexBuffer = wallTextureBuffers[0];
+
+    // load_texture_to_buffer(&wallTexBuffer, wallTexSize, assetsFolderPath, settings.texturePaths[0]);
 
     Level level = Level(levelFilePath.c_str());
     level.print();
