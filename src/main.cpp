@@ -28,7 +28,7 @@ void get_input_state(bool &gameIsRunning, bool &moveLeft, bool &moveRight, bool 
         }
     }
 
-    const Uint8 *currentKeyStates = SDL_GetKeyboardState(nullptr);
+    const Uint8* currentKeyStates = SDL_GetKeyboardState(nullptr);
 
     if (currentKeyStates[SDL_SCANCODE_ESCAPE]) {
         gameIsRunning = false;
@@ -59,7 +59,7 @@ void get_input_state(bool &gameIsRunning, bool &moveLeft, bool &moveRight, bool 
     }
 }
 
-bool has_collided(Level& level, const float x, const float y) {
+bool has_collided(Level &level, const float x, const float y) {
     bool collided = false;
 
     int roundedX = round(x);
@@ -86,8 +86,8 @@ int main() {
         std::cout << "SDL initialized" << std::endl;
     }
 
-    SDL_Window *window = nullptr;
-    SDL_Renderer *renderer = nullptr;
+    SDL_Window* window = nullptr;
+    SDL_Renderer* renderer = nullptr;
     const std::string assetsFilePath = assets_file_path();
     Settings settings = loadSettings(assetsFilePath, "settings.json");
 
@@ -113,20 +113,22 @@ int main() {
     int mouseX, mouseY;
     bool moveLeft, moveRight, moveForward, moveBack;
 
-    Camera playerCamera(settings.playerStartX, settings.playerStartY, settings.playerStartAngle, (settings.fieldOfView / 180.0) * M_PI, settings.screenWidth, settings.screenHeight, settings.renderRayIncrement,
+    Camera playerCamera(settings.playerStartX, settings.playerStartY, settings.playerStartAngle,
+                        (settings.fieldOfView / 180.0) * M_PI, settings.screenWidth, settings.screenHeight,
+                        settings.renderRayIncrement,
                         settings.renderDistance, settings.playerDistanceToProjectionPlane);
 
     // TEMP
     std::string texFilePath = assetsFilePath + "sprites/testWall2.png";
-    SDL_Surface *tmpTexSurface = IMG_Load(texFilePath.c_str());
+    SDL_Surface* tmpTexSurface = IMG_Load(texFilePath.c_str());
     size_t texSize = tmpTexSurface->w; // Only use square textures
     Uint32 texBuffer[texSize][texSize];
-    Uint32 **texBufferPtr = new Uint32 *[texSize];
+    Uint32** texBufferPtr = new Uint32* [texSize];
     for (int i = 0; i < texSize; i++) {
         texBufferPtr[i] = texBuffer[i];
     }
 
-    Uint32 *pixels = (Uint32 *) tmpTexSurface->pixels;
+    Uint32* pixels = (Uint32*) tmpTexSurface->pixels;
 
     for (int p = 0; p < texSize; p++) {
         for (int q = 0; q < texSize; q++) {
@@ -141,7 +143,7 @@ int main() {
     double oldTime, curTime, frameDelta;
     curTime = 0;
 
-    SDL_Texture *frameTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING,
+    SDL_Texture* frameTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING,
                                                   playerCamera.viewportWidth, playerCamera.viewportHeight);
 
     while (gameIsRunning) {
@@ -190,7 +192,8 @@ int main() {
 
         // Only rerender the screen if something's changed
         // TODO: Update this when animated sprites/enemies in game
-        if (playerCamera.angle != prevPlayerCameraAngle || playerCamera.x != prevPlayerCameraX || playerCamera.y != prevPlayerCameraY || !started) {
+        if (playerCamera.angle != prevPlayerCameraAngle || playerCamera.x != prevPlayerCameraX ||
+            playerCamera.y != prevPlayerCameraY || !started) {
             draw(renderer, playerCamera, level, texBufferPtr, texSize, frameTexture);
         } else {
             SDL_Delay(1);

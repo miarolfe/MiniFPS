@@ -25,7 +25,7 @@ CMAKE_AR:FILEPATH=/Library/Developer/CommandLineTools/usr/bin/ar
 CMAKE_BUILD_TYPE:STRING=Debug
 
 //CXX compiler
-CMAKE_CXX_COMPILER:FILEPATH=/Library/Developer/CommandLineTools/usr/bin/c++
+CMAKE_CXX_COMPILER:STRING=/Library/Developer/CommandLineTools/usr/bin/c++
 
 //Flags used by the CXX compiler during all build types.
 CMAKE_CXX_FLAGS:STRING=

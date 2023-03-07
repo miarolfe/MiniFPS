@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD 11)
 set(RESOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/assets")
 
 include_directories("include/")
+# TODO: Copy changed assets even with no code change
 
 set(
         SOURCES
@@ -65,6 +66,8 @@ if(APPLE)
             "${SDL2_FRAMEWORK}"
             "${SDL2_IMAGE_FRAMEWORK}"
             )
+
+    FILE(REMOVE "${CMAKE_CURRENT_BINARY_DIR}/mini-fps.app/Contents/Resources/settings.json")
 
     # Copy assets to app bundle
     add_custom_command(TARGET mini-fps POST_BUILD
