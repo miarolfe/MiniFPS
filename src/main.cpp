@@ -88,8 +88,8 @@ int main() {
 
     SDL_Window* window = nullptr;
     SDL_Renderer* renderer = nullptr;
-    const std::string assetsFilePath = assets_file_path();
-    Settings settings = loadSettings(assetsFilePath, "settings.json");
+    const std::string assetsFolderPath = assets_folder_path();
+    Settings settings = loadSettings(assetsFolderPath, "settings.json");
 
     if (!initialize_window_and_renderer(&window, &renderer, settings.screenWidth, settings.screenHeight)) {
         std::cerr << "Window and/or renderer could not be initialized" << std::endl;
@@ -103,7 +103,12 @@ int main() {
         std::cout << "SDL_image initialized" << std::endl;
     }
 
-    std::string levelFilePath = assetsFilePath + settings.levelPath;
+    std::string levelFilePath = assetsFolderPath + settings.levelPath;
+
+    Uint32** wallTexBuffer;
+    size_t wallTexSize;
+
+    load_texture_to_buffer(&wallTexBuffer, wallTexSize, assetsFolderPath, settings.texturePaths[0]);
 
     Level level = Level(levelFilePath.c_str());
     level.print();
@@ -118,25 +123,6 @@ int main() {
                         settings.screenHeight, settings.renderRayIncrement,
                         settings.renderDistance, settings.playerDistanceToProjectionPlane);
 
-    // TEMP
-    std::string texFilePath = assetsFilePath + "sprites/testWall2.png";
-    SDL_Surface* tmpTexSurface = IMG_Load(texFilePath.c_str());
-    size_t texSize = tmpTexSurface->w; // Only use square textures
-    Uint32 texBuffer[texSize][texSize];
-    Uint32** texBufferPtr = new Uint32* [texSize];
-    for (int i = 0; i < texSize; i++) {
-        texBufferPtr[i] = texBuffer[i];
-    }
-
-    Uint32* pixels = (Uint32*) tmpTexSurface->pixels;
-
-    for (int p = 0; p < texSize; p++) {
-        for (int q = 0; q < texSize; q++) {
-            texBuffer[p][q] = pixels[p * texSize + q];
-        }
-    }
-
-    SDL_FreeSurface(tmpTexSurface);
 
     SDL_SetRelativeMouseMode(SDL_TRUE);
 
@@ -152,7 +138,7 @@ int main() {
 
         frameDelta = frame_time(oldTime, curTime);
 
-        std::cout << frames_per_second(oldTime, curTime);
+        // std::cout << frames_per_second(oldTime, curTime);
 
         mouseX = 0;
         mouseY = 0;
@@ -194,7 +180,7 @@ int main() {
         // TODO: Update this when animated sprites/enemies in game
         if (playerCamera.angle != prevPlayerCameraAngle || playerCamera.x != prevPlayerCameraX ||
             playerCamera.y != prevPlayerCameraY || !started) {
-            draw(renderer, playerCamera, level, texBufferPtr, texSize, frameTexture);
+            draw(renderer, playerCamera, level, wallTexBuffer, wallTexSize, frameTexture);
         } else {
             SDL_Delay(1);
         }

@@ -14,6 +14,8 @@ std::string frames_per_second(double oldTime, double curTime);
 
 double frame_time(double oldTime, double curTime);
 
-std::string assets_file_path();
+std::string assets_folder_path();
+
+bool load_texture_to_buffer(Uint32*** buffer, size_t& size, std::string assetsFolderPath, std::string textureFilePath);
 
 #endif //MINI_FPS_UTILITIES_H

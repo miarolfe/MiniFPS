@@ -65,7 +65,7 @@ double frame_time(const double oldTime, const double curTime) {
     return frameTime;
 }
 
-std::string assets_file_path() {
+std::string assets_folder_path() {
     std::string file_path;
     const char* platform = SDL_GetPlatform();
     if (strcmp(platform, "Windows") == 0) {
@@ -78,4 +78,37 @@ std::string assets_file_path() {
     }
 
     return file_path;
+}
+
+bool load_texture_to_buffer(Uint32*** buffer, size_t& size, std::string assetsFolderPath, std::string textureFilePath) {
+    bool success = true;
+
+    std::string fullTexturePath = assetsFolderPath + textureFilePath;
+    SDL_Surface* tempTextureSurface = IMG_Load(fullTexturePath.c_str());
+    if (tempTextureSurface == nullptr) {
+        std::cerr << "Could not load texture at " << fullTexturePath << ": " << IMG_GetError();
+        success = false;
+    }
+
+    if (success) {
+        size = tempTextureSurface->w; // Only use square textures
+        *buffer = new Uint32*[size];
+        for (int i = 0; i < size; i++) {
+            (*buffer)[i] = new Uint32[size];
+        }
+
+        Uint32* pixels = (Uint32*) tempTextureSurface->pixels;
+
+        for (int p = 0; p < size; p++) {
+            for (int q = 0; q < size; q++) {
+                (*buffer)[p][q] = pixels[p * size + q];
+            }
+        }
+
+        SDL_FreeSurface(tempTextureSurface);
+
+        std::cout << "Loaded texture to buffer: " + textureFilePath << std::endl;
+    }
+
+    return success;
 }
