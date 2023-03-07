@@ -22,8 +22,8 @@ const size_t RENDER_DISTANCE = 128;
 const float SPEED_MODIFIER = 5;
 const float ROTATION_MODIFIER = 0.5;
 
-void handle_input(bool &gameIsRunning, bool &moveLeft, bool &moveRight, bool &moveForward,
-                  bool &moveBack, int &mouseX, int &mouseY) {
+void get_input_state(bool &gameIsRunning, bool &moveLeft, bool &moveRight, bool &moveForward,
+                     bool &moveBack, int &mouseX, int &mouseY) {
     SDL_Event event;
 
     while (SDL_PollEvent(&event)) {
@@ -141,7 +141,7 @@ int main() {
 
         mouseX = 0;
         mouseY = 0;
-        handle_input(gameIsRunning, moveLeft, moveRight, moveForward, moveBack, mouseX, mouseY);
+        get_input_state(gameIsRunning, moveLeft, moveRight, moveForward, moveBack, mouseX, mouseY);
 
         int roundedPlayerCameraX = round(playerCamera.x);
         int roundedPlayerCameraY = round(playerCamera.y);
