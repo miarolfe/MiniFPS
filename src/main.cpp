@@ -13,17 +13,6 @@
 #include "Settings.h"
 #include "Utilities.h"
 
-// TODO: Multiple resolutions
-const size_t SCREEN_WIDTH = 1600;
-const size_t SCREEN_HEIGHT = 900;
-
-const float RENDER_RAY_INCREMENT = 0.005f;
-const size_t RENDER_DISTANCE = 128;
-const float FIELD_OF_VIEW = 70.0f;
-
-const float SPEED_MODIFIER = 5;
-const float ROTATION_MODIFIER = 0.5;
-
 void get_input_state(bool &gameIsRunning, bool &moveLeft, bool &moveRight, bool &moveForward,
                      bool &moveBack, int &mouseX, int &mouseY) {
     SDL_Event event;
@@ -91,8 +80,6 @@ bool has_collided(Level& level, const float x, const float y) {
 }
 
 int main() {
-
-
     if (!initialize_sdl()) {
         std::cerr << "SDL could not be initialized:" << SDL_GetError();
     } else {
@@ -104,7 +91,7 @@ int main() {
     const std::string assetsFilePath = assets_file_path();
     Settings settings = loadSettings(assetsFilePath, "settings.json");
 
-    if (!initialize_window_and_renderer(&window, &renderer, SCREEN_WIDTH, SCREEN_HEIGHT)) {
+    if (!initialize_window_and_renderer(&window, &renderer, settings.screenWidth, settings.screenHeight)) {
         std::cerr << "Window and/or renderer could not be initialized" << std::endl;
     } else {
         std::cout << "Window and renderer initialized" << std::endl;
@@ -116,17 +103,18 @@ int main() {
         std::cout << "SDL_image initialized" << std::endl;
     }
 
-    std::string levelFilePath = assetsFilePath + "levels/testLevel10.png";
+    std::string levelFilePath = assetsFilePath + settings.levelPath;
 
     Level level = Level(levelFilePath.c_str());
     level.print();
 
+    bool started = false;
     bool gameIsRunning = true;
     int mouseX, mouseY;
     bool moveLeft, moveRight, moveForward, moveBack;
 
-    Camera playerCamera(2, 2, 1.523, (FIELD_OF_VIEW / 180.0) * M_PI, SCREEN_WIDTH, SCREEN_HEIGHT, RENDER_RAY_INCREMENT,
-                        RENDER_DISTANCE, 1);
+    Camera playerCamera(settings.playerStartX, settings.playerStartY, settings.playerStartAngle, (settings.fieldOfView / 180.0) * M_PI, settings.screenWidth, settings.screenHeight, settings.renderRayIncrement,
+                        settings.renderDistance, settings.playerDistanceToProjectionPlane);
 
     // TEMP
     std::string texFilePath = assetsFilePath + "sprites/testWall2.png";
@@ -172,26 +160,26 @@ int main() {
         float prevPlayerCameraY = playerCamera.y;
         float prevPlayerCameraAngle = playerCamera.angle;
 
-        playerCamera.angle += mouseX * frameDelta * ROTATION_MODIFIER;
+        playerCamera.angle += mouseX * frameDelta * settings.rotationModifier;
 
         if (moveForward) {
-            playerCamera.x += frameDelta * SPEED_MODIFIER * cos(playerCamera.angle);
-            playerCamera.y += frameDelta * SPEED_MODIFIER *  sin(playerCamera.angle);
+            playerCamera.x += frameDelta * settings.speedModifier * cos(playerCamera.angle);
+            playerCamera.y += frameDelta * settings.speedModifier * sin(playerCamera.angle);
         }
 
         if (moveBack) {
-            playerCamera.x -= frameDelta * SPEED_MODIFIER *  cos(playerCamera.angle);
-            playerCamera.y -= frameDelta * SPEED_MODIFIER *  sin(playerCamera.angle);
+            playerCamera.x -= frameDelta * settings.speedModifier * cos(playerCamera.angle);
+            playerCamera.y -= frameDelta * settings.speedModifier * sin(playerCamera.angle);
         }
 
         if (moveLeft) {
-            playerCamera.x += frameDelta * SPEED_MODIFIER *  cos(playerCamera.angle - M_PI / 2);
-            playerCamera.y += frameDelta * SPEED_MODIFIER *  sin(playerCamera.angle - M_PI / 2);
+            playerCamera.x += frameDelta * settings.speedModifier * cos(playerCamera.angle - M_PI / 2);
+            playerCamera.y += frameDelta * settings.speedModifier * sin(playerCamera.angle - M_PI / 2);
         }
 
         if (moveRight) {
-            playerCamera.x += frameDelta * SPEED_MODIFIER *  cos(playerCamera.angle + M_PI / 2);
-            playerCamera.y += frameDelta * SPEED_MODIFIER *  sin(playerCamera.angle + M_PI / 2);
+            playerCamera.x += frameDelta * settings.speedModifier * cos(playerCamera.angle + M_PI / 2);
+            playerCamera.y += frameDelta * settings.speedModifier * sin(playerCamera.angle + M_PI / 2);
         }
 
 
@@ -202,11 +190,13 @@ int main() {
 
         // Only rerender the screen if something's changed
         // TODO: Update this when animated sprites/enemies in game
-        if (playerCamera.angle != prevPlayerCameraAngle || playerCamera.x != prevPlayerCameraX || playerCamera.y != prevPlayerCameraY) {
+        if (playerCamera.angle != prevPlayerCameraAngle || playerCamera.x != prevPlayerCameraX || playerCamera.y != prevPlayerCameraY || !started) {
             draw(renderer, playerCamera, level, texBufferPtr, texSize, frameTexture);
         } else {
             SDL_Delay(1);
         }
+
+        started = true;
     }
 
     quit(window);

@@ -30,7 +30,7 @@ Settings::Settings(size_t screenWidth, size_t screenHeight, float renderRayIncre
                    float fieldOfView, float speedModifier, float rotationModifier, float playerStartX,
                    float playerStartY, float playerStartAngle, float playerDistanceToProjectionPlane,
                    std::string levelPath) {
-    this->screenWidth = screenHeight;
+    this->screenWidth = screenWidth;
     this->screenHeight = screenHeight;
     this->renderRayIncrement = renderRayIncrement;
     this->renderDistance = renderDistance;
