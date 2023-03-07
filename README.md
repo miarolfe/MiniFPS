@@ -1,6 +1,6 @@
 # mini-fps
  
-A 90s-style FPS made from scratch using C++11 and SDL2. Think *Wolfenstein 3D* or *DOOM*.
+A 90s-style FPS made from scratch using C++11 and SDL2. Think *Wolfenstein 3D*.
 
 Setup to follow.
 
@@ -13,3 +13,7 @@ MIT License. Go nuts :)
 ### SDL
 
 zlib license. Thanks to all the lovely people who've contributed to SDL!
+
+### nlohmann/JSON
+
+MIT license.
