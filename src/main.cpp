@@ -10,6 +10,7 @@
 #include "Color.h"
 #include "Level.h"
 #include "Renderer.h"
+#include "Settings.h"
 #include "Utilities.h"
 
 // TODO: Multiple resolutions
@@ -90,6 +91,8 @@ bool has_collided(Level& level, const float x, const float y) {
 }
 
 int main() {
+
+
     if (!initialize_sdl()) {
         std::cerr << "SDL could not be initialized:" << SDL_GetError();
     } else {
@@ -99,6 +102,7 @@ int main() {
     SDL_Window *window = nullptr;
     SDL_Renderer *renderer = nullptr;
     const std::string assetsFilePath = assets_file_path();
+    Settings settings = loadSettings(assetsFilePath, "settings.json");
 
     if (!initialize_window_and_renderer(&window, &renderer, SCREEN_WIDTH, SCREEN_HEIGHT)) {
         std::cerr << "Window and/or renderer could not be initialized" << std::endl;
