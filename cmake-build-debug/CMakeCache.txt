@@ -201,6 +201,9 @@ mini-fps_IS_TOP_LEVEL:STATIC=ON
 //Value Computed by CMake
 mini-fps_SOURCE_DIR:STATIC=/Users/peterrolfe/Development/C-Plus-Plus/mini-fps
 
+//The directory containing a CMake configuration file for nlohmann_json.
+nlohmann_json_DIR:PATH=nlohmann_json_DIR-NOTFOUND
+
 
 ########################
 # INTERNAL cache entries

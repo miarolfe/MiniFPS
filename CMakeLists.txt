@@ -20,6 +20,7 @@ set(
         src/Color.h
         src/Level.h
         src/Renderer.h
+        src/Settings.h
         src/Utilities.h
 )
 
