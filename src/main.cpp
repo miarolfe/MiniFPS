@@ -22,13 +22,11 @@ const size_t RENDER_DISTANCE = 128;
 const float SPEED_MODIFIER = 5;
 const float ROTATION_MODIFIER = 0.5;
 
-void handle_input(bool &gameIsRunning, int &x, int &y, bool &moveLeft, bool &moveRight, bool &moveForward,
+void handle_input(bool &gameIsRunning, bool &moveLeft, bool &moveRight, bool &moveForward,
                   bool &moveBack, int &mouseX, int &mouseY) {
     SDL_Event event;
-    SDL_GetMouseState(&x, &y);
 
     while (SDL_PollEvent(&event)) {
-        // Should this be a switch statement?
         if (event.type == SDL_QUIT) {
             gameIsRunning = false;
         }
@@ -99,7 +97,7 @@ int main() {
     level.print();
 
     bool gameIsRunning = true;
-    int x, y, mouseX, mouseY;
+    int mouseX, mouseY;
     bool moveLeft, moveRight, moveForward, moveBack;
 
     Camera playerCamera(2, 2, 1.523, (70.0 / 360.0) * 2 * M_PI, SCREEN_WIDTH, SCREEN_HEIGHT, RENDER_RAY_INCREMENT,
@@ -143,7 +141,7 @@ int main() {
 
         mouseX = 0;
         mouseY = 0;
-        handle_input(gameIsRunning, x, y, moveLeft, moveRight, moveForward, moveBack, mouseX, mouseY);
+        handle_input(gameIsRunning, moveLeft, moveRight, moveForward, moveBack, mouseX, mouseY);
 
         int roundedPlayerCameraX = round(playerCamera.x);
         int roundedPlayerCameraY = round(playerCamera.y);
