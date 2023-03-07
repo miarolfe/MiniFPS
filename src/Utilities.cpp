@@ -16,7 +16,8 @@ bool initialize_sdl() {
     return successful_initialization;
 }
 
-bool initialize_window_and_renderer(SDL_Window **window, SDL_Renderer **renderer, const size_t screenWidth, const size_t screenHeight) {
+bool initialize_window_and_renderer(SDL_Window** window, SDL_Renderer** renderer, const size_t screenWidth,
+                                    const size_t screenHeight) {
     bool successful_initialization = true;
 
     *window = SDL_CreateWindow("mini-fps",
@@ -50,7 +51,7 @@ bool initialize_sdl_image() {
     return successful_initialization;
 }
 
-void quit(SDL_Window *window) {
+void quit(SDL_Window* window) {
     SDL_DestroyWindow(window);
     SDL_Quit();
 }
@@ -66,7 +67,7 @@ double frame_time(const double oldTime, const double curTime) {
 
 std::string assets_file_path() {
     std::string file_path;
-    const char *platform = SDL_GetPlatform();
+    const char* platform = SDL_GetPlatform();
     if (strcmp(platform, "Windows") == 0) {
         file_path = "assets/";
     } else if (strcmp(platform, "Mac OS X") == 0) {

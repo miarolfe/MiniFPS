@@ -6,7 +6,7 @@
 #include "Level.h"
 #include "Color.h"
 
-bool Level::png_to_two_dimensional_array(const char *filePath) {
+bool Level::png_to_two_dimensional_array(const char* filePath) {
     bool successfulLoadAndConversion = true;
 
     SDL_Surface* surface;
@@ -20,7 +20,7 @@ bool Level::png_to_two_dimensional_array(const char *filePath) {
     w = surface->w;
     h = surface->h;
 
-    matrix = new Uint32*[surface->h];
+    matrix = new Uint32* [surface->h];
 
     for (size_t i = 0; i < surface->h; i++) {
         matrix[i] = new Uint32[surface->w];
@@ -73,10 +73,8 @@ Uint32 Level::get(const size_t x, const size_t y) {
 }
 
 void Level::print() {
-    for (int i = 0; i < w; i++)
-    {
-        for (int j = 0; j < h; j++)
-        {
+    for (int i = 0; i < w; i++) {
+        for (int j = 0; j < h; j++) {
             if (get(j, i) == RGBA_WHITE) {
                 std::cout << "  ";
             } else {

@@ -8,11 +8,12 @@
 
 void set_pixel(void* pixels, int pitch, const Uint32 color, int x, int y) {
     Uint32* row;
-    row = (Uint32*)((Uint8*)pixels + y * pitch);
+    row = (Uint32*) ((Uint8*) pixels + y * pitch);
     row[x] = color;
 }
 
-void draw(SDL_Renderer *renderer, Camera camera, Level &level, Uint32 **texBuffer, size_t texSize, SDL_Texture* frameTexture) {
+void draw(SDL_Renderer* renderer, Camera camera, Level &level, Uint32** texBuffer, size_t texSize,
+          SDL_Texture* frameTexture) {
     int pitch;
     void* pixels;
     SDL_LockTexture(frameTexture, nullptr, &pixels, &pitch);
@@ -68,7 +69,7 @@ void draw(SDL_Renderer *renderer, Camera camera, Level &level, Uint32 **texBuffe
                     }
 
                     int texY = ((y - drawStart) * texSize) / columnHeight;
-                    set_pixel(pixels, pitch,texBuffer[texY][texX], ray, y);
+                    set_pixel(pixels, pitch, texBuffer[texY][texX], ray, y);
                 }
 
                 break;

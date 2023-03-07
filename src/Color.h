@@ -1,9 +1,6 @@
-//
-// Created by Peter Rolfe on 19/02/2023.
-//
-
 #ifndef MINI_FPS_COLOR_H
 #define MINI_FPS_COLOR_H
+
 #include <SDL_stdinc.h>
 
 // Color constants

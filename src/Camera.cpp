@@ -1,7 +1,8 @@
 #include <cstddef>
 #include "Camera.h"
 
-Camera::Camera(float _x, float _y, float _angle, float _fieldOfView, size_t _viewportWidth, size_t _viewportHeight, float _rayIncrement, size_t _maxRendererDistance, float _distanceToProjectionPlane) {
+Camera::Camera(float _x, float _y, float _angle, float _fieldOfView, size_t _viewportWidth, size_t _viewportHeight,
+               float _rayIncrement, size_t _maxRendererDistance, float _distanceToProjectionPlane) {
     x = _x;
     y = _y;
     angle = _angle;
