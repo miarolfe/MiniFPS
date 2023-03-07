@@ -68,6 +68,26 @@ void get_input_state(bool &gameIsRunning, bool &moveLeft, bool &moveRight, bool 
     }
 }
 
+bool has_collided(Level& level, const float x, const float y) {
+    bool collided = false;
+
+    int roundedX = round(x);
+    int roundedY = round(y);
+
+    for (size_t cellX = roundedX - 1; cellX <= roundedX + 1; cellX++) {
+        for (size_t cellY = roundedY - 1; cellY <= roundedY + 1; cellY++) {
+            if (level.get(cellX, cellY) != RGBA_WHITE) {
+                if (x >= cellX - 0.05 && x <= cellX + 1 + 0.05 &&
+                    y >= cellY - 0.05 && y <= cellY + 1 + 0.05) {
+                    collided = true;
+                }
+            }
+        }
+    }
+
+    return collided;
+}
+
 int main() {
     if (!initialize_sdl()) {
         std::cerr << "SDL could not be initialized:" << SDL_GetError();
@@ -125,7 +145,7 @@ int main() {
 
     SDL_SetRelativeMouseMode(SDL_TRUE);
 
-    double oldTime, curTime;
+    double oldTime, curTime, frameDelta;
     curTime = 0;
 
     SDL_Texture *frameTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING,
@@ -135,16 +155,13 @@ int main() {
         oldTime = curTime;
         curTime = SDL_GetTicks64();
 
-        double frameDelta = frame_time(oldTime, curTime);
+        frameDelta = frame_time(oldTime, curTime);
 
         std::cout << frames_per_second(oldTime, curTime);
 
         mouseX = 0;
         mouseY = 0;
         get_input_state(gameIsRunning, moveLeft, moveRight, moveForward, moveBack, mouseX, mouseY);
-
-        int roundedPlayerCameraX = round(playerCamera.x);
-        int roundedPlayerCameraY = round(playerCamera.y);
 
         float prevPlayerCameraX = playerCamera.x;
         float prevPlayerCameraY = playerCamera.y;
@@ -172,17 +189,10 @@ int main() {
             playerCamera.y += frameDelta * SPEED_MODIFIER *  sin(playerCamera.angle + M_PI / 2);
         }
 
-        // Wall collision detection
-        for (size_t nearbyX = roundedPlayerCameraX - 1; nearbyX <= roundedPlayerCameraX + 1; nearbyX++) {
-            for (size_t nearbyY = roundedPlayerCameraY - 1; nearbyY <= roundedPlayerCameraY + 1; nearbyY++) {
-                if (level.get(nearbyX, nearbyY) != RGBA_WHITE) {
-                    if (playerCamera.x >= nearbyX - 0.05 && playerCamera.x <= nearbyX + 1 + 0.05 &&
-                        playerCamera.y >= nearbyY - 0.05 && playerCamera.y <= nearbyY + 1 + 0.05) {
-                        playerCamera.x = prevPlayerCameraX;
-                        playerCamera.y = prevPlayerCameraY;
-                    }
-                }
-            }
+
+        if (has_collided(level, playerCamera.x, playerCamera.y)) {
+            playerCamera.x = prevPlayerCameraX;
+            playerCamera.y = prevPlayerCameraY;
         }
 
         // Only rerender the screen if something's changed
