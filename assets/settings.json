@@ -10,5 +10,8 @@
   "playerStartY": 2,
   "playerStartAngle": 1.523,
   "playerDistanceToProjectionPlane": 1,
-  "levelPath": "levels/testLevel10.png"
+  "levelPath": "levels/testLevel10.png",
+  "texturePaths": [
+    "sprites/testWall2.png"
+  ]
 }
