@@ -16,14 +16,14 @@ bool initialize_sdl() {
     return successful_initialization;
 }
 
-bool initialize_window_and_renderer(SDL_Window **window, SDL_Renderer **renderer, const size_t SCREEN_WIDTH, const size_t SCREEN_HEIGHT) {
+bool initialize_window_and_renderer(SDL_Window **window, SDL_Renderer **renderer, const size_t screenWidth, const size_t screenHeight) {
     bool successful_initialization = true;
 
     *window = SDL_CreateWindow("mini-fps",
                                100,
                                100,
-                               SCREEN_WIDTH,
-                               SCREEN_HEIGHT,
+                               screenWidth,
+                               screenHeight,
                                SDL_WINDOW_SHOWN);
 
     if (*window == nullptr) {
