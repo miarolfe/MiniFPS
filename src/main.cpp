@@ -58,26 +58,6 @@ void get_input_state(bool &gameIsRunning, bool &moveLeft, bool &moveRight, bool 
     }
 }
 
-bool has_collided(Level &level, const float x, const float y) {
-    bool collided = false;
-
-    int roundedX = round(x);
-    int roundedY = round(y);
-
-    for (size_t cellX = roundedX - 1; cellX <= roundedX + 1; cellX++) {
-        for (size_t cellY = roundedY - 1; cellY <= roundedY + 1; cellY++) {
-            if (level.get(cellX, cellY) != AGBR_WHITE) {
-                if (x >= cellX - 0.05 && x <= cellX + 1 + 0.05 &&
-                    y >= cellY - 0.05 && y <= cellY + 1 + 0.05) {
-                    collided = true;
-                }
-            }
-        }
-    }
-
-    return collided;
-}
-
 int main() {
     if (!initialize_sdl()) {
         std::cerr << "SDL could not be initialized:" << SDL_GetError();
@@ -174,7 +154,7 @@ int main() {
             playerCamera.y += frameDelta * settings.speedModifier * sin(playerCamera.angle + M_PI / 2);
         }
 
-        if (has_collided(level, playerCamera.x, playerCamera.y)) {
+        if (level.has_collided(playerCamera.x, playerCamera.y)) {
             playerCamera.x = prevPlayerCameraX;
             playerCamera.y = prevPlayerCameraY;
         }

@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cmath>
 #include <vector>
 #include <string>
 #include <SDL_image.h>
@@ -70,6 +71,26 @@ Uint32 Level::get(const size_t x, const size_t y) {
     }
 
     return matrix[y][x];
+}
+
+bool Level::has_collided(const float x, const float y) {
+    bool collided = false;
+
+    int roundedX = round(x);
+    int roundedY = round(y);
+
+    for (size_t cellX = roundedX - 1; cellX <= roundedX + 1; cellX++) {
+        for (size_t cellY = roundedY - 1; cellY <= roundedY + 1; cellY++) {
+            if (get(cellX, cellY) != AGBR_WHITE) {
+                if (x >= cellX - 0.05 && x <= cellX + 1 + 0.05 &&
+                    y >= cellY - 0.05 && y <= cellY + 1 + 0.05) {
+                    collided = true;
+                }
+            }
+        }
+    }
+
+    return collided;
 }
 
 void Level::print() {
