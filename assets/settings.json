@@ -12,6 +12,7 @@
   "playerDistanceToProjectionPlane": 1,
   "levelPath": "levels/testLevel10.png",
   "texturePaths": [
-    "sprites/testWall2.png"
+    "sprites/testWall2.png",
+    "sprites/testWall4.png"
   ]
 }

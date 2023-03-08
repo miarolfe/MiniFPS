@@ -113,10 +113,6 @@ int main() {
         load_texture_to_buffer(&wallTextureBuffers[buffer], wallTexSize, assetsFolderPath, settings.texturePaths[buffer]);
     }
 
-    Uint32** wallTexBuffer = wallTextureBuffers[0];
-
-    // load_texture_to_buffer(&wallTexBuffer, wallTexSize, assetsFolderPath, settings.texturePaths[0]);
-
     Level level = Level(levelFilePath.c_str());
     level.print();
 
@@ -187,7 +183,7 @@ int main() {
         // TODO: Update this when animated sprites/enemies in game
         if (playerCamera.angle != prevPlayerCameraAngle || playerCamera.x != prevPlayerCameraX ||
             playerCamera.y != prevPlayerCameraY || !started) {
-            draw(renderer, playerCamera, level, wallTexBuffer, wallTexSize, frameTexture);
+            draw(renderer, playerCamera, level, wallTextureBuffers[0], wallTexSize, frameTexture);
         } else {
             SDL_Delay(1);
         }

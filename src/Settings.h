@@ -74,6 +74,8 @@ Settings loadSettings(const std::string &assetsFilePath, const std::string &sett
     levelPath = settingsAsJson["levelPath"];
     texturePaths = settingsAsJson["texturePaths"];
 
+    // TODO: Key-value -> Color->filePath?
+
     Settings settings(screenWidth, screenHeight, renderRayIncrement, renderDistance, fieldOfView, speedModifier,
                       rotationModifier, playerStartX, playerStartY, playerStartAngle,
                       playerDistanceToProjectionPlane, levelPath, texturePaths);

@@ -57,7 +57,7 @@ void quit(SDL_Window* window) {
 }
 
 std::string frames_per_second(const double oldTime, const double curTime) {
-    return "FPS: " + std::to_string(static_cast<int>((1.0 / frame_time(oldTime, curTime)))) + "\n";
+    return std::to_string(static_cast<int>((1.0 / frame_time(oldTime, curTime))));
 }
 
 double frame_time(const double oldTime, const double curTime) {
