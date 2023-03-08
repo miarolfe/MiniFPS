@@ -12,6 +12,7 @@ struct Settings {
     size_t screenHeight;
     float renderRayIncrement;
     size_t renderDistance;
+    bool vSync;
     float fieldOfView;
     float speedModifier;
     float rotationModifier;
@@ -23,13 +24,13 @@ struct Settings {
     std::vector<std::string> texturePaths;
 
     Settings(size_t screenWidth, size_t screenHeight, float renderRayIncrement,
-             size_t renderDistance, float fieldOfView, float speedModifier,
+             size_t renderDistance, bool vSync, float fieldOfView, float speedModifier,
              float rotationModifier, float playerStartX, float playerStartY,
              float playerStartAngle, float playerDistanceToProjectionPlane,
              std::string levelPath, const std::vector<std::string> &texturePaths);
 };
 
-Settings::Settings(size_t screenWidth, size_t screenHeight, float renderRayIncrement, size_t renderDistance,
+Settings::Settings(size_t screenWidth, size_t screenHeight, float renderRayIncrement, size_t renderDistance, bool vSync,
                    float fieldOfView, float speedModifier, float rotationModifier, float playerStartX,
                    float playerStartY, float playerStartAngle, float playerDistanceToProjectionPlane,
                    std::string levelPath, const std::vector<std::string> &texturePaths) {
@@ -45,6 +46,7 @@ Settings::Settings(size_t screenWidth, size_t screenHeight, float renderRayIncre
     this->playerStartAngle = playerStartAngle;
     this->playerDistanceToProjectionPlane = playerDistanceToProjectionPlane;
     this->levelPath = levelPath;
+    this->vSync = vSync;
     for (const std::string &texturePath: texturePaths) {
         this->texturePaths.push_back(texturePath);
     }
@@ -59,6 +61,7 @@ Settings loadSettings(const std::string &assetsFilePath, const std::string &sett
             playerStartAngle, playerDistanceToProjectionPlane;
     std::string levelPath;
     std::vector<std::string> texturePaths;
+    bool vSync;
 
     screenWidth = settingsAsJson["graphics"]["screenWidth"];
     screenHeight = settingsAsJson["graphics"]["screenHeight"];
@@ -73,8 +76,9 @@ Settings loadSettings(const std::string &assetsFilePath, const std::string &sett
     playerDistanceToProjectionPlane = settingsAsJson["rendering"]["distanceToProjectionPlane"];
     levelPath = settingsAsJson["files"]["levelPath"];
     texturePaths = settingsAsJson["files"]["texturePaths"];
+    vSync = settingsAsJson["graphics"]["vSync"];
 
-    Settings settings(screenWidth, screenHeight, renderRayIncrement, renderDistance, fieldOfView, speedModifier,
+    Settings settings(screenWidth, screenHeight, renderRayIncrement, renderDistance, vSync, fieldOfView, speedModifier,
                       rotationModifier, playerStartX, playerStartY, playerStartAngle,
                       playerDistanceToProjectionPlane, levelPath, texturePaths);
 

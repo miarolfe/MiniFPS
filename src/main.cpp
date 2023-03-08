@@ -90,7 +90,7 @@ int main() {
     const std::string assetsFolderPath = assets_folder_path();
     Settings settings = loadSettings(assetsFolderPath, "settings.json");
 
-    if (!initialize_window_and_renderer(&window, &renderer, settings.screenWidth, settings.screenHeight)) {
+    if (!initialize_window_and_renderer(&window, &renderer, settings.screenWidth, settings.screenHeight, settings.vSync)) {
         std::cerr << "Window and/or renderer could not be initialized" << std::endl;
     } else {
         std::cout << "Window and renderer initialized" << std::endl;
@@ -108,9 +108,10 @@ int main() {
     // TODO: Allow variable size textures
     // Right now all wall textures must be the same size
     size_t numWallTextures = settings.texturePaths.size();
-    Uint32*** wallTextureBuffers = new Uint32**[numWallTextures];
+    Uint32*** wallTextureBuffers = new Uint32** [numWallTextures];
     for (size_t buffer = 0; buffer < numWallTextures; buffer++) {
-        load_texture_to_buffer(&wallTextureBuffers[buffer], wallTexSize, assetsFolderPath, settings.texturePaths[buffer]);
+        load_texture_to_buffer(&wallTextureBuffers[buffer], wallTexSize, assetsFolderPath,
+                               settings.texturePaths[buffer]);
     }
 
     Level level = Level(levelFilePath.c_str());

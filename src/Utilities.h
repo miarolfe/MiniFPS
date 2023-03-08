@@ -4,7 +4,7 @@
 bool initialize_sdl();
 
 bool
-initialize_window_and_renderer(SDL_Window** window, SDL_Renderer** renderer, size_t screenWidth, size_t screenHeight);
+initialize_window_and_renderer(SDL_Window** window, SDL_Renderer** renderer, size_t screenWidth, size_t screenHeight, bool vSync);
 
 bool initialize_sdl_image();
 

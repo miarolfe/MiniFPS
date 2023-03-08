@@ -17,7 +17,7 @@ bool initialize_sdl() {
 }
 
 bool initialize_window_and_renderer(SDL_Window** window, SDL_Renderer** renderer, const size_t screenWidth,
-                                    const size_t screenHeight) {
+                                    const size_t screenHeight, bool vSync) {
     bool successful_initialization = true;
 
     *window = SDL_CreateWindow("mini-fps",
@@ -31,8 +31,11 @@ bool initialize_window_and_renderer(SDL_Window** window, SDL_Renderer** renderer
         successful_initialization = false;
     }
 
-    *renderer = SDL_CreateRenderer(*window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-    // *renderer = SDL_CreateRenderer(*window, -1, SDL_RENDERER_ACCELERATED);
+    if (vSync) {
+        *renderer = SDL_CreateRenderer(*window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    } else {
+        *renderer = SDL_CreateRenderer(*window, -1, SDL_RENDERER_ACCELERATED);
+    }
 
     if (*renderer == nullptr) {
         successful_initialization = false;
