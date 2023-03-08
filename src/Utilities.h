@@ -11,7 +11,7 @@ initialize_window_and_renderer(SDL_Window** window, SDL_Renderer** renderer, siz
 
 bool initialize_sdl_image();
 
-void quit(SDL_Window* window);
+void quit(SDL_Window* window, SDL_Renderer* renderer);
 
 std::string frames_per_second(double oldTime, double curTime);
 

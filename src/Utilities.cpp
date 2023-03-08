@@ -6,6 +6,7 @@
 
 #include "Utilities.h"
 
+// Initialize SDL subsystems
 bool initialize_sdl() {
     bool successful_initialization = true;
 
@@ -16,6 +17,7 @@ bool initialize_sdl() {
     return successful_initialization;
 }
 
+// Initialise window and renderer with parameters
 bool initialize_window_and_renderer(SDL_Window** window, SDL_Renderer** renderer, const size_t screenWidth,
                                     const size_t screenHeight, bool vSync) {
     bool successful_initialization = true;
@@ -41,11 +43,14 @@ bool initialize_window_and_renderer(SDL_Window** window, SDL_Renderer** renderer
         successful_initialization = false;
     }
 
+    // Capture mouse cursor and enable relative mouse mode
     SDL_SetWindowGrab(*window, SDL_TRUE);
+    SDL_SetRelativeMouseMode(SDL_TRUE);
 
     return successful_initialization;
 }
 
+// Initialise SDL_image subsystem
 bool initialize_sdl_image() {
     bool successful_initialization = true;
 
@@ -56,23 +61,30 @@ bool initialize_sdl_image() {
     return successful_initialization;
 }
 
-void quit(SDL_Window* window) {
+// Shut down SDL subsystems and free window + renderer
+void quit(SDL_Window* window, SDL_Renderer* renderer) {
     SDL_DestroyWindow(window);
+    SDL_DestroyRenderer(renderer);
     SDL_Quit();
 }
 
+// Get frames per second as string
 std::string frames_per_second(const double oldTime, const double curTime) {
     return std::to_string(static_cast<int>((1.0 / frame_time(oldTime, curTime))));
 }
 
+// Get time between frames in seconds
 double frame_time(const double oldTime, const double curTime) {
     double frameTime = (curTime - oldTime) / 1000.0;
     return frameTime;
 }
 
+// Get platform-appropriate path to assets folder
 std::string assets_folder_path() {
     std::string file_path;
     const char* platform = SDL_GetPlatform();
+
+    // strcmp returns 0 if two strings are identical
     if (strcmp(platform, "Windows") == 0) {
         file_path = "assets/";
     } else if (strcmp(platform, "Mac OS X") == 0) {
@@ -85,6 +97,7 @@ std::string assets_folder_path() {
     return file_path;
 }
 
+// Get a texture in Uint32 buffer form
 bool load_texture_to_buffer(Uint32*** buffer, size_t& size, std::string assetsFolderPath, std::string textureFilePath) {
     bool success = true;
 
@@ -95,11 +108,17 @@ bool load_texture_to_buffer(Uint32*** buffer, size_t& size, std::string assetsFo
         success = false;
     }
 
+    if (success && tempTextureSurface->w != tempTextureSurface->h) {
+        std::cerr << "Could not use texture at " << fullTexturePath << ", texture must be square" << std::endl;
+        success = false;
+    }
+
     if (success) {
-        size = tempTextureSurface->w; // Only use square textures
+        // We only use square textures so h doesn't matter
+        size = tempTextureSurface->w;
         *buffer = new Uint32*[size];
-        for (int i = 0; i < size; i++) {
-            (*buffer)[i] = new Uint32[size];
+        for (int row = 0; row < size; row++) {
+            (*buffer)[row] = new Uint32[size];
         }
 
         Uint32* pixels = (Uint32*) tempTextureSurface->pixels;
@@ -118,6 +137,7 @@ bool load_texture_to_buffer(Uint32*** buffer, size_t& size, std::string assetsFo
     return success;
 }
 
+// Get a clamped version of a value
 int clamp(const int value, const int min, const int max) {
     int clampedValue;
 

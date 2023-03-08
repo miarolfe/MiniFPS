@@ -63,8 +63,6 @@ int main() {
                         settings.renderDistance, settings.playerDistanceToProjectionPlane);
 
 
-    SDL_SetRelativeMouseMode(SDL_TRUE);
-
     double oldTime, curTime, frameDelta;
     curTime = 0;
 
@@ -107,7 +105,7 @@ int main() {
         started = true;
     }
 
-    quit(window);
+    quit(window, renderer);
 
     return 0;
 }
