@@ -1,6 +1,8 @@
 #ifndef MINI_FPS_UTILITIES_H
 #define MINI_FPS_UTILITIES_H
 
+const float PI_180 = (1.0 / 180.0) * M_PI;
+
 bool initialize_sdl();
 
 bool

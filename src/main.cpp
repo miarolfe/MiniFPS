@@ -103,7 +103,7 @@ int main() {
     bool moveLeft, moveRight, moveForward, moveBack;
 
     Camera playerCamera(settings.playerStartX, settings.playerStartY, settings.playerStartAngle,
-                        (settings.fieldOfView / 180.0) * M_PI, settings.screenWidth,
+                        settings.fieldOfView * PI_180, settings.screenWidth,
                         settings.screenHeight, settings.renderRayIncrement,
                         settings.renderDistance, settings.playerDistanceToProjectionPlane);
 
