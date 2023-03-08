@@ -60,21 +60,19 @@ Settings loadSettings(const std::string &assetsFilePath, const std::string &sett
     std::string levelPath;
     std::vector<std::string> texturePaths;
 
-    screenWidth = settingsAsJson["screenWidth"];
-    screenHeight = settingsAsJson["screenHeight"];
-    renderDistance = settingsAsJson["renderDistance"];
-    renderRayIncrement = settingsAsJson["renderRayIncrement"];
-    fieldOfView = settingsAsJson["fieldOfView"];
-    speedModifier = settingsAsJson["speedModifier"];
-    rotationModifier = settingsAsJson["rotationModifier"];
-    playerStartX = settingsAsJson["playerStartX"];
-    playerStartY = settingsAsJson["playerStartY"];
-    playerStartAngle = settingsAsJson["playerStartAngle"];
-    playerDistanceToProjectionPlane = settingsAsJson["playerDistanceToProjectionPlane"];
-    levelPath = settingsAsJson["levelPath"];
-    texturePaths = settingsAsJson["texturePaths"];
-
-    // TODO: Key-value -> Color->filePath?
+    screenWidth = settingsAsJson["graphics"]["screenWidth"];
+    screenHeight = settingsAsJson["graphics"]["screenHeight"];
+    renderDistance = settingsAsJson["rendering"]["renderDistance"];
+    renderRayIncrement = settingsAsJson["rendering"]["renderRayIncrement"];
+    fieldOfView = settingsAsJson["graphics"]["fieldOfView"];
+    speedModifier = settingsAsJson["player"]["speedModifier"];
+    rotationModifier = settingsAsJson["player"]["rotationModifier"];
+    playerStartX = settingsAsJson["player"]["startX"];
+    playerStartY = settingsAsJson["player"]["startY"];
+    playerStartAngle = settingsAsJson["player"]["startAngle"];
+    playerDistanceToProjectionPlane = settingsAsJson["rendering"]["distanceToProjectionPlane"];
+    levelPath = settingsAsJson["files"]["levelPath"];
+    texturePaths = settingsAsJson["files"]["texturePaths"];
 
     Settings settings(screenWidth, screenHeight, renderRayIncrement, renderDistance, fieldOfView, speedModifier,
                       rotationModifier, playerStartX, playerStartY, playerStartAngle,

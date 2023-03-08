@@ -1,20 +1,31 @@
 {
-  "screenWidth": 400,
-  "screenHeight": 400,
-  "renderRayIncrement": 0.005,
-  "renderDistance": 128,
-  "fieldOfView": 70,
-  "speedModifier": 5,
-  "rotationModifier": 0.5,
-  "playerStartX": 2,
-  "playerStartY": 2,
-  "playerStartAngle": 1.523,
-  "playerDistanceToProjectionPlane": 1,
-  "levelPath": "levels/testLevel11.png",
-  "texturePaths": [
-    "sprites/testWall1.png",
-    "sprites/testWall2.png",
-    "sprites/testWall3.png",
-    "sprites/testWall4.png"
-  ]
+  "graphics": {
+    "screenWidth": 800,
+    "screenHeight": 600,
+    "fieldOfView": 70
+  },
+
+  "rendering": {
+    "renderRayIncrement": 0.005,
+    "renderDistance": 128,
+    "distanceToProjectionPlane": 1
+  },
+
+  "player": {
+    "speedModifier": 5,
+    "rotationModifier": 0.5,
+    "startX": 2,
+    "startY": 2,
+    "startAngle": 1.523
+  },
+
+  "files": {
+    "levelPath": "levels/testLevel11.png",
+    "texturePaths": [
+      "sprites/testWall1.png",
+      "sprites/testWall2.png",
+      "sprites/testWall3.png",
+      "sprites/testWall4.png"
+    ]
+  }
 }
