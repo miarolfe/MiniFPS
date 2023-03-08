@@ -18,4 +18,6 @@ std::string assets_folder_path();
 
 bool load_texture_to_buffer(Uint32*** buffer, size_t& size, std::string assetsFolderPath, std::string textureFilePath);
 
+int clamp(int value, int min, int max);
+
 #endif //MINI_FPS_UTILITIES_H

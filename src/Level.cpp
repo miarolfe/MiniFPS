@@ -75,7 +75,7 @@ Uint32 Level::get(const size_t x, const size_t y) {
 void Level::print() {
     for (int i = 0; i < w; i++) {
         for (int j = 0; j < h; j++) {
-            if (get(j, i) == RGBA_WHITE) {
+            if (get(j, i) == AGBR_WHITE) {
                 std::cout << "  ";
             } else {
                 std::cout << "* ";

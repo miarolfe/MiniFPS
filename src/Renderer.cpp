@@ -1,10 +1,14 @@
 #include <iostream>
 #include <cmath>
+#include <cstdint>
+#include <algorithm>
+
 #include <SDL.h>
 
 #include "Camera.h"
 #include "Color.h"
 #include "Level.h"
+#include "Utilities.h"
 
 void set_pixel(void* pixels, int pitch, const Uint32 color, int x, int y) {
     Uint32* row;
@@ -12,7 +16,7 @@ void set_pixel(void* pixels, int pitch, const Uint32 color, int x, int y) {
     row[x] = color;
 }
 
-void draw(SDL_Renderer* renderer, Camera camera, Level &level, Uint32** texBuffer, size_t texSize,
+void draw(SDL_Renderer* renderer, Camera camera, Level &level, Uint32**** texBuffers, size_t numTexBuffers, size_t texSize,
           SDL_Texture* frameTexture) {
     int pitch;
     void* pixels;
@@ -44,7 +48,9 @@ void draw(SDL_Renderer* renderer, Camera camera, Level &level, Uint32** texBuffe
             float cx = camera.x + t * cosRayAngle;
             float cy = camera.y + t * sinRayAngle;
 
-            if (level.get(int(cx), int(cy)) != RGBA_WHITE) {
+            const Uint32 levelCellColor = level.get(int(cx), int(cy));
+
+            if (levelCellColor != AGBR_WHITE) {
                 double distance = t * cos(rayAngle - camera.angle);
 
                 size_t columnHeight = (camera.viewportHeight / distance) * camera.distanceToProjectionPlane;
@@ -62,6 +68,29 @@ void draw(SDL_Renderer* renderer, Camera camera, Level &level, Uint32** texBuffe
                 int drawStart = (camera.viewportHeight / 2) - (columnHeight / 2);
 
                 int drawEnd = drawStart + columnHeight;
+
+                Uint32** texBuffer;
+
+                // Map cell color to texture buffer
+
+                switch (levelCellColor) {
+
+                    case AGBR_BLACK:
+                        texBuffer = (*texBuffers)[0];
+                        break;
+                    case AGBR_RED:
+                        texBuffer = (*texBuffers)[clamp(1, 0, numTexBuffers-1)];
+                        break;
+                    case AGBR_BLUE:
+                        texBuffer = (*texBuffers)[clamp(2, 0, numTexBuffers-1)];
+                        break;
+                    case AGBR_GREEN:
+                        texBuffer = (*texBuffers)[clamp(3, 0, numTexBuffers-1)];
+                        break;
+                    default:
+                        texBuffer = (*texBuffers)[clamp(4, 0, numTexBuffers-1)];
+                        break;
+                }
 
                 for (int y = drawStart; y < drawEnd; y++) {
                     if (y < 0 || y > camera.viewportHeight) {

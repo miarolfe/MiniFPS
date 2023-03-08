@@ -66,7 +66,7 @@ bool has_collided(Level &level, const float x, const float y) {
 
     for (size_t cellX = roundedX - 1; cellX <= roundedX + 1; cellX++) {
         for (size_t cellY = roundedY - 1; cellY <= roundedY + 1; cellY++) {
-            if (level.get(cellX, cellY) != RGBA_WHITE) {
+            if (level.get(cellX, cellY) != AGBR_WHITE) {
                 if (x >= cellX - 0.05 && x <= cellX + 1 + 0.05 &&
                     y >= cellY - 0.05 && y <= cellY + 1 + 0.05) {
                     collided = true;
@@ -104,7 +104,7 @@ int main() {
 
     std::string levelFilePath = assetsFolderPath + settings.levelPath;
 
-    size_t wallTexSize = 32;
+    size_t wallTexSize;
     // TODO: Allow variable size textures
     // Right now all wall textures must be the same size
     size_t numWallTextures = settings.texturePaths.size();
@@ -173,7 +173,6 @@ int main() {
             playerCamera.y += frameDelta * settings.speedModifier * sin(playerCamera.angle + M_PI / 2);
         }
 
-
         if (has_collided(level, playerCamera.x, playerCamera.y)) {
             playerCamera.x = prevPlayerCameraX;
             playerCamera.y = prevPlayerCameraY;
@@ -183,7 +182,7 @@ int main() {
         // TODO: Update this when animated sprites/enemies in game
         if (playerCamera.angle != prevPlayerCameraAngle || playerCamera.x != prevPlayerCameraX ||
             playerCamera.y != prevPlayerCameraY || !started) {
-            draw(renderer, playerCamera, level, wallTextureBuffers[0], wallTexSize, frameTexture);
+            draw(renderer, playerCamera, level, &wallTextureBuffers, numWallTextures, wallTexSize, frameTexture);
         } else {
             SDL_Delay(1);
         }

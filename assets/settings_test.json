@@ -1,0 +1,20 @@
+{
+  "screenWidth": 1600,
+  "screenHeight": 900,
+  "renderRayIncrement": 0.005,
+  "renderDistance": 128,
+  "fieldOfView": 70,
+  "speedModifier": 5,
+  "rotationModifier": 0.5,
+  "playerStartX": 2,
+  "playerStartY": 2,
+  "playerStartAngle": 1.523,
+  "playerDistanceToProjectionPlane": 1,
+  "levelPath": "levels/testLevel10.png",
+  "texturePaths": {
+    "0xFF000000": "sprites/testWall2.png",
+    "0xFFFF0000": "sprites/testWall4.png",
+    "0xFF00FF00": "sprites/testWall1.png",
+    "0xFF0000FF": "sprites/testWall3.png"
+  }
+}

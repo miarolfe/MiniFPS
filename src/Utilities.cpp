@@ -112,3 +112,17 @@ bool load_texture_to_buffer(Uint32*** buffer, size_t& size, std::string assetsFo
 
     return success;
 }
+
+int clamp(const int value, const int min, const int max) {
+    int clampedValue;
+
+    if (value < min) {
+        clampedValue = min;
+    } else if (value > max) {
+        clampedValue = max;
+    } else {
+        clampedValue = value;
+    }
+
+    return clampedValue;
+}
