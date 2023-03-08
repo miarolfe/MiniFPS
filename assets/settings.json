@@ -24,9 +24,9 @@
     "levelPath": "levels/testLevel11.png",
     "texturePaths": [
       "sprites/testWall1.png",
-      "sprites/testWall2.png",
+      "sprites/redBricks32x32.png",
       "sprites/testWall3.png",
-      "sprites/testWall4.png"
+      "sprites/sandBricks32x32.png"
     ]
   }
 }
