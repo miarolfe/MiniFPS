@@ -1,3 +1,4 @@
+#pragma once
 #ifndef MINI_FPS_UTILITIES_H
 #define MINI_FPS_UTILITIES_H
 

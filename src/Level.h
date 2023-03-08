@@ -2,6 +2,7 @@
 // Created by Peter Rolfe on 19/02/2023.
 //
 
+#pragma once
 #ifndef MINI_FPS_LEVEL_H
 #define MINI_FPS_LEVEL_H
 #include <vector>

@@ -8,55 +8,10 @@
 #include "Camera.h"
 #include "Color.h"
 #include "Level.h"
+#include "Player.h"
 #include "Renderer.h"
 #include "Settings.h"
 #include "Utilities.h"
-
-void get_input_state(bool &gameIsRunning, bool &moveLeft, bool &moveRight, bool &moveForward,
-                     bool &moveBack, int &mouseX, int &mouseY) {
-    SDL_Event event;
-
-    while (SDL_PollEvent(&event)) {
-        if (event.type == SDL_QUIT) {
-            gameIsRunning = false;
-        }
-
-        if (event.type == SDL_MOUSEMOTION) {
-            mouseX = event.motion.xrel;
-            mouseY = event.motion.yrel;
-        }
-    }
-
-    const Uint8* currentKeyStates = SDL_GetKeyboardState(nullptr);
-
-    if (currentKeyStates[SDL_SCANCODE_ESCAPE]) {
-        gameIsRunning = false;
-    }
-
-    if (currentKeyStates[SDL_SCANCODE_W]) {
-        moveForward = true;
-    } else {
-        moveForward = false;
-    }
-
-    if (currentKeyStates[SDL_SCANCODE_S]) {
-        moveBack = true;
-    } else {
-        moveBack = false;
-    }
-
-    if (currentKeyStates[SDL_SCANCODE_A]) {
-        moveLeft = true;
-    } else {
-        moveLeft = false;
-    }
-
-    if (currentKeyStates[SDL_SCANCODE_D]) {
-        moveRight = true;
-    } else {
-        moveRight = false;
-    }
-}
 
 int main() {
     if (!initialize_sdl()) {
@@ -133,26 +88,7 @@ int main() {
         float prevPlayerCameraAngle = playerCamera.angle;
 
         playerCamera.angle += mouseX * frameDelta * settings.rotationModifier;
-
-        if (moveForward) {
-            playerCamera.x += frameDelta * settings.speedModifier * cos(playerCamera.angle);
-            playerCamera.y += frameDelta * settings.speedModifier * sin(playerCamera.angle);
-        }
-
-        if (moveBack) {
-            playerCamera.x -= frameDelta * settings.speedModifier * cos(playerCamera.angle);
-            playerCamera.y -= frameDelta * settings.speedModifier * sin(playerCamera.angle);
-        }
-
-        if (moveLeft) {
-            playerCamera.x += frameDelta * settings.speedModifier * cos(playerCamera.angle - M_PI / 2);
-            playerCamera.y += frameDelta * settings.speedModifier * sin(playerCamera.angle - M_PI / 2);
-        }
-
-        if (moveRight) {
-            playerCamera.x += frameDelta * settings.speedModifier * cos(playerCamera.angle + M_PI / 2);
-            playerCamera.y += frameDelta * settings.speedModifier * sin(playerCamera.angle + M_PI / 2);
-        }
+        move(playerCamera, frameDelta, settings.speedModifier, moveLeft, moveRight, moveForward, moveBack);
 
         if (level.has_collided(playerCamera.x, playerCamera.y)) {
             playerCamera.x = prevPlayerCameraX;

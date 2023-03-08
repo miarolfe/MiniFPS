@@ -1,7 +1,4 @@
-//
-// Created by Peter Rolfe on 23/02/2023.
-//
-
+#pragma once
 #ifndef MINI_FPS_RENDERER_H
 #define MINI_FPS_RENDERER_H
 

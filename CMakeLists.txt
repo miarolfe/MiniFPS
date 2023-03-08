@@ -14,6 +14,7 @@ set(
         src/Camera.cpp
         src/Level.cpp
         src/Renderer.cpp
+        src/Player.cpp
         src/Utilities.cpp
 )
 
@@ -22,6 +23,7 @@ set(
         src/Camera.h
         src/Color.h
         src/Level.h
+        src/Player.h
         src/Renderer.h
         src/Settings.h
         src/Utilities.h
@@ -66,8 +68,6 @@ if(APPLE)
             "${SDL2_FRAMEWORK}"
             "${SDL2_IMAGE_FRAMEWORK}"
             )
-
-    FILE(REMOVE "${CMAKE_CURRENT_BINARY_DIR}/mini-fps.app/Contents/Resources/settings.json")
 
     # Copy assets to app bundle
     add_custom_command(TARGET mini-fps POST_BUILD

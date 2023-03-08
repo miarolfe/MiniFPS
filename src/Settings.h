@@ -1,3 +1,4 @@
+#pragma once
 #ifndef MINI_FPS_SETTINGS_H
 #define MINI_FPS_SETTINGS_H
 
