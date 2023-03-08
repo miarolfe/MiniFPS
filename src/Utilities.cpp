@@ -41,6 +41,8 @@ bool initialize_window_and_renderer(SDL_Window** window, SDL_Renderer** renderer
         successful_initialization = false;
     }
 
+    SDL_SetWindowGrab(*window, SDL_TRUE);
+
     return successful_initialization;
 }
 
