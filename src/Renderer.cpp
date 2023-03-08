@@ -50,7 +50,7 @@ void draw(SDL_Renderer* renderer, Camera camera, Level &level, Uint32**** texBuf
 
             const Uint32 levelCellColor = level.get(int(cx), int(cy));
 
-            if (levelCellColor != AGBR_WHITE) {
+            if (levelCellColor != ARGB_WHITE) {
                 double distance = t * cos(rayAngle - camera.angle);
 
                 size_t columnHeight = (camera.viewportHeight / distance) * camera.distanceToProjectionPlane;
@@ -75,16 +75,16 @@ void draw(SDL_Renderer* renderer, Camera camera, Level &level, Uint32**** texBuf
 
                 switch (levelCellColor) {
 
-                    case AGBR_BLACK:
+                    case ARGB_BLACK:
                         texBuffer = (*texBuffers)[0];
                         break;
-                    case AGBR_RED:
+                    case ARGB_RED:
                         texBuffer = (*texBuffers)[clamp(1, 0, numTexBuffers-1)];
                         break;
-                    case AGBR_BLUE:
+                    case ARGB_BLUE:
                         texBuffer = (*texBuffers)[clamp(2, 0, numTexBuffers-1)];
                         break;
-                    case AGBR_GREEN:
+                    case ARGB_GREEN:
                         texBuffer = (*texBuffers)[clamp(3, 0, numTexBuffers-1)];
                         break;
                     default:

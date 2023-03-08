@@ -86,7 +86,7 @@ bool Level::has_collided(const float x, const float y) {
 
     for (size_t cellX = roundedX - 1; cellX <= roundedX + 1; cellX++) {
         for (size_t cellY = roundedY - 1; cellY <= roundedY + 1; cellY++) {
-            if (get(cellX, cellY) != AGBR_WHITE) {
+            if (get(cellX, cellY) != ARGB_WHITE) {
                 if (x >= cellX - 0.05 && x <= cellX + 1 + 0.05 &&
                     y >= cellY - 0.05 && y <= cellY + 1 + 0.05) {
                     collided = true;
@@ -110,7 +110,7 @@ bool Level::has_collided(const float x, const float y) {
 void Level::print() {
     for (int i = 0; i < w; i++) {
         for (int j = 0; j < h; j++) {
-            if (get(j, i) == AGBR_WHITE) {
+            if (get(j, i) == ARGB_WHITE) {
                 std::cout << "  ";
             } else {
                 std::cout << "* ";
