@@ -97,12 +97,20 @@ std::string assets_folder_path() {
     return file_path;
 }
 
-// Get a texture in Uint32 buffer form
+// Get a texture in Uint3w2 buffer form
 bool load_texture_to_buffer(Uint32*** buffer, size_t& size, std::string assetsFolderPath, std::string textureFilePath) {
     bool success = true;
 
     std::string fullTexturePath = assetsFolderPath + textureFilePath;
     SDL_Surface* tempTextureSurface = IMG_Load(fullTexturePath.c_str());
+
+    if (tempTextureSurface->format->format == SDL_PIXELFORMAT_ABGR8888) {
+        tempTextureSurface = SDL_ConvertSurfaceFormat(tempTextureSurface, SDL_PIXELFORMAT_ARGB8888, 0);
+    }
+
+    std::cout << SDL_GetPixelFormatName(tempTextureSurface->format->format) << std::endl;
+
+
     if (tempTextureSurface == nullptr) {
         std::cerr << "Could not load texture at " << fullTexturePath << ": " << IMG_GetError();
         success = false;

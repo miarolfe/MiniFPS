@@ -19,6 +19,8 @@ double frame_time(double oldTime, double curTime);
 
 std::string assets_folder_path();
 
+SDL_PixelFormatEnum get_platform_pixel_format_enum();
+
 bool load_texture_to_buffer(Uint32*** buffer, size_t& size, std::string assetsFolderPath, std::string textureFilePath);
 
 int clamp(int value, int min, int max);

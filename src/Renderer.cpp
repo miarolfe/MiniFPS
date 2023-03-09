@@ -93,7 +93,7 @@ void draw(SDL_Renderer* renderer, Camera camera, Level &level, Uint32**** texBuf
                 }
 
                 for (int y = drawStart; y < drawEnd; y++) {
-                    if (y < 0 || y > camera.viewportHeight) {
+                    if (y < 0 || y >= camera.viewportHeight) {
                         continue;
                     }
 
