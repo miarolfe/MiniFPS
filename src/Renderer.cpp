@@ -74,21 +74,31 @@ void draw(SDL_Renderer* renderer, Camera camera, Level &level, Uint32**** texBuf
                 // Map cell color to texture buffer
 
                 switch (levelCellColor) {
-
-                    case ARGB_BLACK:
-                        texBuffer = (*texBuffers)[0];
+                    case ARGB_WHITE:
                         break;
                     case ARGB_RED:
                         texBuffer = (*texBuffers)[clamp(1, 0, numTexBuffers-1)];
                         break;
-                    case ARGB_BLUE:
+                    case ARGB_YELLOW:
                         texBuffer = (*texBuffers)[clamp(2, 0, numTexBuffers-1)];
                         break;
                     case ARGB_GREEN:
                         texBuffer = (*texBuffers)[clamp(3, 0, numTexBuffers-1)];
                         break;
-                    default:
+                    case ARGB_CYAN:
                         texBuffer = (*texBuffers)[clamp(4, 0, numTexBuffers-1)];
+                        break;
+                    case ARGB_BLUE:
+                        texBuffer = (*texBuffers)[clamp(5, 0, numTexBuffers-1)];
+                        break;
+                    case ARGB_INDIGO:
+                        texBuffer = (*texBuffers)[clamp(6, 0, numTexBuffers-1)];
+                        break;
+                    case ARGB_BLACK:
+                        texBuffer = (*texBuffers)[clamp(7, 0, numTexBuffers-1)];
+                        break;
+                    default:
+                        texBuffer = (*texBuffers)[0];
                         break;
                 }
 

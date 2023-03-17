@@ -108,9 +108,6 @@ bool load_texture_to_buffer(Uint32*** buffer, size_t& size, std::string assetsFo
         tempTextureSurface = SDL_ConvertSurfaceFormat(tempTextureSurface, SDL_PIXELFORMAT_ARGB8888, 0);
     }
 
-    std::cout << SDL_GetPixelFormatName(tempTextureSurface->format->format) << std::endl;
-
-
     if (tempTextureSurface == nullptr) {
         std::cerr << "Could not load texture at " << fullTexturePath << ": " << IMG_GetError();
         success = false;

@@ -15,18 +15,22 @@
   "player": {
     "speedModifier": 5,
     "rotationModifier": 0.5,
-    "startX": 2,
+    "startX": 1.5,
     "startY": 2,
     "startAngle": 1.523
   },
 
   "files": {
-    "levelPath": "levels/testLevel11.png",
+    "levelPath": "levels/testLevel12.png",
     "texturePaths": [
-      "sprites/testWall1.png",
-      "sprites/redBricks32x32.png",
-      "sprites/testWall3.png",
-      "sprites/sandBricks32x32.png"
+      "sprites/white-bricks.png",
+      "sprites/red-bricks.png",
+      "sprites/yellow-bricks.png",
+      "sprites/green-bricks.png",
+      "sprites/cyan-bricks.png",
+      "sprites/blue-bricks.png",
+      "sprites/indigo-bricks.png",
+      "sprites/grey-bricks.png"
     ]
   }
 }
