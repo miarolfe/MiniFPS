@@ -7,8 +7,8 @@
 #include "Camera.h"
 #include "Player.h"
 
-void get_input_state(bool &gameIsRunning, bool &moveLeft, bool &moveRight, bool &moveForward,
-                     bool &moveBack, int &mouseX, int &mouseY) {
+void GetInputState(bool &gameIsRunning, bool &moveLeft, bool &moveRight, bool &moveForward,
+                   bool &moveBack, int &mouseX, int &mouseY) {
     SDL_Event event;
 
     while (SDL_PollEvent(&event)) {
@@ -53,8 +53,8 @@ void get_input_state(bool &gameIsRunning, bool &moveLeft, bool &moveRight, bool 
     }
 }
 
-void move(Camera &camera, const float frameDelta, const float speedModifier, const bool moveLeft, const bool moveRight,
-          const bool moveForward, const bool moveBack) {
+void Move(Camera &camera, float frameDelta, float speedModifier, bool moveLeft, bool moveRight,
+          bool moveForward, bool moveBack) {
 
     // Avoid doing and undoing operations
     if (moveForward != moveBack) {

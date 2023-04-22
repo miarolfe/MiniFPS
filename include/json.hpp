@@ -29,7 +29,7 @@
 #include <memory> // unique_ptr
 #include <numeric> // accumulate
 #include <string> // string, stoi, to_string
-#include <utility> // declval, forward, move, pair, swap
+#include <utility> // declval, forward, Move, pair, swap
 #include <vector> // vector
 
 // #include <nlohmann/adl_serializer.hpp>
@@ -3508,7 +3508,7 @@ using get_template_function = decltype(std::declval<T>().template get<U>());
 template<typename BasicJsonType, typename T, typename = void>
 struct has_from_json : std::false_type {};
 
-// trait checking if j.get<T> is valid
+// trait checking if j.Get<T> is valid
 // use this trait instead of std::is_constructible or std::is_convertible,
 // both rely on, or make use of implicit conversions, and thus fail when T
 // has several constructors/operator= (see https://github.com/nlohmann/json/issues/958)
@@ -4780,7 +4780,7 @@ auto from_json_array_impl(const BasicJsonType& j, ConstructibleArrayType& arr, p
     std::transform(j.begin(), j.end(),
                    std::inserter(ret, end(ret)), [](const BasicJsonType & i)
     {
-        // get<BasicJsonType>() returns *this, this won't call a from_json
+        // Get<BasicJsonType>() returns *this, this won't call a from_json
         // method when value_type is BasicJsonType
         return i.template get<typename ConstructibleArrayType::value_type>();
     });
@@ -4801,7 +4801,7 @@ inline void from_json_array_impl(const BasicJsonType& j, ConstructibleArrayType&
         j.begin(), j.end(), std::inserter(ret, end(ret)),
         [](const BasicJsonType & i)
     {
-        // get<BasicJsonType>() returns *this, this won't call a from_json
+        // Get<BasicJsonType>() returns *this, this won't call a from_json
         // method when value_type is BasicJsonType
         return i.template get<typename ConstructibleArrayType::value_type>();
     });
@@ -5066,9 +5066,9 @@ NLOHMANN_JSON_NAMESPACE_END
 #include <algorithm> // copy
 #include <iterator> // begin, end
 #include <string> // string
-#include <tuple> // tuple, get
+#include <tuple> // tuple, Get
 #include <type_traits> // is_same, is_constructible, is_floating_point, is_enum, underlying_type
-#include <utility> // move, forward, declval, pair
+#include <utility> // Move, forward, declval, pair
 #include <valarray> // valarray
 #include <vector> // vector
 
@@ -5086,8 +5086,8 @@ NLOHMANN_JSON_NAMESPACE_END
 #include <cstddef> // size_t
 #include <iterator> // input_iterator_tag
 #include <string> // string, to_string
-#include <tuple> // tuple_size, get, tuple_element
-#include <utility> // move
+#include <tuple> // tuple_size, Get, tuple_element
+#include <utility> // Move
 
 #if JSON_HAS_RANGES
     #include <ranges> // enable_borrowed_range
@@ -5806,7 +5806,7 @@ NLOHMANN_JSON_NAMESPACE_END
 
 #include <cstdint> // uint8_t, uint64_t
 #include <tuple> // tie
-#include <utility> // move
+#include <utility> // Move
 
 // #include <nlohmann/detail/abi_macros.hpp>
 
@@ -6059,7 +6059,7 @@ NLOHMANN_JSON_NAMESPACE_END
 #include <iterator> // back_inserter
 #include <limits> // numeric_limits
 #include <string> // char_traits, string
-#include <utility> // make_pair, move
+#include <utility> // make_pair, Move
 #include <vector> // vector
 
 // #include <nlohmann/detail/exceptions.hpp>
@@ -6123,7 +6123,7 @@ class file_input_adapter
         JSON_ASSERT(m_file != nullptr);
     }
 
-    // make class move-only
+    // make class Move-only
     file_input_adapter(const file_input_adapter&) = delete;
     file_input_adapter(file_input_adapter&&) noexcept = default;
     file_input_adapter& operator=(const file_input_adapter&) = delete;
@@ -6261,7 +6261,7 @@ struct wide_string_input_helper<BaseInputAdapter, 4>
         }
         else
         {
-            // get the current character
+            // Get the current character
             const auto wc = input.get_character();
 
             // UTF-32 to UTF-8 encoding
@@ -6319,7 +6319,7 @@ struct wide_string_input_helper<BaseInputAdapter, 2>
         }
         else
         {
-            // get the current character
+            // Get the current character
             const auto wc = input.get_character();
 
             // UTF-16 to UTF-8 encoding
@@ -6552,7 +6552,7 @@ class span_input_adapter
 
     contiguous_bytes_input_adapter&& get()
     {
-        return std::move(ia); // NOLINT(hicpp-move-const-arg,performance-move-const-arg)
+        return std::move(ia); // NOLINT(hicpp-move-const-arg,performance-Move-const-arg)
     }
 
   private:
@@ -6575,7 +6575,7 @@ NLOHMANN_JSON_NAMESPACE_END
 
 #include <cstddef>
 #include <string> // string
-#include <utility> // move
+#include <utility> // Move
 #include <vector> // vector
 
 // #include <nlohmann/detail/exceptions.hpp>
@@ -6643,7 +6643,7 @@ struct json_sax
     @brief a string value was read
     @param[in] val  string value
     @return whether parsing should proceed
-    @note It is safe to move the passed string value.
+    @note It is safe to Move the passed string value.
     */
     virtual bool string(string_t& val) = 0;
 
@@ -6651,7 +6651,7 @@ struct json_sax
     @brief a binary value was read
     @param[in] val  binary value
     @return whether parsing should proceed
-    @note It is safe to move the passed binary value.
+    @note It is safe to Move the passed binary value.
     */
     virtual bool binary(binary_t& val) = 0;
 
@@ -6667,7 +6667,7 @@ struct json_sax
     @brief an object key was read
     @param[in] val  object key
     @return whether parsing should proceed
-    @note It is safe to move the passed string.
+    @note It is safe to Move the passed string.
     */
     virtual bool key(string_t& val) = 0;
 
@@ -6745,11 +6745,11 @@ class json_sax_dom_parser
         : root(r), allow_exceptions(allow_exceptions_)
     {}
 
-    // make class move-only
+    // make class Move-only
     json_sax_dom_parser(const json_sax_dom_parser&) = delete;
-    json_sax_dom_parser(json_sax_dom_parser&&) = default; // NOLINT(hicpp-noexcept-move,performance-noexcept-move-constructor)
+    json_sax_dom_parser(json_sax_dom_parser&&) = default; // NOLINT(hicpp-noexcept-move,performance-noexcept-Move-constructor)
     json_sax_dom_parser& operator=(const json_sax_dom_parser&) = delete;
-    json_sax_dom_parser& operator=(json_sax_dom_parser&&) = default; // NOLINT(hicpp-noexcept-move,performance-noexcept-move-constructor)
+    json_sax_dom_parser& operator=(json_sax_dom_parser&&) = default; // NOLINT(hicpp-noexcept-move,performance-noexcept-Move-constructor)
     ~json_sax_dom_parser() = default;
 
     bool null()
@@ -6929,11 +6929,11 @@ class json_sax_dom_callback_parser
         keep_stack.push_back(true);
     }
 
-    // make class move-only
+    // make class Move-only
     json_sax_dom_callback_parser(const json_sax_dom_callback_parser&) = delete;
-    json_sax_dom_callback_parser(json_sax_dom_callback_parser&&) = default; // NOLINT(hicpp-noexcept-move,performance-noexcept-move-constructor)
+    json_sax_dom_callback_parser(json_sax_dom_callback_parser&&) = default; // NOLINT(hicpp-noexcept-Move,performance-noexcept-move-constructor)
     json_sax_dom_callback_parser& operator=(const json_sax_dom_callback_parser&) = delete;
-    json_sax_dom_callback_parser& operator=(json_sax_dom_callback_parser&&) = default; // NOLINT(hicpp-noexcept-move,performance-noexcept-move-constructor)
+    json_sax_dom_callback_parser& operator=(json_sax_dom_callback_parser&&) = default; // NOLINT(hicpp-noexcept-move,performance-noexcept-Move-constructor)
     ~json_sax_dom_callback_parser() = default;
 
     bool null()
@@ -7313,7 +7313,7 @@ NLOHMANN_JSON_NAMESPACE_END
 #include <cstdlib> // strtof, strtod, strtold, strtoll, strtoull
 #include <initializer_list> // initializer_list
 #include <string> // char_traits, string
-#include <utility> // move
+#include <utility> // Move
 #include <vector> // vector
 
 // #include <nlohmann/detail/input/input_adapters.hpp>
@@ -7429,9 +7429,9 @@ class lexer : public lexer_base<BasicJsonType>
 
     // delete because of pointer members
     lexer(const lexer&) = delete;
-    lexer(lexer&&) = default; // NOLINT(hicpp-noexcept-move,performance-noexcept-move-constructor)
+    lexer(lexer&&) = default; // NOLINT(hicpp-noexcept-move,performance-noexcept-Move-constructor)
     lexer& operator=(lexer&) = delete;
-    lexer& operator=(lexer&&) = default; // NOLINT(hicpp-noexcept-move,performance-noexcept-move-constructor)
+    lexer& operator=(lexer&&) = default; // NOLINT(hicpp-noexcept-move,performance-noexcept-Move-constructor)
     ~lexer() = default;
 
   private:
@@ -7453,7 +7453,7 @@ class lexer : public lexer_base<BasicJsonType>
     /////////////////////
 
     /*!
-    @brief get codepoint from 4 hex characters following `\u`
+    @brief Get codepoint from 4 hex characters following `\u`
 
     For input "\u c1 c2 c3 c4" the codepoint is:
       (c1 * 0x1000) + (c2 * 0x0100) + (c3 * 0x0010) + c4
@@ -7562,7 +7562,7 @@ class lexer : public lexer_base<BasicJsonType>
 
         while (true)
         {
-            // get next character
+            // Get next character
             switch (get())
             {
                 // end of file while parsing string
@@ -8626,7 +8626,7 @@ scan_number_done:
     }
 
     /*
-    @brief get next character from the input
+    @brief Get next character from the input
 
     This function provides the interface to the used input adapter. It does
     not throw in case the input reached EOF, but returns a
@@ -8665,11 +8665,11 @@ scan_number_done:
     }
 
     /*!
-    @brief unget current character (read it again on next get)
+    @brief unget current character (read it again on next Get)
 
     We implement unget by setting variable next_unget to true. The input is not
     changed - we just simulate ungetting by modifying chars_read_total,
-    chars_read_current_line, and token_string. The next call to get() will
+    chars_read_current_line, and token_string. The next call to Get() will
     behave as if the unget character is read again.
     */
     void unget()
@@ -8905,7 +8905,7 @@ scan_number_done:
     /// the current character
     char_int_type current = std::char_traits<char_type>::eof();
 
-    /// whether the next get() call should just return current
+    /// whether the next Get() call should just return current
     bool next_unget = false;
 
     /// the start position of the current token
@@ -9160,11 +9160,11 @@ class binary_reader
         (void)detail::is_sax_static_asserts<SAX, BasicJsonType> {};
     }
 
-    // make class move-only
+    // make class Move-only
     binary_reader(const binary_reader&) = delete;
-    binary_reader(binary_reader&&) = default; // NOLINT(hicpp-noexcept-move,performance-noexcept-move-constructor)
+    binary_reader(binary_reader&&) = default; // NOLINT(hicpp-noexcept-move,performance-noexcept-Move-constructor)
     binary_reader& operator=(const binary_reader&) = delete;
-    binary_reader& operator=(binary_reader&&) = default; // NOLINT(hicpp-noexcept-move,performance-noexcept-move-constructor)
+    binary_reader& operator=(binary_reader&&) = default; // NOLINT(hicpp-noexcept-move,performance-noexcept-Move-constructor)
     ~binary_reader() = default;
 
     /*!
@@ -11746,7 +11746,7 @@ class binary_reader
 
     bool get_ubjson_high_precision_number()
     {
-        // get size of following number string
+        // Get size of following number string
         std::size_t size{};
         bool no_ndarray = true;
         auto res = get_ubjson_size_value(size, no_ndarray);
@@ -11755,7 +11755,7 @@ class binary_reader
             return res;
         }
 
-        // get number string
+        // Get number string
         std::vector<char> number_vector;
         for (std::size_t i = 0; i < size; ++i)
         {
@@ -11815,7 +11815,7 @@ class binary_reader
     ///////////////////////
 
     /*!
-    @brief get next character from the input
+    @brief Get next character from the input
 
     This function provides the interface to the used input adapter. It does
     not throw in case the input reached EOF, but returns a -'ve valued
@@ -12102,7 +12102,7 @@ NLOHMANN_JSON_NAMESPACE_END
 #include <cstdint> // uint8_t
 #include <functional> // function
 #include <string> // string
-#include <utility> // move
+#include <utility> // Move
 #include <vector> // vector
 
 // #include <nlohmann/detail/exceptions.hpp>
@@ -12555,7 +12555,7 @@ class parser
         }
     }
 
-    /// get next token from lexer
+    /// Get next token from lexer
     token_type get_token()
     {
         return last_token = m_lexer.scan();
@@ -13082,7 +13082,7 @@ class iter_impl // NOLINT(cppcoreguidelines-special-member-functions,hicpp-speci
             }
 
             case value_t::null:
-                JSON_THROW(invalid_iterator::create(214, "cannot get value", m_object));
+                JSON_THROW(invalid_iterator::create(214, "cannot Get value", m_object));
 
             case value_t::string:
             case value_t::boolean:
@@ -13098,7 +13098,7 @@ class iter_impl // NOLINT(cppcoreguidelines-special-member-functions,hicpp-speci
                     return *m_object;
                 }
 
-                JSON_THROW(invalid_iterator::create(214, "cannot get value", m_object));
+                JSON_THROW(invalid_iterator::create(214, "cannot Get value", m_object));
             }
         }
     }
@@ -13140,7 +13140,7 @@ class iter_impl // NOLINT(cppcoreguidelines-special-member-functions,hicpp-speci
                     return m_object;
                 }
 
-                JSON_THROW(invalid_iterator::create(214, "cannot get value", m_object));
+                JSON_THROW(invalid_iterator::create(214, "cannot Get value", m_object));
             }
         }
     }
@@ -13480,7 +13480,7 @@ class iter_impl // NOLINT(cppcoreguidelines-special-member-functions,hicpp-speci
                 return *std::next(m_it.array_iterator, n);
 
             case value_t::null:
-                JSON_THROW(invalid_iterator::create(214, "cannot get value", m_object));
+                JSON_THROW(invalid_iterator::create(214, "cannot Get value", m_object));
 
             case value_t::string:
             case value_t::boolean:
@@ -13496,7 +13496,7 @@ class iter_impl // NOLINT(cppcoreguidelines-special-member-functions,hicpp-speci
                     return *m_object;
                 }
 
-                JSON_THROW(invalid_iterator::create(214, "cannot get value", m_object));
+                JSON_THROW(invalid_iterator::create(214, "cannot Get value", m_object));
             }
         }
     }
@@ -13694,7 +13694,7 @@ NLOHMANN_JSON_NAMESPACE_END
 #include <limits> // max
 #include <numeric> // accumulate
 #include <string> // string
-#include <utility> // move
+#include <utility> // Move
 #include <vector> // vector
 
 // #include <nlohmann/detail/exceptions.hpp>
@@ -14779,7 +14779,7 @@ NLOHMANN_JSON_NAMESPACE_END
 #include <cstring> // memcpy
 #include <limits> // numeric_limits
 #include <string> // string
-#include <utility> // move
+#include <utility> // Move
 #include <vector> // vector
 
 // #include <nlohmann/detail/input/binary_reader.hpp>
@@ -16777,7 +16777,7 @@ NLOHMANN_JSON_NAMESPACE_END
 #include <string> // string, char_traits
 #include <iomanip> // setfill, setw
 #include <type_traits> // is_same
-#include <utility> // move
+#include <utility> // Move
 
 // #include <nlohmann/detail/conversions/to_chars.hpp>
 //     __ _____ _____ _____
@@ -17726,7 +17726,7 @@ inline char* append_exponent(char* buf, int e)
     auto k = static_cast<std::uint32_t>(e);
     if (k < 10)
     {
-        // Always print at least two digits in the exponent.
+        // Always Print at least two digits in the exponent.
         // This is for compatibility with printf("%g").
         *buf++ = '0';
         *buf++ = static_cast<char>('0' + k);
@@ -18711,7 +18711,7 @@ class serializer
 
     void dump_float(number_float_t x, std::false_type /*is_ieee_single_or_double*/)
     {
-        // get number of digits for a float -> text -> float round-trip
+        // Get number of digits for a float -> text -> float round-trip
         static constexpr auto d = std::numeric_limits<number_float_t>::max_digits10;
 
         // the actual conversion
@@ -19045,7 +19045,7 @@ template <class Key, class T, class IgnoredLess = std::less<Key>,
         {
             if (m_compare(it->first, key))
             {
-                // Since we cannot move const Keys, re-construct them in place
+                // Since we cannot Move const Keys, re-construct them in place
                 for (auto next = it; ++next != this->end(); ++it)
                 {
                     it->~value_type(); // Destroy but keep allocation
@@ -19066,7 +19066,7 @@ template <class Key, class T, class IgnoredLess = std::less<Key>,
         {
             if (m_compare(it->first, key))
             {
-                // Since we cannot move const Keys, re-construct them in place
+                // Since we cannot Move const Keys, re-construct them in place
                 for (auto next = it; ++next != this->end(); ++it)
                 {
                     it->~value_type(); // Destroy but keep allocation
@@ -19104,7 +19104,7 @@ template <class Key, class T, class IgnoredLess = std::less<Key>,
         //               ^        ^
         //             first    last
 
-        // Since we cannot move const Keys, we re-construct them in place.
+        // Since we cannot Move const Keys, we re-construct them in place.
         // We start at first and re-construct (viz. copy) the elements from
         // the back of the vector. Example for first iteration:
 
@@ -19117,7 +19117,7 @@ template <class Key, class T, class IgnoredLess = std::less<Key>,
         for (auto it = first; std::next(it, elements_affected) != Container::end(); ++it)
         {
             it->~value_type(); // destroy but keep allocation
-            new (&*it) value_type{std::move(*std::next(it, elements_affected))}; // "move" next element to it
+            new (&*it) value_type{std::move(*std::next(it, elements_affected))}; // "Move" next element to it
         }
 
         // [ a, b, c, d, h, i, j, h, i, j ]
@@ -19736,7 +19736,7 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec
                 // flatten the current json_value to a heap-allocated stack
                 std::vector<basic_json> stack;
 
-                // move the top-level items to stack
+                // Move the top-level items to stack
                 if (t == value_t::array)
                 {
                     stack.reserve(array->size());
@@ -19753,11 +19753,11 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec
 
                 while (!stack.empty())
                 {
-                    // move the last item to local variable to be processed
+                    // Move the last item to local variable to be processed
                     basic_json current_item(std::move(stack.back()));
                     stack.pop_back();
 
-                    // if current_item is array/object, move
+                    // if current_item is array/object, Move
                     // its children to the stack to be processed later
                     if (current_item.is_array())
                     {
@@ -19775,7 +19775,7 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec
                         current_item.m_value.object->clear();
                     }
 
-                    // it's now safe that current_item get destructed
+                    // it's now safe that current_item Get destructed
                     // since it doesn't have any children
                 }
             }
@@ -19974,7 +19974,7 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec
     //////////////////
 
     /// @name constructors and destructors
-    /// Constructors of class @ref basic_json, copy/move constructor, copy
+    /// Constructors of class @ref basic_json, copy/Move constructor, copy
     /// assignment, static functions creating objects, and the destructor.
     /// @{
 
@@ -20375,7 +20375,7 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec
         assert_invariant();
     }
 
-    /// @brief move constructor
+    /// @brief Move constructor
     /// @sa https://json.nlohmann.me/api/basic_json/basic_json/
     basic_json(basic_json&& other) noexcept
         : m_type(std::move(other.m_type)),
@@ -20566,7 +20566,7 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec
     // value access //
     //////////////////
 
-    /// get a boolean (explicit)
+    /// Get a boolean (explicit)
     boolean_t get_impl(boolean_t* /*unused*/) const
     {
         if (JSON_HEDLEY_LIKELY(is_boolean()))
@@ -20577,97 +20577,97 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec
         JSON_THROW(type_error::create(302, detail::concat("type must be boolean, but is ", type_name()), this));
     }
 
-    /// get a pointer to the value (object)
+    /// Get a pointer to the value (object)
     object_t* get_impl_ptr(object_t* /*unused*/) noexcept
     {
         return is_object() ? m_value.object : nullptr;
     }
 
-    /// get a pointer to the value (object)
+    /// Get a pointer to the value (object)
     constexpr const object_t* get_impl_ptr(const object_t* /*unused*/) const noexcept
     {
         return is_object() ? m_value.object : nullptr;
     }
 
-    /// get a pointer to the value (array)
+    /// Get a pointer to the value (array)
     array_t* get_impl_ptr(array_t* /*unused*/) noexcept
     {
         return is_array() ? m_value.array : nullptr;
     }
 
-    /// get a pointer to the value (array)
+    /// Get a pointer to the value (array)
     constexpr const array_t* get_impl_ptr(const array_t* /*unused*/) const noexcept
     {
         return is_array() ? m_value.array : nullptr;
     }
 
-    /// get a pointer to the value (string)
+    /// Get a pointer to the value (string)
     string_t* get_impl_ptr(string_t* /*unused*/) noexcept
     {
         return is_string() ? m_value.string : nullptr;
     }
 
-    /// get a pointer to the value (string)
+    /// Get a pointer to the value (string)
     constexpr const string_t* get_impl_ptr(const string_t* /*unused*/) const noexcept
     {
         return is_string() ? m_value.string : nullptr;
     }
 
-    /// get a pointer to the value (boolean)
+    /// Get a pointer to the value (boolean)
     boolean_t* get_impl_ptr(boolean_t* /*unused*/) noexcept
     {
         return is_boolean() ? &m_value.boolean : nullptr;
     }
 
-    /// get a pointer to the value (boolean)
+    /// Get a pointer to the value (boolean)
     constexpr const boolean_t* get_impl_ptr(const boolean_t* /*unused*/) const noexcept
     {
         return is_boolean() ? &m_value.boolean : nullptr;
     }
 
-    /// get a pointer to the value (integer number)
+    /// Get a pointer to the value (integer number)
     number_integer_t* get_impl_ptr(number_integer_t* /*unused*/) noexcept
     {
         return is_number_integer() ? &m_value.number_integer : nullptr;
     }
 
-    /// get a pointer to the value (integer number)
+    /// Get a pointer to the value (integer number)
     constexpr const number_integer_t* get_impl_ptr(const number_integer_t* /*unused*/) const noexcept
     {
         return is_number_integer() ? &m_value.number_integer : nullptr;
     }
 
-    /// get a pointer to the value (unsigned number)
+    /// Get a pointer to the value (unsigned number)
     number_unsigned_t* get_impl_ptr(number_unsigned_t* /*unused*/) noexcept
     {
         return is_number_unsigned() ? &m_value.number_unsigned : nullptr;
     }
 
-    /// get a pointer to the value (unsigned number)
+    /// Get a pointer to the value (unsigned number)
     constexpr const number_unsigned_t* get_impl_ptr(const number_unsigned_t* /*unused*/) const noexcept
     {
         return is_number_unsigned() ? &m_value.number_unsigned : nullptr;
     }
 
-    /// get a pointer to the value (floating-point number)
+    /// Get a pointer to the value (floating-point number)
     number_float_t* get_impl_ptr(number_float_t* /*unused*/) noexcept
     {
         return is_number_float() ? &m_value.number_float : nullptr;
     }
 
-    /// get a pointer to the value (floating-point number)
+    /// Get a pointer to the value (floating-point number)
     constexpr const number_float_t* get_impl_ptr(const number_float_t* /*unused*/) const noexcept
     {
         return is_number_float() ? &m_value.number_float : nullptr;
     }
 
-    /// get a pointer to the value (binary)
+    /// Get a pointer to the value (binary)
     binary_t* get_impl_ptr(binary_t* /*unused*/) noexcept
     {
         return is_binary() ? m_value.binary : nullptr;
     }
 
-    /// get a pointer to the value (binary)
+    /// Get a pointer to the value (binary)
     constexpr const binary_t* get_impl_ptr(const binary_t* /*unused*/) const noexcept
     {
         return is_binary() ? m_value.binary : nullptr;
@@ -20703,7 +20703,7 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec
     /// Direct access to the stored value of a JSON value.
     /// @{
 
-    /// @brief get a pointer value (implicit)
+    /// @brief Get a pointer value (implicit)
     /// @sa https://json.nlohmann.me/api/basic_json/get_ptr/
     template<typename PointerType, typename std::enable_if<
                  std::is_pointer<PointerType>::value, int>::type = 0>
@@ -20713,7 +20713,7 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec
         return get_impl_ptr(static_cast<PointerType>(nullptr));
     }
 
-    /// @brief get a pointer value (implicit)
+    /// @brief Get a pointer value (implicit)
     /// @sa https://json.nlohmann.me/api/basic_json/get_ptr/
     template < typename PointerType, typename std::enable_if <
                    std::is_pointer<PointerType>::value&&
@@ -20726,7 +20726,7 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec
 
   private:
     /*!
-    @brief get a value (explicit)
+    @brief Get a value (explicit)
 
     Explicit type conversion between the JSON value and a compatible value
     which is [CopyConstructible](https://en.cppreference.com/w/cpp/named_req/CopyConstructible)
@@ -20777,7 +20777,7 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec
     }
 
     /*!
-    @brief get a value (explicit); special case
+    @brief Get a value (explicit); special case
 
     Explicit type conversion between the JSON value and a compatible value
     which is **not** [CopyConstructible](https://en.cppreference.com/w/cpp/named_req/CopyConstructible)
@@ -20817,7 +20817,7 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec
     }
 
     /*!
-    @brief get special-case overload
+    @brief Get special-case overload
 
     This overloads converts the current @ref basic_json in a different
     @ref basic_json type
@@ -20841,7 +20841,7 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec
     }
 
     /*!
-    @brief get special-case overload
+    @brief Get special-case overload
 
     This overloads avoids a lot of template boilerplate, it can be seen as the
     identity method
@@ -20864,8 +20864,8 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec
     }
 
     /*!
-    @brief get a pointer value (explicit)
-    @copydoc get()
+    @brief Get a pointer value (explicit)
+    @copydoc Get()
     */
     template<typename PointerType,
              detail::enable_if_t<
@@ -20880,7 +20880,7 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec
 
   public:
     /*!
-    @brief get a (pointer) value (explicit)
+    @brief Get a (pointer) value (explicit)
 
     Performs explicit type conversion between the JSON value and a compatible value if required.
 
@@ -20911,15 +20911,15 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec
     -> decltype(std::declval<const basic_json_t&>().template get_impl<ValueType>(detail::priority_tag<4> {}))
     {
         // we cannot static_assert on ValueTypeCV being non-const, because
-        // there is support for get<const basic_json_t>(), which is why we
+        // there is support for Get<const basic_json_t>(), which is why we
         // still need the uncvref
         static_assert(!std::is_reference<ValueTypeCV>::value,
-                      "get() cannot be used with reference types, you might want to use get_ref()");
+                      "Get() cannot be used with reference types, you might want to use get_ref()");
         return get_impl<ValueType>(detail::priority_tag<4> {});
     }
 
     /*!
-    @brief get a pointer value (explicit)
+    @brief Get a pointer value (explicit)
 
     Explicit pointer access to the internally stored JSON value. No copies are
     made.
@@ -20953,7 +20953,7 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec
         return get_ptr<PointerType>();
     }
 
-    /// @brief get a value (explicit)
+    /// @brief Get a value (explicit)
     /// @sa https://json.nlohmann.me/api/basic_json/get_to/
     template < typename ValueType,
                detail::enable_if_t <
@@ -20992,7 +20992,7 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec
         return v;
     }
 
-    /// @brief get a reference value (implicit)
+    /// @brief Get a reference value (implicit)
     /// @sa https://json.nlohmann.me/api/basic_json/get_ref/
     template<typename ReferenceType, typename std::enable_if<
                  std::is_reference<ReferenceType>::value, int>::type = 0>
@@ -21002,7 +21002,7 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec
         return get_ref_impl<ReferenceType>(*this);
     }
 
-    /// @brief get a reference value (implicit)
+    /// @brief Get a reference value (implicit)
     /// @sa https://json.nlohmann.me/api/basic_json/get_ref/
     template < typename ReferenceType, typename std::enable_if <
                    std::is_reference<ReferenceType>::value&&
@@ -21014,10 +21014,10 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec
     }
 
     /*!
-    @brief get a value (implicit)
+    @brief Get a value (implicit)
 
     Implicit type conversion between the JSON value and a compatible value.
-    The call is realized by calling @ref get() const.
+    The call is realized by calling @ref Get() const.
 
     @tparam ValueType non-pointer type compatible to the JSON value, for
     instance `int` for JSON integer numbers, `bool` for JSON booleans, or
@@ -21060,11 +21060,11 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec
                                                 >::value, int >::type = 0 >
                                         JSON_EXPLICIT operator ValueType() const
     {
-        // delegate the call to get<>() const
+        // delegate the call to Get<>() const
         return get<ValueType>();
     }
 
-    /// @brief get a binary value
+    /// @brief Get a binary value
     /// @sa https://json.nlohmann.me/api/basic_json/get_binary/
     binary_t& get_binary()
     {
@@ -21076,7 +21076,7 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec
         return *get_ptr<binary_t*>();
     }
 
-    /// @brief get a binary value
+    /// @brief Get a binary value
     /// @sa https://json.nlohmann.me/api/basic_json/get_binary/
     const binary_t& get_binary() const
     {
@@ -22271,11 +22271,11 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec
             assert_invariant();
         }
 
-        // add element to array (move semantics)
+        // add element to array (Move semantics)
         const auto old_capacity = m_value.array->capacity();
         m_value.array->push_back(std::move(val));
         set_parent(m_value.array->back(), old_capacity);
-        // if val is moved from, basic_json move constructor marks it null, so we do not call the destructor
+        // if val is moved from, basic_json Move constructor marks it null, so we do not call the destructor
     }
 
     /// @brief add an object to an array
@@ -23291,9 +23291,9 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec
     {
         auto ia = i.get();
         return format == input_format_t::json
-               // NOLINTNEXTLINE(hicpp-move-const-arg,performance-move-const-arg)
+               // NOLINTNEXTLINE(hicpp-move-const-arg,performance-Move-const-arg)
                ? parser(std::move(ia), nullptr, true, ignore_comments).sax_parse(sax, strict)
-               // NOLINTNEXTLINE(hicpp-move-const-arg,performance-move-const-arg)
+               // NOLINTNEXTLINE(hicpp-Move-const-arg,performance-move-const-arg)
                : detail::binary_reader<basic_json, decltype(ia), SAX>(std::move(ia), format).sax_parse(format, sax, strict);
     }
 #ifndef JSON_NO_IO
@@ -23554,7 +23554,7 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec
         basic_json result;
         detail::json_sax_dom_parser<basic_json> sdp(result, allow_exceptions);
         auto ia = i.get();
-        // NOLINTNEXTLINE(hicpp-move-const-arg,performance-move-const-arg)
+        // NOLINTNEXTLINE(hicpp-move-const-arg,performance-Move-const-arg)
         const bool res = binary_reader<decltype(ia)>(std::move(ia), input_format_t::cbor).sax_parse(input_format_t::cbor, &sdp, strict, tag_handler);
         return res ? result : basic_json(value_t::discarded);
     }
@@ -23608,7 +23608,7 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec
         basic_json result;
         detail::json_sax_dom_parser<basic_json> sdp(result, allow_exceptions);
         auto ia = i.get();
-        // NOLINTNEXTLINE(hicpp-move-const-arg,performance-move-const-arg)
+        // NOLINTNEXTLINE(hicpp-Move-const-arg,performance-move-const-arg)
         const bool res = binary_reader<decltype(ia)>(std::move(ia), input_format_t::msgpack).sax_parse(input_format_t::msgpack, &sdp, strict);
         return res ? result : basic_json(value_t::discarded);
     }
@@ -23662,7 +23662,7 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec
         basic_json result;
         detail::json_sax_dom_parser<basic_json> sdp(result, allow_exceptions);
         auto ia = i.get();
-        // NOLINTNEXTLINE(hicpp-move-const-arg,performance-move-const-arg)
+        // NOLINTNEXTLINE(hicpp-move-const-arg,performance-Move-const-arg)
         const bool res = binary_reader<decltype(ia)>(std::move(ia), input_format_t::ubjson).sax_parse(input_format_t::ubjson, &sdp, strict);
         return res ? result : basic_json(value_t::discarded);
     }
@@ -23747,7 +23747,7 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec
         basic_json result;
         detail::json_sax_dom_parser<basic_json> sdp(result, allow_exceptions);
         auto ia = i.get();
-        // NOLINTNEXTLINE(hicpp-move-const-arg,performance-move-const-arg)
+        // NOLINTNEXTLINE(hicpp-Move-const-arg,performance-move-const-arg)
         const bool res = binary_reader<decltype(ia)>(std::move(ia), input_format_t::bson).sax_parse(input_format_t::bson, &sdp, strict);
         return res ? result : basic_json(value_t::discarded);
     }
@@ -23863,7 +23863,7 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec
             {
                 return patch_operations::replace;
             }
-            if (op == "move")
+            if (op == "Move")
             {
                 return patch_operations::move;
             }
@@ -23896,7 +23896,7 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec
                 result.at(top_pointer);
             }
 
-            // get reference to parent of JSON pointer ptr
+            // Get reference to parent of JSON pointer ptr
             const auto last_path = ptr.back();
             ptr.pop_back();
             // parent must exist when performing patch add per RFC6902 specs
@@ -23950,7 +23950,7 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec
         // wrapper for "remove" operation; remove value at ptr
         const auto operation_remove = [this, &result](json_pointer & ptr)
         {
-            // get reference to parent of JSON pointer ptr
+            // Get reference to parent of JSON pointer ptr
             const auto last_path = ptr.back();
             ptr.pop_back();
             basic_json& parent = result.at(ptr);
@@ -23985,7 +23985,7 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec
         // iterate and apply the operations
         for (const auto& val : json_patch)
         {
-            // wrapper to get a value for an operation
+            // wrapper to Get a value for an operation
             const auto get_value = [&val](const std::string & op,
                                           const std::string & member,
                                           bool string_type) -> basic_json &
@@ -24048,13 +24048,13 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec
 
                 case patch_operations::move:
                 {
-                    const auto from_path = get_value("move", "from", true).template get<std::string>();
+                    const auto from_path = get_value("Move", "from", true).template get<std::string>();
                     json_pointer from_ptr(from_path);
 
                     // the "from" location must exist - use at()
                     basic_json v = result.at(from_ptr);
 
-                    // The move operation is functionally identical to a
+                    // The Move operation is functionally identical to a
                     // "remove" operation on the "from" location, followed
                     // immediately by an "add" operation at the target
                     // location with the value that was just removed.
@@ -24104,7 +24104,7 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec
                 case patch_operations::invalid:
                 default:
                 {
-                    // op must be "add", "remove", "replace", "move", "copy", or
+                    // op must be "add", "remove", "replace", "Move", "copy", or
                     // "test"
                     JSON_THROW(parse_error::create(105, 0, detail::concat("operation value '", op, "' is invalid"), &val));
                 }

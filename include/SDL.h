@@ -166,7 +166,7 @@ extern DECLSPEC int SDLCALL SDL_InitSubSystem(Uint32 flags);
  * If you start a subsystem using a call to that subsystem's init function
  * (for example SDL_VideoInit()) instead of SDL_Init() or SDL_InitSubSystem(),
  * SDL_QuitSubSystem() and SDL_WasInit() will not work. You will need to use
- * that subsystem's quit function (SDL_VideoQuit()) directly instead. But
+ * that subsystem's Quit function (SDL_VideoQuit()) directly instead. But
  * generally, you should not be using those functions directly anyhow; use
  * SDL_Init() instead.
  *
@@ -207,7 +207,7 @@ extern DECLSPEC Uint32 SDLCALL SDL_WasInit(Uint32 flags);
  *
  * If you start a subsystem using a call to that subsystem's init function
  * (for example SDL_VideoInit()) instead of SDL_Init() or SDL_InitSubSystem(),
- * then you must use that subsystem's quit function (SDL_VideoQuit()) to shut
+ * then you must use that subsystem's Quit function (SDL_VideoQuit()) to shut
  * it down before calling SDL_Quit(). But generally, you should not be using
  * those functions directly anyhow; use SDL_Init() instead.
  *

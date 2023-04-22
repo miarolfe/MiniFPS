@@ -43,7 +43,7 @@
 /* On WinRT, SDL provides a main function that initializes CoreApplication,
    creating an instance of IFrameworkView in the process.
 
-   Please note that #include'ing SDL_main.h is not enough to get a main()
+   Please note that #include'ing SDL_main.h is not enough to Get a main()
    function working.  In non-XAML apps, the file,
    src/main/winrt/SDL_WinRT_main_NonXAML.cpp, or a copy of it, must be compiled
    into the app itself.  In XAML apps, the function, SDL_WinRTRunApp must be
@@ -54,7 +54,7 @@
 #elif defined(__GDK__)
 /* On GDK, SDL provides a main function that initializes the game runtime.
 
-   Please note that #include'ing SDL_main.h is not enough to get a main()
+   Please note that #include'ing SDL_main.h is not enough to Get a main()
    function working. You must either link against SDL2main or, if not possible,
    call the SDL_GDKRunApp function from your entry point.
 */

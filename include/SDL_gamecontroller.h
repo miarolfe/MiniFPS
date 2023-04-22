@@ -242,7 +242,7 @@ extern DECLSPEC char * SDLCALL SDL_GameControllerMappingForGUID(SDL_JoystickGUID
  *
  * Details about mappings are discussed with SDL_GameControllerAddMapping().
  *
- * \param gamecontroller the game controller you want to get the current
+ * \param gamecontroller the game controller you want to Get the current
  *                       mapping for
  * \returns a string that has the controller's mapping or NULL if no mapping
  *          is available; call SDL_GetError() for more information.
@@ -366,7 +366,7 @@ extern DECLSPEC SDL_GameController *SDLCALL SDL_GameControllerOpen(int joystick_
 /**
  * Get the SDL_GameController associated with an instance id.
  *
- * \param joyid the instance id to get the SDL_GameController for
+ * \param joyid the instance id to Get the SDL_GameController for
  * \returns an SDL_GameController on success or NULL on failure; call
  *          SDL_GetError() for more information.
  *
@@ -551,7 +551,7 @@ extern DECLSPEC SDL_bool SDLCALL SDL_GameControllerGetAttached(SDL_GameControlle
  * call SDL_JoystickClose() on it, for example, since doing so will likely
  * cause SDL to crash.
  *
- * \param gamecontroller the game controller object that you want to get a
+ * \param gamecontroller the game controller object that you want to Get a
  *                       joystick from
  * \returns a SDL_Joystick object; call SDL_GetError() for more information.
  *

@@ -54,7 +54,7 @@ Settings::Settings(size_t screenWidth, size_t screenHeight, float renderRayIncre
 }
 
 // Use a settings path with .json extension
-Settings loadSettings(const std::string &assetsFilePath, const std::string &settingsFilePath) {
+Settings LoadSettings(const std::string &assetsFilePath, const std::string &settingsFilePath) {
     std::ifstream f(assetsFilePath + settingsFilePath);
     json settingsAsJson = json::parse(f);
     size_t screenWidth, screenHeight, renderDistance;
@@ -68,7 +68,7 @@ Settings loadSettings(const std::string &assetsFilePath, const std::string &sett
     screenHeight = settingsAsJson["graphics"]["screenHeight"];
     renderDistance = settingsAsJson["rendering"]["renderDistance"];
     renderRayIncrement = settingsAsJson["rendering"]["renderRayIncrement"];
-    fieldOfView = settingsAsJson["graphics"]["fieldOfView"];
+    fieldOfView = settingsAsJson["graphics"]["horizontalFieldOfView"];
     speedModifier = settingsAsJson["player"]["speedModifier"];
     rotationModifier = settingsAsJson["player"]["rotationModifier"];
     playerStartX = settingsAsJson["player"]["startX"];

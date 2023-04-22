@@ -34,7 +34,7 @@
  *  \li Avoid namespace collisions.  If you load a symbol from the library,
  *      it is not defined whether or not it goes into the global symbol
  *      namespace for the application.  If it does and it conflicts with
- *      symbols in your code or other shared libraries, you will not get
+ *      symbols in your code or other shared libraries, you will not Get
  *      the results you expect. :)
  */
 

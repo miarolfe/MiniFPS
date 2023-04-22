@@ -98,7 +98,7 @@ typedef struct ID3D11Device ID3D11Device;
  * Once you are done using the device, you should release it to avoid a
  * resource leak.
  *
- * \param renderer the renderer from which to get the associated D3D11 device
+ * \param renderer the renderer from which to Get the associated D3D11 device
  * \returns the D3D11 device associated with given renderer or NULL if it is
  *          not a D3D11 renderer; call SDL_GetError() for more information.
  *
@@ -118,7 +118,7 @@ typedef struct ID3D12Device ID3D12Device;
  * Once you are done using the device, you should release it to avoid a
  * resource leak.
  *
- * \param renderer the renderer from which to get the associated D3D12 device
+ * \param renderer the renderer from which to Get the associated D3D12 device
  * \returns the D3D12 device associated with given renderer or NULL if it is
  *          not a D3D12 renderer; call SDL_GetError() for more information.
  *
@@ -140,7 +140,7 @@ extern DECLSPEC ID3D12Device* SDLCALL SDL_RenderGetD3D12Device(SDL_Renderer* ren
  * Before SDL 2.0.4 this function did not return a value. Since SDL 2.0.4 it
  * returns an SDL_bool.
  *
- * \param displayIndex the display index for which to get both indices
+ * \param displayIndex the display index for which to Get both indices
  * \param adapterIndex a pointer to be filled in with the adapter index
  * \param outputIndex a pointer to be filled in with the output index
  * \returns SDL_TRUE on success or SDL_FALSE on failure; call SDL_GetError()

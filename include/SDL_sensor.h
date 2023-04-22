@@ -161,7 +161,7 @@ extern DECLSPEC const char *SDLCALL SDL_SensorGetDeviceName(int device_index);
 /**
  * Get the type of a sensor.
  *
- * \param device_index The sensor to get the type from
+ * \param device_index The sensor to Get the type from
  * \returns the SDL_SensorType, or `SDL_SENSOR_INVALID` if `device_index` is
  *          out of range.
  *
@@ -183,7 +183,7 @@ extern DECLSPEC int SDLCALL SDL_SensorGetDeviceNonPortableType(int device_index)
 /**
  * Get the instance ID of a sensor.
  *
- * \param device_index The sensor to get instance id from
+ * \param device_index The sensor to Get instance id from
  * \returns the sensor instance ID, or -1 if `device_index` is out of range.
  *
  * \since This function is available since SDL 2.0.9.

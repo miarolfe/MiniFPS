@@ -83,7 +83,7 @@
  *    effect.periodic.period = 1000; // 1000 ms
  *    effect.periodic.magnitude = 20000; // 20000/32767 strength
  *    effect.periodic.length = 5000; // 5 seconds long
- *    effect.periodic.attack_length = 1000; // Takes 1 second to get max strength
+ *    effect.periodic.attack_length = 1000; // Takes 1 second to Get max strength
  *    effect.periodic.fade_length = 1000; // Takes 1 second to fade away
  *
  *    // Upload the effect
@@ -639,7 +639,7 @@ typedef struct SDL_HapticCondition
  *
  *  The ramp effect starts at start strength and ends at end strength.
  *  It augments in linear fashion.  If you use attack and fade with a ramp
- *  the effects get added to the ramp effect making the effect become
+ *  the effects Get added to the ramp effect making the effect become
  *  quadratic instead of linear.
  *
  *  \sa SDL_HAPTIC_RAMP
@@ -950,7 +950,7 @@ extern DECLSPEC int SDLCALL SDL_JoystickIsHaptic(SDL_Joystick * joystick);
  *
  * When opened from a joystick you should first close the haptic device before
  * closing the joystick device. If not, on some implementations the haptic
- * device will also get unallocated and you'll be unable to use force feedback
+ * device will also Get unallocated and you'll be unable to use force feedback
  * on that device.
  *
  * \param joystick the SDL_Joystick to create a haptic device from

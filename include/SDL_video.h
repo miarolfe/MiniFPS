@@ -208,7 +208,7 @@ typedef enum
 typedef enum
 {
     SDL_FLASH_CANCEL,                   /**< Cancel any window flash state */
-    SDL_FLASH_BRIEFLY,                  /**< Flash the window briefly to get attention */
+    SDL_FLASH_BRIEFLY,                  /**< Flash the window briefly to Get attention */
     SDL_FLASH_UNTIL_FOCUSED             /**< Flash the window until it gets focus */
 } SDL_FlashOperation;
 
@@ -450,7 +450,7 @@ extern DECLSPEC int SDLCALL SDL_GetDisplayUsableBounds(int displayIndex, SDL_Rec
  * find the window size, which might be in logical points instead of pixels,
  * and then SDL_GL_GetDrawableSize(), SDL_Vulkan_GetDrawableSize(),
  * SDL_Metal_GetDrawableSize(), or SDL_GetRendererOutputSize(), and compare
- * the two values to get an actual scaling value between the two. We will be
+ * the two values to Get an actual scaling value between the two. We will be
  * rethinking how high-dpi details should be managed in SDL3 to make things
  * more consistent, reliable, and clear.
  *
@@ -964,7 +964,7 @@ extern DECLSPEC void SDLCALL SDL_GetWindowPosition(SDL_Window * window,
  * The window size in screen coordinates may differ from the size in pixels,
  * if the window was created with `SDL_WINDOW_ALLOW_HIGHDPI` on a platform
  * with high-dpi support (e.g. iOS or macOS). Use SDL_GL_GetDrawableSize() or
- * SDL_GetRendererOutputSize() to get the real client area size in pixels.
+ * SDL_GetRendererOutputSize() to Get the real client area size in pixels.
  *
  * Fullscreen windows automatically match the size of the display mode, and
  * you should use SDL_SetWindowDisplayMode() to change their size.
@@ -992,7 +992,7 @@ extern DECLSPEC void SDLCALL SDL_SetWindowSize(SDL_Window * window, int w,
  * The window size in screen coordinates may differ from the size in pixels,
  * if the window was created with `SDL_WINDOW_ALLOW_HIGHDPI` on a platform
  * with high-dpi support (e.g. iOS or macOS). Use SDL_GL_GetDrawableSize(),
- * SDL_Vulkan_GetDrawableSize(), or SDL_GetRendererOutputSize() to get the
+ * SDL_Vulkan_GetDrawableSize(), or SDL_GetRendererOutputSize() to Get the
  * real client area size in pixels.
  *
  * \param window the window to query the width and height from
@@ -1548,7 +1548,7 @@ extern DECLSPEC int SDLCALL SDL_SetWindowOpacity(SDL_Window * window, float opac
  *
  * This function also returns -1 if an invalid window was provided.
  *
- * \param window the window to get the current opacity value from
+ * \param window the window to Get the current opacity value from
  * \param out_opacity the float filled in (0.0f - transparent, 1.0f - opaque)
  * \returns 0 on success or a negative error code on failure; call
  *          SDL_GetError() for more information.
@@ -1578,7 +1578,7 @@ extern DECLSPEC int SDLCALL SDL_SetWindowModalFor(SDL_Window * modal_window, SDL
  * this with caution, as you might give focus to a window that is completely
  * obscured by other windows.
  *
- * \param window the window that should get the input focus
+ * \param window the window that should Get the input focus
  * \returns 0 on success or a negative error code on failure; call
  *          SDL_GetError() for more information.
  *
@@ -1848,7 +1848,7 @@ extern DECLSPEC int SDLCALL SDL_GL_LoadLibrary(const char *path);
  * - On X11, function pointers returned by this function are valid for any
  *   context, and can even be looked up before a context is created at all.
  *   This means that, for at least some common OpenGL implementations, if you
- *   look up a function that doesn't exist, you'll get a non-NULL result that
+ *   look up a function that doesn't exist, you'll Get a non-NULL result that
  *   is _NOT_ safe to call. You must always make sure the function is actually
  *   available for a given GL context before calling it, by checking for the
  *   existence of the appropriate extension with SDL_GL_ExtensionSupported(),
@@ -1856,7 +1856,7 @@ extern DECLSPEC int SDLCALL SDL_GL_LoadLibrary(const char *path);
  *   as core functionality.
  * - Some OpenGL drivers, on all platforms, *will* return NULL if a function
  *   isn't supported, but you can't count on this behavior. Check for
- *   extensions you use, and if you get a NULL anyway, act as if that
+ *   extensions you use, and if you Get a NULL anyway, act as if that
  *   extension wasn't available. This is probably a bug in the driver, but you
  *   can code defensively for this scenario anyhow.
  * - Just because you're on Linux/Unix, don't assume you'll be using X11.
@@ -1942,7 +1942,7 @@ extern DECLSPEC int SDLCALL SDL_GL_SetAttribute(SDL_GLattr attr, int value);
 /**
  * Get the actual value for an attribute from the current context.
  *
- * \param attr an SDL_GLattr enum value specifying the OpenGL attribute to get
+ * \param attr an SDL_GLattr enum value specifying the OpenGL attribute to Get
  * \param value a pointer filled in with the current value of `attr`
  * \returns 0 on success or a negative error code on failure; call
  *          SDL_GetError() for more information.
@@ -2090,7 +2090,7 @@ extern DECLSPEC int SDLCALL SDL_GL_GetSwapInterval(void);
  *
  * This is used with double-buffered OpenGL contexts, which are the default.
  *
- * On macOS, make sure you bind 0 to the draw framebuffer before swapping the
+ * On macOS, make sure you bind 0 to the Draw framebuffer before swapping the
  * window, otherwise nothing will happen. If you aren't using
  * glBindFramebuffer(), this is the default and you won't have to do anything
  * extra.

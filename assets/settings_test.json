@@ -2,7 +2,7 @@
   "graphics": {
     "screenWidth": 800,
     "screenHeight": 600,
-    "fieldOfView": 70,
+    "horizontalFieldOfView": 70,
     "vSync": true
   },
 

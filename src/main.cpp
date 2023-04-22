@@ -1,7 +1,6 @@
 #define SDL_MAIN_HANDLED
 
 #include <iostream>
-#include <cmath>
 
 #include <SDL.h>
 
@@ -14,7 +13,7 @@
 #include "Utilities.h"
 
 int main() {
-    if (!initialize_sdl()) {
+    if (!InitializeSDL()) {
         std::cerr << "SDL could not be initialized:" << SDL_GetError();
     } else {
         std::cout << "SDL initialized" << std::endl;
@@ -22,16 +21,16 @@ int main() {
 
     SDL_Window* window = nullptr;
     SDL_Renderer* renderer = nullptr;
-    const std::string assetsFolderPath = assets_folder_path();
-    Settings settings = loadSettings(assetsFolderPath, "settings.json");
+    const std::string assetsFolderPath = GetAssetsFolderPath();
+    Settings settings = LoadSettings(assetsFolderPath, "settings.json");
 
-    if (!initialize_window_and_renderer(&window, &renderer, settings.screenWidth, settings.screenHeight, settings.vSync)) {
+    if (!InitializeWindowAndRenderer(&window, &renderer, settings.screenWidth, settings.screenHeight, settings.vSync)) {
         std::cerr << "Window and/or renderer could not be initialized" << std::endl;
     } else {
         std::cout << "Window and renderer initialized" << std::endl;
     }
 
-    if (!initialize_sdl_image()) {
+    if (!InitializeSDLImage()) {
         std::cerr << "SDL_image could not be initialized" << std::endl;
     } else {
         std::cout << "SDL_image initialized" << std::endl;
@@ -45,12 +44,12 @@ int main() {
     size_t numWallTextures = settings.texturePaths.size();
     Uint32*** wallTextureBuffers = new Uint32** [numWallTextures];
     for (size_t buffer = 0; buffer < numWallTextures; buffer++) {
-        load_texture_to_buffer(&wallTextureBuffers[buffer], wallTexSize, assetsFolderPath,
-                               settings.texturePaths[buffer]);
+        LoadTextureToBuffer(&wallTextureBuffers[buffer], wallTexSize, assetsFolderPath,
+                            settings.texturePaths[buffer]);
     }
 
     Level level = Level(levelFilePath.c_str());
-    level.print();
+    level.Print();
 
     bool started = false;
     bool gameIsRunning = true;
@@ -71,24 +70,22 @@ int main() {
 
     while (gameIsRunning) {
         oldTime = curTime;
-        curTime = SDL_GetTicks64();
+        curTime = static_cast<double>(SDL_GetTicks64());
 
-        frameDelta = frame_time(oldTime, curTime);
-
-        // std::cout << frames_per_second(oldTime, curTime);
+        frameDelta = GetFrameTime(oldTime, curTime);
 
         mouseX = 0;
         mouseY = 0;
-        get_input_state(gameIsRunning, moveLeft, moveRight, moveForward, moveBack, mouseX, mouseY);
+        GetInputState(gameIsRunning, moveLeft, moveRight, moveForward, moveBack, mouseX, mouseY);
 
         float prevPlayerCameraX = playerCamera.x;
         float prevPlayerCameraY = playerCamera.y;
         float prevPlayerCameraAngle = playerCamera.angle;
 
         playerCamera.angle += mouseX * frameDelta * settings.rotationModifier;
-        move(playerCamera, frameDelta, settings.speedModifier, moveLeft, moveRight, moveForward, moveBack);
+        Move(playerCamera, frameDelta, settings.speedModifier, moveLeft, moveRight, moveForward, moveBack);
 
-        if (level.has_collided(playerCamera.x, playerCamera.y)) {
+        if (level.HasCollided(playerCamera.x, playerCamera.y)) {
             playerCamera.x = prevPlayerCameraX;
             playerCamera.y = prevPlayerCameraY;
         }
@@ -97,7 +94,7 @@ int main() {
         // TODO: Update this when animated sprites/enemies in game
         if (playerCamera.angle != prevPlayerCameraAngle || playerCamera.x != prevPlayerCameraX ||
             playerCamera.y != prevPlayerCameraY || !started) {
-            draw(renderer, playerCamera, level, &wallTextureBuffers, numWallTextures, wallTexSize, frameTexture);
+            Draw(renderer, playerCamera, level, &wallTextureBuffers, numWallTextures, wallTexSize, frameTexture);
         } else {
             SDL_Delay(1);
         }
@@ -105,7 +102,7 @@ int main() {
         started = true;
     }
 
-    quit(window, renderer);
+    Quit(window, renderer);
 
     return 0;
 }

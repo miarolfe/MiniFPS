@@ -1,15 +1,15 @@
 {
   "graphics": {
-    "screenWidth": 800,
-    "screenHeight": 600,
-    "fieldOfView": 70,
+    "screenWidth": 960,
+    "screenHeight": 640,
+    "horizontalFieldOfView": 60,
     "vSync": true
   },
 
   "rendering": {
     "renderRayIncrement": 0.005,
     "renderDistance": 128,
-    "distanceToProjectionPlane": 1
+    "distanceToProjectionPlane": 0.5
   },
 
   "player": {
@@ -21,7 +21,7 @@
   },
 
   "files": {
-    "levelPath": "levels/testLevel12.png",
+    "levelPath": "levels/testLevel7.png",
     "texturePaths": [
       "sprites/white-bricks.png",
       "sprites/red-bricks.png",

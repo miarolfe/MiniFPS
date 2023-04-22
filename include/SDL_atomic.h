@@ -164,7 +164,7 @@ extern __inline void SDL_CompilerBarrier(void);
  * reordered by the compiler and being seen out of order on multi-core CPUs.
  *
  * A typical pattern would be for thread A to write some data and a flag, and
- * for thread B to read the flag and get the data. In this case you would
+ * for thread B to read the flag and Get the data. In this case you would
  * insert a release barrier between writing the data and the flag,
  * guaranteeing that the data write completes no later than the flag is
  * written, and you would insert an acquire barrier between reading the flag

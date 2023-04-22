@@ -7,7 +7,7 @@
 #include "Utilities.h"
 
 // Initialize SDL subsystems
-bool initialize_sdl() {
+bool InitializeSDL() {
     bool successful_initialization = true;
 
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -18,8 +18,8 @@ bool initialize_sdl() {
 }
 
 // Initialise window and renderer with parameters
-bool initialize_window_and_renderer(SDL_Window** window, SDL_Renderer** renderer, const size_t screenWidth,
-                                    const size_t screenHeight, bool vSync) {
+bool InitializeWindowAndRenderer(SDL_Window** window, SDL_Renderer** renderer, size_t screenWidth,
+                                 size_t screenHeight, bool vSync) {
     bool successful_initialization = true;
 
     *window = SDL_CreateWindow("mini-fps",
@@ -51,7 +51,7 @@ bool initialize_window_and_renderer(SDL_Window** window, SDL_Renderer** renderer
 }
 
 // Initialise SDL_image subsystem
-bool initialize_sdl_image() {
+bool InitializeSDLImage() {
     bool successful_initialization = true;
 
     if (!IMG_Init(IMG_INIT_PNG)) {
@@ -62,25 +62,25 @@ bool initialize_sdl_image() {
 }
 
 // Shut down SDL subsystems and free window + renderer
-void quit(SDL_Window* window, SDL_Renderer* renderer) {
+void Quit(SDL_Window* window, SDL_Renderer* renderer) {
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);
     SDL_Quit();
 }
 
 // Get frames per second as string
-std::string frames_per_second(const double oldTime, const double curTime) {
-    return std::to_string(static_cast<int>((1.0 / frame_time(oldTime, curTime))));
+std::string GetFramesPerSecond(const double oldTime, const double curTime) {
+    return std::to_string(static_cast<int>((1.0 / GetFrameTime(oldTime, curTime))));
 }
 
 // Get time between frames in seconds
-double frame_time(const double oldTime, const double curTime) {
+double GetFrameTime(const double oldTime, const double curTime) {
     double frameTime = (curTime - oldTime) / 1000.0;
     return frameTime;
 }
 
 // Get platform-appropriate path to assets folder
-std::string assets_folder_path() {
+std::string GetAssetsFolderPath() {
     std::string file_path;
     const char* platform = SDL_GetPlatform();
 
@@ -98,7 +98,7 @@ std::string assets_folder_path() {
 }
 
 // Get a texture in Uint3w2 buffer form
-bool load_texture_to_buffer(Uint32*** buffer, size_t& size, std::string assetsFolderPath, std::string textureFilePath) {
+bool LoadTextureToBuffer(Uint32*** buffer, size_t& size, std::string assetsFolderPath, std::string textureFilePath) {
     bool success = true;
 
     std::string fullTexturePath = assetsFolderPath + textureFilePath;
@@ -143,7 +143,7 @@ bool load_texture_to_buffer(Uint32*** buffer, size_t& size, std::string assetsFo
 }
 
 // Get a clamped version of a value
-int clamp(const int value, const int min, const int max) {
+int Clamp(const int value, const int min, const int max) {
     int clampedValue;
 
     if (value < min) {

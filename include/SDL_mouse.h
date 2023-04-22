@@ -158,10 +158,10 @@ extern DECLSPEC Uint32 SDLCALL SDL_GetRelativeMouseState(int *x, int *y);
  * enabled. If relative mode is enabled, you can force mouse events for the
  * warp by setting the SDL_HINT_MOUSE_RELATIVE_WARP_MOTION hint.
  *
- * Note that this function will appear to succeed, but not actually move the
+ * Note that this function will appear to succeed, but not actually Move the
  * mouse when used over Microsoft Remote Desktop.
  *
- * \param window the window to move the mouse into, or NULL for the current
+ * \param window the window to Move the mouse into, or NULL for the current
  *               mouse focus
  * \param x the x coordinate within the window
  * \param y the y coordinate within the window
@@ -181,7 +181,7 @@ extern DECLSPEC void SDLCALL SDL_WarpMouseInWindow(SDL_Window * window,
  * A failure of this function usually means that it is unsupported by a
  * platform.
  *
- * Note that this function will appear to succeed, but not actually move the
+ * Note that this function will appear to succeed, but not actually Move the
  * mouse when used over Microsoft Remote Desktop.
  *
  * \param x the x coordinate
@@ -225,7 +225,7 @@ extern DECLSPEC int SDLCALL SDL_SetRelativeMouseMode(SDL_bool enabled);
  *
  * Capturing enables your app to obtain mouse events globally, instead of just
  * within your window. Not all video targets support this function. When
- * capturing is enabled, the current window will get all mouse events, but
+ * capturing is enabled, the current window will Get all mouse events, but
  * unlike relative mode, no change is made to the cursor and it is not
  * restrained to your window.
  *
@@ -295,7 +295,7 @@ extern DECLSPEC SDL_bool SDLCALL SDL_GetRelativeMouseMode(void);
  *
  * If you want to have a color cursor, or create your cursor from an
  * SDL_Surface, you should use SDL_CreateColorCursor(). Alternately, you can
- * hide the cursor and draw your own as part of your game's rendering, but it
+ * hide the cursor and Draw your own as part of your game's rendering, but it
  * will be bound to the framerate.
  *
  * Also, since SDL 2.0.0, SDL_CreateSystemCursor() is available, which

@@ -161,7 +161,7 @@ extern DECLSPEC int SDLCALL SDL_hid_exit(void);
  * Enumerating the HID devices is an expensive operation, so you can call this
  * to see if there have been any system device changes since the last call to
  * this function. A change in the counter returned doesn't necessarily mean
- * that anything has changed, but you can call SDL_hid_enumerate() to get an
+ * that anything has changed, but you can call SDL_hid_enumerate() to Get an
  * updated device list.
  *
  * Calling this function for the first time may cause a thread or other system
@@ -422,7 +422,7 @@ extern DECLSPEC int SDLCALL SDL_hid_get_serial_number_string(SDL_hid_device *dev
  * Get a string from a HID device, based on its string index.
  *
  * \param dev A device handle returned from SDL_hid_open().
- * \param string_index The index of the string to get.
+ * \param string_index The index of the string to Get.
  * \param string A wide string buffer to put the data into.
  * \param maxlen The length of the buffer in multiples of wchar_t.
  * \returns 0 on success and -1 on error.

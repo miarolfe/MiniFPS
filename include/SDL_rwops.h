@@ -166,7 +166,7 @@ typedef struct SDL_RWops
  * - "a+": Open a file for reading and appending. All writing operations are
  *   performed at the end of the file, protecting the previous content to be
  *   overwritten. You can reposition (fseek, rewind) the internal pointer to
- *   anywhere in the file for reading, but writing operations will move it
+ *   anywhere in the file for reading, but writing operations will Move it
  *   back to the end of file. The file is created if it does not exist.
  *
  * **NOTE**: In order to open a file as a binary file, a "b" character has to
@@ -371,11 +371,11 @@ extern DECLSPEC void SDLCALL SDL_FreeRW(SDL_RWops * area);
 #define RW_SEEK_END 2       /**< Seek relative to the end of data */
 
 /**
- * Use this function to get the size of the data stream in an SDL_RWops.
+ * Use this function to Get the size of the data stream in an SDL_RWops.
  *
  * Prior to SDL 2.0.10, this function was a macro.
  *
- * \param context the SDL_RWops to get the size of the data stream from
+ * \param context the SDL_RWops to Get the size of the data stream from
  * \returns the size of the data stream in the SDL_RWops on success, -1 if
  *          unknown or a negative error code on failure; call SDL_GetError()
  *          for more information.
@@ -431,7 +431,7 @@ extern DECLSPEC Sint64 SDLCALL SDL_RWseek(SDL_RWops *context,
  *
  * Prior to SDL 2.0.10, this function was a macro.
  *
- * \param context a SDL_RWops data stream object from which to get the current
+ * \param context a SDL_RWops data stream object from which to Get the current
  *                offset
  * \returns the current offset in the stream, or -1 if the information can not
  *          be determined.

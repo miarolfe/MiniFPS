@@ -8,7 +8,7 @@
 #include "Color.h"
 
 // Loads level stored as PNG into a 2D array of Uint32 cells
-bool Level::png_to_two_dimensional_array(const char* filePath) {
+bool Level::PNGToTwoDimensionalArray(const char* filePath) {
     bool successfulLoadAndConversion = true;
 
     SDL_Surface* surface;
@@ -54,7 +54,7 @@ Level::Level(const char* filePath) {
     }
 
     // Loads the level from a PNG
-    if (!png_to_two_dimensional_array(filePath)) {
+    if (!PNGToTwoDimensionalArray(filePath)) {
         std::cerr << "Image could not be loaded and/or converted to a level" << std::endl;
     } else {
         std::cout << "Image loaded and converted" << std::endl;
@@ -62,7 +62,7 @@ Level::Level(const char* filePath) {
 }
 
 // Gets the color of pixel at cell (x, y) in level
-Uint32 Level::get(const size_t x, const size_t y) {
+Uint32 Level::Get(size_t x, size_t y) {
     // This can be removed once collision detection is a thing
     if (y < 0 || y >= h) {
         std::cerr << "Invalid level matrix access" << std::endl;
@@ -78,7 +78,7 @@ Uint32 Level::get(const size_t x, const size_t y) {
 }
 
 // Returns whether a point is inside a wall cell in the level
-bool Level::has_collided(const float x, const float y) {
+bool Level::HasCollided(const float x, const float y) {
     bool collided = false;
 
     int roundedX = round(x);
@@ -86,7 +86,7 @@ bool Level::has_collided(const float x, const float y) {
 
     for (size_t cellX = roundedX - 1; cellX <= roundedX + 1; cellX++) {
         for (size_t cellY = roundedY - 1; cellY <= roundedY + 1; cellY++) {
-            if (get(cellX, cellY) != ARGB_WHITE) {
+            if (Get(cellX, cellY) != ARGB_WHITE) {
                 if (x >= cellX - 0.05 && x <= cellX + 1 + 0.05 &&
                     y >= cellY - 0.05 && y <= cellY + 1 + 0.05) {
                     collided = true;
@@ -107,10 +107,10 @@ bool Level::has_collided(const float x, const float y) {
 }
 
 // Prints the level's wall cells to cout
-void Level::print() {
+void Level::Print() {
     for (int i = 0; i < w; i++) {
         for (int j = 0; j < h; j++) {
-            if (get(j, i) == ARGB_WHITE) {
+            if (Get(j, i) == ARGB_WHITE) {
                 std::cout << "  ";
             } else {
                 std::cout << "* ";

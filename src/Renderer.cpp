@@ -1,7 +1,5 @@
 #include <iostream>
 #include <cmath>
-#include <cstdint>
-#include <algorithm>
 
 #include <SDL.h>
 
@@ -10,35 +8,77 @@
 #include "Level.h"
 #include "Utilities.h"
 
-void set_pixel(void* pixels, int pitch, const Uint32 color, int x, int y) {
+const Uint32 CEILING = 0xFFA5A5A5;
+const Uint32 FLOOR   = 0xFF0000A5;
+
+void SetPixel(void* pixels, int pitch, Uint32 color, int x, int y) {
     Uint32* row;
     row = (Uint32*) ((Uint8*) pixels + y * pitch);
     row[x] = color;
 }
 
-void draw(SDL_Renderer* renderer, Camera camera, Level &level, Uint32**** texBuffers, size_t numTexBuffers, size_t texSize,
+void DrawCeiling(Camera camera, int pitch, void* pixels) {
+    for (int frameY = 0; frameY < camera.viewportHeight / 2; frameY++) {
+        for (int frameX = 0; frameX < camera.viewportWidth; frameX++) {
+            SetPixel(pixels, pitch, CEILING, frameX, frameY);
+        }
+    }
+}
+
+void DrawFloor(Camera camera, int pitch, void* pixels) {
+    for (int frameY = static_cast<int>(camera.viewportHeight / 2); frameY < camera.viewportHeight; frameY++) {
+        for (int frameX = 0; frameX < camera.viewportWidth; frameX++) {
+            SetPixel(pixels, pitch, FLOOR, frameX, frameY);
+        }
+    }
+}
+
+Uint32** GetTexBuffer(Uint32**** texBuffers, size_t numTexBuffers, Uint32 cellColor) {
+    Uint32** texBuffer;
+
+    switch (cellColor) {
+        case ARGB_RED:
+            texBuffer = (*texBuffers)[Clamp(1, 0, static_cast<int>(numTexBuffers - 1))];
+            break;
+        case ARGB_YELLOW:
+            texBuffer = (*texBuffers)[Clamp(2, 0, static_cast<int>(numTexBuffers - 1))];
+            break;
+        case ARGB_GREEN:
+            texBuffer = (*texBuffers)[Clamp(3, 0, static_cast<int>(numTexBuffers - 1))];
+            break;
+        case ARGB_CYAN:
+            texBuffer = (*texBuffers)[Clamp(4, 0, static_cast<int>(numTexBuffers - 1))];
+            break;
+        case ARGB_BLUE:
+            texBuffer = (*texBuffers)[Clamp(5, 0, static_cast<int>(numTexBuffers - 1))];
+            break;
+        case ARGB_INDIGO:
+            texBuffer = (*texBuffers)[Clamp(6, 0, static_cast<int>(numTexBuffers - 1))];
+            break;
+        case ARGB_BLACK:
+            texBuffer = (*texBuffers)[Clamp(7, 0, static_cast<int>(numTexBuffers - 1))];
+            break;
+        default:
+            texBuffer = (*texBuffers)[0];
+            break;
+    }
+
+    return texBuffer;
+}
+
+void Draw(SDL_Renderer* renderer, Camera camera, Level &level, Uint32**** texBuffers, size_t numTexBuffers, size_t texSize,
           SDL_Texture* frameTexture) {
     int pitch;
     void* pixels;
     SDL_LockTexture(frameTexture, nullptr, &pixels, &pitch);
 
-    // Draw ceiling
-    for (int frameY = 0; frameY < camera.viewportHeight / 2; frameY++) {
-        for (int frameX = 0; frameX < camera.viewportWidth; frameX++) {
-            set_pixel(pixels, pitch, 0xFFFFFFFF, frameX, frameY);
-        }
-    }
+    DrawCeiling(camera, pitch, pixels);
+    DrawFloor(camera, pitch, pixels);
 
-    // Draw floor
-    for (int frameY = camera.viewportHeight / 2; frameY < camera.viewportHeight; frameY++) {
-        for (int frameX = 0; frameX < camera.viewportWidth; frameX++) {
-            set_pixel(pixels, pitch, 0xFF0000FF, frameX, frameY);
-        }
-    }
-
+    // Cast rays
     for (size_t ray = 0; ray < camera.viewportWidth; ray++) {
-        float rayAngle =
-                (camera.angle - camera.fieldOfView / 2) + (camera.fieldOfView * ray / float(camera.viewportWidth));
+        float rayScreenPos = (2 * ray / float(camera.viewportWidth) - 1) * camera.aspectRatio;
+        float rayAngle = camera.angle + atan(rayScreenPos * tan(camera.horizontalFieldOfView / 2));
 
         float t;
         float cosRayAngle = cos(rayAngle);
@@ -48,12 +88,11 @@ void draw(SDL_Renderer* renderer, Camera camera, Level &level, Uint32**** texBuf
             float cx = camera.x + t * cosRayAngle;
             float cy = camera.y + t * sinRayAngle;
 
-            const Uint32 levelCellColor = level.get(int(cx), int(cy));
+            const Uint32 levelCellColor = level.Get(int(cx), int(cy));
 
             if (levelCellColor != ARGB_WHITE) {
                 double distance = t * cos(rayAngle - camera.angle);
-
-                size_t columnHeight = (camera.viewportHeight / distance) * camera.distanceToProjectionPlane;
+                size_t columnHeight = ((camera.viewportHeight) * camera.distanceToProjectionPlane) / distance;
 
                 float hitX = cx - floor(cx + 0.5);
                 float hitY = cy - floor(cy + 0.5);
@@ -69,38 +108,7 @@ void draw(SDL_Renderer* renderer, Camera camera, Level &level, Uint32**** texBuf
 
                 int drawEnd = drawStart + columnHeight;
 
-                Uint32** texBuffer;
-
-                // Map cell color to texture buffer
-
-                switch (levelCellColor) {
-                    case ARGB_WHITE:
-                        break;
-                    case ARGB_RED:
-                        texBuffer = (*texBuffers)[clamp(1, 0, numTexBuffers-1)];
-                        break;
-                    case ARGB_YELLOW:
-                        texBuffer = (*texBuffers)[clamp(2, 0, numTexBuffers-1)];
-                        break;
-                    case ARGB_GREEN:
-                        texBuffer = (*texBuffers)[clamp(3, 0, numTexBuffers-1)];
-                        break;
-                    case ARGB_CYAN:
-                        texBuffer = (*texBuffers)[clamp(4, 0, numTexBuffers-1)];
-                        break;
-                    case ARGB_BLUE:
-                        texBuffer = (*texBuffers)[clamp(5, 0, numTexBuffers-1)];
-                        break;
-                    case ARGB_INDIGO:
-                        texBuffer = (*texBuffers)[clamp(6, 0, numTexBuffers-1)];
-                        break;
-                    case ARGB_BLACK:
-                        texBuffer = (*texBuffers)[clamp(7, 0, numTexBuffers-1)];
-                        break;
-                    default:
-                        texBuffer = (*texBuffers)[0];
-                        break;
-                }
+                Uint32** texBuffer = GetTexBuffer(texBuffers, numTexBuffers, levelCellColor);
 
                 for (int y = drawStart; y < drawEnd; y++) {
                     if (y < 0 || y >= camera.viewportHeight) {
@@ -108,7 +116,7 @@ void draw(SDL_Renderer* renderer, Camera camera, Level &level, Uint32**** texBuf
                     }
 
                     int texY = ((y - drawStart) * texSize) / columnHeight;
-                    set_pixel(pixels, pitch, texBuffer[texY][texX], ray, y);
+                    SetPixel(pixels, pitch, texBuffer[texY][texX], ray, y);
                 }
 
                 break;

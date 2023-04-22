@@ -22,7 +22,7 @@
 /**
  *  \file SDL_platform.h
  *
- *  Try to get a standard set of platform defines.
+ *  Try to Get a standard set of platform defines.
  */
 
 #ifndef SDL_platform_h_

@@ -24,7 +24,7 @@
  *
  *  Official documentation for SDL configuration variables
  *
- *  This file contains functions to set and get configuration hints,
+ *  This file contains functions to set and Get configuration hints,
  *  as well as listing each of them alphabetically.
  *
  *  The convention for naming hints is SDL_HINT_X, where "SDL_X" is
@@ -421,7 +421,7 @@ extern "C" {
  *    "1"       - Extra level of forcing
  *
  *  At present, this is only an issue under MS Windows, which makes it nearly impossible to
- *  programmatically move a window to the foreground, for "security" reasons. See
+ *  programmatically Move a window to the foreground, for "security" reasons. See
  *  http://stackoverflow.com/a/34414846 for a discussion.
  */
 #define SDL_HINT_FORCE_RAISEWINDOW    "SDL_HINT_FORCE_RAISEWINDOW"
@@ -511,13 +511,13 @@ extern "C" {
 /**
  *  \brief  If set, game controller face buttons report their values according to their labels instead of their positional layout.
  * 
- *  For example, on Nintendo Switch controllers, normally you'd get:
+ *  For example, on Nintendo Switch controllers, normally you'd Get:
  *
  *      (Y)
  *  (X)     (B)
  *      (A)
  *
- *  but if this hint is set, you'll get:
+ *  but if this hint is set, you'll Get:
  *
  *      (X)
  *  (Y)     (A)
@@ -899,9 +899,9 @@ extern "C" {
  *
  * The DRM subsystem has a concept of a "DRM master" which is a DRM client that
  * has the ability to set planes, set cursor, etc. When SDL is DRM master, it
- * can draw to the screen using the SDL rendering APIs. Without DRM master, SDL
+ * can Draw to the screen using the SDL rendering APIs. Without DRM master, SDL
  * is still able to process input and query attributes of attached displays,
- * but it cannot change display state or draw to the screen directly.
+ * but it cannot change display state or Draw to the screen directly.
  *
  * In some cases, it can be useful to have the KMSDRM backend even if it cannot
  * be used for rendering. An app may want to use SDL for input processing while
@@ -1218,8 +1218,8 @@ extern "C" {
  *    "0"     - Don't use batching to make rendering more efficient.
  *    "1"     - Use batching, but might cause problems if app makes its own direct OpenGL calls.
  *
- *  Up to SDL 2.0.9, the render API would draw immediately when requested. Now
- *  it batches up draw requests and sends them all to the GPU only when forced
+ *  Up to SDL 2.0.9, the render API would Draw immediately when requested. Now
+ *  it batches up Draw requests and sends them all to the GPU only when forced
  *  to (during SDL_RenderPresent, when changing render targets, by updating a
  *  texture that the batch needs, etc). This is significantly more efficient,
  *  but it can cause problems for apps that expect to render on top of the
@@ -1943,7 +1943,7 @@ extern "C" {
  *  \brief  A variable controlling whether the window frame and title bar are interactive when the cursor is hidden 
  *
  *  This variable can be set to the following values:
- *    "0"       - The window frame is not interactive when the cursor is hidden (no move, resize, etc)
+ *    "0"       - The window frame is not interactive when the cursor is hidden (no Move, resize, etc)
  *    "1"       - The window frame is interactive when the cursor is hidden
  *
  *  By default SDL will allow interaction with the window frame when the cursor is hidden
@@ -1991,7 +1991,7 @@ extern "C" {
  *  and SDL_KEYUP), each with a scancode of SDL_SCANCODE_AC_BACK, after which
  *  it will check the contents of the hint, SDL_HINT_WINRT_HANDLE_BACK_BUTTON.
  *  If the hint's value is set to "1", the back button event's Handled
- *  property will get set to 'true'.  If the hint's value is set to something
+ *  property will Get set to 'true'.  If the hint's value is set to something
  *  else, or if it is unset, SDL will leave the event's Handled property
  *  alone.  (By default, the OS sets this property to 'false', to note.)
  *
@@ -1999,7 +1999,7 @@ extern "C" {
  *  back button is pressed, or can set it in direct-response to a back button
  *  being pressed.
  *
- *  In order to get notified when a back button is pressed, SDL apps should
+ *  In order to Get notified when a back button is pressed, SDL apps should
  *  register a callback function with SDL_AddEventWatch(), and have it listen
  *  for SDL_KEYDOWN events that have a scancode of SDL_SCANCODE_AC_BACK.
  *  (Alternatively, SDL_KEYUP events can be listened-for.  Listening for
@@ -2055,7 +2055,7 @@ extern "C" {
  *
  *  Please note that on Windows Phone, Microsoft does not provide standard UI
  *  for displaying a privacy policy link, and as such, SDL_HINT_WINRT_PRIVACY_POLICY_URL
- *  will not get used on that platform.  Network-enabled phone apps should display
+ *  will not Get used on that platform.  Network-enabled phone apps should display
  *  their privacy policy through some other, in-app means.
  */
 #define SDL_HINT_WINRT_PRIVACY_POLICY_URL "SDL_WINRT_PRIVACY_POLICY_URL"
@@ -2151,13 +2151,13 @@ extern "C" {
  *
  *  Changing this hint to "0" will cause SDL to not send an SDL_QUIT event
  *  when the final window is requesting to close. Note that in this case,
- *  there are still other legitimate reasons one might get an SDL_QUIT
+ *  there are still other legitimate reasons one might Get an SDL_QUIT
  *  event: choosing "Quit" from the macOS menu bar, sending a SIGINT (ctrl-c)
  *  on Unix, etc.
  *
  *  The default value is "1".  This hint can be changed at any time.
  *
- *  This hint is available since SDL 2.0.22. Before then, you always get
+ *  This hint is available since SDL 2.0.22. Before then, you always Get
  *  an SDL_QUIT event when closing the final window.
  */
 #define SDL_HINT_QUIT_ON_LAST_WINDOW_CLOSE "SDL_QUIT_ON_LAST_WINDOW_CLOSE"
@@ -2182,7 +2182,7 @@ extern "C" {
  *  before SDL_Init() is called to be useful.
  *
  *  This hint is available since SDL 2.0.22. Before then, you could set
- *  the environment variable to get the same effect.
+ *  the environment variable to Get the same effect.
  */
 #define SDL_HINT_VIDEODRIVER "SDL_VIDEODRIVER"
 
@@ -2205,7 +2205,7 @@ extern "C" {
  *  before SDL_Init() is called to be useful.
  *
  *  This hint is available since SDL 2.0.22. Before then, you could set
- *  the environment variable to get the same effect.
+ *  the environment variable to Get the same effect.
  */
 #define SDL_HINT_AUDIODRIVER "SDL_AUDIODRIVER"
 
@@ -2330,7 +2330,7 @@ extern DECLSPEC const char * SDLCALL SDL_GetHint(const char *name);
 /**
  * Get the boolean value of a hint variable.
  *
- * \param name the name of the hint to get the boolean value from
+ * \param name the name of the hint to Get the boolean value from
  * \param default_value the value to return if the hint does not exist
  * \returns the boolean value of a hint or the provided default value if the
  *          hint does not exist.

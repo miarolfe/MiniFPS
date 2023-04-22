@@ -58,7 +58,7 @@ typedef struct SDL_Locale
  * language specifier (such as "en" for English, "de" for German, etc).
  * Country strings are in the format YY, where "YY" is an ISO-3166 country
  * code (such as "US" for the United States, "CA" for Canada, etc). Country
- * might be NULL if there's no specific guidance on them (so you might get {
+ * might be NULL if there's no specific guidance on them (so you might Get {
  * "en", "US" } for American English, but { "en", NULL } means "English
  * language, generically"). Language strings are never NULL, except to
  * terminate the array.
@@ -80,7 +80,7 @@ typedef struct SDL_Locale
  * best to ask for this once and save the results. However, this list can
  * change, usually because the user has changed a system preference outside of
  * your program; SDL will send an SDL_LOCALECHANGED event in this case, if
- * possible, and you can call this function again to get an updated copy of
+ * possible, and you can call this function again to Get an updated copy of
  * preferred locales.
  *
  * \return array of locales, terminated with a locale with a NULL language

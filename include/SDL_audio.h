@@ -255,7 +255,7 @@ typedef struct SDL_AudioCVT
 /* @{ */
 
 /**
- * Use this function to get the number of built-in audio drivers.
+ * Use this function to Get the number of built-in audio drivers.
  *
  * This function returns a hardcoded number. This never returns a negative
  * value; if there are no drivers compiled into this build of SDL, this
@@ -276,7 +276,7 @@ typedef struct SDL_AudioCVT
 extern DECLSPEC int SDLCALL SDL_GetNumAudioDrivers(void);
 
 /**
- * Use this function to get the name of a built in audio driver.
+ * Use this function to Get the name of a built in audio driver.
  *
  * The list of audio drivers is given in the order that they are normally
  * initialized by default; the drivers that seem more reasonable to choose
@@ -343,7 +343,7 @@ extern DECLSPEC void SDLCALL SDL_AudioQuit(void);
  * Get the name of the current audio driver.
  *
  * The returned string points to internal static memory and thus never becomes
- * invalid, even if you quit the audio subsystem and initialize a new driver
+ * invalid, even if you Quit the audio subsystem and initialize a new driver
  * (although such a case would return a different static string from another
  * call to this function, of course). As such, you should not modify or free
  * the returned string.
@@ -523,9 +523,9 @@ extern DECLSPEC int SDLCALL SDL_GetAudioDeviceSpec(int index,
 /**
  * Get the name and preferred format of the default audio device.
  *
- * Some (but not all!) platforms have an isolated mechanism to get information
+ * Some (but not all!) platforms have an isolated mechanism to Get information
  * about the "default" device. This can actually be a completely different
- * device that's not in the list you get from SDL_GetAudioDeviceSpec(). It can
+ * device that's not in the list you Get from SDL_GetAudioDeviceSpec(). It can
  * even be a network address! (This is discussed in SDL_OpenAudioDevice().)
  *
  * As a result, this call is not guaranteed to be performant, as it can query
@@ -626,7 +626,7 @@ extern DECLSPEC int SDLCALL SDL_GetDefaultAudioInfo(char **name,
  *
  * These flags specify how SDL should behave when a device cannot offer a
  * specific feature. If the application requests a feature that the hardware
- * doesn't offer, SDL will always try to get the closest equivalent.
+ * doesn't offer, SDL will always try to Get the closest equivalent.
  *
  * For example, if you ask for float32 audio format, but the sound card only
  * supports int16, SDL will set the hardware to int16. If you had set
@@ -709,7 +709,7 @@ typedef enum
 extern DECLSPEC SDL_AudioStatus SDLCALL SDL_GetAudioStatus(void);
 
 /**
- * Use this function to get the current audio state of an audio device.
+ * Use this function to Get the current audio state of an audio device.
  *
  * \param dev the ID of an audio device previously opened with
  *            SDL_OpenAudioDevice()

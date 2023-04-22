@@ -4,25 +4,25 @@
 
 const float PI_180 = (1.0 / 180.0) * M_PI;
 
-bool initialize_sdl();
+bool InitializeSDL();
 
 bool
-initialize_window_and_renderer(SDL_Window** window, SDL_Renderer** renderer, size_t screenWidth, size_t screenHeight, bool vSync);
+InitializeWindowAndRenderer(SDL_Window** window, SDL_Renderer** renderer, size_t screenWidth, size_t screenHeight, bool vSync);
 
-bool initialize_sdl_image();
+bool InitializeSDLImage();
 
-void quit(SDL_Window* window, SDL_Renderer* renderer);
+void Quit(SDL_Window* window, SDL_Renderer* renderer);
 
-std::string frames_per_second(double oldTime, double curTime);
+std::string GetFramesPerSecond(double oldTime, double curTime);
 
-double frame_time(double oldTime, double curTime);
+double GetFrameTime(double oldTime, double curTime);
 
-std::string assets_folder_path();
+std::string GetAssetsFolderPath();
 
-SDL_PixelFormatEnum get_platform_pixel_format_enum();
+SDL_PixelFormatEnum GetPlatformPixelFormatEnum();
 
-bool load_texture_to_buffer(Uint32*** buffer, size_t& size, std::string assetsFolderPath, std::string textureFilePath);
+bool LoadTextureToBuffer(Uint32*** buffer, size_t& size, std::string assetsFolderPath, std::string textureFilePath);
 
-int clamp(int value, int min, int max);
+int Clamp(int value, int min, int max);
 
 #endif //MINI_FPS_UTILITIES_H

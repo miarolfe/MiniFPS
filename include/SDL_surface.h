@@ -357,8 +357,8 @@ extern DECLSPEC SDL_Surface *SDLCALL SDL_LoadBMP_RW(SDL_RWops * src,
 /**
  * Save a surface to a seekable SDL data stream in BMP format.
  *
- * Surfaces with a 24-bit, 32-bit and paletted 8-bit format get saved in the
- * BMP directly. Other RGB formats with 8-bit or higher get converted to a
+ * Surfaces with a 24-bit, 32-bit and paletted 8-bit format Get saved in the
+ * BMP directly. Other RGB formats with 8-bit or higher Get converted to a
  * 24-bit surface or, if they have an alpha mask or a colorkey, to a 32-bit
  * surface before they are saved. YUV and paletted 1-bit and 4-bit formats are
  * not supported.
