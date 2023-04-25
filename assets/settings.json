@@ -1,8 +1,8 @@
 {
   "graphics": {
-    "screenWidth": 960,
-    "screenHeight": 640,
-    "horizontalFieldOfView": 60,
+    "screenWidth": 1280,
+    "screenHeight": 720,
+    "horizontalFieldOfView": 90,
     "vSync": true
   },
 
@@ -21,7 +21,7 @@
   },
 
   "files": {
-    "levelPath": "levels/testLevel7.png",
+    "levelPath": "levels/test.lvl",
     "texturePaths": [
       "sprites/white-bricks.png",
       "sprites/red-bricks.png",

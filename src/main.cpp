@@ -48,7 +48,7 @@ int main() {
                             settings.texturePaths[buffer]);
     }
 
-    Level level = Level(levelFilePath.c_str());
+    Level level = Level(levelFilePath);
     level.Print();
 
     bool started = false;
