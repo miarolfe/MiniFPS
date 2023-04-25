@@ -73,11 +73,11 @@ if(APPLE)
     add_custom_command(TARGET mini-fps POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/mini-fps.app/Contents/Resources"
             COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/assets" "${CMAKE_CURRENT_BINARY_DIR}/mini-fps.app/Contents/Resources"
-            # COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/mini-fps.app/Contents/Frameworks"
-            # COMMAND install_name_tool -change /Library/Frameworks/SDL2.framework/Versions/A/SDL2 @executable_path/../Frameworks/SDL2.framework/Versions/A/SDL2 "${CMAKE_CURRENT_BINARY_DIR}/mini-fps.app/Contents/MacOS/mini-fps"
-            # COMMAND install_name_tool -change /Library/Frameworks/SDL2_image.framework/Versions/A/SDL2_image @executable_path/../Frameworks/SDL2_image.framework/Versions/A/SDL2_image "${CMAKE_CURRENT_BINARY_DIR}/mini-fps.app/Contents/MacOS/mini-fps"
-            # COMMAND ${CMAKE_COMMAND} -E copy_directory /Library/Frameworks/SDL2.framework "${CMAKE_CURRENT_BINARY_DIR}/mini-fps.app/Contents/Frameworks/SDL2.framework"
-            # COMMAND ${CMAKE_COMMAND} -E copy_directory /Library/Frameworks/SDL2_image.framework "${CMAKE_CURRENT_BINARY_DIR}/mini-fps.app/Contents/Frameworks/SDL2_image.framework"
+            COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/mini-fps.app/Contents/Frameworks"
+            COMMAND install_name_tool -change /Library/Frameworks/SDL2.framework/Versions/A/SDL2 @executable_path/../Frameworks/SDL2.framework/Versions/A/SDL2 "${CMAKE_CURRENT_BINARY_DIR}/mini-fps.app/Contents/MacOS/mini-fps"
+            COMMAND install_name_tool -change /Library/Frameworks/SDL2_image.framework/Versions/A/SDL2_image @executable_path/../Frameworks/SDL2_image.framework/Versions/A/SDL2_image "${CMAKE_CURRENT_BINARY_DIR}/mini-fps.app/Contents/MacOS/mini-fps"
+            COMMAND ${CMAKE_COMMAND} -E copy_directory /Library/Frameworks/SDL2.framework "${CMAKE_CURRENT_BINARY_DIR}/mini-fps.app/Contents/Frameworks/SDL2.framework"
+            COMMAND ${CMAKE_COMMAND} -E copy_directory /Library/Frameworks/SDL2_image.framework "${CMAKE_CURRENT_BINARY_DIR}/mini-fps.app/Contents/Frameworks/SDL2_image.framework"
             COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_SOURCE_DIR}/testIcon.icns" "${CMAKE_CURRENT_BINARY_DIR}/mini-fps.app/Contents/Resources"
             COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_SOURCE_DIR}/Info.plist" "${CMAKE_CURRENT_BINARY_DIR}/mini-fps.app/Contents"
             )
