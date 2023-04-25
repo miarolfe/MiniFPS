@@ -30,7 +30,7 @@ set(
 )
 
 if(APPLE)
-    set(CMAKE_OSX_ARCHITECTURES arm64;x86_64)
+    set(CMAKE_OSX_ARCHITECTURES x86_64)
     set(CMAKE_BUILD_RPATH "@executable_path/../Frameworks")
 
     # Find SDL2 and SDL2_image frameworks
