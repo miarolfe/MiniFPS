@@ -1,0 +1,68 @@
+name: Build SDL2 App
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, macOS-latest]
+        include:
+          - os: windows-latest
+            sdl_url: "https://www.libsdl.org/release/SDL2-devel-2.0.16-VC.zip"
+            sdl_path: "SDL2-2.0.16"
+          - os: macOS-latest
+            sdl_url: "https://www.libsdl.org/release/SDL2-2.0.16.dmg"
+            sdl_path: "SDL2.framework"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: |
+          if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
+            choco install -y cmake
+          else
+            brew install cmake
+          fi
+
+      - name: Download SDL2
+        run: |
+          curl -L ${{ matrix.sdl_url }} --progress-bar --location --remote-name
+
+      - name: Setup SDL2
+        run: |
+          if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
+            Expand-Archive -LiteralPath "SDL2-devel-2.0.16-VC.zip" -DestinationPath "SDL2"
+            echo "SDL2_DIR=${GITHUB_WORKSPACE}\\${{ matrix.sdl_path }}\\lib\\x64" | Out-File -Append -FilePath $env:GITHUB_ENV
+          else
+            hdiutil attach SDL2-2.0.16.dmg
+            sudo cp -R "/Volumes/SDL2/SDL2.framework" "/Library/Frameworks/"
+            echo "SDL2_DIR=/Library/Frameworks/SDL2.framework" >> $GITHUB_ENV
+          fi
+
+      - name: Configure CMake
+        run: |
+          mkdir build
+          cd build
+          cmake .. -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build project
+        run: |
+          cd build
+          cmake --build . --config Release
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.os }}-artifact
+          path: build/your_sdl2_app_executable
