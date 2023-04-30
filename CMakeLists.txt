@@ -28,23 +28,25 @@ set(
 )
 
 find_package(SDL2 REQUIRED)
-if(NOT SDL2_FOUND)
+if(SDL2_FOUND)
+    message(STATUS "SDL2 library found")
+else()
     message(FATAL_ERROR "SDL2 library not found")
 endif()
 
-
 find_package(SDL2_image REQUIRED SDL2)
-if(NOT SDL2_IMAGE_FOUND)
+if(SDL2_IMAGE_FOUND)
+    message(STATUS "SDL2_image library found")
+else()
     message(FATAL_ERROR "SDL2_image library not found")
 endif()
 
 
-if (WIN32)
+if(WIN32)
     add_executable(mini-fps ${SOURCES} ${HEADERS})
     target_include_directories(mini-fps PRIVATE ${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS})
     target_link_libraries(mini-fps PRIVATE SDL2)
-elseif (APPLE)
-    # set(CMAKE_OSX_ARCHITECTURES arm64;x86_64)
+elseif(APPLE)
     add_executable(mini-fps MACOSX_BUNDLE ${SOURCES} ${HEADERS})
     set_source_files_properties(${MACOSX_BUNDLE_ICON_FILE} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
 
@@ -57,4 +59,6 @@ elseif (APPLE)
             COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_SOURCE_DIR}/testIcon.icns" "${CMAKE_CURRENT_BINARY_DIR}/mini-fps.app/Contents/Resources"
             COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_SOURCE_DIR}/Info.plist" "${CMAKE_CURRENT_BINARY_DIR}/mini-fps.app/Contents"
             )
+else()
+    message(FATAL_ERROR "Unsupported operating system")
 endif()
