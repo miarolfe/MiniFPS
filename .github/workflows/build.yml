@@ -29,13 +29,9 @@ jobs:
 
       - name: Configure CMake
         run: cmake -B build -DCMAKE_BUILD_TYPE=Release
-        with:
-          verbosity: 'debug'
 
       - name: Build game
         run: cmake --build build --config Release
-        with:
-          verbosity: 'debug'
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v2
