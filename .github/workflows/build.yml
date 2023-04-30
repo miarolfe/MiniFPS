@@ -14,8 +14,6 @@ jobs:
     runs-on: macOS-latest
     strategy:
       matrix:
-        xcode-version: [ 12.5.0 ]
-        macos-version: [ 11.0 ]
         architecture: [ x86_64, arm64 ]
 
     steps:
@@ -38,5 +36,5 @@ jobs:
       - name: Upload build artifact
         uses: actions/upload-artifact@v2
         with:
-          name: Game-build
+          name: mini-fps-$matrix.architecture
           path: build/
