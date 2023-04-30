@@ -4,9 +4,9 @@
 <plist version="1.0">
 <dict>
   <key>CFBundleName</key>
-  <string>rasterization</string>
+  <string>mini-fps</string>
   <key>CFBundleIdentifier</key>
-  <string>com.pjhrolfe.rasterization</string>
+  <string>com.pjhrolfe.mini-fps</string>
   <key>CFBundleVersion</key>
   <string>1.0.0</string>
   <key>CFBundleShortVersionString</key>
