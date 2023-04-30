@@ -27,16 +27,18 @@ set(
         src/Utilities.h
 )
 
+find_library(SDL2_LIBRARY SDL2)
+
 find_package(SDL2 REQUIRED)
 if(SDL2_FOUND)
-    message(STATUS "SDL2 library found")
+    message(STATUS "SDL2 library found at ${SDL2_LIBRARY}")
 else()
     message(FATAL_ERROR "SDL2 library not found")
 endif()
 
 find_package(SDL2_image REQUIRED SDL2)
 if(SDL2_IMAGE_FOUND)
-    message(STATUS "SDL2_image library found")
+    message(STATUS "SDL2_image library found at ${SDL2_IMAGE_LIBRARIES}")
 else()
     message(FATAL_ERROR "SDL2_image library not found")
 endif()
