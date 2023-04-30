@@ -44,7 +44,7 @@ if (WIN32)
     target_include_directories(mini-fps PRIVATE ${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS})
     target_link_libraries(mini-fps PRIVATE SDL2)
 elseif (APPLE)
-    set(CMAKE_OSX_ARCHITECTURES arm64;x86_64)
+    # set(CMAKE_OSX_ARCHITECTURES arm64;x86_64)
     add_executable(mini-fps MACOSX_BUNDLE ${SOURCES} ${HEADERS})
     set_source_files_properties(${MACOSX_BUNDLE_ICON_FILE} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
 
