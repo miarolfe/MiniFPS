@@ -41,7 +41,6 @@ else()
     message(FATAL_ERROR "SDL2_image library not found")
 endif()
 
-
 if(WIN32)
     add_executable(mini-fps ${SOURCES} ${HEADERS})
     target_include_directories(mini-fps PRIVATE ${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS})
@@ -50,7 +49,7 @@ elseif(APPLE)
     add_executable(mini-fps MACOSX_BUNDLE ${SOURCES} ${HEADERS})
     set_source_files_properties(${MACOSX_BUNDLE_ICON_FILE} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
 
-    target_include_directories(mini-fps PRIVATE ${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS} "include/")
+    target_include_directories(mini-fps PRIVATE ${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS} "include/" "/usr/local" "/opt/homebrew")
     target_link_libraries(mini-fps PRIVATE ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES})
 
     add_custom_command(TARGET mini-fps POST_BUILD
