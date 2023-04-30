@@ -12,6 +12,11 @@ on:
 jobs:
   build:
     runs-on: macOS-latest
+    strategy:
+      matrix:
+        xcode-version: [ 12.5.0 ]
+        macos-version: [ 11.0 ]
+        architecture: [ x86_64, arm64 ]
 
     steps:
       - name: Checkout repository
