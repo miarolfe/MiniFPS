@@ -39,6 +39,7 @@ elseif(APPLE)
     # Bundle frameworks with the app
     set(SDL2_FRAMEWORK "${SDL2_LIB}")
     set(SDL2_IMAGE_FRAMEWORK "${SDL2_IMAGE_LIB}")
+    set(CMAKE_BUILD_RPATH "@executable_path/../Frameworks")
 
     add_executable(mini-fps MACOSX_BUNDLE ${SOURCES} ${HEADERS})
     set_source_files_properties(${MACOSX_BUNDLE_ICON_FILE} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
