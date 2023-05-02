@@ -27,32 +27,19 @@ set(
         src/Utilities.h
 )
 
-find_library(SDL2_LIBRARY SDL2)
-
 find_package(SDL2 REQUIRED)
-if(SDL2_FOUND)
-    message(STATUS "SDL2 library found at ${SDL2_LIBRARY}")
-else()
-    message(FATAL_ERROR "SDL2 library not found")
-endif()
-
-find_package(SDL2_image REQUIRED SDL2)
-if(SDL2_IMAGE_FOUND)
-    message(STATUS "SDL2_image library found at ${SDL2_IMAGE_LIBRARIES}")
-else()
-    message(FATAL_ERROR "SDL2_image library not found")
-endif()
+find_package(SDL2_image REQUIRED)
 
 if(WIN32)
     add_executable(mini-fps ${SOURCES} ${HEADERS})
-    target_include_directories(mini-fps PRIVATE ${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS})
-    target_link_libraries(mini-fps PRIVATE SDL2)
+    target_include_directories(mini-fps PRIVATE ${SDL2_INCLUDE_DIRS} ${SDL2_image_INCLUDE_DIRS})
+    target_link_libraries(mini-fps PRIVATE ${SDL2_LIBRARY} ${SDL2_image_LIBRARY})
 elseif(APPLE)
     add_executable(mini-fps MACOSX_BUNDLE ${SOURCES} ${HEADERS})
     set_source_files_properties(${MACOSX_BUNDLE_ICON_FILE} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
 
     target_include_directories(mini-fps PRIVATE ${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS} "include/" "/usr/local" "/opt/homebrew")
-    target_link_libraries(mini-fps PRIVATE ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES})
+    target_link_libraries(mini-fps PRIVATE ${SDL2_LIBRARY} ${SDL2_IMAGE_LIBRARIES})
 
     add_custom_command(TARGET mini-fps POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/mini-fps.app/Contents/Resources"

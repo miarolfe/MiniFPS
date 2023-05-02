@@ -22,7 +22,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          brew install sdl2 sdl2_image cmake
+          brew install --build-from-source sdl2 sdl2_image cmake
 
       - name: Create build directory
         run: mkdir build
