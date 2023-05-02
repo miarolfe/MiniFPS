@@ -20,9 +20,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Install dependencies
-        run: |
-          brew install --build-from-source sdl2 sdl2_image cmake
+      - name: Copy frameworks to Library
+        run: cp -R lib/* /Library/Frameworks
 
       - name: Create build directory
         run: mkdir build
