@@ -35,20 +35,17 @@ jobs:
       - name: Create build directory
         run: mkdir build
 
-#      - name: Configure CMake
-#        run: cmake -G Ninja -B build -DCMAKE_BUILD_TYPE=Debug
-
       - name: Configure CMake
-        run: cmake -G Ninja -DCMAKE_BUILD_TYPE=Debug
+        run: cmake -G Ninja -DCMAKE_BUILD_TYPE=Debug -B ci-build
 
       - name: Build game
-        run: cmake --build build --target mini-fps -j 8
+        run: cmake --build ci-build --target mini-fps -j 8
 
       - name: Generate checksum
-        run: md5 build/mini-fps.app/Contents/MacOS/mini-fps
+        run: md5 ci-build/mini-fps.app/Contents/MacOS/mini-fps
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v2
         with:
           name: mini-fps-${{ matrix.architecture }}
-          path: build/
+          path: ci-build/
