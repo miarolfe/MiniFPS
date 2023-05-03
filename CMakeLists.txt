@@ -44,7 +44,7 @@ elseif(APPLE)
     add_executable(mini-fps MACOSX_BUNDLE ${SOURCES} ${HEADERS})
     set_source_files_properties(${MACOSX_BUNDLE_ICON_FILE} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
 
-    include_directories("include")
+    include_directories("include/")
 
     target_link_libraries(mini-fps PRIVATE
             "-F/Library/Frameworks"
