@@ -20,6 +20,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Install ninja
+        run: brew install ninja
+
       - name: Copy frameworks to Library
         run: sudo cp -R lib/* /Library/Frameworks
 
@@ -27,7 +30,7 @@ jobs:
         run: mkdir build
 
       - name: Configure CMake
-        run: cmake -G Ninja -B build -DCMAKE_BUILD_TYPE=Debug
+        run: cmake -B build -DCMAKE_BUILD_TYPE=Debug
 
       - name: Build game
         run: cmake --build build --config Debug
