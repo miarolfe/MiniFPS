@@ -30,7 +30,7 @@ jobs:
         run: mkdir build
 
       - name: Configure CMake
-        run: cmake -B build -DCMAKE_BUILD_TYPE=Debug
+        run: cmake -G Ninja -B build -DCMAKE_BUILD_TYPE=Debug
 
       - name: Build game
         run: cmake --build build --config Debug
