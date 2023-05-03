@@ -32,8 +32,11 @@ jobs:
       - name: Build game
         run: cmake --build build --config Release
 
+      - name: TEMP
+        run: ls build
+
       - name: Fix permissions
-        run: chmod +x /build/Contents/MacOS/mini-fps
+        run: chmod +x build/Contents/MacOS/mini-fps
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v2
