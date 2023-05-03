@@ -1,19 +1,8 @@
 # ninja log v5
-4	362	1683134912356017333	CMakeFiles/mini-fps.dir/src/Renderer.cpp.o	ff6bccafadd20d53
-4	842	1683135968137217019	CMakeFiles/mini-fps.dir/src/main.cpp.o	c3dd3bf878095b32
-4	359	1683134912353041923	CMakeFiles/mini-fps.dir/src/Player.cpp.o	df02462aabc815c
-4	70	1683134912064953873	CMakeFiles/mini-fps.dir/src/Camera.cpp.o	c51c67da61f7d643
-842	1038	1683135968206023779	mini-fps.app/Contents/MacOS/mini-fps	a4e65e9119228358
-4	411	1683134912404253931	CMakeFiles/mini-fps.dir/src/Level.cpp.o	282dfa9d56d59c67
-4	377	1683134912371067049	CMakeFiles/mini-fps.dir/src/Utilities.cpp.o	618937504c1f46af
-0	6	0	clean	3c8e6cc385ee00ba
-4	870	1683143255944761870	CMakeFiles/mini-fps.dir/src/main.cpp.o	c3dd3bf878095b32
-870	1074	1683143256017741024	mini-fps.app/Contents/MacOS/mini-fps	a4e65e9119228358
-4	915	1683144066863613422	CMakeFiles/mini-fps.dir/src/main.cpp.o	c3dd3bf878095b32
-915	1132	1683144066950142407	mini-fps.app/Contents/MacOS/mini-fps	a4e65e9119228358
-4	933	1683145395582393508	CMakeFiles/mini-fps.dir/src/main.cpp.o	c3dd3bf878095b32
-933	1150	1683145395664228343	mini-fps.app/Contents/MacOS/mini-fps	a4e65e9119228358
-4	485	1683145871008314439	CMakeFiles/mini-fps.dir/src/Renderer.cpp.o	ff6bccafadd20d53
-4	532	1683145871055407769	CMakeFiles/mini-fps.dir/src/Utilities.cpp.o	618937504c1f46af
-4	1016	1683145871537551410	CMakeFiles/mini-fps.dir/src/main.cpp.o	c3dd3bf878095b32
-1016	1221	1683145871613768409	mini-fps.app/Contents/MacOS/mini-fps	a4e65e9119228358
+0	91	1683148646995877016	CMakeFiles/mini-fps.dir/src/Camera.cpp.o	c51c67da61f7d643
+0	385	1683148647288497661	CMakeFiles/mini-fps.dir/src/Player.cpp.o	df02462aabc815c
+0	386	1683148647290921151	CMakeFiles/mini-fps.dir/src/Renderer.cpp.o	ff6bccafadd20d53
+0	436	1683148647339821522	CMakeFiles/mini-fps.dir/src/Level.cpp.o	282dfa9d56d59c67
+0	440	1683148647345119082	CMakeFiles/mini-fps.dir/src/Utilities.cpp.o	618937504c1f46af
+0	943	1683148647844795705	CMakeFiles/mini-fps.dir/src/main.cpp.o	c3dd3bf878095b32
+943	1112	1683148647884301075	mini-fps.app/Contents/MacOS/mini-fps	f637ba4fe5c88045
