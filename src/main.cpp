@@ -20,6 +20,8 @@ void WriteLineToFile(std::string fileName, std::string line) {
 }
 
 int main() {
+    WriteLineToFile("log.txt", "Program start");
+
     if (!InitializeSDL()) {
         std::cerr << "SDL could not be initialized:" << SDL_GetError();
         WriteLineToFile("log.txt", "SDL could not be initialized");
