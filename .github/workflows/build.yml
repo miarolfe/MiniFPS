@@ -32,9 +32,6 @@ jobs:
       - name: List current directories
         run: ls
 
-      - name: Remove build directory
-        run: rm -r build
-
       - name: Create build directory
         run: mkdir build
 
