@@ -28,7 +28,7 @@
 #ifndef SDL_scancode_h_
 #define SDL_scancode_h_
 
-#include <SDL2/SDL_stdinc.h>
+#include "../../../Headers/SDL_stdinc.h"
 
 /**
  *  \brief The SDL keyboard scancode representation.

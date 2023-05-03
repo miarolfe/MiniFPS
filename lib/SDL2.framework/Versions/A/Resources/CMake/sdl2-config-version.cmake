@@ -3,12 +3,12 @@
 # SDL2 CMake version configuration file:
 # This file is meant to be placed in Resources/CMake of a SDL2 framework
 
-if(NOT EXISTS "${CMAKE_CURRENT_LIST_DIR}/../../Headers/SDL_version.h")
+if(NOT EXISTS "../../Headers/SDL_version.h")
     message(AUTHOR_WARNING "Could not find SDL_version.h. This script is meant to be placed in the Resources/CMake directory of SDL2.framework")
     return()
 endif()
 
-file(READ "${CMAKE_CURRENT_LIST_DIR}/../../Headers/SDL_version.h" _sdl_version_h)
+file(READ "../../Headers/SDL_version.h" _sdl_version_h)
 string(REGEX MATCH "#define[ \t]+SDL_MAJOR_VERSION[ \t]+([0-9]+)" _sdl_major_re "${_sdl_version_h}")
 set(_sdl_major "${CMAKE_MATCH_1}")
 string(REGEX MATCH "#define[ \t]+SDL_MINOR_VERSION[ \t]+([0-9]+)" _sdl_minor_re "${_sdl_version_h}")

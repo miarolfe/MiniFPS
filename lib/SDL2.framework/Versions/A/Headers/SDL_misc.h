@@ -28,9 +28,9 @@
 #ifndef SDL_misc_h_
 #define SDL_misc_h_
 
-#include <SDL2/SDL_stdinc.h>
+#include "../../../Headers/SDL_stdinc.h"
 
-#include <SDL2/begin_code.h>
+#include "../../../Headers/begin_code.h"
 
 /* Set up for C function definitions, even when using C++ */
 #ifdef __cplusplus
@@ -72,7 +72,7 @@ extern DECLSPEC int SDLCALL SDL_OpenURL(const char *url);
 #ifdef __cplusplus
 }
 #endif
-#include <SDL2/close_code.h>
+#include "../../../Headers/close_code.h"
 
 #endif /* SDL_misc_h_ */
 

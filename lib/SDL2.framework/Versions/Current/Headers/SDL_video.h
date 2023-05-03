@@ -28,12 +28,12 @@
 #ifndef SDL_video_h_
 #define SDL_video_h_
 
-#include <SDL2/SDL_stdinc.h>
-#include <SDL2/SDL_pixels.h>
-#include <SDL2/SDL_rect.h>
-#include <SDL2/SDL_surface.h>
+#include "../../../Headers/SDL_stdinc.h"
+#include "../../../Headers/SDL_pixels.h"
+#include "../../../Headers/SDL_rect.h"
+#include "../../../Headers/SDL_surface.h"
 
-#include <SDL2/begin_code.h>
+#include "../../../Headers/begin_code.h"
 /* Set up for C function definitions, even when using C++ */
 #ifdef __cplusplus
 extern "C" {
@@ -2143,7 +2143,7 @@ extern DECLSPEC void SDLCALL SDL_GL_DeleteContext(SDL_GLContext context);
 #ifdef __cplusplus
 }
 #endif
-#include <SDL2/close_code.h>
+#include "../../../Headers/close_code.h"
 
 #endif /* SDL_video_h_ */
 

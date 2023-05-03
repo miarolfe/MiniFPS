@@ -13,10 +13,20 @@
 #include "Utilities.h"
 
 int main() {
+    std::ofstream outFile1("test.txt", std::ios::app); // open file in append mode
+    outFile1 << "Program started" << std::endl; // write line and append newline character
+    outFile1.close(); // close file
+
     if (!InitializeSDL()) {
         std::cerr << "SDL could not be initialized:" << SDL_GetError();
+        std::ofstream outFile("test.txt", std::ios::app); // open file in append mode
+        outFile << "SDL not init" << std::endl; // write line and append newline character
+        outFile.close(); // close file
     } else {
         std::cout << "SDL initialized" << std::endl;
+        std::ofstream outFile("test.txt", std::ios::app); // open file in append mode
+        outFile << "SDL init" << std::endl; // write line and append newline character
+        outFile.close(); // close file
     }
 
     SDL_Window* window = nullptr;
@@ -24,9 +34,9 @@ int main() {
     const std::string assetsFolderPath = GetAssetsFolderPath();
 
     // TEMP
-    std::ofstream outFile("test.txt", std::ios::app); // open file in append mode
-    outFile << assetsFolderPath << std::endl; // write line and append newline character
-    outFile.close(); // close file
+    std::ofstream outFile2("test.txt", std::ios::app); // open file in append mode
+    outFile2 << assetsFolderPath << std::endl; // write line and append newline character
+    outFile2.close(); // close file
 
     Settings settings = LoadSettings(assetsFolderPath, "settings.json");
 

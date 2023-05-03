@@ -28,8 +28,8 @@
 #ifndef SDL_keycode_h_
 #define SDL_keycode_h_
 
-#include <SDL2/SDL_stdinc.h>
-#include <SDL2/SDL_scancode.h>
+#include "../../../Headers/SDL_stdinc.h"
+#include "../../../Headers/SDL_scancode.h"
 
 /**
  *  \brief The SDL virtual key representation.

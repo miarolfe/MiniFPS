@@ -24,7 +24,7 @@
  *
  *  This is a simple file to encapsulate the OpenGL ES 2.0 API headers.
  */
-#include <SDL2/SDL_config.h>
+#include "../../../Headers/SDL_config.h"
 
 #if !defined(_MSC_VER) && !defined(SDL_USE_BUILTIN_OPENGL_DEFINITIONS)
 

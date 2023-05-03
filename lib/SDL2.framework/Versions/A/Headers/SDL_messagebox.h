@@ -22,10 +22,10 @@
 #ifndef SDL_messagebox_h_
 #define SDL_messagebox_h_
 
-#include <SDL2/SDL_stdinc.h>
-#include <SDL2/SDL_video.h>      /* For SDL_Window */
+#include "../../../Headers/SDL_stdinc.h"
+#include "../../../Headers/SDL_video.h"      /* For SDL_Window */
 
-#include <SDL2/begin_code.h>
+#include "../../../Headers/begin_code.h"
 /* Set up for C function definitions, even when using C++ */
 #ifdef __cplusplus
 extern "C" {
@@ -186,7 +186,7 @@ extern DECLSPEC int SDLCALL SDL_ShowSimpleMessageBox(Uint32 flags, const char *t
 #ifdef __cplusplus
 }
 #endif
-#include <SDL2/close_code.h>
+#include "../../../Headers/close_code.h"
 
 #endif /* SDL_messagebox_h_ */
 

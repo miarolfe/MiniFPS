@@ -29,10 +29,10 @@
 #ifndef SDL_rwops_h_
 #define SDL_rwops_h_
 
-#include <SDL2/SDL_stdinc.h>
-#include <SDL2/SDL_error.h>
+#include "../../../Headers/SDL_stdinc.h"
+#include "../../../Headers/SDL_error.h"
 
-#include <SDL2/begin_code.h>
+#include "../../../Headers/begin_code.h"
 /* Set up for C function definitions, even when using C++ */
 #ifdef __cplusplus
 extern "C" {
@@ -834,7 +834,7 @@ extern DECLSPEC size_t SDLCALL SDL_WriteBE64(SDL_RWops * dst, Uint64 value);
 #ifdef __cplusplus
 }
 #endif
-#include <SDL2/close_code.h>
+#include "../../../Headers/close_code.h"
 
 #endif /* SDL_rwops_h_ */
 

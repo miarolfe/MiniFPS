@@ -28,8 +28,8 @@
 #ifndef SDL_quit_h_
 #define SDL_quit_h_
 
-#include <SDL2/SDL_stdinc.h>
-#include <SDL2/SDL_error.h>
+#include "../../../Headers/SDL_stdinc.h"
+#include "../../../Headers/SDL_error.h"
 
 /**
  *  \file SDL_quit.h

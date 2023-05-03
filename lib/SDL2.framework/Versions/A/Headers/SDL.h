@@ -29,42 +29,42 @@
 #ifndef SDL_h_
 #define SDL_h_
 
-#include <SDL2/SDL_main.h>
-#include <SDL2/SDL_stdinc.h>
-#include <SDL2/SDL_assert.h>
-#include <SDL2/SDL_atomic.h>
-#include <SDL2/SDL_audio.h>
-#include <SDL2/SDL_clipboard.h>
-#include <SDL2/SDL_cpuinfo.h>
-#include <SDL2/SDL_endian.h>
-#include <SDL2/SDL_error.h>
-#include <SDL2/SDL_events.h>
-#include <SDL2/SDL_filesystem.h>
-#include <SDL2/SDL_gamecontroller.h>
-#include <SDL2/SDL_guid.h>
-#include <SDL2/SDL_haptic.h>
-#include <SDL2/SDL_hidapi.h>
-#include <SDL2/SDL_hints.h>
-#include <SDL2/SDL_joystick.h>
-#include <SDL2/SDL_loadso.h>
-#include <SDL2/SDL_log.h>
-#include <SDL2/SDL_messagebox.h>
-#include <SDL2/SDL_metal.h>
-#include <SDL2/SDL_mutex.h>
-#include <SDL2/SDL_power.h>
-#include <SDL2/SDL_render.h>
-#include <SDL2/SDL_rwops.h>
-#include <SDL2/SDL_sensor.h>
-#include <SDL2/SDL_shape.h>
-#include <SDL2/SDL_system.h>
-#include <SDL2/SDL_thread.h>
-#include <SDL2/SDL_timer.h>
-#include <SDL2/SDL_version.h>
-#include <SDL2/SDL_video.h>
-#include <SDL2/SDL_locale.h>
-#include <SDL2/SDL_misc.h>
+#include "../../../Headers/SDL_main.h"
+#include "../../../Headers/SDL_stdinc.h"
+#include "../../../Headers/SDL_assert.h"
+#include "../../../Headers/SDL_atomic.h"
+#include "../../../Headers/SDL_audio.h"
+#include "../../../Headers/SDL_clipboard.h"
+#include "../../../Headers/SDL_cpuinfo.h"
+#include "../../../Headers/SDL_endian.h"
+#include "../../../Headers/SDL_error.h"
+#include "../../../Headers/SDL_events.h"
+#include "../../../Headers/SDL_filesystem.h"
+#include "../../../Headers/SDL_gamecontroller.h"
+#include "../../../Headers/SDL_guid.h"
+#include "../../../Headers/SDL_haptic.h"
+#include "../../../Headers/SDL_hidapi.h"
+#include "../../../Headers/SDL_hints.h"
+#include "../../../Headers/SDL_joystick.h"
+#include "../../../Headers/SDL_loadso.h"
+#include "../../../Headers/SDL_log.h"
+#include "../../../Headers/SDL_messagebox.h"
+#include "../../../Headers/SDL_metal.h"
+#include "../../../Headers/SDL_mutex.h"
+#include "../../../Headers/SDL_power.h"
+#include "../../../Headers/SDL_render.h"
+#include "../../../Headers/SDL_rwops.h"
+#include "../../../Headers/SDL_sensor.h"
+#include "../../../Headers/SDL_shape.h"
+#include "../../../Headers/SDL_system.h"
+#include "../../../Headers/SDL_thread.h"
+#include "../../../Headers/SDL_timer.h"
+#include "../../../Headers/SDL_version.h"
+#include "../../../Headers/SDL_video.h"
+#include "../../../Headers/SDL_locale.h"
+#include "../../../Headers/SDL_misc.h"
 
-#include <SDL2/begin_code.h>
+#include "../../../Headers/begin_code.h"
 /* Set up for C function definitions, even when using C++ */
 #ifdef __cplusplus
 extern "C" {
@@ -226,7 +226,7 @@ extern DECLSPEC void SDLCALL SDL_Quit(void);
 #ifdef __cplusplus
 }
 #endif
-#include <SDL2/close_code.h>
+#include "../../../Headers/close_code.h"
 
 #endif /* SDL_h_ */
 

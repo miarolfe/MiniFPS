@@ -31,8 +31,8 @@ endmacro()
 
 set(SDL2_FOUND TRUE)
 
-string(REGEX REPLACE "SDL2\\.framework.*" "SDL2.framework" SDL2_FRAMEWORK_PATH "${CMAKE_CURRENT_LIST_DIR}")
-string(REGEX REPLACE "SDL2\\.framework.*" "" SDL2_FRAMEWORK_PARENT_PATH "${CMAKE_CURRENT_LIST_DIR}")
+string(REGEX REPLACE "SDL2\\.framework.*" "SDL2.framework" SDL2_FRAMEWORK_PATH ".")
+string(REGEX REPLACE "SDL2\\.framework.*" "" SDL2_FRAMEWORK_PARENT_PATH ".")
 
 # For compatibility with autotools sdl2-config.cmake, provide SDL2_* variables.
 

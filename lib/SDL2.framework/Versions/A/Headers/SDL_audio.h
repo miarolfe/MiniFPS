@@ -30,14 +30,14 @@
 #ifndef SDL_audio_h_
 #define SDL_audio_h_
 
-#include <SDL2/SDL_stdinc.h>
-#include <SDL2/SDL_error.h>
-#include <SDL2/SDL_endian.h>
-#include <SDL2/SDL_mutex.h>
-#include <SDL2/SDL_thread.h>
-#include <SDL2/SDL_rwops.h>
+#include "../../../Headers/SDL_stdinc.h"
+#include "../../../Headers/SDL_error.h"
+#include "../../../Headers/SDL_endian.h"
+#include "../../../Headers/SDL_mutex.h"
+#include "../../../Headers/SDL_thread.h"
+#include "../../../Headers/SDL_rwops.h"
 
-#include <SDL2/begin_code.h>
+#include "../../../Headers/begin_code.h"
 /* Set up for C function definitions, even when using C++ */
 #ifdef __cplusplus
 extern "C" {
@@ -1493,7 +1493,7 @@ extern DECLSPEC void SDLCALL SDL_CloseAudioDevice(SDL_AudioDeviceID dev);
 #ifdef __cplusplus
 }
 #endif
-#include <SDL2/close_code.h>
+#include "../../../Headers/close_code.h"
 
 #endif /* SDL_audio_h_ */
 
