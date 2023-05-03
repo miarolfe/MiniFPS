@@ -13,16 +13,25 @@
 #include "Settings.h"
 #include "Utilities.h"
 
+void WriteLineToFile(std::string fileName, std::string line) {
+    std::ofstream outFile(fileName, std::ios::app); // open file in append mode
+    outFile << line << std::endl; // write line and append newline character
+    outFile.close(); // close file
+}
+
 int main() {
     if (!InitializeSDL()) {
         std::cerr << "SDL could not be initialized:" << SDL_GetError();
+        WriteLineToFile("log.txt", "SDL could not be initialized");
     } else {
         std::cout << "SDL initialized" << std::endl;
+        WriteLineToFile("log.txt", "SDL initialized");
     }
 
     SDL_Window* window = nullptr;
     SDL_Renderer* renderer = nullptr;
     const std::string assetsFolderPath = GetAssetsFolderPath();
+    WriteLineToFile("log.txt", assetsFolderPath);
 
     std::vector<std::string> texturePaths = {"sprites/white-bricks.png",
                                              "sprites/red-bricks.png",
@@ -49,10 +58,6 @@ int main() {
     }
 
     std::string levelFilePath = assetsFolderPath + settings.levelPath;
-
-    std::ofstream outFile("test.txt", std::ios::app); // open file in append mode
-    outFile << levelFilePath << std::endl; // write line and append newline character
-    outFile.close(); // close file
 
     size_t wallTexSize;
     // TODO: Allow variable size textures
