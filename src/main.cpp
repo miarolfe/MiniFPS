@@ -22,6 +22,12 @@ int main() {
     SDL_Window* window = nullptr;
     SDL_Renderer* renderer = nullptr;
     const std::string assetsFolderPath = GetAssetsFolderPath();
+
+    // TEMP
+    std::ofstream outFile("test.txt", std::ios::app); // open file in append mode
+    outFile << assetsFolderPath << std::endl; // write line and append newline character
+    outFile.close(); // close file
+
     Settings settings = LoadSettings(assetsFolderPath, "settings.json");
 
     if (!InitializeWindowAndRenderer(&window, &renderer, settings.screenWidth, settings.screenHeight, settings.vSync)) {

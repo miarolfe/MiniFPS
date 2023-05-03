@@ -56,6 +56,12 @@ Settings::Settings(size_t screenWidth, size_t screenHeight, float renderRayIncre
 // Use a settings path with .json extension
 Settings LoadSettings(const std::string &assetsFilePath, const std::string &settingsFilePath) {
     std::ifstream f(assetsFilePath + settingsFilePath);
+
+    if (!f.is_open()) {
+        // File cannot be opened
+        // TODO
+    }
+
     json settingsAsJson = json::parse(f);
     size_t screenWidth, screenHeight, renderDistance;
     float renderRayIncrement, fieldOfView, speedModifier, rotationModifier, playerStartX, playerStartY,
