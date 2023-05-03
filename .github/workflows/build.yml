@@ -39,4 +39,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: mini-fps-${{ matrix.architecture }}
-          path: build/
+          path: build/mini-fps.app
