@@ -23,8 +23,8 @@ jobs:
       - name: Install ninja
         run: brew install ninja
 
-#      - name: Copy frameworks to Library
-#        run: sudo cp -R lib/* /Library/Frameworks
+      - name: Copy frameworks to Library
+        run: sudo cp -R lib/* /Library/Frameworks
 #
 #      - name: Check if frameworks were correctly copied
 #        run: ls /Library/Frameworks
