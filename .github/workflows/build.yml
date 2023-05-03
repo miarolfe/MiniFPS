@@ -28,6 +28,12 @@ jobs:
 
       - name: Check if frameworks were correctly copied
         run: ls /Library/Frameworks
+        
+      - name: List current directories
+        run: ls
+
+      - name: Remove build directory
+        run: rm -r build
 
       - name: Create build directory
         run: mkdir build
