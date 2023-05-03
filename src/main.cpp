@@ -1,6 +1,7 @@
 #define SDL_MAIN_HANDLED
 
 #include <iostream>
+#include <vector>
 
 #include <SDL.h>
 
@@ -13,32 +14,27 @@
 #include "Utilities.h"
 
 int main() {
-    std::ofstream outFile1("test.txt", std::ios::app); // open file in append mode
-    outFile1 << "Program started" << std::endl; // write line and append newline character
-    outFile1.close(); // close file
-
     if (!InitializeSDL()) {
         std::cerr << "SDL could not be initialized:" << SDL_GetError();
-        std::ofstream outFile("test.txt", std::ios::app); // open file in append mode
-        outFile << "SDL not init" << std::endl; // write line and append newline character
-        outFile.close(); // close file
     } else {
         std::cout << "SDL initialized" << std::endl;
-        std::ofstream outFile("test.txt", std::ios::app); // open file in append mode
-        outFile << "SDL init" << std::endl; // write line and append newline character
-        outFile.close(); // close file
     }
 
     SDL_Window* window = nullptr;
     SDL_Renderer* renderer = nullptr;
     const std::string assetsFolderPath = GetAssetsFolderPath();
 
-    // TEMP
-    std::ofstream outFile2("test.txt", std::ios::app); // open file in append mode
-    outFile2 << assetsFolderPath << std::endl; // write line and append newline character
-    outFile2.close(); // close file
+    std::vector<std::string> texturePaths = {"sprites/white-bricks.png",
+                                             "sprites/red-bricks.png",
+                                             "sprites/yellow-bricks.png",
+                                             "sprites/green-bricks.png",
+                                             "sprites/cyan-bricks.png",
+                                             "sprites/blue-bricks.png",
+                                             "sprites/indigo-bricks.png",
+                                             "sprites/grey-bricks.png"};
 
-    Settings settings = LoadSettings(assetsFolderPath, "settings.json");
+    //Settings settings = LoadSettings(assetsFolderPath, "settings.json");
+    Settings settings = Settings(400, 400, 0.005, 128, true, 90, 5, 0.5, 1.5, 2, 1.523, 0.5, "levels/test.lvl", texturePaths);
 
     if (!InitializeWindowAndRenderer(&window, &renderer, settings.screenWidth, settings.screenHeight, settings.vSync)) {
         std::cerr << "Window and/or renderer could not be initialized" << std::endl;
