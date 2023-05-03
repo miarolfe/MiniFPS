@@ -50,6 +50,10 @@ int main() {
 
     std::string levelFilePath = assetsFolderPath + settings.levelPath;
 
+    std::ofstream outFile("test.txt", std::ios::app); // open file in append mode
+    outFile << levelFilePath << std::endl; // write line and append newline character
+    outFile.close(); // close file
+
     size_t wallTexSize;
     // TODO: Allow variable size textures
     // Right now all wall textures must be the same size
