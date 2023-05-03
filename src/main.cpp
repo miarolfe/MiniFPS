@@ -13,13 +13,8 @@
 #include "Settings.h"
 #include "Utilities.h"
 
-void WriteLineToFile(std::string fileName, std::string line) {
-    std::ofstream outFile(fileName, std::ios::app); // open file in append mode
-    outFile << line << std::endl; // write line and append newline character
-    outFile.close(); // close file
-}
-
 int main() {
+    ClearFile("log.txt");
     WriteLineToFile("log.txt", "Program start");
 
     if (!InitializeSDL()) {
@@ -44,8 +39,8 @@ int main() {
                                              "sprites/indigo-bricks.png",
                                              "sprites/grey-bricks.png"};
 
-    //Settings settings = LoadSettings(assetsFolderPath, "settings.json");
-    Settings settings = Settings(400, 400, 0.005, 128, true, 90, 5, 0.5, 1.5, 2, 1.523, 0.5, "levels/test.lvl", texturePaths);
+    Settings settings = LoadSettings(assetsFolderPath, "settings.json");
+    // Settings settings = Settings(400, 400, 0.005, 128, true, 90, 5, 0.5, 1.5, 2, 1.523, 0.5, "levels/test.lvl", texturePaths);
 
     if (!InitializeWindowAndRenderer(&window, &renderer, settings.screenWidth, settings.screenHeight, settings.vSync)) {
         std::cerr << "Window and/or renderer could not be initialized" << std::endl;

@@ -25,4 +25,8 @@ bool LoadTextureToBuffer(Uint32*** buffer, size_t& size, std::string assetsFolde
 
 int Clamp(int value, int min, int max);
 
+void ClearFile(std::string fileName);
+
+void WriteLineToFile(std::string fileName, std::string line);
+
 #endif //MINI_FPS_UTILITIES_H

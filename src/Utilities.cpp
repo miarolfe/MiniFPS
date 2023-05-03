@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <string>
 
 #include <SDL.h>
@@ -153,4 +154,15 @@ int Clamp(const int value, const int min, const int max) {
     }
 
     return clampedValue;
+}
+
+void ClearFile(std::string fileName) {
+    std::ofstream outFile(fileName, std::ofstream::out | std::ofstream::trunc);
+    outFile.close();
+}
+
+void WriteLineToFile(std::string fileName, std::string line) {
+    std::ofstream outFile(fileName, std::ios::app); // open file in append mode
+    outFile << line << std::endl; // write line and append newline character
+    outFile.close(); // close file
 }

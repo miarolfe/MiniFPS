@@ -26,6 +26,9 @@ jobs:
       - name: Copy frameworks to Library
         run: sudo cp -R lib/* /Library/Frameworks
 
+      - name: Check if frameworks were correctly copied
+        run: ls /Library/Frameworks
+
       - name: Create build directory
         run: mkdir build
 
@@ -35,7 +38,7 @@ jobs:
       - name: Build game
         run: cmake --build build --config Debug
 
-      - name: Verify integrity
+      - name: Generate checksum
         run: md5 build/mini-fps.app/Contents/MacOS/mini-fps
 
       - name: Upload build artifact
