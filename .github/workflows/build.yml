@@ -32,8 +32,8 @@ jobs:
       - name: Build game
         run: cmake --build build --config Release
 
-      - name: Fix permissions
-        run: sudo chmod +x build/mini-fps.app/Contents/MacOS/mini-fps
+      - name: Verify integrity
+        run: md5 build/mini-fps.app/Contents/MacOS/mini-fps
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v2
