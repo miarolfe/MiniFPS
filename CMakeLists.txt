@@ -41,7 +41,9 @@ elseif(APPLE)
     set(CMAKE_BUILD_RPATH "@executable_path/../Frameworks")
 
     add_executable(mini-fps MACOSX_BUNDLE ${SOURCES} ${HEADERS})
-    set_source_files_properties(${MACOSX_BUNDLE_ICON_FILE} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
+    set_target_properties(mini-fps PROPERTIES
+            MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/assets/Info.plist
+            )
 
     target_include_directories(mini-fps PRIVATE "include/")
 

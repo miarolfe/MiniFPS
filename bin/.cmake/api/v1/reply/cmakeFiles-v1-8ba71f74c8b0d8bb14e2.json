@@ -1140,9 +1140,7 @@
 			"path" : "bin/CMakeFiles/3.23.2/CMakeCXXCompiler.cmake"
 		},
 		{
-			"isCMake" : true,
-			"isExternal" : true,
-			"path" : "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/MacOSXBundleInfo.plist.in"
+			"path" : "assets/Info.plist"
 		}
 	],
 	"kind" : "cmakeFiles",
