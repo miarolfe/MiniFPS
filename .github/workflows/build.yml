@@ -33,10 +33,10 @@ jobs:
         run: mkdir build
 
       - name: Configure CMake
-        run: cmake -G Ninja -B build -DCMAKE_BUILD_TYPE=Debug -DCMAKE_OSX_ARCHITECTURES=${{ matrix.architecture }}
+        run: cmake -G Ninja -B build -DCMAKE_BUILD_TYPE=Debug
 
       - name: Build game
-        run: cmake --build build --config Debug
+        run: cmake --build build --target mini-fps -j 8
 
       - name: Generate checksum
         run: md5 build/mini-fps.app/Contents/MacOS/mini-fps
