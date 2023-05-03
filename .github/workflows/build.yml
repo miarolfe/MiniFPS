@@ -23,12 +23,12 @@ jobs:
       - name: Install ninja
         run: brew install ninja
 
-      - name: Copy frameworks to Library
-        run: sudo cp -R lib/* /Library/Frameworks
+#      - name: Copy frameworks to Library
+#        run: sudo cp -R lib/* /Library/Frameworks
+#
+#      - name: Check if frameworks were correctly copied
+#        run: ls /Library/Frameworks
 
-      - name: Check if frameworks were correctly copied
-        run: ls /Library/Frameworks
-        
       - name: List current directories
         run: ls
 
@@ -38,8 +38,11 @@ jobs:
       - name: Create build directory
         run: mkdir build
 
+#      - name: Configure CMake
+#        run: cmake -G Ninja -B build -DCMAKE_BUILD_TYPE=Debug
+
       - name: Configure CMake
-        run: cmake -G Ninja -B build -DCMAKE_BUILD_TYPE=Debug
+        run: cmake -B build
 
       - name: Build game
         run: cmake --build build --target mini-fps -j 8
