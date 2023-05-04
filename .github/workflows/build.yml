@@ -51,7 +51,7 @@ jobs:
           chmod +x mini-fps
 
       - name : Tar app
-        run: tar -cvf bin
+        run: tar -cvf mini-fps.tar bin
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v3
