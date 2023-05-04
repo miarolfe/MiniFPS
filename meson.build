@@ -45,7 +45,6 @@ mini_fps = executable('mini-fps', sources + headers,
                       dependencies: [sdl2_dep, sdl2_image_dep],
                       install : true,
                       install_dir: 'Contents/MacOS',
-                      cpp_args: '-Flib/'
                       )
 
 run_command('install_name_tool', '-change', '@rpath/SDL2.framework/Versions/A/SDL2', '@executable_path/../Frameworks/SDL2.framework/Versions/A/SDL2', '${MESON_INSTALL_PREFIX}/Contents/MacOS/mini-fps')

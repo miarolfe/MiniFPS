@@ -27,7 +27,11 @@ jobs:
         run: c++ -v -E -
 
       - name: Copy frameworks to Library
-        run: sudo cp -R lib/* /Library/Frameworks
+        run: |
+          MACOS_SDK_PATH=$(xcrun --show-sdk-path)
+          sudo mkdir $MACOS_SDK_PATH/System/Library/Frameworks/SDL2.framework
+          sudo mkdir $MACOS_SDK_PATH/System/Library/Frameworks/SDL2_image.framework
+          sudo cp -R lib/* $MACOS_SDK_PATH/System/Library/Frameworks
 
       - name: Create build directory
         run: mkdir ci-build
