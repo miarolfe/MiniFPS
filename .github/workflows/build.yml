@@ -35,6 +35,9 @@ jobs:
       - name: Change to build directory
         run: cd build
 
+      - name: LS
+        run: ls
+
       - name: Build game
         run: meson install
 
