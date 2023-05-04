@@ -47,8 +47,8 @@ mini_fps = executable('mini-fps', sources + headers,
                       install_dir: 'Contents/MacOS',
                       )
 
-run_command('install_name_tool', '-change', '@rpath/SDL2.framework/Versions/A/SDL2', '@rpath/SDL2.framework/Versions/A/SDL2', '${MESON_INSTALL_PREFIX}/Contents/MacOS/mini-fps')
-run_command('install_name_tool', '-change', '@rpath/SDL2.framework/Versions/A/SDL2_image', '@rpath/SDL2.framework/Versions/A/SDL2_image', '${MESON_INSTALL_PREFIX}/Contents/MacOS/mini-fps')
+run_command('install_name_tool', '-change', '@rpath/SDL2.framework/Versions/A/SDL2', '@loader_path/../Frameworks/SDL2.framework/Versions/A/SDL2', '${MESON_INSTALL_PREFIX}/Contents/MacOS/mini-fps')
+run_command('install_name_tool', '-change', '@rpath/SDL2.framework/Versions/A/SDL2_image', '@loader_path/../Frameworks/SDL2_image.framework/Versions/A/SDL2_image', '${MESON_INSTALL_PREFIX}/Contents/MacOS/mini-fps')
 
 
 
