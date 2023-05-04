@@ -35,12 +35,14 @@ jobs:
       - name: Create build directory
         run: mkdir build
 
-      - name: Setup Meson environment and build game
-        run: |
-              meson setup build . --wipe --prefix="$(pwd)/build/mini-fps.app" --bindir='Contents/MacOS' \
-              cd bin \
-              meson install \
-              cd ..
+      - name: Setup Meson environment
+        run: meson setup build . --wipe --prefix="$(pwd)/build/mini-fps.app" --bindir='Contents/MacOS'
+
+      - name: Change to build directory
+        run: cd build
+
+      - name: Build game
+      - run: meson install
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v2
