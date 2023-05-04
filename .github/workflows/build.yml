@@ -27,14 +27,14 @@ jobs:
         run: sudo cp -R lib/* /Library/Frameworks
 
       - name: Create build directory
-        run: mkdir build
+        run: mkdir ci-build
 
       - name: Setup Meson environment
-        run: meson setup build . --wipe --prefix="$(pwd)/build/mini-fps.app" --bindir='Contents/MacOS'
-        
+        run: meson setup ci-build . --wipe --prefix="$(pwd)/ci-build/mini-fps.app" --bindir='Contents/MacOS'
+
       - name: Build game
         run: |
-          cd build
+          cd ci-build
           meson install
 
       - name: Upload build artifact
