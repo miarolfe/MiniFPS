@@ -42,7 +42,7 @@ jobs:
         run: cd build
 
       - name: Build game
-      - run: meson install
+        run: meson install
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v2
