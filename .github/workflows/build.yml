@@ -23,9 +23,6 @@ jobs:
       - name: Install dependencies
         run: brew install meson ninja
 
-      - name: List include search path
-        run: c++ -v -E -
-
       - name: Copy frameworks to Library
         run: |
           MACOS_SDK_PATH=$(xcrun --show-sdk-path)
@@ -48,7 +45,7 @@ jobs:
           meson install
 
       - name: Upload build artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: mini-fps-${{ matrix.architecture }}
           path: bin/

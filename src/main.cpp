@@ -86,10 +86,8 @@ int main() {
         oldTime = curTime;
         curTime = static_cast<double>(SDL_GetTicks64());
 
-        WriteLineToFile("log.txt", "Calculating frame time");
         frameDelta = GetFrameTime(oldTime, curTime);
 
-        WriteLineToFile("log.txt", "Getting input state");
         mouseX = 0;
         mouseY = 0;
         GetInputState(gameIsRunning, moveLeft, moveRight, moveForward, moveBack, mouseX, mouseY);
