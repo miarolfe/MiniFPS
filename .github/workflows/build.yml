@@ -44,8 +44,17 @@ jobs:
           cd bin
           meson install
 
+      - name: Set executable permissions
+        run: |
+          cd bin/mini-fps.app/Contents/MacOS
+          chmod +x mini-fps.sh
+          chmod +x mini-fps
+
+      - name : Tar app
+        run: tar -cvf mini-fps-${{ matrix.architecture }}
+
       - name: Upload build artifact
         uses: actions/upload-artifact@v3
         with:
           name: mini-fps-${{ matrix.architecture }}
-          path: bin/
+          path: mini-fps-${{ matrix.architecture }}.tar
