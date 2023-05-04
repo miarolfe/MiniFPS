@@ -51,7 +51,7 @@ jobs:
           chmod +x mini-fps
 
       - name : Tar app
-        run: tar -cvf mini-fps.tar bin/mini-fps.app
+        run: tar -cvf mini-fps.tar -C bin/ --exclude='.DS_Store' mini-fps.app
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v3
