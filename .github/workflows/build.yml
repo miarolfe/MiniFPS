@@ -34,7 +34,7 @@ jobs:
           sudo cp -R lib/* $MACOS_SDK_PATH/System/Library/Frameworks
 
       - name: Remove build directory if it exists
-        run: [ -d bin/ ] && rm -r bin/
+        run: if [ -d bin/ ]; then rm -rf bin/; fi
 
       - name: Create build directory
         run: mkdir bin
