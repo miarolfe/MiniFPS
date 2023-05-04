@@ -27,7 +27,7 @@ jobs:
         run: c++ -v -E -
 
       - name: Copy frameworks to Library
-        run: sudo cp -R lib/* /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks
+        run: sudo cp -R lib/* /usr/local/include
 
       - name: Create build directory
         run: mkdir ci-build
