@@ -21,10 +21,10 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Install dependencies
-        run: brew install meson ninja sdl2 sdl2_image
+        run: brew install meson ninja
 
       - name: Copy frameworks to Library
-        run: sudo cp -R lib/* /Library/Frameworks
+        run: sudo cp -R lib/* /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks
 
       - name: Create build directory
         run: mkdir ci-build
