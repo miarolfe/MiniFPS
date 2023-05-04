@@ -55,7 +55,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/Users/peterrolfe/Development/C-Plus-Plus/mini-fps/bin"
+			"value" : "/Users/peterrolfe/Development/C-Plus-Plus/mini-fps/cmake-bin"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -1171,7 +1171,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/Users/peterrolfe/Development/C-Plus-Plus/mini-fps/bin"
+			"value" : "/Users/peterrolfe/Development/C-Plus-Plus/mini-fps/cmake-bin"
 		},
 		{
 			"name" : "mini-fps_IS_TOP_LEVEL",

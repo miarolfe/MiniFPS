@@ -81,7 +81,7 @@ double GetFrameTime(const double oldTime, const double curTime) {
 }
 
 // Get platform-appropriate path to assets folder
-std::string GetAssetsFolderPath() {
+std::string GetSDLAssetsFolderPath() {
     std::string file_path;
     const char* platform = SDL_GetPlatform();
 
@@ -96,6 +96,22 @@ std::string GetAssetsFolderPath() {
     }
 
     return file_path;
+}
+
+std::string GetMiscAssetsFolderPath() {
+    std::string filePath;
+    const char* platform = SDL_GetPlatform();
+
+    if (strcmp(platform, "Windows") == 0) {
+        filePath = "assets/";
+    } else if (strcmp(platform, "Mac OS X") == 0) {
+        filePath = "Resources/";
+    } else {
+        std::cerr << "Invalid platform: " << platform << std::endl;
+        filePath = "INVALID PLATFORM";
+    }
+
+    return filePath;
 }
 
 // Get a texture in Uint3w2 buffer form
@@ -135,7 +151,7 @@ bool LoadTextureToBuffer(Uint32*** buffer, size_t& size, std::string assetsFolde
 
         SDL_FreeSurface(tempTextureSurface);
 
-        std::cout << "Loaded texture to buffer: " + textureFilePath << std::endl;
+        std::cout << "Loaded texture to buffer: " + fullTexturePath << std::endl;
     }
 
     return success;

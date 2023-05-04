@@ -39,7 +39,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "mini-fps::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-mini-fps-Debug-e468e39c7d9502be3a40.json",
+					"jsonFile" : "target-mini-fps-Debug-0b31fa51421900037be0.json",
 					"name" : "mini-fps",
 					"projectIndex" : 0
 				}
@@ -49,7 +49,7 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "/Users/peterrolfe/Development/C-Plus-Plus/mini-fps/bin",
+		"build" : "/Users/peterrolfe/Development/C-Plus-Plus/mini-fps/cmake-bin",
 		"source" : "/Users/peterrolfe/Development/C-Plus-Plus/mini-fps"
 	},
 	"version" : 

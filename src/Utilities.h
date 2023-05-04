@@ -17,7 +17,9 @@ std::string GetFramesPerSecond(double oldTime, double curTime);
 
 double GetFrameTime(double oldTime, double curTime);
 
-std::string GetAssetsFolderPath();
+std::string GetSDLAssetsFolderPath();
+
+std::string GetMiscAssetsFolderPath();
 
 SDL_PixelFormatEnum GetPlatformPixelFormatEnum();
 

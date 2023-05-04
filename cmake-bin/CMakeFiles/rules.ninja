@@ -42,7 +42,7 @@ rule CUSTOM_COMMAND
 # Rule for re-running cmake.
 
 rule RERUN_CMAKE
-  command = /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake --regenerate-during-build -S/Users/peterrolfe/Development/C-Plus-Plus/mini-fps -B/Users/peterrolfe/Development/C-Plus-Plus/mini-fps/bin
+  command = /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake --regenerate-during-build -S/Users/peterrolfe/Development/C-Plus-Plus/mini-fps -B/Users/peterrolfe/Development/C-Plus-Plus/mini-fps/cmake-bin
   description = Re-running CMake...
   generator = 1
 

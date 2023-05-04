@@ -15,20 +15,16 @@
 
 int main() {
     ClearFile("log.txt");
-    WriteLineToFile("log.txt", "Program start");
 
     if (!InitializeSDL()) {
         std::cerr << "SDL could not be initialized:" << SDL_GetError();
-        WriteLineToFile("log.txt", "SDL could not be initialized");
     } else {
         std::cout << "SDL initialized" << std::endl;
-        WriteLineToFile("log.txt", "SDL initialized");
     }
 
     SDL_Window* window = nullptr;
     SDL_Renderer* renderer = nullptr;
-    const std::string assetsFolderPath = GetAssetsFolderPath();
-    WriteLineToFile("log.txt", assetsFolderPath);
+    const std::string assetsFolderPath = GetSDLAssetsFolderPath();
 
     std::vector<std::string> texturePaths = {"sprites/white-bricks.png",
                                              "sprites/red-bricks.png",
@@ -54,7 +50,7 @@ int main() {
         std::cout << "SDL_image initialized" << std::endl;
     }
 
-    std::string levelFilePath = assetsFolderPath + settings.levelPath;
+    std::string levelFilePath = GetSDLAssetsFolderPath() + "levels/test.lvl";
 
     size_t wallTexSize;
     // TODO: Allow variable size textures
@@ -90,8 +86,10 @@ int main() {
         oldTime = curTime;
         curTime = static_cast<double>(SDL_GetTicks64());
 
+        WriteLineToFile("log.txt", "Calculating frame time");
         frameDelta = GetFrameTime(oldTime, curTime);
 
+        WriteLineToFile("log.txt", "Getting input state");
         mouseX = 0;
         mouseY = 0;
         GetInputState(gameIsRunning, moveLeft, moveRight, moveForward, moveBack, mouseX, mouseY);

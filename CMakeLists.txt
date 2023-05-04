@@ -45,6 +45,8 @@ elseif(APPLE)
             MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/assets/Info.plist
             )
 
+    set_source_files_properties(${MACOSX_BUNDLE_ICON_FILE} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
+
     target_include_directories(mini-fps PRIVATE "include/")
 
     target_link_libraries(mini-fps PRIVATE
@@ -58,6 +60,9 @@ elseif(APPLE)
             COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/lib/SDL2_image.framework ${CMAKE_CURRENT_BINARY_DIR}/mini-fps.app/Contents/Frameworks/SDL2_image.framework
             COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/mini-fps.app/Contents/Resources
             COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/assets ${CMAKE_CURRENT_BINARY_DIR}/mini-fps.app/Contents/Resources
+
+            COMMAND install_name_tool -change ${CMAKE_CURRENT_SOURCE_DIR}/lib/SDL2.framework/Versions/A/SDL2 @executable_path/../Frameworks/SDL2.framework/Versions/A/SDL2 "${CMAKE_CURRENT_BINARY_DIR}/mini-fps.app/Contents/MacOS/mini-fps"
+            COMMAND install_name_tool -change ${CMAKE_CURRENT_SOURCE_DIR}/lib/SDL2_image.framework/Versions/A/SDL2_image @executable_path/../Frameworks/SDL2_image.framework/Versions/A/SDL2_image "${CMAKE_CURRENT_BINARY_DIR}/mini-fps.app/Contents/MacOS/mini-fps"
             )
 else()
     message(FATAL_ERROR "Unsupported operating system")
