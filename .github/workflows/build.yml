@@ -27,7 +27,7 @@ jobs:
         run: c++ -v -E -
 
       - name: Copy frameworks to Library
-        run: sudo cp -R lib/* /usr/local/include
+        run: sudo cp -R lib/* /Library/Frameworks
 
       - name: Create build directory
         run: mkdir ci-build
