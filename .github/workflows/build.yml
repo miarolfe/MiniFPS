@@ -51,10 +51,10 @@ jobs:
           chmod +x mini-fps
 
       - name : Tar app
-        run: tar -cvf mini-fps-${{ matrix.architecture }}
+        run: tar -cvf bin
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v3
         with:
           name: mini-fps-${{ matrix.architecture }}
-          path: mini-fps-${{ matrix.architecture }}.tar
+          path: bin.tar
