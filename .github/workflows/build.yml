@@ -36,7 +36,7 @@ jobs:
         run: mkdir build
 
       - name: Setup Meson environment and build game
-        run:
+        run: |
               path="$(pwd)" \ 
               meson setup build . --wipe --prefix="$path/build/mini-fps.app" --bindir='Contents/MacOS' \
               cd bin \
