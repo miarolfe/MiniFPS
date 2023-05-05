@@ -2,3 +2,7 @@
 * text=auto
 
 include/** linguist-vendored
+lib/** linguist-vendored
+cmake/** linguist-vendored
+cmake-bin/** linguist-vendored
+set/** linguist-vendored
