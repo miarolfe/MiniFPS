@@ -4,7 +4,6 @@
 #include <cmath>
 #include <vector>
 #include <string>
-#include <SDL_image.h>
 
 #include "Level.h"
 #include "Color.h"
