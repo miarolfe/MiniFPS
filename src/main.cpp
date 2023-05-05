@@ -57,15 +57,15 @@ int main() {
 
     bool started = false;
 
-    double oldTime, curTime, frameDelta;
+    float oldTime, curTime, frameDelta;
     curTime = 0;
 
     SDL_Texture* frameTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING,
-                                                  player.camera.viewportWidth, player.camera.viewportHeight);
+                                                  static_cast<int>(player.camera.viewportWidth), static_cast<int>(player.camera.viewportHeight));
 
     while (!player.GameHasEnded()) {
         oldTime = curTime;
-        curTime = static_cast<double>(SDL_GetTicks64());
+        curTime = static_cast<float>(SDL_GetTicks64());
 
         frameDelta = GetFrameTime(oldTime, curTime);
 

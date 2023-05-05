@@ -70,13 +70,13 @@ void Quit(SDL_Window* window, SDL_Renderer* renderer) {
 }
 
 // Get frames per second as string
-std::string GetFramesPerSecond(const double oldTime, const double curTime) {
-    return std::to_string(static_cast<int>((1.0 / GetFrameTime(oldTime, curTime))));
+std::string GetFramesPerSecond(const float oldTime, const float curTime) {
+    return std::to_string(static_cast<int>((1.0f / GetFrameTime(oldTime, curTime))));
 }
 
 // Get time between frames in seconds
-double GetFrameTime(const double oldTime, const double curTime) {
-    double frameTime = (curTime - oldTime) / 1000.0;
+float GetFrameTime(const float oldTime, const float curTime) {
+    float frameTime = (curTime - oldTime) / 1000.0f;
     return frameTime;
 }
 

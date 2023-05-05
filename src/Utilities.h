@@ -11,9 +11,9 @@ bool InitializeSDLImage();
 
 void Quit(SDL_Window* window, SDL_Renderer* renderer);
 
-std::string GetFramesPerSecond(double oldTime, double curTime);
+std::string GetFramesPerSecond(float oldTime, float curTime);
 
-double GetFrameTime(double oldTime, double curTime);
+float GetFrameTime(float oldTime, float curTime);
 
 std::string GetSDLAssetsFolderPath();
 
