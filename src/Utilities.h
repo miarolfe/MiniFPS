@@ -1,6 +1,4 @@
 #pragma once
-#ifndef MINI_FPS_UTILITIES_H
-#define MINI_FPS_UTILITIES_H
 
 const float PI_180 = (1.0 / 180.0) * M_PI;
 
@@ -30,5 +28,3 @@ int Clamp(int value, int min, int max);
 void ClearFile(std::string fileName);
 
 void WriteLineToFile(std::string fileName, std::string line);
-
-#endif //MINI_FPS_UTILITIES_H

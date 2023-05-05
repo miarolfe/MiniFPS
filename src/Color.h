@@ -1,5 +1,4 @@
-#ifndef MINI_FPS_COLOR_H
-#define MINI_FPS_COLOR_H
+#pragma once
 
 #include <SDL_stdinc.h>
 
@@ -13,5 +12,3 @@ const Uint32 ARGB_CYAN   = 0xFF00FFFF;
 const Uint32 ARGB_BLUE   = 0xFF0000FF;
 const Uint32 ARGB_INDIGO = 0xFFFF00FF;
 const Uint32 ARGB_BLACK  = 0xFF000000;
-
-#endif //MINI_FPS_COLOR_H

@@ -1,9 +1,9 @@
 #pragma once
-#ifndef MINI_FPS_CAMERA_H
-#define MINI_FPS_CAMERA_H
 
-class Camera {
+struct Camera {
 public:
+    Camera(); // Don't use this
+
     Camera(float _x, float _y, float _angle, float _horizontalFieldOfView, size_t viewportWidth, size_t viewportHeight,
            float rayIncrement, size_t maxRenderDistance, float distanceToProjectionPlane);
 
@@ -27,5 +27,3 @@ public:
     // Aspect ratio (width over height)
     float aspectRatio;
 };
-
-#endif //MINI_FPS_CAMERA_H

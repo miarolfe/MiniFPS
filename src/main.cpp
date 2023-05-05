@@ -5,7 +5,6 @@
 
 #include <SDL.h>
 
-#include "Camera.h"
 #include "Color.h"
 #include "Level.h"
 #include "Player.h"
@@ -25,8 +24,9 @@ int main() {
     SDL_Window* window = nullptr;
     SDL_Renderer* renderer = nullptr;
     const std::string assetsFolderPath = GetSDLAssetsFolderPath();
+    const std::string settingsPath = "settings.json";
 
-    Settings settings = LoadSettings(assetsFolderPath, "settings.json");
+    Settings settings = Settings::LoadSettings(assetsFolderPath, settingsPath);
 
     if (!InitializeWindowAndRenderer(&window, &renderer, settings.screenWidth, settings.screenHeight, settings.vSync)) {
         std::cerr << "Window and/or renderer could not be initialized" << std::endl;
@@ -53,50 +53,26 @@ int main() {
     Level level = Level(GetSDLAssetsFolderPath() + settings.levelPath);
     level.Print();
 
+    Player player(&level, settings);
+
     bool started = false;
-    bool gameIsRunning = true;
-    int mouseX, mouseY;
-    bool moveLeft, moveRight, moveForward, moveBack;
-
-    Camera playerCamera(settings.playerStartX, settings.playerStartY, settings.playerStartAngle,
-                        settings.fieldOfView * PI_180, settings.screenWidth,
-                        settings.screenHeight, settings.renderRayIncrement,
-                        settings.renderDistance, settings.playerDistanceToProjectionPlane);
-
 
     double oldTime, curTime, frameDelta;
     curTime = 0;
 
     SDL_Texture* frameTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING,
-                                                  playerCamera.viewportWidth, playerCamera.viewportHeight);
+                                                  player.camera.viewportWidth, player.camera.viewportHeight);
 
-    while (gameIsRunning) {
+    while (!player.GameHasEnded()) {
         oldTime = curTime;
         curTime = static_cast<double>(SDL_GetTicks64());
 
         frameDelta = GetFrameTime(oldTime, curTime);
 
-        mouseX = 0;
-        mouseY = 0;
-        GetInputState(gameIsRunning, moveLeft, moveRight, moveForward, moveBack, mouseX, mouseY);
+        player.Update(frameDelta, settings.speedModifier, settings.rotationModifier);
 
-        float prevPlayerCameraX = playerCamera.x;
-        float prevPlayerCameraY = playerCamera.y;
-        float prevPlayerCameraAngle = playerCamera.angle;
-
-        playerCamera.angle += mouseX * frameDelta * settings.rotationModifier;
-        Move(playerCamera, frameDelta, settings.speedModifier, moveLeft, moveRight, moveForward, moveBack);
-
-        if (level.HasCollided(playerCamera.x, playerCamera.y)) {
-            playerCamera.x = prevPlayerCameraX;
-            playerCamera.y = prevPlayerCameraY;
-        }
-
-        // Only rerender the screen if something's changed
-        // TODO: Update this when animated sprites/enemies in game
-        if (playerCamera.angle != prevPlayerCameraAngle || playerCamera.x != prevPlayerCameraX ||
-            playerCamera.y != prevPlayerCameraY || !started) {
-            Draw(renderer, playerCamera, level, &wallTextureBuffers, numWallTextures, wallTexSize, frameTexture);
+        if (started) {
+            Draw(renderer, player.camera, level, &wallTextureBuffers, numWallTextures, wallTexSize, frameTexture);
         } else {
             SDL_Delay(1);
         }

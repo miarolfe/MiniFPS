@@ -25,3 +25,17 @@ Camera::Camera(float _x, float _y, float _angle, float _horizontalFieldOfView, s
     aspectRatio = CalculateAspectRatio(viewportWidth, viewportHeight);
 }
 
+Camera::Camera() {
+    x = 0;
+    y = 0;
+    angle = 0;
+    horizontalFieldOfView = 0;
+    viewportWidth = 0;
+    viewportHeight = 0;
+    rayIncrement = 0;
+    maxRenderDistance = 0;
+    distanceToProjectionPlane = 0;
+    verticalFieldOfView = 0;
+    aspectRatio = 0;
+}
+

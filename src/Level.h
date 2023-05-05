@@ -1,10 +1,5 @@
-//
-// Created by Peter Rolfe on 19/02/2023.
-//
-
 #pragma once
-#ifndef MINI_FPS_LEVEL_H
-#define MINI_FPS_LEVEL_H
+
 #include <vector>
 #include <SDL.h>
 
@@ -23,5 +18,3 @@ struct Level {
     void SaveToLVL(const std::string& filePath);
     void LoadFromLVL(std::string filePath);
 };
-
-#endif //MINI_FPS_LEVEL_H

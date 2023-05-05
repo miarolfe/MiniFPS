@@ -6,6 +6,7 @@ sources = files(
   'src/Level.cpp',
   'src/Renderer.cpp',
   'src/Player.cpp',
+  'src/Settings.cpp',
   'src/Utilities.cpp',
 )
 

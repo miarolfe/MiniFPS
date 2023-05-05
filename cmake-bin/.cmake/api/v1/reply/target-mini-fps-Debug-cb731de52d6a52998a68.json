@@ -25,13 +25,13 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 43,
+				"line" : 44,
 				"parent" : 0
 			},
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 50,
+				"line" : 51,
 				"parent" : 0
 			}
 		]
@@ -42,7 +42,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.3.sdk -mmacosx-version-min=13.0 -F/Library/Frameworks "
+					"fragment" : "-g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.3.sdk -mmacosx-version-min=13.0"
 				},
 				{
 					"fragment" : "-std=gnu++11"
@@ -71,7 +71,8 @@
 				2,
 				3,
 				4,
-				5
+				5,
+				6
 			]
 		}
 	],
@@ -89,11 +90,7 @@
 				"role" : "flags"
 			},
 			{
-				"fragment" : "-F/Library/Frameworks",
-				"role" : "frameworkPath"
-			},
-			{
-				"fragment" : "-Wl,-rpath,@executable_path/../Frameworks -Wl,-rpath,/Library/Frameworks",
+				"fragment" : "-Wl,-rpath,@executable_path/../Frameworks -Wl,-rpath,/Library/Developer/CommandLineTools/SDKs/MacOSX13.3.sdk/System/Library/Frameworks",
 				"role" : "libraries"
 			},
 			{
@@ -133,20 +130,21 @@
 				2,
 				3,
 				4,
-				5
+				5,
+				6
 			]
 		},
 		{
 			"name" : "Header Files",
 			"sourceIndexes" : 
 			[
-				6,
 				7,
 				8,
 				9,
 				10,
 				11,
-				12
+				12,
+				13
 			]
 		}
 	],
@@ -180,6 +178,12 @@
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
 			"path" : "src/Player.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "src/Settings.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
