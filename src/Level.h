@@ -14,7 +14,7 @@ struct Level {
     SDL_PixelFormat pixelFormat;
     // explicit Level(const char* filePath);
     explicit Level(std::string filePath);
-    Uint32 Get (size_t x, size_t y);
+    Uint32 Get (int x, int y);
     bool HasCollided(float x, float y);
     void Print();
     // bool PNGToTwoDimensionalArray(const char *filePath);

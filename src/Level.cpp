@@ -15,8 +15,16 @@ Level::Level(std::string filePath) {
 }
 
 // Gets the color of pixel at cell (x, y) in level
-Uint32 Level::Get(size_t x, size_t y) {
-    assert (y < h && x < w);
+Uint32 Level::Get(int x, int y) {
+//    if (y >= static_cast<int>(h)) std::cout << "Y overflow: " << y << " " << h << std::endl;s
+//    if (y < 0) std::cout << "Y underflow: " << y << " " << h << std::endl;
+//    if (x >= static_cast<int>(w)) std::cout << "X overflow: " << x << " " << w << std::endl;
+//    if (x < 0) std::cout << "X underflow: " << x << " " << h << std::endl;
+//    assert(x >= 0);
+//    assert(x < w);
+//    assert(y >= 0);
+//    assert(y < h);
+
     return matrix[y][x];
 }
 
@@ -27,12 +35,18 @@ bool Level::HasCollided(const float x, const float y) {
     int roundedX = static_cast<int>(roundf(x));
     int roundedY = static_cast<int>(roundf(y));
 
-    for (size_t cellX = roundedX - 1; cellX <= roundedX + 1 && cellX < w; cellX++) {
-        for (size_t cellY = roundedY - 1; cellY <= roundedY + 1 && cellY < h; cellY++) {
-            if (Get(cellX, cellY) != ARGB_WHITE) {
-                if (x >= static_cast<double>(cellX) - 0.05 && x <= static_cast<double>(cellX) + 1 + 0.05 &&
-                    y >= static_cast<double>(cellY) - 0.05 && y <= static_cast<double>(cellY) + 1 + 0.05) {
-                    collided = true;
+    if (x < 0.05 || x > w - 0.05 || y < 0.05 || y > h - 0.05) return true;
+
+    for (int cellX = roundedX - 1; cellX <= roundedX + 1; cellX++) {
+        for (int cellY = roundedY - 1; cellY <= roundedY + 1; cellY++) {
+            if (cellX < 0 || cellX >= w || cellY < 0 || cellY >= h) {
+                std::cerr << "Invalid index" << std::endl;
+            } else {
+                if (Get(cellX, cellY) != ARGB_WHITE) {
+                    if (x >= static_cast<double>(cellX) - 0.05 && x <= static_cast<double>(cellX) + 1 + 0.05 &&
+                        y >= static_cast<double>(cellY) - 0.05 && y <= static_cast<double>(cellY) + 1 + 0.05) {
+                        collided = true;
+                    }
                 }
             }
 

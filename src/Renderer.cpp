@@ -88,7 +88,7 @@ void Draw(SDL_Renderer* renderer, Camera camera, Level &level, Uint32**** texBuf
             float cx = camera.x + t * cosRayAngle;
             float cy = camera.y + t * sinRayAngle;
 
-            const Uint32 levelCellColor = level.Get(int(cx), int(cy));
+            const Uint32 levelCellColor = level.Get(static_cast<int>(cx), static_cast<int>(cy));
 
             if (levelCellColor != ARGB_WHITE) {
                 double distance = t * cos(rayAngle - camera.angle);
