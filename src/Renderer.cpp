@@ -91,12 +91,12 @@ void Draw(SDL_Renderer* renderer, Camera camera, Level &level, Uint32**** texBuf
             const Uint32 levelCellColor = level.Get(static_cast<int>(cx), static_cast<int>(cy));
 
             if (levelCellColor != ARGB_WHITE) {
-                double distance = t * cos(rayAngle - camera.angle);
+                float distance = t * cos(rayAngle - camera.angle);
                 size_t columnHeight = ((camera.viewportHeight) * camera.distanceToProjectionPlane) / distance;
 
-                float hitX = cx - floor(cx + 0.5);
-                float hitY = cy - floor(cy + 0.5);
-                int texX = hitX * texSize;
+                float hitX = cx - floor(cx + 0.5f);
+                float hitY = cy - floor(cy + 0.5f);
+                int texX = static_cast<int>(hitX * static_cast<float>(texSize));
 
                 if (std::abs(hitY) > std::abs(hitX)) {
                     texX = hitY * texSize;
@@ -104,7 +104,7 @@ void Draw(SDL_Renderer* renderer, Camera camera, Level &level, Uint32**** texBuf
 
                 if (texX < 0) texX += texSize;
 
-                int drawStart = (camera.viewportHeight / 2) - (columnHeight / 2);
+                int drawStart = (static_cast<int>(camera.viewportHeight) / 2) - (static_cast<int>(columnHeight) / 2);
 
                 int drawEnd = drawStart + columnHeight;
 

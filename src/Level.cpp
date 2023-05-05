@@ -1,9 +1,7 @@
 #include <iostream>
 #include <fstream>
-#include <filesystem>
 #include <cmath>
 #include <vector>
-#include <string>
 
 #include "Level.h"
 #include "Color.h"
@@ -94,7 +92,6 @@ void Level::SaveToLVL(const std::string& filePath) {
 }
 
 void Level::LoadFromLVL(std::string filePath) {
-    WriteLineToFile("log.txt", std::__fs::filesystem::current_path());
     std::ifstream infile(filePath);
     if (!infile) {
         std::cerr << "Error opening level file for reading: " << filePath << std::endl;

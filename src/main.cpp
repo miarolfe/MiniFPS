@@ -26,17 +26,7 @@ int main() {
     SDL_Renderer* renderer = nullptr;
     const std::string assetsFolderPath = GetSDLAssetsFolderPath();
 
-    std::vector<std::string> texturePaths = {"sprites/white-bricks.png",
-                                             "sprites/red-bricks.png",
-                                             "sprites/yellow-bricks.png",
-                                             "sprites/green-bricks.png",
-                                             "sprites/cyan-bricks.png",
-                                             "sprites/blue-bricks.png",
-                                             "sprites/indigo-bricks.png",
-                                             "sprites/grey-bricks.png"};
-
     Settings settings = LoadSettings(assetsFolderPath, "settings.json");
-    // Settings settings = Settings(400, 400, 0.005, 128, true, 90, 5, 0.5, 1.5, 2, 1.523, 0.5, "levels/test.lvl", texturePaths);
 
     if (!InitializeWindowAndRenderer(&window, &renderer, settings.screenWidth, settings.screenHeight, settings.vSync)) {
         std::cerr << "Window and/or renderer could not be initialized" << std::endl;
@@ -50,8 +40,6 @@ int main() {
         std::cout << "SDL_image initialized" << std::endl;
     }
 
-    std::string levelFilePath = GetSDLAssetsFolderPath() + "levels/test.lvl";
-
     size_t wallTexSize;
     // TODO: Allow variable size textures
     // Right now all wall textures must be the same size
@@ -62,7 +50,7 @@ int main() {
                             settings.texturePaths[buffer]);
     }
 
-    Level level = Level(levelFilePath);
+    Level level = Level(GetSDLAssetsFolderPath() + settings.levelPath);
     level.Print();
 
     bool started = false;
