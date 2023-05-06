@@ -16,10 +16,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Install Mingw
+      - name: Install mingw
         uses: msys2/setup-msys2@v2
 
-      - name: Build CMake project
+      - name: Build game
         env:
           CC: gcc
           CXX: g++
@@ -29,11 +29,8 @@ jobs:
           cd ci-build
           mingw32-make
 
-      - name: List
-        run: dir
-
       - name: Upload build artifact
         uses: actions/upload-artifact@v3
         with:
           name: mini-fps-windows
-          path: mini-fps.tar
+          path: ci-build/mini-fps-windows
