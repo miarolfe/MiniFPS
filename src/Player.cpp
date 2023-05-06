@@ -18,6 +18,10 @@ Player::Player(Level* level, Settings settings) {
                     settings.renderDistance, settings.playerDistanceToProjectionPlane);
 }
 
+Player::Player() {
+    this->level = nullptr;
+}
+
 void Player::UpdateInputState() {
     inputState.mouseX = 0;
     inputState.mouseY = 0;

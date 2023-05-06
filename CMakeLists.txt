@@ -11,6 +11,7 @@ set(
         src/main.cpp
         src/Camera.cpp
         src/Level.cpp
+        src/Menu.cpp
         src/Renderer.cpp
         src/Player.cpp
         src/Settings.cpp
@@ -22,6 +23,7 @@ set(
         src/Camera.h
         src/Color.h
         src/Level.h
+        src/Menu.h
         src/Player.h
         src/Renderer.h
         src/Settings.h

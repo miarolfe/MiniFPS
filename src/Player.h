@@ -13,6 +13,7 @@ struct InputState {
 
 struct Player {
     Player(Level* level, Settings settings);
+    Player();
 
     Level* level;
     Camera camera;

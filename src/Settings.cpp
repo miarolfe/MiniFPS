@@ -7,7 +7,8 @@
 Settings::Settings(size_t screenWidth, size_t screenHeight, float renderRayIncrement, size_t renderDistance, bool vSync,
                    float fieldOfView, float speedModifier, float rotationModifier, float playerStartX,
                    float playerStartY, float playerStartAngle, float playerDistanceToProjectionPlane,
-                   std::string levelPath, const std::vector<std::string> &texturePaths) {
+                   std::string levelPath, const std::vector<std::string> &texturePaths,
+                   const std::map<std::string, std::string> &fontPaths) {
     this->screenWidth = screenWidth;
     this->screenHeight = screenHeight;
     this->renderRayIncrement = renderRayIncrement;
@@ -23,6 +24,10 @@ Settings::Settings(size_t screenWidth, size_t screenHeight, float renderRayIncre
     this->vSync = vSync;
     for (const std::string &texturePath: texturePaths) {
         this->texturePaths.push_back(texturePath);
+    }
+
+    for (const auto &font: fontPaths) {
+        this->fontPaths.push_back(font);
     }
 }
 
@@ -41,6 +46,7 @@ Settings Settings::LoadSettings(const std::string assetsFilePath, const std::str
             playerStartAngle, playerDistanceToProjectionPlane;
     std::string levelPath;
     std::vector<std::string> texturePaths;
+    std::map<std::string, std::string> fontPaths;
     bool vSync;
 
     screenWidth = settingsAsJson["graphics"]["screenWidth"];
@@ -57,10 +63,15 @@ Settings Settings::LoadSettings(const std::string assetsFilePath, const std::str
     levelPath = settingsAsJson["files"]["levelPath"];
     texturePaths = settingsAsJson["files"]["texturePaths"];
     vSync = settingsAsJson["graphics"]["vSync"];
+    fontPaths = settingsAsJson["files"]["fontPaths"];
 
     Settings settings(screenWidth, screenHeight, renderRayIncrement, renderDistance, vSync, fieldOfView, speedModifier,
                       rotationModifier, playerStartX, playerStartY, playerStartAngle,
-                      playerDistanceToProjectionPlane, levelPath, texturePaths);
+                      playerDistanceToProjectionPlane, levelPath, texturePaths, fontPaths);
 
     return settings;
+}
+
+Settings::Settings() {
+
 }

@@ -6,6 +6,7 @@
 #include "Camera.h"
 #include "Color.h"
 #include "Level.h"
+#include "Menu.h"
 #include "Utilities.h"
 
 const Uint32 CEILING = 0xFFA5A5A5;
@@ -66,11 +67,17 @@ Uint32** GetTexBuffer(Uint32**** texBuffers, size_t numTexBuffers, Uint32 cellCo
     return texBuffer;
 }
 
+void DrawText(SDL_Renderer* sdlRenderer, SDL_Texture* renderFrameTexture, const std::string &text, Font font, SDL_Rect destRect) {
+    SDL_SetRenderTarget(sdlRenderer, renderFrameTexture);
+    SDL_RenderCopy(sdlRenderer, RenderTextToTexture(sdlRenderer, font, text, 255, 255, 255), NULL, &destRect);
+    SDL_SetRenderTarget(sdlRenderer, nullptr);
+}
+
 void Draw(SDL_Renderer* renderer, Camera camera, Level &level, Uint32**** texBuffers, size_t numTexBuffers, size_t texSize,
-          SDL_Texture* frameTexture) {
+          SDL_Texture* streamingFrameTexture, SDL_Texture* renderFrameTexture) {
     int pitch;
     void *pixels;
-    SDL_LockTexture(frameTexture, nullptr, &pixels, &pitch);
+    SDL_LockTexture(streamingFrameTexture, nullptr, &pixels, &pitch);
 
     DrawCeiling(camera, pitch, pixels);
     DrawFloor(camera, pitch, pixels);
@@ -124,15 +131,22 @@ void Draw(SDL_Renderer* renderer, Camera camera, Level &level, Uint32**** texBuf
         }
     }
 
-    SDL_RenderCopy(renderer, frameTexture, nullptr, nullptr);
-    SDL_UnlockTexture(frameTexture);
+    SDL_UnlockTexture(streamingFrameTexture);
+
+    SDL_SetRenderTarget(renderer, renderFrameTexture);
+    SDL_RenderCopy(renderer, streamingFrameTexture, nullptr, nullptr);
+
+    // UI draw here
+
+    SDL_SetRenderTarget(renderer, nullptr);
+    SDL_RenderCopy(renderer, renderFrameTexture, nullptr, nullptr);
     SDL_RenderPresent(renderer);
 }
 
-void DrawMainMenu(SDL_Renderer* renderer, Camera camera, SDL_Texture* frameTexture) {
+void DrawMainMenu(SDL_Renderer* renderer, Font font, Camera camera, SDL_Texture* streamingFrameTexture, SDL_Texture* renderFrameTexture) {
     int pitch;
     void *pixels;
-    SDL_LockTexture(frameTexture, nullptr, &pixels, &pitch);
+    SDL_LockTexture(streamingFrameTexture, nullptr, &pixels, &pitch);
 
     for (int frameY = 0; frameY < static_cast<int>(camera.viewportHeight); frameY++) {
         for (int frameX = 0; frameX < static_cast<int>(camera.viewportWidth); frameX++) {
@@ -140,7 +154,28 @@ void DrawMainMenu(SDL_Renderer* renderer, Camera camera, SDL_Texture* frameTextu
         }
     }
 
-    SDL_RenderCopy(renderer, frameTexture, nullptr, nullptr);
-    SDL_UnlockTexture(frameTexture);
+    SDL_Rect titleTextRect = {static_cast<int>(camera.viewportWidth / 4),
+                              0,
+                              static_cast<int>(camera.viewportWidth / 2),
+                              static_cast<int>(camera.viewportHeight / 4)};
+
+    SDL_Rect startGameTextRect = {static_cast<int>(camera.viewportWidth / 12),
+                                  static_cast<int>(camera.viewportHeight / 2),
+                                  static_cast<int>(10 * (camera.viewportWidth / 12)),
+                                  static_cast<int>(camera.viewportHeight / 8)};
+
+    SDL_UnlockTexture(streamingFrameTexture);
+    SDL_SetRenderTarget(renderer, renderFrameTexture);
+    SDL_RenderCopy(renderer, streamingFrameTexture, nullptr, nullptr);
+
+    // UI draw calls
+
+    DrawText(renderer, renderFrameTexture, "mini-fps", font, titleTextRect);
+    DrawText(renderer, renderFrameTexture, "Press [SPACE] or [ENTER] to start", font, startGameTextRect);
+
+    SDL_SetRenderTarget(renderer, nullptr);
+    SDL_RenderCopy(renderer, renderFrameTexture, nullptr, nullptr);
     SDL_RenderPresent(renderer);
 }
+
+

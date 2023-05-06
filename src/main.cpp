@@ -4,6 +4,7 @@
 #include <vector>
 
 #include <SDL.h>
+#include <SDL_ttf.h>
 
 #include "Color.h"
 #include "Level.h"
@@ -11,6 +12,7 @@
 #include "Renderer.h"
 #include "Settings.h"
 #include "Utilities.h"
+#include "Menu.h"
 
 int main() {
     ClearFile("log.txt");
@@ -33,11 +35,15 @@ int main() {
         std::cout << "SDL_ttf initialized" << std::endl;
     }
 
-
     SDL_Window* window = nullptr;
     SDL_Renderer* renderer = nullptr;
 
     Settings settings = Settings::LoadSettings(GetSDLAssetsFolderPath(), "settings.json");
+
+    Font fonts[settings.fontPaths.size()];
+    for (int i = 0; i < settings.fontPaths.size(); i++) {
+        fonts[i] = Font(settings.fontPaths[i].first, settings.fontPaths[i].second, 24);
+    }
 
     if (!InitializeWindowAndRenderer(&window, &renderer, settings.screenWidth, settings.screenHeight, settings.vSync)) {
         std::cerr << "Window and/or renderer could not be initialized" << std::endl;
@@ -45,14 +51,17 @@ int main() {
         std::cout << "Window and renderer initialized" << std::endl;
     }
 
-    SDL_Texture* frameTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING,
-                                                  static_cast<int>(settings.screenWidth), static_cast<int>(settings.screenHeight));
+    SDL_Texture* streamingFrameTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING,
+                                                           static_cast<int>(settings.screenWidth), static_cast<int>(settings.screenHeight));
+
+    SDL_Texture* renderFrameTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_TARGET,
+                                                        static_cast<int>(settings.screenWidth), static_cast<int>(settings.screenHeight));
 
     Player menuPlayer(nullptr, settings);
     menuPlayer.inputState.inMainMenu = true;
 
     while (menuPlayer.InMainMenu() && !menuPlayer.GameHasEnded()) {
-        DrawMainMenu(renderer, menuPlayer.camera, frameTexture);
+        DrawMainMenu(renderer, fonts[0], menuPlayer.camera, streamingFrameTexture, renderFrameTexture);
         menuPlayer.Update(0, 0, 0);
     }
 
@@ -83,7 +92,7 @@ int main() {
 
         gamePlayer.Update(frameDelta, settings.speedModifier, settings.rotationModifier);
 
-        Draw(renderer, gamePlayer.camera, level, &wallTextureBuffers, numWallTextures, wallTexSize, frameTexture);
+        Draw(renderer, gamePlayer.camera, level, &wallTextureBuffers, numWallTextures, wallTexSize, streamingFrameTexture, renderFrameTexture);
     }
 
     Quit(window, renderer);

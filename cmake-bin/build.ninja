@@ -67,6 +67,13 @@ build CMakeFiles/mini-fps.dir/src/Level.cpp.o: CXX_COMPILER__mini-fps_Debug /Use
   OBJECT_DIR = CMakeFiles/mini-fps.dir
   OBJECT_FILE_DIR = CMakeFiles/mini-fps.dir/src
 
+build CMakeFiles/mini-fps.dir/src/Menu.cpp.o: CXX_COMPILER__mini-fps_Debug /Users/peterrolfe/Development/C-Plus-Plus/mini-fps/src/Menu.cpp || cmake_object_order_depends_target_mini-fps
+  DEP_FILE = CMakeFiles/mini-fps.dir/src/Menu.cpp.o.d
+  FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.3.sdk -mmacosx-version-min=13.0 -std=gnu++11
+  INCLUDES = -I/Users/peterrolfe/Development/C-Plus-Plus/mini-fps/include
+  OBJECT_DIR = CMakeFiles/mini-fps.dir
+  OBJECT_FILE_DIR = CMakeFiles/mini-fps.dir/src
+
 build CMakeFiles/mini-fps.dir/src/Renderer.cpp.o: CXX_COMPILER__mini-fps_Debug /Users/peterrolfe/Development/C-Plus-Plus/mini-fps/src/Renderer.cpp || cmake_object_order_depends_target_mini-fps
   DEP_FILE = CMakeFiles/mini-fps.dir/src/Renderer.cpp.o.d
   FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.3.sdk -mmacosx-version-min=13.0 -std=gnu++11
@@ -103,7 +110,7 @@ build CMakeFiles/mini-fps.dir/src/Utilities.cpp.o: CXX_COMPILER__mini-fps_Debug 
 #############################################
 # Link the executable mini-fps.app/Contents/MacOS/mini-fps
 
-build mini-fps.app/Contents/MacOS/mini-fps: CXX_EXECUTABLE_LINKER__mini-fps_Debug CMakeFiles/mini-fps.dir/src/main.cpp.o CMakeFiles/mini-fps.dir/src/Camera.cpp.o CMakeFiles/mini-fps.dir/src/Level.cpp.o CMakeFiles/mini-fps.dir/src/Renderer.cpp.o CMakeFiles/mini-fps.dir/src/Player.cpp.o CMakeFiles/mini-fps.dir/src/Settings.cpp.o CMakeFiles/mini-fps.dir/src/Utilities.cpp.o
+build mini-fps.app/Contents/MacOS/mini-fps: CXX_EXECUTABLE_LINKER__mini-fps_Debug CMakeFiles/mini-fps.dir/src/main.cpp.o CMakeFiles/mini-fps.dir/src/Camera.cpp.o CMakeFiles/mini-fps.dir/src/Level.cpp.o CMakeFiles/mini-fps.dir/src/Menu.cpp.o CMakeFiles/mini-fps.dir/src/Renderer.cpp.o CMakeFiles/mini-fps.dir/src/Player.cpp.o CMakeFiles/mini-fps.dir/src/Settings.cpp.o CMakeFiles/mini-fps.dir/src/Utilities.cpp.o
   FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.3.sdk -mmacosx-version-min=13.0
   LINK_LIBRARIES = -Wl,-rpath,@executable_path/../Frameworks -Wl,-rpath,/Library/Developer/CommandLineTools/SDKs/MacOSX13.3.sdk/System/Library/Frameworks  -framework  SDL2  -framework  SDL2_image  -framework  SDL2_ttf
   OBJECT_DIR = CMakeFiles/mini-fps.dir

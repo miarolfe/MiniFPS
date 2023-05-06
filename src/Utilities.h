@@ -1,5 +1,7 @@
 #pragma once
 
+#include <SDL_ttf.h>
+
 const float PI_180 = (1.0 / 180.0) * M_PI;
 
 bool InitializeSDL();
@@ -23,6 +25,8 @@ std::string GetMiscAssetsFolderPath();
 SDL_PixelFormatEnum GetPlatformPixelFormatEnum();
 
 bool LoadTextureToBuffer(Uint32*** buffer, size_t& size, std::string assetsFolderPath, std::string textureFilePath);
+
+TTF_Font* LoadFont(const std::string &fontPath, int pointSize);
 
 int Clamp(int value, int min, int max);
 

@@ -169,6 +169,10 @@ bool LoadTextureToBuffer(Uint32*** buffer, size_t& size, std::string assetsFolde
     return success;
 }
 
+TTF_Font* LoadFont(const std::string &fontPath, int pointSize) {
+    return TTF_OpenFont(fontPath.c_str(), pointSize);
+}
+
 // Get a clamped version of a value
 int Clamp(const int value, const int min, const int max) {
     int clampedValue;

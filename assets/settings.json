@@ -31,6 +31,12 @@
       "sprites/blue-bricks.png",
       "sprites/indigo-bricks.png",
       "sprites/grey-bricks.png"
-    ]
+    ],
+
+    "fontPaths": {
+      "Inconsolata-Medium": "fonts/Inconsolata-Medium.ttf"
+    }
   }
+
+
 }
