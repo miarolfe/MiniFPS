@@ -7,3 +7,5 @@
 0	863	1683390717326115538	CMakeFiles/mini-fps.dir/src/main.cpp.o	bfab3f0f9be93107
 2	1057	1683390717517912388	CMakeFiles/mini-fps.dir/src/Settings.cpp.o	d6fa2afbcdcdf554
 1057	1273	1683390717740998369	mini-fps.app/Contents/MacOS/mini-fps	54e0c2d3d14d1c0f
+4	501	1683391718493658879	CMakeFiles/mini-fps.dir/src/Utilities.cpp.o	ec7e38f6ff89483a
+501	715	1683391718711921279	mini-fps.app/Contents/MacOS/mini-fps	54e0c2d3d14d1c0f
