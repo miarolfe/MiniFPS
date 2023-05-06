@@ -1162,6 +1162,42 @@
 			"value" : "/Library/Developer/CommandLineTools/SDKs/MacOSX13.3.sdk/System/Library/Frameworks/SDL2.framework"
 		},
 		{
+			"name" : "SDL2_TTF_LIB",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Path to a library."
+				}
+			],
+			"type" : "FILEPATH",
+			"value" : "/Library/Developer/CommandLineTools/SDKs/MacOSX13.3.sdk/System/Library/Frameworks/SDL2_ttf.framework"
+		},
+		{
+			"name" : "SDL2_TTF_LIBRARIES",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Path to a library."
+				}
+			],
+			"type" : "FILEPATH",
+			"value" : "SDL2_TTF_LIBRARIES-NOTFOUND"
+		},
+		{
+			"name" : "SDL2_TTF_LIBRARY",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Path to a library."
+				}
+			],
+			"type" : "FILEPATH",
+			"value" : "SDL2_TTF_LIBRARY-NOTFOUND"
+		},
+		{
 			"name" : "mini-fps_BINARY_DIR",
 			"properties" : 
 			[

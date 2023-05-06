@@ -128,3 +128,19 @@ void Draw(SDL_Renderer* renderer, Camera camera, Level &level, Uint32**** texBuf
     SDL_UnlockTexture(frameTexture);
     SDL_RenderPresent(renderer);
 }
+
+void DrawMainMenu(SDL_Renderer* renderer, Camera camera, SDL_Texture* frameTexture) {
+    int pitch;
+    void *pixels;
+    SDL_LockTexture(frameTexture, nullptr, &pixels, &pitch);
+
+    for (int frameY = 0; frameY < static_cast<int>(camera.viewportHeight); frameY++) {
+        for (int frameX = 0; frameX < static_cast<int>(camera.viewportWidth); frameX++) {
+            SetPixel(pixels, pitch, ARGB_BLACK, frameX, frameY);
+        }
+    }
+
+    SDL_RenderCopy(renderer, frameTexture, nullptr, nullptr);
+    SDL_UnlockTexture(frameTexture);
+    SDL_RenderPresent(renderer);
+}

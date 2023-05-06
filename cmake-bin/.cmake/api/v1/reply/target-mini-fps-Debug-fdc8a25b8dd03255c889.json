@@ -25,13 +25,13 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 62,
+				"line" : 65,
 				"parent" : 0
 			},
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 69,
+				"line" : 72,
 				"parent" : 0
 			}
 		]
@@ -107,6 +107,14 @@
 			},
 			{
 				"fragment" : "SDL2_image",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-framework",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "SDL2_ttf",
 				"role" : "libraries"
 			}
 		],

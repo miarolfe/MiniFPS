@@ -4,6 +4,7 @@
 
 #include <SDL.h>
 #include <SDL_image.h>
+#include <SDL_ttf.h>
 
 #include "Utilities.h"
 
@@ -56,6 +57,17 @@ bool InitializeSDLImage() {
     bool successful_initialization = true;
 
     if (!IMG_Init(IMG_INIT_PNG)) {
+        successful_initialization = false;
+    }
+
+    return successful_initialization;
+}
+
+// Initialise SDL_ttf subsystem
+bool InitializeSDLTTF() {
+    bool successful_initialization = true;
+
+    if (TTF_Init() != 0) {
         successful_initialization = false;
     }
 

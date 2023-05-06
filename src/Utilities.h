@@ -4,10 +4,11 @@ const float PI_180 = (1.0 / 180.0) * M_PI;
 
 bool InitializeSDL();
 
-bool
-InitializeWindowAndRenderer(SDL_Window** window, SDL_Renderer** renderer, size_t screenWidth, size_t screenHeight, bool vSync);
+bool InitializeWindowAndRenderer(SDL_Window** window, SDL_Renderer** renderer, size_t screenWidth, size_t screenHeight, bool vSync);
 
 bool InitializeSDLImage();
+
+bool InitializeSDLTTF();
 
 void Quit(SDL_Window* window, SDL_Renderer* renderer);
 

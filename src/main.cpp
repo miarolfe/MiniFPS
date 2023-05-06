@@ -21,6 +21,19 @@ int main() {
         std::cout << "SDL initialized" << std::endl;
     }
 
+    if (!InitializeSDLImage()) {
+        std::cerr << "SDL_image could not be initialized" << std::endl;
+    } else {
+        std::cout << "SDL_image initialized" << std::endl;
+    }
+
+    if (!InitializeSDLTTF()) {
+        std::cerr << "SDL_ttf could not be initialized" << std::endl;
+    } else {
+        std::cout << "SDL_ttf initialized" << std::endl;
+    }
+
+
     SDL_Window* window = nullptr;
     SDL_Renderer* renderer = nullptr;
 
@@ -32,10 +45,15 @@ int main() {
         std::cout << "Window and renderer initialized" << std::endl;
     }
 
-    if (!InitializeSDLImage()) {
-        std::cerr << "SDL_image could not be initialized" << std::endl;
-    } else {
-        std::cout << "SDL_image initialized" << std::endl;
+    SDL_Texture* frameTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING,
+                                                  static_cast<int>(settings.screenWidth), static_cast<int>(settings.screenHeight));
+
+    Player menuPlayer(nullptr, settings);
+    menuPlayer.inputState.inMainMenu = true;
+
+    while (menuPlayer.InMainMenu() && !menuPlayer.GameHasEnded()) {
+        DrawMainMenu(renderer, menuPlayer.camera, frameTexture);
+        menuPlayer.Update(0, 0, 0);
     }
 
     // TODO: Allow variable size textures
@@ -52,31 +70,20 @@ int main() {
     Level level = Level(GetSDLAssetsFolderPath() + settings.levelPath);
     level.Print();
 
-    Player player(&level, settings);
-
-    bool started = false;
+    Player gamePlayer(&level, settings);
 
     float oldTime, curTime, frameDelta;
     curTime = 0;
 
-    SDL_Texture* frameTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING,
-                                                  static_cast<int>(player.camera.viewportWidth), static_cast<int>(player.camera.viewportHeight));
-
-    while (!player.GameHasEnded()) {
+    while (!gamePlayer.GameHasEnded()) {
         oldTime = curTime;
         curTime = static_cast<float>(SDL_GetTicks64());
 
         frameDelta = GetFrameTime(oldTime, curTime);
 
-        player.Update(frameDelta, settings.speedModifier, settings.rotationModifier);
+        gamePlayer.Update(frameDelta, settings.speedModifier, settings.rotationModifier);
 
-        if (started) {
-            Draw(renderer, player.camera, level, &wallTextureBuffers, numWallTextures, wallTexSize, frameTexture);
-        } else {
-            SDL_Delay(1);
-        }
-
-        started = true;
+        Draw(renderer, gamePlayer.camera, level, &wallTextureBuffers, numWallTextures, wallTexSize, frameTexture);
     }
 
     Quit(window, renderer);
