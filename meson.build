@@ -36,7 +36,7 @@ if host_machine.system() == 'darwin'
 
     install_subdir('lib/SDL2.framework', install_dir: 'Contents/Frameworks')
     install_subdir('lib/SDL2_image.framework', install_dir: 'Contents/Frameworks')
-    install_subdir('lib/SDL2_ttf.framework', 'Contents/Frameworks')
+    install_subdir('lib/SDL2_ttf.framework', install_dir: 'Contents/Frameworks')
     install_subdir('assets/levels', install_dir: 'Contents/Resources')
     install_subdir('assets/sprites', install_dir: 'Contents/Resources')
     install_data('assets/settings.json', install_dir: 'Contents/Resources')
