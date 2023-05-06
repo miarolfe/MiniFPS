@@ -17,14 +17,14 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Build CMake project
-        steps: |
+        run: |
           mkdir ci-build
           cd ci-build
           cmake ..
           cmake --build .
 
       - name: List
-        steps: dir
+        run: dir
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v3
