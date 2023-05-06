@@ -25,6 +25,7 @@ jobs:
           CXX: g++
         run: |
           mkdir ci-build
+          cmake -G "CodeBlocks - MinGW Makefiles" -S . -B ci-build
           cd ci-build
           mingw32-make
 
