@@ -57,12 +57,12 @@ int main() {
     SDL_Texture* renderFrameTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_TARGET,
                                                         static_cast<int>(settings.screenWidth), static_cast<int>(settings.screenHeight));
 
-    Player menuPlayer(nullptr, settings);
-    menuPlayer.inputState.inMainMenu = true;
 
-    while (menuPlayer.InMainMenu() && !menuPlayer.GameHasEnded()) {
-        DrawMainMenu(renderer, fonts[0], menuPlayer.camera, streamingFrameTexture, renderFrameTexture);
-        menuPlayer.Update(0, 0, 0);
+    MainMenu mainMenu(settings);
+
+    while (mainMenu.player.InMainMenu() && !mainMenu.player.GameHasEnded()) {
+        DrawMainMenu(renderer, fonts[0], mainMenu.player.camera, streamingFrameTexture, renderFrameTexture);
+        mainMenu.player.Update(0, 0, 0);
     }
 
     // TODO: Allow variable size textures

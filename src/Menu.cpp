@@ -23,6 +23,7 @@ Font::Font() {
 
 MainMenu::MainMenu(Settings settings) {
     this->player = Player(nullptr, settings);
+    this->player.inputState.inMainMenu = true;
     this->settings = settings;
 }
 
