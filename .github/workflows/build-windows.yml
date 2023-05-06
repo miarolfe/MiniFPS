@@ -26,8 +26,6 @@ jobs:
         run: |
           mkdir ci-build
           cd ci-build
-          cmake ..
-          cmake -G "MinGW Makefiles" ..
           mingw32-make
 
       - name: List
