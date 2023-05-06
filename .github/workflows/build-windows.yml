@@ -16,12 +16,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Install Mingw
+        uses: msys2/setup-msys2@v2
+
       - name: Build CMake project
+        env:
+          CC: gcc
+          CXX: g++
         run: |
           mkdir ci-build
           cd ci-build
           cmake ..
-          cmake --build .
+          cmake -G "MinGW Makefiles" ..
+          mingw32-make
 
       - name: List
         run: dir
