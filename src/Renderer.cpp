@@ -69,7 +69,7 @@ Uint32** GetTexBuffer(Uint32**** texBuffers, size_t numTexBuffers, Uint32 cellCo
 void Draw(SDL_Renderer* renderer, Camera camera, Level &level, Uint32**** texBuffers, size_t numTexBuffers, size_t texSize,
           SDL_Texture* frameTexture) {
     int pitch;
-    void* pixels;
+    void *pixels;
     SDL_LockTexture(frameTexture, nullptr, &pixels, &pitch);
 
     DrawCeiling(camera, pitch, pixels);
@@ -108,7 +108,7 @@ void Draw(SDL_Renderer* renderer, Camera camera, Level &level, Uint32**** texBuf
 
                 int drawEnd = drawStart + columnHeight;
 
-                Uint32** texBuffer = GetTexBuffer(texBuffers, numTexBuffers, levelCellColor);
+                Uint32 **texBuffer = GetTexBuffer(texBuffers, numTexBuffers, levelCellColor);
 
                 for (int y = drawStart; y < drawEnd; y++) {
                     if (y < 0 || y >= camera.viewportHeight) {

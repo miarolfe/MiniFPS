@@ -13,6 +13,7 @@ Level::Level(std::string filePath) {
 
 // Gets the color of pixel at cell (x, y) in level
 Uint32 Level::Get(int x, int y) {
+
 //    if (y >= static_cast<int>(h)) std::cout << "Y overflow: " << y << " " << h << std::endl;s
 //    if (y < 0) std::cout << "Y underflow: " << y << " " << h << std::endl;
 //    if (x >= static_cast<int>(w)) std::cout << "X overflow: " << x << " " << w << std::endl;

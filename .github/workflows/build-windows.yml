@@ -16,6 +16,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Build CMake project
+        steps: |
+          mkdir ci-build
+          cd ci-build
+          cmake ..
+          cmake --build .
+
+      - name: List
+        steps: dir
+
       - name: Upload build artifact
         uses: actions/upload-artifact@v3
         with:
