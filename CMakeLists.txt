@@ -30,8 +30,24 @@ set(
 
 if(WIN32)
     add_executable(mini-fps ${SOURCES} ${HEADERS})
-    target_include_directories(mini-fps PRIVATE ${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS} "include/")
-    target_link_libraries(mini-fps PRIVATE ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES})
+
+    target_link_options(mini-fps PRIVATE
+            -static-libstdc++
+            -mwindows
+            -static
+            -lstdc++
+            -lpthread
+            )
+
+
+    target_include_directories(mini-fps PRIVATE "include/")
+    target_link_libraries(mini-fps PRIVATE ${CMAKE_SOURCE_DIR}/lib/SDL2.dll ${CMAKE_SOURCE_DIR}/lib/SDL2_image.dll)
+    add_custom_command(TARGET mini-fps POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E make_directory "$<TARGET_FILE_DIR:mini-fps>/assets"
+            COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/assets" "$<TARGET_FILE_DIR:mini-fps>/assets"
+            COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/lib/SDL2.dll" "$<TARGET_FILE_DIR:mini-fps>"
+            COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/lib/SDL2_image.dll" "$<TARGET_FILE_DIR:mini-fps>"
+            )
 elseif(APPLE)
     # Find SDL2 and SDL2_image frameworks
     find_library(SDL2_LIB SDL2)
