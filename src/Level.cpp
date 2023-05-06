@@ -37,7 +37,7 @@ bool Level::HasCollided(const float x, const float y) {
     for (int cellX = roundedX - 1; cellX <= roundedX + 1; cellX++) {
         for (int cellY = roundedY - 1; cellY <= roundedY + 1; cellY++) {
             if (cellX < 0 || cellX >= w || cellY < 0 || cellY >= h) {
-                std::cerr << "Invalid index" << std::endl;
+                // std::cerr << "Invalid index" << std::endl;
             } else {
                 if (Get(cellX, cellY) != ARGB_WHITE) {
                     if (x >= static_cast<double>(cellX) - 0.05 && x <= static_cast<double>(cellX) + 1 + 0.05 &&

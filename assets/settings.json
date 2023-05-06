@@ -1,7 +1,7 @@
 {
   "graphics": {
-    "screenWidth": 1280,
-    "screenHeight": 720,
+    "screenWidth": 1600,
+    "screenHeight": 900,
     "horizontalFieldOfView": 90,
     "vSync": true
   },

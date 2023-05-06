@@ -23,10 +23,8 @@ int main() {
 
     SDL_Window* window = nullptr;
     SDL_Renderer* renderer = nullptr;
-    const std::string assetsFolderPath = GetSDLAssetsFolderPath();
-    const std::string settingsPath = "settings.json";
 
-    Settings settings = Settings::LoadSettings(assetsFolderPath, settingsPath);
+    Settings settings = Settings::LoadSettings(GetSDLAssetsFolderPath(), "settings.json");
 
     if (!InitializeWindowAndRenderer(&window, &renderer, settings.screenWidth, settings.screenHeight, settings.vSync)) {
         std::cerr << "Window and/or renderer could not be initialized" << std::endl;
@@ -40,13 +38,14 @@ int main() {
         std::cout << "SDL_image initialized" << std::endl;
     }
 
-    size_t wallTexSize;
     // TODO: Allow variable size textures
     // Right now all wall textures must be the same size
+    size_t wallTexSize;
+
     size_t numWallTextures = settings.texturePaths.size();
     Uint32*** wallTextureBuffers = new Uint32** [numWallTextures];
     for (size_t buffer = 0; buffer < numWallTextures; buffer++) {
-        LoadTextureToBuffer(&wallTextureBuffers[buffer], wallTexSize, assetsFolderPath,
+        LoadTextureToBuffer(&wallTextureBuffers[buffer], wallTexSize, GetSDLAssetsFolderPath(),
                             settings.texturePaths[buffer]);
     }
 
