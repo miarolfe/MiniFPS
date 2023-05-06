@@ -24,8 +24,8 @@ bool InitializeWindowAndRenderer(SDL_Window** window, SDL_Renderer** renderer, s
     bool successful_initialization = true;
 
     *window = SDL_CreateWindow("mini-fps",
-                               100,
-                               100,
+                               0,
+                               0,
                                screenWidth,
                                screenHeight,
                                SDL_WINDOW_SHOWN);
