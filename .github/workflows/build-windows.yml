@@ -1,0 +1,23 @@
+name: Build mini-fps for Windows
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: mini-fps-windows
+          path: mini-fps.tar
