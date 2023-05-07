@@ -7,12 +7,13 @@
 struct InputState {
     InputState();
 
-    bool moveLeft, moveRight, moveForward, moveBack, endGame;
+    bool moveLeft, moveRight, moveForward, moveBack, endGame, inMainMenu;
     int mouseX, mouseY;
 };
 
 struct Player {
     Player(Level* level, Settings settings);
+    Player();
 
     Level* level;
     Camera camera;
@@ -23,6 +24,7 @@ struct Player {
     void Rotate(float frameDelta, float rotationModifier);
     void Update(float frameDelta, float speedModifier, float rotationModifier);
     bool GameHasEnded();
+    bool InMainMenu();
 };
 
 void GetInputState(bool &gameIsRunning, bool &moveLeft, bool &moveRight, bool &moveForward,

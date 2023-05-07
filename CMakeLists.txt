@@ -11,6 +11,7 @@ set(
         src/main.cpp
         src/Camera.cpp
         src/Level.cpp
+        src/Menu.cpp
         src/Renderer.cpp
         src/Player.cpp
         src/Settings.cpp
@@ -22,6 +23,7 @@ set(
         src/Camera.h
         src/Color.h
         src/Level.h
+        src/Menu.h
         src/Player.h
         src/Renderer.h
         src/Settings.h
@@ -39,24 +41,27 @@ if(WIN32)
             -lpthread
             )
 
-
     target_include_directories(mini-fps PRIVATE "include/")
-    target_link_libraries(mini-fps PRIVATE ${CMAKE_SOURCE_DIR}/lib/SDL2.dll ${CMAKE_SOURCE_DIR}/lib/SDL2_image.dll)
+    target_link_libraries(mini-fps PRIVATE ${CMAKE_SOURCE_DIR}/lib/SDL2.dll ${CMAKE_SOURCE_DIR}/lib/SDL2_image.dll ${CMAKE_SOURCE_DIR}/lib/SDL2_ttf.dll)
     add_custom_command(TARGET mini-fps POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/mini-fps-windows"
             COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/mini-fps-windows/assets"
             COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/assets" "${CMAKE_BINARY_DIR}/mini-fps-windows/assets"
             COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/lib/SDL2.dll" "${CMAKE_BINARY_DIR}/mini-fps-windows"
             COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/lib/SDL2_image.dll" "${CMAKE_BINARY_DIR}/mini-fps-windows"
+            COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/lib/SDL2_ttf.dll" "${CMAKE_BINARY_DIR}/mini-fps-windows"
             COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/mini-fps.exe" "${CMAKE_BINARY_DIR}/mini-fps-windows"
             )
 elseif(APPLE)
     # Find SDL2 and SDL2_image frameworks
     find_library(SDL2_LIB SDL2)
     find_library(SDL2_IMAGE_LIB SDL2_image)
+    find_library(SDL2_TTF_LIB SDL2_ttf)
 
     set(SDL2_FRAMEWORK "${SDL2_LIB}")
     set(SDL2_IMAGE_FRAMEWORK "${SDL2_IMAGE_LIB}")
+    message(STATUS "${SDL2_IMAGE_LIB}")
+    set(SDL2_TTF_FRAMEWORK "${SDL2_TTF_LIB}")
     set(CMAKE_BUILD_RPATH "@executable_path/../Frameworks")
 
     add_executable(mini-fps MACOSX_BUNDLE ${SOURCES} ${HEADERS})
@@ -71,17 +76,20 @@ elseif(APPLE)
     target_link_libraries(mini-fps PRIVATE
             "${SDL2_FRAMEWORK}"
             "${SDL2_IMAGE_FRAMEWORK}"
+            "${SDL2_TTF_FRAMEWORK}"
     )
 
     add_custom_command(TARGET mini-fps POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/mini-fps.app/Contents/Frameworks
             COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/lib/SDL2.framework ${CMAKE_CURRENT_BINARY_DIR}/mini-fps.app/Contents/Frameworks/SDL2.framework
             COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/lib/SDL2_image.framework ${CMAKE_CURRENT_BINARY_DIR}/mini-fps.app/Contents/Frameworks/SDL2_image.framework
+            COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/lib/SDL2_ttf.framework ${CMAKE_CURRENT_BINARY_DIR}/mini-fps.app/Contents/Frameworks/SDL2_ttf.framework
             COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/mini-fps.app/Contents/Resources
             COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/assets ${CMAKE_CURRENT_BINARY_DIR}/mini-fps.app/Contents/Resources
 
             COMMAND install_name_tool -change ${CMAKE_CURRENT_SOURCE_DIR}/lib/SDL2.framework/Versions/A/SDL2 @executable_path/../Frameworks/SDL2.framework/Versions/A/SDL2 "${CMAKE_CURRENT_BINARY_DIR}/mini-fps.app/Contents/MacOS/mini-fps"
             COMMAND install_name_tool -change ${CMAKE_CURRENT_SOURCE_DIR}/lib/SDL2_image.framework/Versions/A/SDL2_image @executable_path/../Frameworks/SDL2_image.framework/Versions/A/SDL2_image "${CMAKE_CURRENT_BINARY_DIR}/mini-fps.app/Contents/MacOS/mini-fps"
+            COMMAND install_name_tool -change ${CMAKE_CURRENT_SOURCE_DIR}/lib/SDL2_ttf.framework/Versions/A/SDL2_ttf @executable_path/../Frameworks/SDL2_ttf.framework/Versions/A/SDL2_ttf "${CMAKE_CURRENT_BINARY_DIR}/mini-fps.app/Contents/MacOS/mini-fps"
             )
 else()
     message(FATAL_ERROR "Unsupported operating system")

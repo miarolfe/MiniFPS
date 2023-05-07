@@ -225,6 +225,15 @@ SDL2_IMAGE_LIB:FILEPATH=/Library/Developer/CommandLineTools/SDKs/MacOSX13.3.sdk/
 //Path to a library.
 SDL2_LIB:FILEPATH=/Library/Developer/CommandLineTools/SDKs/MacOSX13.3.sdk/System/Library/Frameworks/SDL2.framework
 
+//Path to a library.
+SDL2_TTF_LIB:FILEPATH=/Library/Developer/CommandLineTools/SDKs/MacOSX13.3.sdk/System/Library/Frameworks/SDL2_ttf.framework
+
+//Path to a library.
+SDL2_TTF_LIBRARIES:FILEPATH=SDL2_TTF_LIBRARIES-NOTFOUND
+
+//Path to a library.
+SDL2_TTF_LIBRARY:FILEPATH=SDL2_TTF_LIBRARY-NOTFOUND
+
 //Value Computed by CMake
 mini-fps_BINARY_DIR:STATIC=/Users/peterrolfe/Development/C-Plus-Plus/mini-fps/cmake-bin
 

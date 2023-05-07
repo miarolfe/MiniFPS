@@ -4,6 +4,7 @@
 
 #include <SDL.h>
 #include <SDL_image.h>
+#include <SDL_ttf.h>
 
 #include "Utilities.h"
 
@@ -46,7 +47,6 @@ bool InitializeWindowAndRenderer(SDL_Window** window, SDL_Renderer** renderer, s
 
     // Capture mouse cursor and enable relative mouse mode
     SDL_SetWindowGrab(*window, SDL_TRUE);
-    SDL_SetRelativeMouseMode(SDL_TRUE);
 
     return successful_initialization;
 }
@@ -56,6 +56,17 @@ bool InitializeSDLImage() {
     bool successful_initialization = true;
 
     if (!IMG_Init(IMG_INIT_PNG)) {
+        successful_initialization = false;
+    }
+
+    return successful_initialization;
+}
+
+// Initialise SDL_ttf subsystem
+bool InitializeSDLTTF() {
+    bool successful_initialization = true;
+
+    if (TTF_Init() != 0) {
         successful_initialization = false;
     }
 
@@ -96,22 +107,6 @@ std::string GetSDLAssetsFolderPath() {
     }
 
     return file_path;
-}
-
-std::string GetMiscAssetsFolderPath() {
-    std::string filePath;
-    const char* platform = SDL_GetPlatform();
-
-    if (strcmp(platform, "Windows") == 0) {
-        filePath = "assets/";
-    } else if (strcmp(platform, "Mac OS X") == 0) {
-        filePath = "Resources/";
-    } else {
-        std::cerr << "Invalid platform: " << platform << std::endl;
-        filePath = "INVALID PLATFORM";
-    }
-
-    return filePath;
 }
 
 // Get a texture in Uint3w2 buffer form
@@ -155,6 +150,10 @@ bool LoadTextureToBuffer(Uint32*** buffer, size_t& size, std::string assetsFolde
     }
 
     return success;
+}
+
+TTF_Font* LoadFont(const std::string &fontPath, int pointSize) {
+    return TTF_OpenFont(fontPath.c_str(), pointSize);
 }
 
 // Get a clamped version of a value

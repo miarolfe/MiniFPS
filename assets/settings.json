@@ -1,4 +1,12 @@
 {
+  "game": {
+    "version": {
+      "major": 0,
+      "minor": 1,
+      "patch": 0
+    }
+  },
+
   "graphics": {
     "screenWidth": 900,
     "screenHeight": 600,
@@ -31,6 +39,12 @@
       "sprites/blue-bricks.png",
       "sprites/indigo-bricks.png",
       "sprites/grey-bricks.png"
-    ]
+    ],
+
+    "fontPaths": {
+      "Inconsolata-Medium": "fonts/Inconsolata-Medium.ttf"
+    }
   }
+
+
 }

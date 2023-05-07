@@ -6,6 +6,7 @@
 #include "Camera.h"
 #include "Color.h"
 #include "Level.h"
+#include "Menu.h"
 #include "Utilities.h"
 
 const Uint32 CEILING = 0xFFA5A5A5;
@@ -66,33 +67,39 @@ Uint32** GetTexBuffer(Uint32**** texBuffers, size_t numTexBuffers, Uint32 cellCo
     return texBuffer;
 }
 
-void Draw(SDL_Renderer* renderer, Camera camera, Level &level, Uint32**** texBuffers, size_t numTexBuffers, size_t texSize,
-          SDL_Texture* frameTexture) {
+void DrawText(SDL_Renderer* sdlRenderer, SDL_Texture* renderFrameTexture, const std::string &text, Font font, SDL_Rect destRect) {
+    SDL_SetRenderTarget(sdlRenderer, renderFrameTexture);
+    SDL_RenderCopy(sdlRenderer, RenderTextToTexture(sdlRenderer, font, text, 255, 255, 255), NULL, &destRect);
+    SDL_SetRenderTarget(sdlRenderer, nullptr);
+}
+
+void Draw(SDL_Renderer* renderer, Player player, Uint32**** texBuffers, size_t numTexBuffers, size_t texSize,
+          SDL_Texture* streamingFrameTexture, SDL_Texture* renderFrameTexture) {
     int pitch;
     void *pixels;
-    SDL_LockTexture(frameTexture, nullptr, &pixels, &pitch);
+    SDL_LockTexture(streamingFrameTexture, nullptr, &pixels, &pitch);
 
-    DrawCeiling(camera, pitch, pixels);
-    DrawFloor(camera, pitch, pixels);
+    DrawCeiling(player.camera, pitch, pixels);
+    DrawFloor(player.camera, pitch, pixels);
 
     // Cast rays
-    for (size_t ray = 0; ray < camera.viewportWidth; ray++) {
-        float rayScreenPos = (2 * ray / float(camera.viewportWidth) - 1) * camera.aspectRatio;
-        float rayAngle = camera.angle + atan(rayScreenPos * tan(camera.horizontalFieldOfView / 2));
+    for (size_t ray = 0; ray < player.camera.viewportWidth; ray++) {
+        float rayScreenPos = (2 * ray / float(player.camera.viewportWidth) - 1) * player.camera.aspectRatio;
+        float rayAngle = player.camera.angle + atan(rayScreenPos * tan(player.camera.horizontalFieldOfView / 2));
 
         float t;
         float cosRayAngle = cos(rayAngle);
         float sinRayAngle = sin(rayAngle);
 
-        for (t = 0; t < camera.maxRenderDistance; t += camera.rayIncrement) {
-            float cx = camera.x + t * cosRayAngle;
-            float cy = camera.y + t * sinRayAngle;
+        for (t = 0; t < player.camera.maxRenderDistance; t += player.camera.rayIncrement) {
+            float cx = player.camera.x + t * cosRayAngle;
+            float cy = player.camera.y + t * sinRayAngle;
 
-            const Uint32 levelCellColor = level.Get(static_cast<int>(cx), static_cast<int>(cy));
+            const Uint32 levelCellColor = player.level->Get(static_cast<int>(cx), static_cast<int>(cy));
 
             if (levelCellColor != ARGB_WHITE) {
-                float distance = t * cos(rayAngle - camera.angle);
-                size_t columnHeight = ((camera.viewportHeight) * camera.distanceToProjectionPlane) / distance;
+                float distance = t * cos(rayAngle - player.camera.angle);
+                size_t columnHeight = ((player.camera.viewportHeight) * player.camera.distanceToProjectionPlane) / distance;
 
                 float hitX = cx - floor(cx + 0.5f);
                 float hitY = cy - floor(cy + 0.5f);
@@ -104,14 +111,14 @@ void Draw(SDL_Renderer* renderer, Camera camera, Level &level, Uint32**** texBuf
 
                 if (texX < 0) texX += texSize;
 
-                int drawStart = (static_cast<int>(camera.viewportHeight) / 2) - (static_cast<int>(columnHeight) / 2);
+                int drawStart = (static_cast<int>(player.camera.viewportHeight) / 2) - (static_cast<int>(columnHeight) / 2);
 
                 int drawEnd = drawStart + columnHeight;
 
                 Uint32 **texBuffer = GetTexBuffer(texBuffers, numTexBuffers, levelCellColor);
 
                 for (int y = drawStart; y < drawEnd; y++) {
-                    if (y < 0 || y >= camera.viewportHeight) {
+                    if (y < 0 || y >= player.camera.viewportHeight) {
                         continue;
                     }
 
@@ -124,7 +131,57 @@ void Draw(SDL_Renderer* renderer, Camera camera, Level &level, Uint32**** texBuf
         }
     }
 
-    SDL_RenderCopy(renderer, frameTexture, nullptr, nullptr);
-    SDL_UnlockTexture(frameTexture);
+    SDL_UnlockTexture(streamingFrameTexture);
+
+    SDL_SetRenderTarget(renderer, renderFrameTexture);
+    SDL_RenderCopy(renderer, streamingFrameTexture, nullptr, nullptr);
+
+    // UI draw here
+
+    SDL_SetRenderTarget(renderer, nullptr);
+    SDL_RenderCopy(renderer, renderFrameTexture, nullptr, nullptr);
     SDL_RenderPresent(renderer);
 }
+
+void DrawMainMenu(const Settings& settings, SDL_Renderer* renderer, const Font& font, Camera camera, SDL_Texture* streamingFrameTexture, SDL_Texture* renderFrameTexture) {
+    int pitch;
+    void *pixels;
+    SDL_LockTexture(streamingFrameTexture, nullptr, &pixels, &pitch);
+
+    for (int frameY = 0; frameY < static_cast<int>(camera.viewportHeight); frameY++) {
+        for (int frameX = 0; frameX < static_cast<int>(camera.viewportWidth); frameX++) {
+            SetPixel(pixels, pitch, ARGB_BLACK, frameX, frameY);
+        }
+    }
+
+    SDL_Rect titleTextRect = {static_cast<int>(camera.viewportWidth / 4),
+                              static_cast<int>(camera.viewportHeight / 16),
+                              static_cast<int>(camera.viewportWidth / 2),
+                              static_cast<int>(camera.viewportHeight / 4)};
+
+    SDL_Rect versionTextRect = {static_cast<int>(3 * (camera.viewportWidth / 8)),
+                                static_cast<int>(5 * (camera.viewportHeight / 16)),
+                                static_cast<int>(camera.viewportWidth / 4),
+                                static_cast<int>(camera.viewportHeight / 8)};
+
+    SDL_Rect startGameTextRect = {static_cast<int>(camera.viewportWidth / 12),
+                                  static_cast<int>(6 * (camera.viewportHeight / 8)),
+                                  static_cast<int>(10 * (camera.viewportWidth / 12)),
+                                  static_cast<int>(camera.viewportHeight / 8)};
+
+    SDL_UnlockTexture(streamingFrameTexture);
+    SDL_SetRenderTarget(renderer, renderFrameTexture);
+    SDL_RenderCopy(renderer, streamingFrameTexture, nullptr, nullptr);
+
+    // UI draw calls
+
+    DrawText(renderer, renderFrameTexture, "mini-fps", font, titleTextRect);
+    DrawText(renderer, renderFrameTexture, settings.version, font, versionTextRect);
+    DrawText(renderer, renderFrameTexture, "Press [SPACE] or [ENTER] to start", font, startGameTextRect);
+
+    SDL_SetRenderTarget(renderer, nullptr);
+    SDL_RenderCopy(renderer, renderFrameTexture, nullptr, nullptr);
+    SDL_RenderPresent(renderer);
+}
+
+

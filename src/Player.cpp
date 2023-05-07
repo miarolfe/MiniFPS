@@ -18,9 +18,14 @@ Player::Player(Level* level, Settings settings) {
                     settings.renderDistance, settings.playerDistanceToProjectionPlane);
 }
 
+Player::Player() {
+    this->level = nullptr;
+}
+
 void Player::UpdateInputState() {
     inputState.mouseX = 0;
     inputState.mouseY = 0;
+    inputState.endGame = false;
 
     SDL_Event event;
 
@@ -64,39 +69,45 @@ void Player::UpdateInputState() {
     } else {
         inputState.moveRight = false;
     }
+
+    if (currentKeyStates[SDL_SCANCODE_SPACE] || currentKeyStates[SDL_SCANCODE_RETURN]) {
+        inputState.inMainMenu = false;
+    }
 }
 
 void Player::Move(float frameDelta, float speedModifier) {
-    float prevX = camera.x;
-    float prevY = camera.y;
+    if (frameDelta != 0 && speedModifier != 0) {
+        float prevX = camera.x;
+        float prevY = camera.y;
 
-    if (inputState.moveForward != inputState.moveBack) {
-        if (inputState.moveForward) {
-            camera.x += frameDelta * speedModifier * cos(camera.angle);
-            camera.y += frameDelta * speedModifier * sin(camera.angle);
+        if (inputState.moveForward != inputState.moveBack) {
+            if (inputState.moveForward) {
+                camera.x += frameDelta * speedModifier * cos(camera.angle);
+                camera.y += frameDelta * speedModifier * sin(camera.angle);
+            }
+
+            if (inputState.moveBack) {
+                camera.x -= frameDelta * speedModifier * cos(camera.angle);
+                camera.y -= frameDelta * speedModifier * sin(camera.angle);
+            }
         }
 
-        if (inputState.moveBack) {
-            camera.x -= frameDelta * speedModifier * cos(camera.angle);
-            camera.y -= frameDelta * speedModifier * sin(camera.angle);
-        }
-    }
+        if (inputState.moveLeft != inputState.moveRight) {
+            if (inputState.moveLeft) {
+                camera.x += frameDelta * speedModifier * cos(camera.angle - M_PI / 2);
+                camera.y += frameDelta * speedModifier * sin(camera.angle - M_PI / 2);
+            }
 
-    if (inputState.moveLeft != inputState.moveRight) {
-        if (inputState.moveLeft) {
-            camera.x += frameDelta * speedModifier * cos(camera.angle - M_PI / 2);
-            camera.y += frameDelta * speedModifier * sin(camera.angle - M_PI / 2);
+            if (inputState.moveRight) {
+                camera.x += frameDelta * speedModifier * cos(camera.angle + M_PI / 2);
+                camera.y += frameDelta * speedModifier * sin(camera.angle + M_PI / 2);
+            }
         }
 
-        if (inputState.moveRight) {
-            camera.x += frameDelta * speedModifier * cos(camera.angle + M_PI / 2);
-            camera.y += frameDelta * speedModifier * sin(camera.angle + M_PI / 2);
+        if (level->HasCollided(camera.x, camera.y)) {
+            camera.x = prevX;
+            camera.y = prevY;
         }
-    }
-
-    if (level->HasCollided(camera.x, camera.y)) {
-        camera.x = prevX;
-        camera.y = prevY;
     }
 }
 
@@ -106,6 +117,10 @@ void Player::Rotate(float frameDelta, float rotationModifier) {
 
 bool Player::GameHasEnded() {
     return inputState.endGame;
+}
+
+bool Player::InMainMenu() {
+    return inputState.inMainMenu;
 }
 
 void Player::Update(float frameDelta, float speedModifier, float rotationModifier) {
@@ -120,6 +135,7 @@ InputState::InputState() {
     moveForward = false;
     moveBack = false;
     endGame = false;
+    inMainMenu = false;
     mouseX = 0;
     mouseY = 0;
 }
