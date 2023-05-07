@@ -109,66 +109,8 @@ std::string GetSDLAssetsFolderPath() {
     return file_path;
 }
 
-// Get a texture in Uint3w2 buffer form
-bool LoadTextureToBuffer(Uint32*** buffer, size_t& size, std::string assetsFolderPath, std::string textureFilePath) {
-    bool success = true;
-
-    std::string fullTexturePath = assetsFolderPath + textureFilePath;
-    SDL_Surface* tempTextureSurface = IMG_Load(fullTexturePath.c_str());
-
-    tempTextureSurface = SDL_ConvertSurfaceFormat(tempTextureSurface, SDL_PIXELFORMAT_ARGB8888, 0);
-
-    if (tempTextureSurface == nullptr) {
-        std::cerr << "Could not load texture at " << fullTexturePath << ": " << IMG_GetError();
-        success = false;
-    }
-
-    if (success && tempTextureSurface->w != tempTextureSurface->h) {
-        std::cerr << "Could not use texture at " << fullTexturePath << ", texture must be square" << std::endl;
-        success = false;
-    }
-
-    if (success) {
-        // We only use square textures so h doesn't matter
-        size = tempTextureSurface->w;
-        *buffer = new Uint32*[size];
-        for (int row = 0; row < size; row++) {
-            (*buffer)[row] = new Uint32[size];
-        }
-
-        Uint32* pixels = (Uint32*) tempTextureSurface->pixels;
-
-        for (int p = 0; p < size; p++) {
-            for (int q = 0; q < size; q++) {
-                (*buffer)[p][q] = pixels[p * size + q];
-            }
-        }
-
-        SDL_FreeSurface(tempTextureSurface);
-
-        std::cout << "Loaded texture to buffer: " + fullTexturePath << std::endl;
-    }
-
-    return success;
-}
-
 TTF_Font* LoadFont(const std::string &fontPath, int pointSize) {
     return TTF_OpenFont(fontPath.c_str(), pointSize);
-}
-
-// Get a clamped version of a value
-int Clamp(const int value, const int min, const int max) {
-    int clampedValue;
-
-    if (value < min) {
-        clampedValue = min;
-    } else if (value > max) {
-        clampedValue = max;
-    } else {
-        clampedValue = value;
-    }
-
-    return clampedValue;
 }
 
 void ClearFile(std::string fileName) {

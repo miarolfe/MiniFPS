@@ -44,6 +44,12 @@ int main() {
         fonts[i] = Font(settings.fontPaths[i].first, settings.fontPaths[i].second, 24);
     }
 
+    Texture textures[settings.texturePaths.size()];
+    for (int i = 0; i < settings.texturePaths.size(); i++) {
+        textures[i] = Texture(settings.texturePaths[i].first, settings.texturePaths[i].second);
+        std::cout << textures[i].name << std::endl;
+    }
+
     if (!InitializeWindowAndRenderer(&window, &renderer, settings.screenWidth, settings.screenHeight, settings.vSync)) {
         std::cerr << "Window and/or renderer could not be initialized" << std::endl;
     } else {
@@ -65,17 +71,6 @@ int main() {
         mainMenu.player.Update(0, 0, 0);
     }
 
-    // TODO: Allow variable size textures
-    // Right now all wall textures must be the same size
-    size_t wallTexSize;
-
-    size_t numWallTextures = settings.texturePaths.size();
-    Uint32*** wallTextureBuffers = new Uint32** [numWallTextures];
-    for (size_t buffer = 0; buffer < numWallTextures; buffer++) {
-        LoadTextureToBuffer(&wallTextureBuffers[buffer], wallTexSize, GetSDLAssetsFolderPath(),
-                            settings.texturePaths[buffer]);
-    }
-
     Level level = Level(GetSDLAssetsFolderPath() + settings.levelPath);
     level.Print();
 
@@ -95,7 +90,7 @@ int main() {
 
         gamePlayer.Update(frameDelta, settings.speedModifier, settings.rotationModifier);
 
-        Draw(renderer, gamePlayer, &wallTextureBuffers, numWallTextures, wallTexSize, streamingFrameTexture, renderFrameTexture);
+        Draw(renderer, gamePlayer, textures, settings.texturePaths.size(), streamingFrameTexture, renderFrameTexture);
     }
 
     Quit(window, renderer);
