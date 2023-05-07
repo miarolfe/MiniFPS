@@ -4,7 +4,6 @@
 #include <vector>
 
 #include <SDL.h>
-#include <SDL_ttf.h>
 
 #include "Color.h"
 #include "Level.h"
@@ -61,7 +60,7 @@ int main() {
     MainMenu mainMenu(settings);
 
     while (mainMenu.player.InMainMenu() && !mainMenu.player.GameHasEnded()) {
-        DrawMainMenu(renderer, fonts[0], mainMenu.player.camera, streamingFrameTexture, renderFrameTexture);
+        DrawMainMenu(settings, renderer, fonts[0], mainMenu.player.camera, streamingFrameTexture, renderFrameTexture);
         mainMenu.player.Update(0, 0, 0);
     }
 

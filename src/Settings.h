@@ -10,6 +10,7 @@ using json = nlohmann::json;
 using string = std::string;
 
 struct Settings {
+    std::string version;
     size_t screenWidth;
     size_t screenHeight;
     float renderRayIncrement;
@@ -26,7 +27,7 @@ struct Settings {
     std::vector<string> texturePaths;
     std::vector<std::pair<string, string>> fontPaths;
 
-    Settings(size_t screenWidth, size_t screenHeight, float renderRayIncrement,
+    Settings(std::string version, size_t screenWidth, size_t screenHeight, float renderRayIncrement,
              size_t renderDistance, bool vSync, float fieldOfView, float speedModifier,
              float rotationModifier, float playerStartX, float playerStartY,
              float playerStartAngle, float playerDistanceToProjectionPlane,

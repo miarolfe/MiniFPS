@@ -143,7 +143,7 @@ void Draw(SDL_Renderer* renderer, Player player, Uint32**** texBuffers, size_t n
     SDL_RenderPresent(renderer);
 }
 
-void DrawMainMenu(SDL_Renderer* renderer, Font font, Camera camera, SDL_Texture* streamingFrameTexture, SDL_Texture* renderFrameTexture) {
+void DrawMainMenu(const Settings& settings, SDL_Renderer* renderer, Font font, Camera camera, SDL_Texture* streamingFrameTexture, SDL_Texture* renderFrameTexture) {
     int pitch;
     void *pixels;
     SDL_LockTexture(streamingFrameTexture, nullptr, &pixels, &pitch);
@@ -155,12 +155,17 @@ void DrawMainMenu(SDL_Renderer* renderer, Font font, Camera camera, SDL_Texture*
     }
 
     SDL_Rect titleTextRect = {static_cast<int>(camera.viewportWidth / 4),
-                              0,
+                              static_cast<int>(camera.viewportHeight / 16),
                               static_cast<int>(camera.viewportWidth / 2),
                               static_cast<int>(camera.viewportHeight / 4)};
 
+    SDL_Rect versionTextRect = {static_cast<int>(3 * (camera.viewportWidth / 8)),
+                                static_cast<int>(5 * (camera.viewportHeight / 16)),
+                                static_cast<int>(camera.viewportWidth / 4),
+                                static_cast<int>(camera.viewportHeight / 8)};
+
     SDL_Rect startGameTextRect = {static_cast<int>(camera.viewportWidth / 12),
-                                  static_cast<int>(camera.viewportHeight / 2),
+                                  static_cast<int>(6 * (camera.viewportHeight / 8)),
                                   static_cast<int>(10 * (camera.viewportWidth / 12)),
                                   static_cast<int>(camera.viewportHeight / 8)};
 
@@ -171,6 +176,7 @@ void DrawMainMenu(SDL_Renderer* renderer, Font font, Camera camera, SDL_Texture*
     // UI draw calls
 
     DrawText(renderer, renderFrameTexture, "mini-fps", font, titleTextRect);
+    DrawText(renderer, renderFrameTexture, settings.version, font, versionTextRect);
     DrawText(renderer, renderFrameTexture, "Press [SPACE] or [ENTER] to start", font, startGameTextRect);
 
     SDL_SetRenderTarget(renderer, nullptr);
