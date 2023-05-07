@@ -143,7 +143,7 @@ void Draw(SDL_Renderer* renderer, Player player, Uint32**** texBuffers, size_t n
     SDL_RenderPresent(renderer);
 }
 
-void DrawMainMenu(const Settings& settings, SDL_Renderer* renderer, Font font, Camera camera, SDL_Texture* streamingFrameTexture, SDL_Texture* renderFrameTexture) {
+void DrawMainMenu(const Settings& settings, SDL_Renderer* renderer, const Font& font, Camera camera, SDL_Texture* streamingFrameTexture, SDL_Texture* renderFrameTexture) {
     int pitch;
     void *pixels;
     SDL_LockTexture(streamingFrameTexture, nullptr, &pixels, &pitch);

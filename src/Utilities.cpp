@@ -47,7 +47,6 @@ bool InitializeWindowAndRenderer(SDL_Window** window, SDL_Renderer** renderer, s
 
     // Capture mouse cursor and enable relative mouse mode
     SDL_SetWindowGrab(*window, SDL_TRUE);
-    SDL_SetRelativeMouseMode(SDL_TRUE);
 
     return successful_initialization;
 }
@@ -108,22 +107,6 @@ std::string GetSDLAssetsFolderPath() {
     }
 
     return file_path;
-}
-
-std::string GetMiscAssetsFolderPath() {
-    std::string filePath;
-    const char* platform = SDL_GetPlatform();
-
-    if (strcmp(platform, "Windows") == 0) {
-        filePath = "assets/";
-    } else if (strcmp(platform, "Mac OS X") == 0) {
-        filePath = "Resources/";
-    } else {
-        std::cerr << "Invalid platform: " << platform << std::endl;
-        filePath = "INVALID PLATFORM";
-    }
-
-    return filePath;
 }
 
 // Get a texture in Uint3w2 buffer form

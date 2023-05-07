@@ -56,7 +56,8 @@ int main() {
     SDL_Texture* renderFrameTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_TARGET,
                                                         static_cast<int>(settings.screenWidth), static_cast<int>(settings.screenHeight));
 
-
+    // Allow movement of cursor in menu
+    SDL_SetRelativeMouseMode(SDL_FALSE);
     MainMenu mainMenu(settings);
 
     while (mainMenu.player.InMainMenu() && !mainMenu.player.GameHasEnded()) {
@@ -82,6 +83,9 @@ int main() {
 
     float oldTime, curTime, frameDelta;
     curTime = 0;
+
+    // Disable movement of cursor in game
+    SDL_SetRelativeMouseMode(SDL_TRUE);
 
     while (!gamePlayer.GameHasEnded()) {
         oldTime = curTime;

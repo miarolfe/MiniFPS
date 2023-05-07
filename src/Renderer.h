@@ -14,4 +14,4 @@ void DrawText(SDL_Renderer* sdlRenderer, SDL_Texture* frameTexture, const std::s
 void Draw(SDL_Renderer* renderer, Player player, Uint32**** texBuffers, size_t numTexBuffers, size_t texSize,
           SDL_Texture* streamingFrameTexture, SDL_Texture* renderFrameTexture);
 
-void DrawMainMenu(const Settings& settings, SDL_Renderer* renderer, Font font, Camera camera, SDL_Texture* streamingFrameTexture, SDL_Texture* renderFrameTexture);
+void DrawMainMenu(const Settings& settings, SDL_Renderer* renderer, const Font& font, Camera camera, SDL_Texture* streamingFrameTexture, SDL_Texture* renderFrameTexture);

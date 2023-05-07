@@ -20,10 +20,6 @@ float GetFrameTime(float oldTime, float curTime);
 
 std::string GetSDLAssetsFolderPath();
 
-std::string GetMiscAssetsFolderPath();
-
-SDL_PixelFormatEnum GetPlatformPixelFormatEnum();
-
 bool LoadTextureToBuffer(Uint32*** buffer, size_t& size, std::string assetsFolderPath, std::string textureFilePath);
 
 TTF_Font* LoadFont(const std::string &fontPath, int pointSize);
