@@ -16,7 +16,7 @@ struct Font {
 };
 
 struct MainMenu {
-    MainMenu(Settings settings);
+    explicit MainMenu(Settings settings);
 
     Player player;
     Settings settings;

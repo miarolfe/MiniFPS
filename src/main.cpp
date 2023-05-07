@@ -92,7 +92,7 @@ int main() {
 
         gamePlayer.Update(frameDelta, settings.speedModifier, settings.rotationModifier);
 
-        Draw(renderer, gamePlayer.camera, level, &wallTextureBuffers, numWallTextures, wallTexSize, streamingFrameTexture, renderFrameTexture);
+        Draw(renderer, gamePlayer, &wallTextureBuffers, numWallTextures, wallTexSize, streamingFrameTexture, renderFrameTexture);
     }
 
     Quit(window, renderer);

@@ -73,33 +73,33 @@ void DrawText(SDL_Renderer* sdlRenderer, SDL_Texture* renderFrameTexture, const 
     SDL_SetRenderTarget(sdlRenderer, nullptr);
 }
 
-void Draw(SDL_Renderer* renderer, Camera camera, Level &level, Uint32**** texBuffers, size_t numTexBuffers, size_t texSize,
+void Draw(SDL_Renderer* renderer, Player player, Uint32**** texBuffers, size_t numTexBuffers, size_t texSize,
           SDL_Texture* streamingFrameTexture, SDL_Texture* renderFrameTexture) {
     int pitch;
     void *pixels;
     SDL_LockTexture(streamingFrameTexture, nullptr, &pixels, &pitch);
 
-    DrawCeiling(camera, pitch, pixels);
-    DrawFloor(camera, pitch, pixels);
+    DrawCeiling(player.camera, pitch, pixels);
+    DrawFloor(player.camera, pitch, pixels);
 
     // Cast rays
-    for (size_t ray = 0; ray < camera.viewportWidth; ray++) {
-        float rayScreenPos = (2 * ray / float(camera.viewportWidth) - 1) * camera.aspectRatio;
-        float rayAngle = camera.angle + atan(rayScreenPos * tan(camera.horizontalFieldOfView / 2));
+    for (size_t ray = 0; ray < player.camera.viewportWidth; ray++) {
+        float rayScreenPos = (2 * ray / float(player.camera.viewportWidth) - 1) * player.camera.aspectRatio;
+        float rayAngle = player.camera.angle + atan(rayScreenPos * tan(player.camera.horizontalFieldOfView / 2));
 
         float t;
         float cosRayAngle = cos(rayAngle);
         float sinRayAngle = sin(rayAngle);
 
-        for (t = 0; t < camera.maxRenderDistance; t += camera.rayIncrement) {
-            float cx = camera.x + t * cosRayAngle;
-            float cy = camera.y + t * sinRayAngle;
+        for (t = 0; t < player.camera.maxRenderDistance; t += player.camera.rayIncrement) {
+            float cx = player.camera.x + t * cosRayAngle;
+            float cy = player.camera.y + t * sinRayAngle;
 
-            const Uint32 levelCellColor = level.Get(static_cast<int>(cx), static_cast<int>(cy));
+            const Uint32 levelCellColor = player.level->Get(static_cast<int>(cx), static_cast<int>(cy));
 
             if (levelCellColor != ARGB_WHITE) {
-                float distance = t * cos(rayAngle - camera.angle);
-                size_t columnHeight = ((camera.viewportHeight) * camera.distanceToProjectionPlane) / distance;
+                float distance = t * cos(rayAngle - player.camera.angle);
+                size_t columnHeight = ((player.camera.viewportHeight) * player.camera.distanceToProjectionPlane) / distance;
 
                 float hitX = cx - floor(cx + 0.5f);
                 float hitY = cy - floor(cy + 0.5f);
@@ -111,14 +111,14 @@ void Draw(SDL_Renderer* renderer, Camera camera, Level &level, Uint32**** texBuf
 
                 if (texX < 0) texX += texSize;
 
-                int drawStart = (static_cast<int>(camera.viewportHeight) / 2) - (static_cast<int>(columnHeight) / 2);
+                int drawStart = (static_cast<int>(player.camera.viewportHeight) / 2) - (static_cast<int>(columnHeight) / 2);
 
                 int drawEnd = drawStart + columnHeight;
 
                 Uint32 **texBuffer = GetTexBuffer(texBuffers, numTexBuffers, levelCellColor);
 
                 for (int y = drawStart; y < drawEnd; y++) {
-                    if (y < 0 || y >= camera.viewportHeight) {
+                    if (y < 0 || y >= player.camera.viewportHeight) {
                         continue;
                     }
 
