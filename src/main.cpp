@@ -32,15 +32,13 @@ int main() {
         std::cout << "SDL_image initialized" << std::endl;
     }
 
-    WriteLineToFile("log.txt", "");
-
-//    if (!InitializeSDLTTF()) {
-//        WriteLineToFile("log.txt", "SDL_ttf could not be initialized");
-//        std::cerr << "SDL_ttf could not be initialized" << std::endl;
-//    } else {
-//        WriteLineToFile("log.txt", "SDL_ttf initialized");
-//        std::cout << "SDL_ttf initialized" << std::endl;
-//    }
+    if (!InitializeSDLTTF()) {
+        WriteLineToFile("log.txt", "SDL_ttf could not be initialized");
+        std::cerr << "SDL_ttf could not be initialized" << std::endl;
+    } else {
+        WriteLineToFile("log.txt", "SDL_ttf initialized");
+        std::cout << "SDL_ttf initialized" << std::endl;
+    }
 
     SDL_Window* window = nullptr;
     SDL_Renderer* renderer = nullptr;
