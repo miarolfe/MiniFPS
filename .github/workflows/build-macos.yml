@@ -2,8 +2,6 @@ name: Build mini-fps for macOS
 
 on:
   push:
-    branches:
-      - main
   pull_request:
     branches:
       - main
