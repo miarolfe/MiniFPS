@@ -78,16 +78,16 @@ int main() {
 
     WriteLineToFile("log.txt", "Textures created");
 
-//    // Allow movement of cursor in menu
-//    SDL_SetRelativeMouseMode(SDL_FALSE);
-//    MainMenu mainMenu(settings);
-//
-//    WriteLineToFile("log.txt", "Main menu object created");
-//
-//    while (mainMenu.player.InMainMenu() && !mainMenu.player.GameHasEnded()) {
-//        DrawMainMenu(settings, renderer, fonts[0], mainMenu.player.camera, streamingFrameTexture, renderFrameTexture);
-//        mainMenu.player.Update(0, 0, 0);
-//    }
+    // Allow movement of cursor in menu
+    SDL_SetRelativeMouseMode(SDL_FALSE);
+    MainMenu mainMenu(settings);
+
+    WriteLineToFile("log.txt", "Main menu object created");
+
+    while (mainMenu.player.InMainMenu() && !mainMenu.player.GameHasEnded()) {
+        DrawMainMenu(settings, renderer, fonts[0], mainMenu.player.camera, streamingFrameTexture, renderFrameTexture);
+        mainMenu.player.Update(0, 0, 0);
+    }
 
     Level level = Level(GetSDLAssetsFolderPath() + settings.levelPath);
     level.Print();
