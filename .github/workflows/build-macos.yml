@@ -3,8 +3,6 @@ name: Build mini-fps for macOS
 on:
   push:
   pull_request:
-    branches:
-      - main
   workflow_dispatch:
 
 jobs:
