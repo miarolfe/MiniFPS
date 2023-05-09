@@ -12,8 +12,8 @@ set(
         src/Camera.cpp
         src/Level.cpp
         src/Menu.cpp
-        src/Renderer.cpp
         src/Player.cpp
+        src/Renderer.cpp
         src/Settings.cpp
         src/Utilities.cpp
 )

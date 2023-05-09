@@ -188,13 +188,13 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "src/Renderer.cpp",
+			"path" : "src/Player.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "src/Player.cpp",
+			"path" : "src/Renderer.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
