@@ -47,10 +47,10 @@ int main() {
 
     WriteLineToFile("log.txt", "Settings loaded");
 
-//    Font fonts[settings.fontPaths.size()];
-//    for (int i = 0; i < settings.fontPaths.size(); i++) {
-//        fonts[i] = Font(settings.fontPaths[i].first, settings.fontPaths[i].second, 24);
-//    }
+    Font fonts[settings.fontPaths.size()];
+    for (int i = 0; i < settings.fontPaths.size(); i++) {
+        fonts[i] = Font(settings.fontPaths[i].first, settings.fontPaths[i].second, 24);
+    }
 
     WriteLineToFile("log.txt", "Fonts loaded");
 
