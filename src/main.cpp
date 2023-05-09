@@ -49,7 +49,7 @@ int main() {
 
     Font fonts[settings.fontPaths.size()];
     for (int i = 0; i < settings.fontPaths.size(); i++) {
-        fonts[i] = Font(settings.fontPaths[i].first, settings.fontPaths[i].second, 24);
+        fonts[i] = Font(settings.fontPaths[i].first, GetSDLAssetsFolderPath() + settings.fontPaths[i].second, 24);
     }
 
     WriteLineToFile("log.txt", "Fonts loaded");
