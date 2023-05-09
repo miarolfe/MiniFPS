@@ -56,8 +56,8 @@ int main() {
 
     Texture textures[settings.texturePaths.size()];
     for (int i = 0; i < settings.texturePaths.size(); i++) {
-        WriteLineToFile("log.txt", "Texture path:" + settings.texturePaths[i].second);
-        textures[i] = Texture(settings.texturePaths[i].first, settings.texturePaths[i].second);
+        WriteLineToFile("log.txt", "Texture path: " + settings.texturePaths[i].second);
+        textures[i] = Texture(settings.texturePaths[i].first, GetSDLAssetsFolderPath() + settings.texturePaths[i].second);
         std::cout << textures[i].name << std::endl;
     }
 
