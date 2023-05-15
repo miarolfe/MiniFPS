@@ -79,6 +79,10 @@ void Level::SaveToLVL(const std::string& filePath) {
         outfile << std::endl;
     }
 
+    for (std::pair<char, std::string> pair : textureMap) {
+        outfile << int(pair.first) << " " << pair.second << std::endl;
+    }
+
     outfile.close();
 }
 
@@ -103,6 +107,16 @@ void Level::LoadFromLVL(std::string filePath) {
         for (int j = 0; j < w; j++) {
             infile >> matrix[i][j];
         }
+    }
+
+    while (infile.peek()!=EOF) {
+        char id;
+        int tmp;
+        infile >> tmp;
+        id = tmp;
+        std::string textureName;
+        infile >> textureName;
+        textureMap[id] = textureName;
     }
 
     infile.close();

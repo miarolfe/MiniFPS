@@ -3,10 +3,12 @@
 #include <vector>
 #include <SDL.h>
 
+#include "Settings.h"
+
 struct Level {
     Uint32** matrix;
     size_t w, h;
-    SDL_PixelFormat pixelFormat;
+    std::unordered_map<char, std::string> textureMap;
 
     explicit Level(std::string filePath);
     Uint32 Get (int x, int y);

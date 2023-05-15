@@ -70,6 +70,7 @@ int main() {
 
     Level level = Level(GetSDLAssetsFolderPath() + settings.levelPath);
     level.Print();
+    level.SaveToLVL(GetSDLAssetsFolderPath() + "TEST.lvl");
 
     Player gamePlayer(&level, settings);
 
