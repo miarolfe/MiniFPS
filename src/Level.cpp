@@ -12,7 +12,7 @@ Level::Level(std::string filePath) {
 }
 
 // Gets the color of pixel at cell (x, y) in level
-Uint32 Level::Get(int x, int y) {
+short Level::Get(int x, int y) {
     return matrix[y][x];
 }
 
@@ -55,7 +55,7 @@ bool Level::HasCollided(const float x, const float y) {
 void Level::Print() {
     for (int i = 0; i < w; i++) {
         for (int j = 0; j < h; j++) {
-            if (Get(j, i) == ARGB_WHITE) {
+            if (Get(j, i) == 0) {
                 std::cout << "  ";
             } else {
                 std::cout << "* ";
@@ -79,8 +79,8 @@ void Level::SaveToLVL(const std::string& filePath) {
         outfile << std::endl;
     }
 
-    for (std::pair<char, std::string> pair : textureMap) {
-        outfile << int(pair.first) << " " << pair.second << std::endl;
+    for (std::pair<short, std::string> pair : textureMap) {
+        outfile << pair.first << " " << pair.second << std::endl;
     }
 
     outfile.close();
@@ -96,10 +96,10 @@ void Level::LoadFromLVL(std::string filePath) {
 
     infile >> w >> h;
 
-    matrix = new Uint32* [h];
+    matrix = new short* [h];
 
     for (size_t i = 0; i < h; i++) {
-        matrix[i] = new Uint32[w];
+        matrix[i] = new short[w];
     }
 
 
@@ -110,10 +110,8 @@ void Level::LoadFromLVL(std::string filePath) {
     }
 
     while (infile.peek()!=EOF) {
-        char id;
-        int tmp;
-        infile >> tmp;
-        id = tmp;
+        short id;
+        infile >> id;
         std::string textureName;
         infile >> textureName;
         textureMap[id] = textureName;

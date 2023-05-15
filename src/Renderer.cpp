@@ -62,35 +62,15 @@ void DrawFloor(Camera camera, int pitch, void* pixels) {
     }
 }
 
-Texture GetTexBuffer(Uint32 cellColor, Texture* textures, size_t numTextures) {
+Texture GetTexBuffer(short cellColor, std::map<std::string, Texture> textures, Level level) {
     Texture texture;
 
-    switch (cellColor) {
-        case ARGB_RED:
-            texture = textures[5];
-            break;
-        case ARGB_YELLOW:
-            texture = textures[7];
-            break;
-        case ARGB_GREEN:
-            texture = textures[2];
-            break;
-        case ARGB_CYAN:
-            texture = textures[1];
-            break;
-        case ARGB_BLUE:
-            texture = textures[0];
-            break;
-        case ARGB_INDIGO:
-            texture = textures[4];
-            break;
-        case ARGB_BLACK:
-            texture = textures[3];
-            break;
-        default:
-            texture = textures[6];
-            break;
+    std::string textureName = level.textureMap[cellColor];
+    if (textureName.empty()) {
+        textureName = "fallback";
     }
+
+    texture = textures[textureName];
 
     return texture;
 }
@@ -101,7 +81,7 @@ void DrawText(SDL_Renderer* sdlRenderer, SDL_Texture* renderFrameTexture, const 
     SDL_SetRenderTarget(sdlRenderer, nullptr);
 }
 
-void Draw(SDL_Renderer* renderer, Player player, Texture* textures, size_t numTextures, SDL_Texture* streamingFrameTexture, SDL_Texture* renderFrameTexture) {
+void Draw(SDL_Renderer* renderer, Player player, std::map<std::string, Texture> textures, SDL_Texture* streamingFrameTexture, SDL_Texture* renderFrameTexture) {
     int pitch;
     void *pixels;
     SDL_LockTexture(streamingFrameTexture, nullptr, &pixels, &pitch);
@@ -122,10 +102,10 @@ void Draw(SDL_Renderer* renderer, Player player, Texture* textures, size_t numTe
             float cx = player.camera.x + t * cosRayAngle;
             float cy = player.camera.y + t * sinRayAngle;
 
-            const Uint32 levelCellColor = player.level->Get(static_cast<int>(cx), static_cast<int>(cy));
-            Texture texture = GetTexBuffer(levelCellColor, textures, numTextures);
+            const short cell = player.level->Get(static_cast<int>(cx), static_cast<int>(cy));
+            Texture texture = GetTexBuffer(cell, textures, *player.level);
 
-            if (levelCellColor != ARGB_WHITE) {
+            if (cell != 0) {
                 float distance = t * cos(rayAngle - player.camera.angle);
                 size_t columnHeight = ((player.camera.viewportHeight) * player.camera.distanceToProjectionPlane) / distance;
 
