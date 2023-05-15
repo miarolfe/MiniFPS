@@ -32,3 +32,9 @@
 4	868	1684168784258007799	CMakeFiles/mini-fps.dir/src/main.cpp.o	bfab3f0f9be93107
 5	877	1684168784265946293	CMakeFiles/mini-fps.dir/src/Level.cpp.o	9363a78ba7b28ab5
 877	1163	1684168784557608568	mini-fps.app/Contents/MacOS/mini-fps	6784d546bfbab61d
+6	852	1684169116620998485	CMakeFiles/mini-fps.dir/src/Player.cpp.o	1429b7c7dfffd68b
+6	853	1684169116624609089	CMakeFiles/mini-fps.dir/src/Renderer.cpp.o	88f4066537e191d6
+6	868	1684169116638135676	CMakeFiles/mini-fps.dir/src/Menu.cpp.o	45b900b16ff88061
+5	869	1684169116640506703	CMakeFiles/mini-fps.dir/src/main.cpp.o	bfab3f0f9be93107
+5	883	1684169116655082826	CMakeFiles/mini-fps.dir/src/Level.cpp.o	9363a78ba7b28ab5
+883	1181	1684169116958015450	mini-fps.app/Contents/MacOS/mini-fps	6784d546bfbab61d

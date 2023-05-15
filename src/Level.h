@@ -8,7 +8,7 @@
 struct Level {
     Uint32** matrix;
     size_t w, h;
-    std::unordered_map<char, std::string> textureMap;
+    std::map<char, std::string> textureMap;
 
     explicit Level(std::string filePath);
     Uint32 Get (int x, int y);
