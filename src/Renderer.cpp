@@ -65,6 +65,10 @@ void DrawFloor(Camera camera, int pitch, void* pixels) {
 Texture GetTexBuffer(short cellColor, std::unordered_map<short, Texture>& textureMap) {
     Texture texture = textureMap[cellColor];
 
+    if (texture.name == "") {
+        std::cerr << "Invalid texture!" << std::endl;
+    }
+
     return texture;
 }
 
