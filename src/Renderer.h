@@ -22,10 +22,10 @@ void DrawCeiling(Camera camera, int pitch, void* pixels);
 
 void DrawFloor(Camera camera, int pitch, void* pixels);
 
-Texture GetTexBuffer(Uint32 cellColor, Texture* textures, size_t numTextures);
+Texture GetTexBuffer(short cellColor, std::unordered_map<short, Texture>& textureMap);
 
 void DrawText(SDL_Renderer* sdlRenderer, SDL_Texture* frameTexture, const std::string &text, Font font, SDL_Rect destRect);
 
-void Draw(SDL_Renderer* renderer, Player player, std::map<std::string, Texture> textures, SDL_Texture* streamingFrameTexture, SDL_Texture* renderFrameTexture);
+void Draw(SDL_Renderer* renderer, Player player, std::unordered_map<short, Texture>& textures, SDL_Texture* streamingFrameTexture, SDL_Texture* renderFrameTexture);
 
 void DrawMainMenu(const Settings& settings, SDL_Renderer* renderer, const Font& font, Camera camera, SDL_Texture* streamingFrameTexture, SDL_Texture* renderFrameTexture);

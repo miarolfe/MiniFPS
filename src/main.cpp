@@ -42,9 +42,9 @@ int main() {
         fonts[i] = Font(settings.fontPaths[i].first, GetSDLAssetsFolderPath() + settings.fontPaths[i].second, 24);
     }
 
-    Texture textures[settings.texturePaths.size()];
+    Texture allTextures[settings.texturePaths.size()];
     for (int i = 0; i < settings.texturePaths.size(); i++) {
-        textures[i] = Texture(settings.texturePaths[i].first, GetSDLAssetsFolderPath() + settings.texturePaths[i].second);
+        allTextures[i] = Texture(settings.texturePaths[i].first, GetSDLAssetsFolderPath() + settings.texturePaths[i].second);
     }
 
     if (!InitializeWindowAndRenderer(&window, &renderer, settings.screenWidth, settings.screenHeight, settings.vSync)) {
@@ -70,7 +70,18 @@ int main() {
 
     Level level = Level(GetSDLAssetsFolderPath() + settings.levelPath);
     level.Print();
-    level.SaveToLVL(GetSDLAssetsFolderPath() + "TEST.lvl");
+    level.SaveToLVL(GetSDLAssetsFolderPath() + "output.lvl");
+
+    std::unordered_map<short, Texture> textureMap;
+
+    for (std::pair<short, std::string> pair : level.textureIdMap) {
+        for (int i = 0; i < allTextures->size; i++) {
+            if (allTextures[i].name == pair.second) {
+                textureMap[pair.first] = allTextures[i];
+                break;
+            }
+        }
+    }
 
     Player gamePlayer(&level, settings);
 
@@ -88,7 +99,7 @@ int main() {
 
         gamePlayer.Update(frameDelta, settings.speedModifier, settings.rotationModifier);
 
-        Draw(renderer, gamePlayer, textures, streamingFrameTexture, renderFrameTexture);
+        Draw(renderer, gamePlayer, textureMap, streamingFrameTexture, renderFrameTexture);
     }
 
     Quit(window, renderer);

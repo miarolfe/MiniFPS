@@ -30,7 +30,7 @@ bool Level::HasCollided(const float x, const float y) {
             if (cellX < 0 || cellX >= w || cellY < 0 || cellY >= h) {
                 // std::cerr << "Invalid index" << std::endl;
             } else {
-                if (Get(cellX, cellY) != ARGB_WHITE) {
+                if (Get(cellX, cellY) != 0) {
                     if (x >= static_cast<double>(cellX) - 0.05 && x <= static_cast<double>(cellX) + 1 + 0.05 &&
                         y >= static_cast<double>(cellY) - 0.05 && y <= static_cast<double>(cellY) + 1 + 0.05) {
                         collided = true;
@@ -79,7 +79,7 @@ void Level::SaveToLVL(const std::string& filePath) {
         outfile << std::endl;
     }
 
-    for (std::pair<short, std::string> pair : textureMap) {
+    for (std::pair<short, std::string> pair : textureIdMap) {
         outfile << pair.first << " " << pair.second << std::endl;
     }
 
@@ -114,7 +114,7 @@ void Level::LoadFromLVL(std::string filePath) {
         infile >> id;
         std::string textureName;
         infile >> textureName;
-        textureMap[id] = textureName;
+        textureIdMap[id] = textureName;
     }
 
     infile.close();

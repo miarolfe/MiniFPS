@@ -62,15 +62,8 @@ void DrawFloor(Camera camera, int pitch, void* pixels) {
     }
 }
 
-Texture GetTexBuffer(short cellColor, std::map<std::string, Texture> textures, Level level) {
-    Texture texture;
-
-    std::string textureName = level.textureMap[cellColor];
-    if (textureName.empty()) {
-        textureName = "fallback";
-    }
-
-    texture = textures[textureName];
+Texture GetTexBuffer(short cellColor, std::unordered_map<short, Texture>& textureMap) {
+    Texture texture = textureMap[cellColor];
 
     return texture;
 }
@@ -81,7 +74,7 @@ void DrawText(SDL_Renderer* sdlRenderer, SDL_Texture* renderFrameTexture, const 
     SDL_SetRenderTarget(sdlRenderer, nullptr);
 }
 
-void Draw(SDL_Renderer* renderer, Player player, std::map<std::string, Texture> textures, SDL_Texture* streamingFrameTexture, SDL_Texture* renderFrameTexture) {
+void Draw(SDL_Renderer* renderer, Player player, std::unordered_map<short, Texture>& textures, SDL_Texture* streamingFrameTexture, SDL_Texture* renderFrameTexture) {
     int pitch;
     void *pixels;
     SDL_LockTexture(streamingFrameTexture, nullptr, &pixels, &pitch);
@@ -103,7 +96,7 @@ void Draw(SDL_Renderer* renderer, Player player, std::map<std::string, Texture> 
             float cy = player.camera.y + t * sinRayAngle;
 
             const short cell = player.level->Get(static_cast<int>(cx), static_cast<int>(cy));
-            Texture texture = GetTexBuffer(cell, textures, *player.level);
+            Texture texture = GetTexBuffer(cell, textures);
 
             if (cell != 0) {
                 float distance = t * cos(rayAngle - player.camera.angle);

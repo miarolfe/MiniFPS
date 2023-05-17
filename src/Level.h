@@ -8,7 +8,7 @@
 struct Level {
     short** matrix;
     size_t w, h;
-    std::map<short, std::string> textureMap;
+    std::map<short, std::string> textureIdMap;
 
     explicit Level(std::string filePath);
     short Get (int x, int y);
