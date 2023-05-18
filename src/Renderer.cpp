@@ -66,7 +66,7 @@ Texture GetTexBuffer(short cellColor, std::unordered_map<short, Texture>& textur
     Texture texture = textureMap[cellColor];
 
     if (texture.name == "") {
-        std::cerr << "Invalid texture!" << std::endl;
+        std::cerr << "Invalid texture: no texture mapped to id " << cellColor << std::endl;
     }
 
     return texture;
@@ -100,9 +100,9 @@ void Draw(SDL_Renderer* renderer, Player player, std::unordered_map<short, Textu
             float cy = player.camera.y + t * sinRayAngle;
 
             const short cell = player.level->Get(static_cast<int>(cx), static_cast<int>(cy));
-            Texture texture = GetTexBuffer(cell, textures);
 
             if (cell != 0) {
+                Texture texture = GetTexBuffer(cell, textures);
                 float distance = t * cos(rayAngle - player.camera.angle);
                 size_t columnHeight = ((player.camera.viewportHeight) * player.camera.distanceToProjectionPlane) / distance;
 

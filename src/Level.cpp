@@ -102,7 +102,6 @@ void Level::LoadFromLVL(std::string filePath) {
         matrix[i] = new short[w];
     }
 
-
     for (int i = 0; i < h; i++) {
         for (int j = 0; j < w; j++) {
             infile >> matrix[i][j];
