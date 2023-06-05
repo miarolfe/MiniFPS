@@ -29,16 +29,9 @@
   },
 
   "files": {
-    "levelPath": "levels/test.lvl",
+    "levelPath": "levels/test7.lvl",
     "texturePaths": {
-      "white": "sprites/white-bricks.png",
-      "red": "sprites/red-bricks.png",
-      "yellow": "sprites/yellow-bricks.png",
-      "green": "sprites/green-bricks.png",
-      "cyan": "sprites/cyan-bricks.png",
-      "blue": "sprites/blue-bricks.png",
-      "indigo": "sprites/indigo-bricks.png",
-      "grey": "sprites/grey-bricks.png"
+
     },
     "fontPaths": {
       "Inconsolata-Medium": "fonts/Inconsolata-Medium.ttf"
