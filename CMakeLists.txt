@@ -1,10 +1,9 @@
 cmake_minimum_required(VERSION 3.23)
 
-project(mini-fps VERSION 0.0.3)
+project(mini-fps VERSION 0.1.0)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 
 set(
         SOURCES
@@ -58,10 +57,9 @@ elseif(APPLE)
     find_library(SDL2_IMAGE_LIB SDL2_image)
     find_library(SDL2_TTF_LIB SDL2_ttf)
 
-    set(SDL2_FRAMEWORK "${SDL2_LIB}")
-    set(SDL2_IMAGE_FRAMEWORK "${SDL2_IMAGE_LIB}")
-    message(STATUS "${SDL2_IMAGE_LIB}")
-    set(SDL2_TTF_FRAMEWORK "${SDL2_TTF_LIB}")
+    set(SDL2_FRAMEWORK "${PROJECT_SOURCE_DIR}/lib/SDL2.framework")
+    set(SDL2_IMAGE_FRAMEWORK "${PROJECT_SOURCE_DIR}/lib/SDL2_image.framework")
+    set(SDL2_TTF_FRAMEWORK "${PROJECT_SOURCE_DIR}/lib/SDL2_ttf.framework")
     set(CMAKE_BUILD_RPATH "@executable_path/../Frameworks")
 
     add_executable(mini-fps MACOSX_BUNDLE ${SOURCES} ${HEADERS})
