@@ -35,6 +35,6 @@ cmake-build-debug/.ninja_deps
 cmake-build-debug/.ninja_log
 cmake-build-debug/mini_fps
 cmake-build-debug/Testing/Temporary/LastTest.log
-bin/**
-cmake-bin/**
-.DS_Store
+bin/
+cmake-bin/
+*.DS_Store
