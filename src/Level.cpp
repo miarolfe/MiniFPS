@@ -71,7 +71,7 @@ void Level::SaveToLVL(const std::string& filePath) {
         std::cerr << "Error opening file for writing: " << filePath << std::endl;
     }
 
-    outfile << h << " " << w << std::endl;
+    outfile << w << " " << h << std::endl;
     for (size_t i = 0; i < h; ++i) {
         for (size_t j = 0; j < w; ++j) {
             outfile << matrix[i][j] << (j < h - 1 ? " " : "");
