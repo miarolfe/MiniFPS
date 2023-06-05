@@ -38,7 +38,6 @@ Settings Settings::LoadSettings(const std::string assetsFilePath, const std::str
     std::ifstream f(assetsFilePath + settingsFilePath);
 
     if (!f.is_open()) {
-        // File cannot be opened
         // TODO
     }
 
