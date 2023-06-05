@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <vector>
+#include <dirent.h>
 
 #include <SDL.h>
 
@@ -13,9 +14,26 @@
 #include "Utilities.h"
 #include "Menu.h"
 
-int main() {
-    ClearFile("log.txt");
+std::vector<std::string> GetFilesInDirectory(const std::string& directoryPath) {
+    std::vector<std::string> files;
+    DIR* dir;
+    struct dirent* entry;
 
+    if ((dir = opendir(directoryPath.c_str())) != nullptr) {
+        while ((entry = readdir(dir)) != nullptr) {
+            if (entry->d_type == DT_REG) {  // regular file
+                files.push_back(entry->d_name);
+            }
+        }
+        closedir(dir);
+    } else {
+        std::cerr << "Error opening directory: " << directoryPath << std::endl;
+    }
+
+    return files;
+}
+
+int main() {
     if (!InitializeSDL()) {
         std::cerr << "SDL could not be initialized:" << SDL_GetError();
     } else {
@@ -41,7 +59,24 @@ int main() {
 
     Font fonts[settings.fontPaths.size()];
     for (int i = 0; i < settings.fontPaths.size(); i++) {
-        fonts[i] = Font(settings.fontPaths[i].first, settings.fontPaths[i].second, 24);
+        fonts[i] = Font(settings.fontPaths[i].first, GetSDLAssetsFolderPath() + settings.fontPaths[i].second, 24);
+    }
+
+    std::vector<std::string> spriteFileNames = GetFilesInDirectory(GetSDLAssetsFolderPath() + "sprites/");
+    std::map<std::string, Texture> textureNameToTextureMap;
+
+    for (const auto& file : spriteFileNames) {
+        std::string name = file;
+        std::string pngExtension = ".png";
+        size_t pos = name.find(pngExtension);
+
+        // Strip file extension
+        if (pos != std::string::npos) {
+            name.erase(pos, pngExtension.size());
+        }
+
+        Texture newTexture(name, GetSDLAssetsFolderPath() + "sprites/" + file);
+        textureNameToTextureMap[name] = newTexture;
     }
 
     if (!InitializeWindowAndRenderer(&window, &renderer, settings.screenWidth, settings.screenHeight, settings.vSync)) {
@@ -52,7 +87,6 @@ int main() {
 
     SDL_Texture* streamingFrameTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING,
                                                            static_cast<int>(settings.screenWidth), static_cast<int>(settings.screenHeight));
-
     SDL_Texture* renderFrameTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_TARGET,
                                                         static_cast<int>(settings.screenWidth), static_cast<int>(settings.screenHeight));
 
@@ -65,24 +99,24 @@ int main() {
         mainMenu.player.Update(0, 0, 0);
     }
 
-    // TODO: Allow variable size textures
-    // Right now all wall textures must be the same size
-    size_t wallTexSize;
-
-    size_t numWallTextures = settings.texturePaths.size();
-    Uint32*** wallTextureBuffers = new Uint32** [numWallTextures];
-    for (size_t buffer = 0; buffer < numWallTextures; buffer++) {
-        LoadTextureToBuffer(&wallTextureBuffers[buffer], wallTexSize, GetSDLAssetsFolderPath(),
-                            settings.texturePaths[buffer]);
-    }
-
     Level level = Level(GetSDLAssetsFolderPath() + settings.levelPath);
-    level.Print();
+
+    std::unordered_map<short, Texture> textureMap;
+    for (const auto& pair : textureNameToTextureMap) {
+        for (const auto& x : level.textureIdMap) {
+            if (x.second == pair.first) {
+                textureMap[x.first] = pair.second;
+            } else {
+                std::cout << x.second << " != " << pair.first << std::endl;
+            }
+        }
+    }
 
     Player gamePlayer(&level, settings);
 
     float oldTime, curTime, frameDelta;
     curTime = 0;
+
 
     // Disable movement of cursor in game
     SDL_SetRelativeMouseMode(SDL_TRUE);
@@ -95,7 +129,7 @@ int main() {
 
         gamePlayer.Update(frameDelta, settings.speedModifier, settings.rotationModifier);
 
-        Draw(renderer, gamePlayer, &wallTextureBuffers, numWallTextures, wallTexSize, streamingFrameTexture, renderFrameTexture);
+        Draw(renderer, gamePlayer, textureMap, streamingFrameTexture, renderFrameTexture);
     }
 
     Quit(window, renderer);

@@ -24,15 +24,15 @@ struct Settings {
     float playerStartAngle;
     float playerDistanceToProjectionPlane;
     string levelPath;
-    std::vector<string> texturePaths;
+    std::vector<std::pair<string, string>> texturePaths;
     std::vector<std::pair<string, string>> fontPaths;
 
     Settings(std::string version, size_t screenWidth, size_t screenHeight, float renderRayIncrement,
              size_t renderDistance, bool vSync, float fieldOfView, float speedModifier,
              float rotationModifier, float playerStartX, float playerStartY,
              float playerStartAngle, float playerDistanceToProjectionPlane,
-             string levelPath, const std::vector<string> &texturePaths,
-             const std::map<std::string, std::string> &fontPaths);
+             string levelPath, const std::map<string, string> &texturePaths,
+             const std::map<string, string> &fontPaths);
 
     Settings();
 

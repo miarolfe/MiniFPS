@@ -8,9 +8,37 @@
 #include "Level.h"
 #include "Menu.h"
 #include "Utilities.h"
+#include "Renderer.h"
 
 const Uint32 CEILING = 0xFFA5A5A5;
 const Uint32 FLOOR   = 0xFF0000A5;
+
+Texture::Texture() {
+
+}
+
+Texture::Texture(std::string name, std::string filePath) {
+    this->name = name;
+
+    SDL_Surface* tempTextureSurface = IMG_Load(filePath.c_str());
+    tempTextureSurface = SDL_ConvertSurfaceFormat(tempTextureSurface, SDL_PIXELFORMAT_ARGB8888, 0);
+
+    size = tempTextureSurface->w;
+    buffer = new Uint32*[size];
+    for (int row = 0; row < size; row++) {
+        buffer[row] = new Uint32[size];
+    }
+
+    Uint32* pixels = (Uint32*) tempTextureSurface->pixels;
+
+    for (int row = 0; row < size; row++) {
+        for (int col = 0; col < size; col++) {
+            buffer[row][col] = pixels[row * size + col];
+        }
+    }
+
+    SDL_FreeSurface(tempTextureSurface);
+}
 
 void SetPixel(void* pixels, int pitch, Uint32 color, int x, int y) {
     Uint32* row;
@@ -34,37 +62,14 @@ void DrawFloor(Camera camera, int pitch, void* pixels) {
     }
 }
 
-Uint32** GetTexBuffer(Uint32**** texBuffers, size_t numTexBuffers, Uint32 cellColor) {
-    Uint32** texBuffer;
+Texture GetTexBuffer(short cellColor, std::unordered_map<short, Texture>& textureMap) {
+    Texture texture = textureMap[cellColor];
 
-    switch (cellColor) {
-        case ARGB_RED:
-            texBuffer = (*texBuffers)[Clamp(1, 0, static_cast<int>(numTexBuffers - 1))];
-            break;
-        case ARGB_YELLOW:
-            texBuffer = (*texBuffers)[Clamp(2, 0, static_cast<int>(numTexBuffers - 1))];
-            break;
-        case ARGB_GREEN:
-            texBuffer = (*texBuffers)[Clamp(3, 0, static_cast<int>(numTexBuffers - 1))];
-            break;
-        case ARGB_CYAN:
-            texBuffer = (*texBuffers)[Clamp(4, 0, static_cast<int>(numTexBuffers - 1))];
-            break;
-        case ARGB_BLUE:
-            texBuffer = (*texBuffers)[Clamp(5, 0, static_cast<int>(numTexBuffers - 1))];
-            break;
-        case ARGB_INDIGO:
-            texBuffer = (*texBuffers)[Clamp(6, 0, static_cast<int>(numTexBuffers - 1))];
-            break;
-        case ARGB_BLACK:
-            texBuffer = (*texBuffers)[Clamp(7, 0, static_cast<int>(numTexBuffers - 1))];
-            break;
-        default:
-            texBuffer = (*texBuffers)[0];
-            break;
+    if (texture.name == "") {
+        std::cerr << "Invalid texture: no texture mapped to id " << cellColor << std::endl;
     }
 
-    return texBuffer;
+    return texture;
 }
 
 void DrawText(SDL_Renderer* sdlRenderer, SDL_Texture* renderFrameTexture, const std::string &text, Font font, SDL_Rect destRect) {
@@ -73,8 +78,7 @@ void DrawText(SDL_Renderer* sdlRenderer, SDL_Texture* renderFrameTexture, const 
     SDL_SetRenderTarget(sdlRenderer, nullptr);
 }
 
-void Draw(SDL_Renderer* renderer, Player player, Uint32**** texBuffers, size_t numTexBuffers, size_t texSize,
-          SDL_Texture* streamingFrameTexture, SDL_Texture* renderFrameTexture) {
+void Draw(SDL_Renderer* renderer, Player player, std::unordered_map<short, Texture>& textures, SDL_Texture* streamingFrameTexture, SDL_Texture* renderFrameTexture) {
     int pitch;
     void *pixels;
     SDL_LockTexture(streamingFrameTexture, nullptr, &pixels, &pitch);
@@ -95,35 +99,34 @@ void Draw(SDL_Renderer* renderer, Player player, Uint32**** texBuffers, size_t n
             float cx = player.camera.x + t * cosRayAngle;
             float cy = player.camera.y + t * sinRayAngle;
 
-            const Uint32 levelCellColor = player.level->Get(static_cast<int>(cx), static_cast<int>(cy));
+            const short cell = player.level->Get(static_cast<int>(cx), static_cast<int>(cy));
 
-            if (levelCellColor != ARGB_WHITE) {
+            if (cell != 0) {
+                Texture texture = GetTexBuffer(cell, textures);
                 float distance = t * cos(rayAngle - player.camera.angle);
                 size_t columnHeight = ((player.camera.viewportHeight) * player.camera.distanceToProjectionPlane) / distance;
 
                 float hitX = cx - floor(cx + 0.5f);
                 float hitY = cy - floor(cy + 0.5f);
-                int texX = static_cast<int>(hitX * static_cast<float>(texSize));
+                int texX = static_cast<int>(hitX * static_cast<float>(texture.size));
 
                 if (std::abs(hitY) > std::abs(hitX)) {
-                    texX = hitY * texSize;
+                    texX = hitY * texture.size;
                 }
 
-                if (texX < 0) texX += texSize;
+                if (texX < 0) texX += texture.size;
 
                 int drawStart = (static_cast<int>(player.camera.viewportHeight) / 2) - (static_cast<int>(columnHeight) / 2);
 
                 int drawEnd = drawStart + columnHeight;
-
-                Uint32 **texBuffer = GetTexBuffer(texBuffers, numTexBuffers, levelCellColor);
 
                 for (int y = drawStart; y < drawEnd; y++) {
                     if (y < 0 || y >= player.camera.viewportHeight) {
                         continue;
                     }
 
-                    int texY = ((y - drawStart) * texSize) / columnHeight;
-                    SetPixel(pixels, pitch, texBuffer[texY][texX], ray, y);
+                    int texY = ((y - drawStart) * texture.size) / columnHeight;
+                    SetPixel(pixels, pitch, texture.buffer[texY][texX], ray, y);
                 }
 
                 break;
@@ -183,5 +186,3 @@ void DrawMainMenu(const Settings& settings, SDL_Renderer* renderer, const Font& 
     SDL_RenderCopy(renderer, renderFrameTexture, nullptr, nullptr);
     SDL_RenderPresent(renderer);
 }
-
-

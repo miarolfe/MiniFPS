@@ -12,7 +12,7 @@ Level::Level(std::string filePath) {
 }
 
 // Gets the color of pixel at cell (x, y) in level
-Uint32 Level::Get(int x, int y) {
+short Level::Get(int x, int y) {
     return matrix[y][x];
 }
 
@@ -30,7 +30,7 @@ bool Level::HasCollided(const float x, const float y) {
             if (cellX < 0 || cellX >= w || cellY < 0 || cellY >= h) {
                 // std::cerr << "Invalid index" << std::endl;
             } else {
-                if (Get(cellX, cellY) != ARGB_WHITE) {
+                if (Get(cellX, cellY) != 0) {
                     if (x >= static_cast<double>(cellX) - 0.05 && x <= static_cast<double>(cellX) + 1 + 0.05 &&
                         y >= static_cast<double>(cellY) - 0.05 && y <= static_cast<double>(cellY) + 1 + 0.05) {
                         collided = true;
@@ -55,7 +55,7 @@ bool Level::HasCollided(const float x, const float y) {
 void Level::Print() {
     for (int i = 0; i < w; i++) {
         for (int j = 0; j < h; j++) {
-            if (Get(j, i) == ARGB_WHITE) {
+            if (Get(j, i) == 0) {
                 std::cout << "  ";
             } else {
                 std::cout << "* ";
@@ -71,12 +71,16 @@ void Level::SaveToLVL(const std::string& filePath) {
         std::cerr << "Error opening file for writing: " << filePath << std::endl;
     }
 
-    outfile << h << " " << w << std::endl;
+    outfile << w << " " << h << std::endl;
     for (size_t i = 0; i < h; ++i) {
         for (size_t j = 0; j < w; ++j) {
             outfile << matrix[i][j] << (j < h - 1 ? " " : "");
         }
         outfile << std::endl;
+    }
+
+    for (std::pair<short, std::string> pair : textureIdMap) {
+        outfile << pair.first << " " << pair.second << std::endl;
     }
 
     outfile.close();
@@ -92,17 +96,24 @@ void Level::LoadFromLVL(std::string filePath) {
 
     infile >> w >> h;
 
-    matrix = new Uint32* [h];
+    matrix = new short* [h];
 
     for (size_t i = 0; i < h; i++) {
-        matrix[i] = new Uint32[w];
+        matrix[i] = new short[w];
     }
-
 
     for (int i = 0; i < h; i++) {
         for (int j = 0; j < w; j++) {
             infile >> matrix[i][j];
         }
+    }
+
+    while (infile.peek()!=EOF) {
+        short id;
+        infile >> id;
+        std::string textureName;
+        infile >> textureName;
+        textureIdMap[id] = textureName;
     }
 
     infile.close();

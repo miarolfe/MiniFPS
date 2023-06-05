@@ -7,11 +7,25 @@
 #include "Level.h"
 #include "Menu.h"
 
+struct Texture {
+    Texture();
+    Texture(std::string name, std::string filePath);
+
+    string name;
+    Uint32** buffer;
+    size_t size;
+};
+
 void SetPixel(void* pixels, int pitch, Uint32 color, int x, int y);
+
+void DrawCeiling(Camera camera, int pitch, void* pixels);
+
+void DrawFloor(Camera camera, int pitch, void* pixels);
+
+Texture GetTexBuffer(short cellColor, std::unordered_map<short, Texture>& textureMap);
 
 void DrawText(SDL_Renderer* sdlRenderer, SDL_Texture* frameTexture, const std::string &text, Font font, SDL_Rect destRect);
 
-void Draw(SDL_Renderer* renderer, Player player, Uint32**** texBuffers, size_t numTexBuffers, size_t texSize,
-          SDL_Texture* streamingFrameTexture, SDL_Texture* renderFrameTexture);
+void Draw(SDL_Renderer* renderer, Player player, std::unordered_map<short, Texture>& textures, SDL_Texture* streamingFrameTexture, SDL_Texture* renderFrameTexture);
 
 void DrawMainMenu(const Settings& settings, SDL_Renderer* renderer, const Font& font, Camera camera, SDL_Texture* streamingFrameTexture, SDL_Texture* renderFrameTexture);
