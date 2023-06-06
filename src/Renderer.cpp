@@ -74,6 +74,14 @@ Texture GetTexBuffer(short cellColor, std::unordered_map<short, Texture>& textur
 
 void DrawText(SDL_Renderer* sdlRenderer, SDL_Texture* renderFrameTexture, const std::string &text, Font font, SDL_Rect destRect) {
     SDL_SetRenderTarget(sdlRenderer, renderFrameTexture);
+
+    int requestedWidth;
+    int requestedHeight;
+    TTF_SizeUTF8(font.ttf, text.c_str(), &requestedWidth, &requestedHeight);
+    float ratio = static_cast<float>(requestedWidth) / static_cast<float>(requestedHeight);
+
+    std::cout << text << ": " << ratio << " " << requestedWidth << " " << requestedHeight << std::endl;
+
     SDL_RenderCopy(sdlRenderer, RenderTextToTexture(sdlRenderer, font, text, 255, 255, 255), NULL, &destRect);
     SDL_SetRenderTarget(sdlRenderer, nullptr);
 }
