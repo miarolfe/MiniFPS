@@ -177,8 +177,7 @@ void DrawMainMenu(const Settings& settings, SDL_Renderer* renderer, const Font& 
     SDL_RenderCopy(renderer, streamingFrameTexture, nullptr, nullptr);
 
     // UI draw calls
-
-    DrawText(renderer, renderFrameTexture, "mini-fps", font, titleTextRect);
+    DrawText(renderer, renderFrameTexture, "MiniFPS", font, titleTextRect);
     DrawText(renderer, renderFrameTexture, settings.version, font, versionTextRect);
     DrawText(renderer, renderFrameTexture, "Press [SPACE] or [ENTER] to start", font, startGameTextRect);
 
