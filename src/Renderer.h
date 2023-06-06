@@ -24,7 +24,7 @@ void DrawFloor(Camera camera, int pitch, void* pixels);
 
 Texture GetTexBuffer(short cellColor, std::unordered_map<short, Texture>& textureMap);
 
-void DrawText(SDL_Renderer* sdlRenderer, SDL_Texture* frameTexture, const std::string &text, Font font, SDL_Rect destRect);
+void DrawText(SDL_Renderer* sdlRenderer, SDL_Texture* frameTexture, const std::string &text, Font font, float x, float y, int width);
 
 void Draw(SDL_Renderer* renderer, Player player, std::unordered_map<short, Texture>& textures, SDL_Texture* streamingFrameTexture, SDL_Texture* renderFrameTexture);
 

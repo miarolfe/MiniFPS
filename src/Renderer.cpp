@@ -72,7 +72,7 @@ Texture GetTexBuffer(short cellColor, std::unordered_map<short, Texture>& textur
     return texture;
 }
 
-void DrawText(SDL_Renderer* sdlRenderer, SDL_Texture* renderFrameTexture, const std::string &text, Font font, SDL_Rect destRect) {
+void DrawText(SDL_Renderer* sdlRenderer, SDL_Texture* renderFrameTexture, const std::string &text, Font font, int x, int y, int width) {
     SDL_SetRenderTarget(sdlRenderer, renderFrameTexture);
 
     int requestedWidth;
@@ -80,7 +80,9 @@ void DrawText(SDL_Renderer* sdlRenderer, SDL_Texture* renderFrameTexture, const 
     TTF_SizeUTF8(font.ttf, text.c_str(), &requestedWidth, &requestedHeight);
     float ratio = static_cast<float>(requestedWidth) / static_cast<float>(requestedHeight);
 
-    std::cout << text << ": " << ratio << " " << requestedWidth << " " << requestedHeight << std::endl;
+    int height = static_cast<int>(static_cast<float>(width) / ratio);
+
+    SDL_Rect destRect {x, y, width, height};
 
     SDL_RenderCopy(sdlRenderer, RenderTextToTexture(sdlRenderer, font, text, 255, 255, 255), NULL, &destRect);
     SDL_SetRenderTarget(sdlRenderer, nullptr);
@@ -165,29 +167,26 @@ void DrawMainMenu(const Settings& settings, SDL_Renderer* renderer, const Font& 
         }
     }
 
-    SDL_Rect titleTextRect = {static_cast<int>(camera.viewportWidth / 4),
-                              static_cast<int>(camera.viewportHeight / 16),
-                              static_cast<int>(camera.viewportWidth / 2),
-                              static_cast<int>(camera.viewportHeight / 4)};
+    int titleTextX = static_cast<int>(camera.viewportWidth / 4);
+    int titleTextY = static_cast<int>(camera.viewportHeight / 16);
+    int titleTextWidth = static_cast<int>(camera.viewportWidth / 2);
 
-    SDL_Rect versionTextRect = {static_cast<int>(3 * (camera.viewportWidth / 8)),
-                                static_cast<int>(5 * (camera.viewportHeight / 16)),
-                                static_cast<int>(camera.viewportWidth / 4),
-                                static_cast<int>(camera.viewportHeight / 8)};
+    int versionTextX = static_cast<int>(3 * (camera.viewportWidth / 8));
+    int versionTextY = static_cast<int>(5 * (camera.viewportHeight / 16));
+    int versionTextWidth = static_cast<int>(camera.viewportWidth / 4);
 
-    SDL_Rect startGameTextRect = {static_cast<int>(camera.viewportWidth / 12),
-                                  static_cast<int>(6 * (camera.viewportHeight / 8)),
-                                  static_cast<int>(10 * (camera.viewportWidth / 12)),
-                                  static_cast<int>(camera.viewportHeight / 8)};
+    int startTextX = static_cast<int>(camera.viewportWidth / 12);
+    int startTextY = static_cast<int>(6 * (camera.viewportHeight / 8));
+    int startTextWidth = static_cast<int>(10 * (camera.viewportWidth / 12));
 
     SDL_UnlockTexture(streamingFrameTexture);
     SDL_SetRenderTarget(renderer, renderFrameTexture);
     SDL_RenderCopy(renderer, streamingFrameTexture, nullptr, nullptr);
 
     // UI draw calls
-    DrawText(renderer, renderFrameTexture, "MiniFPS", font, titleTextRect);
-    DrawText(renderer, renderFrameTexture, settings.version, font, versionTextRect);
-    DrawText(renderer, renderFrameTexture, "Press [SPACE] or [ENTER] to start", font, startGameTextRect);
+    DrawText(renderer, renderFrameTexture, "MiniFPS", font, titleTextX, titleTextY, titleTextWidth);
+    DrawText(renderer, renderFrameTexture, settings.version, font, versionTextX, versionTextY, versionTextWidth);
+    DrawText(renderer, renderFrameTexture, "Press [SPACE] or [ENTER] to start", font, startTextX, startTextY, startTextWidth);
 
     SDL_SetRenderTarget(renderer, nullptr);
     SDL_RenderCopy(renderer, renderFrameTexture, nullptr, nullptr);
