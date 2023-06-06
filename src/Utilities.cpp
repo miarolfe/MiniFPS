@@ -24,7 +24,7 @@ bool InitializeWindowAndRenderer(SDL_Window** window, SDL_Renderer** renderer, s
                                  size_t screenHeight, bool vSync) {
     bool successful_initialization = true;
 
-    *window = SDL_CreateWindow("mini-fps",
+    *window = SDL_CreateWindow("MiniFPS",
                                SDL_WINDOWPOS_CENTERED,
                                SDL_WINDOWPOS_CENTERED,
                                screenWidth,
