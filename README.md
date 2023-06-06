@@ -23,3 +23,7 @@ zlib license
 ### nlohmann/JSON
 
 MIT license
+
+### <dirent.h> interface
+
+MIT license
