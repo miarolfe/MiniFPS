@@ -5,15 +5,17 @@
 
 #include "Settings.h"
 
-struct Level {
-    short** matrix;
-    size_t w, h;
-    std::map<short, std::string> textureIdMap;
+namespace MiniFPS {
+    struct Level {
+        short** matrix;
+        size_t w, h;
+        std::map<short, std::string> textureIdMap;
 
-    explicit Level(std::string filePath);
-    short Get (int x, int y);
-    bool HasCollided(float x, float y);
-    void Print();
-    void SaveToLVL(const std::string& filePath);
-    void LoadFromLVL(std::string filePath);
-};
+        explicit Level(std::string filePath);
+        short Get (int x, int y);
+        bool HasCollided(float x, float y);
+        void Print();
+        void SaveToLVL(const std::string& filePath);
+        void LoadFromLVL(std::string filePath);
+    };
+}

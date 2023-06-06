@@ -6,13 +6,14 @@
 
 #include <SDL.h>
 
-#include "Color.h"
 #include "Level.h"
 #include "Player.h"
 #include "Renderer.h"
 #include "Settings.h"
 #include "Utilities.h"
 #include "Menu.h"
+
+using namespace MiniFPS;
 
 std::vector<std::string> GetFilesInDirectory(const std::string& directoryPath) {
     std::vector<std::string> files;

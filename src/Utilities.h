@@ -2,30 +2,35 @@
 
 #include <SDL_ttf.h>
 
-const float PI_180 = (1.0 / 180.0) * M_PI;
+namespace MiniFPS {
 
-bool InitializeSDL();
+    const float PI_180 = (1.0 / 180.0) * M_PI;
 
-bool InitializeWindowAndRenderer(SDL_Window** window, SDL_Renderer** renderer, size_t screenWidth, size_t screenHeight, bool vSync);
+    bool InitializeSDL();
 
-bool InitializeSDLImage();
+    bool
+    InitializeWindowAndRenderer(SDL_Window** window, SDL_Renderer** renderer, size_t screenWidth, size_t screenHeight,
+                                bool vSync);
 
-bool InitializeSDLTTF();
+    bool InitializeSDLImage();
 
-void Quit(SDL_Window* window, SDL_Renderer* renderer);
+    bool InitializeSDLTTF();
 
-std::string GetFramesPerSecond(float oldTime, float curTime);
+    void Quit(SDL_Window* window, SDL_Renderer* renderer);
 
-float GetFrameTime(float oldTime, float curTime);
+    std::string GetFramesPerSecond(float oldTime, float curTime);
 
-std::string GetSDLAssetsFolderPath();
+    float GetFrameTime(float oldTime, float curTime);
 
-bool LoadTextureToBuffer(Uint32*** buffer, size_t& size, std::string assetsFolderPath, std::string textureFilePath);
+    std::string GetSDLAssetsFolderPath();
 
-TTF_Font* LoadFont(const std::string &fontPath, int pointSize);
+    bool LoadTextureToBuffer(Uint32*** buffer, size_t &size, std::string assetsFolderPath, std::string textureFilePath);
 
-int Clamp(int value, int min, int max);
+    TTF_Font* LoadFont(const std::string &fontPath, int pointSize);
 
-void ClearFile(std::string fileName);
+    int Clamp(int value, int min, int max);
 
-void WriteLineToFile(std::string fileName, std::string line);
+    void ClearFile(std::string fileName);
+
+    void WriteLineToFile(std::string fileName, std::string line);
+}
