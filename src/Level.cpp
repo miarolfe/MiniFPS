@@ -91,7 +91,7 @@ namespace MiniFPS {
         if (!infile) {
             std::cerr << "Error opening level file for reading: " << filePath << std::endl;
         } else {
-            std::cout << "Loaded level file: " << filePath << std::endl;
+            // std::cout << "Loaded level file: " << filePath << std::endl;
         }
 
         infile >> w >> h;

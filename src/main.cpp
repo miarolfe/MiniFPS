@@ -38,19 +38,19 @@ int main() {
     if (!InitializeSDL()) {
         std::cerr << "SDL could not be initialized:" << SDL_GetError();
     } else {
-        std::cout << "SDL initialized" << std::endl;
+        // std::cout << "SDL initialized" << std::endl;
     }
 
     if (!InitializeSDLImage()) {
         std::cerr << "SDL_image could not be initialized" << std::endl;
     } else {
-        std::cout << "SDL_image initialized" << std::endl;
+        // std::cout << "SDL_image initialized" << std::endl;
     }
 
     if (!InitializeSDLTTF()) {
         std::cerr << "SDL_ttf could not be initialized" << std::endl;
     } else {
-        std::cout << "SDL_ttf initialized" << std::endl;
+        // std::cout << "SDL_ttf initialized" << std::endl;
     }
 
     SDL_Window* window = nullptr;
@@ -83,7 +83,7 @@ int main() {
     if (!InitializeWindowAndRenderer(&window, &renderer, settings.screenWidth, settings.screenHeight, settings.vSync)) {
         std::cerr << "Window and/or renderer could not be initialized" << std::endl;
     } else {
-        std::cout << "Window and renderer initialized" << std::endl;
+        // std::cout << "Window and renderer initialized" << std::endl;
     }
 
     SDL_Texture* streamingFrameTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING,
@@ -107,8 +107,6 @@ int main() {
         for (const auto& x : level.textureIdMap) {
             if (x.second == pair.first) {
                 textureMap[x.first] = pair.second;
-            } else {
-                std::cout << x.second << " != " << pair.first << std::endl;
             }
         }
     }
@@ -117,7 +115,6 @@ int main() {
 
     float oldTime, curTime, frameDelta;
     curTime = 0;
-
 
     // Disable movement of cursor in game
     SDL_SetRelativeMouseMode(SDL_TRUE);

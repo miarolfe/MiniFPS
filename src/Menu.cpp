@@ -14,7 +14,7 @@ namespace MiniFPS {
         TTF_Font* ttf = LoadFont(fontPath, pointSize);
         if (ttf != nullptr) {
             this->ttf = ttf;
-            std::cout << "Loaded font: " << fontPath << std::endl;
+            // std::cout << "Loaded font: " << fontPath << std::endl;
         } else {
             std::cerr << "Font " << name << " at " << fontPath << " could not be loaded" << std::endl;
         }
