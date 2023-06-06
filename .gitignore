@@ -29,12 +29,10 @@
 *.exe
 *.out
 *.app
-app/mini-fps
-cmake-build-debug/
-cmake-build-debug/.ninja_deps
-cmake-build-debug/.ninja_log
-cmake-build-debug/mini_fps
-cmake-build-debug/Testing/Temporary/LastTest.log
+
+# Output folders
 bin/
 cmake-bin/
+
+# macOS-specific files
 .DS_Store
