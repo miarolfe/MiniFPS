@@ -45,7 +45,7 @@ if host_machine.system() == 'darwin'
     install_data('assets/settings.json', install_dir: 'Contents/Resources')
     install_data('assets/testIcon.icns', install_dir: 'Contents/Resources')
     install_data('assets/Info.plist', install_dir: 'Contents')
-    install_data('assets/mini-fps.sh', install_dir: 'Contents/MacOS')
+    install_data('assets/MiniFPS.sh', install_dir: 'Contents/MacOS')
 
     mini_fps = executable('MiniFPS', sources + headers,
                           include_directories: include_dirs,
