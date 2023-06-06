@@ -1,4 +1,4 @@
-name: Build mini-fps for Windows
+name: Build MiniFPS for Windows
 
 on:
   push:
@@ -28,5 +28,5 @@ jobs:
       - name: Upload build artifact
         uses: actions/upload-artifact@v3
         with:
-          name: mini-fps-windows
-          path: ci-build/mini-fps-windows
+          name: MiniFPS-windows
+          path: ci-build/MiniFPS-windows

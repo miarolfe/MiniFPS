@@ -1,4 +1,4 @@
-project('mini-fps', 'cpp', version: '0.0.3', default_options: ['cpp_std=c++11'])
+project('MiniFPS', 'cpp', version: '0.0.3', default_options: ['cpp_std=c++11'])
 
 sources = files(
   'src/main.cpp',
@@ -23,11 +23,11 @@ headers = files(
 )
 
 if host_machine.system() == 'darwin'
-    run_command('mkdir', 'bin/mini-fps.app')
-    run_command('mkdir', 'bin/mini-fps.app/Contents')
-    run_command('mkdir', 'bin/mini-fps.app/Contents/Frameworks')
-    run_command('mkdir', 'bin/mini-fps.app/Contents/Resources')
-    run_command('mkdir', 'bin/mini-fps.app/Contents/MacOS')
+    run_command('mkdir', 'bin/MiniFPS.app')
+    run_command('mkdir', 'bin/MiniFPS.app/Contents')
+    run_command('mkdir', 'bin/MiniFPS.app/Contents/Frameworks')
+    run_command('mkdir', 'bin/MiniFPS.app/Contents/Resources')
+    run_command('mkdir', 'bin/MiniFPS.app/Contents/MacOS')
 
     include_directories('lib')
 
@@ -47,7 +47,7 @@ if host_machine.system() == 'darwin'
     install_data('assets/Info.plist', install_dir: 'Contents')
     install_data('assets/mini-fps.sh', install_dir: 'Contents/MacOS')
 
-    mini_fps = executable('mini-fps', sources + headers,
+    mini_fps = executable('MiniFPS', sources + headers,
                           include_directories: include_dirs,
                           dependencies: [sdl2_dep, sdl2_image_dep, sdl2_ttf_dep],
                           install : true,
