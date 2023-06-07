@@ -30,9 +30,7 @@
 
   "files": {
     "levelPath": "levels/test9.lvl",
-    "texturePaths": {
 
-    },
     "fontPaths": {
       "Inconsolata-Medium": "fonts/Inconsolata-Medium.ttf"
     }
