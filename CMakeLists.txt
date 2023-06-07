@@ -20,7 +20,6 @@ set(
 set(
         HEADERS
         src/Camera.h
-        src/Color.h
         src/Level.h
         src/Menu.h
         src/Player.h
