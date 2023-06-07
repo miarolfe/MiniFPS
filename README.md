@@ -16,14 +16,14 @@ Setup to follow.
 
 MIT license
 
-### SDL
+### [SDL](https://github.com/libsdl-org/SDL)
 
 zlib license
 
-### nlohmann/JSON
+### [nlohmann/JSON](https://github.com/nlohmann/json)
 
 MIT license
 
-### <dirent.h> interface
+### [<dirent.h> interface](https://github.com/tronkko/dirent)
 
 MIT license
