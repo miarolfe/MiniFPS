@@ -29,8 +29,7 @@
   },
 
   "files": {
-    "levelPath": "levels/test9.lvl",
-
+    "levelPath": "levels/Office1.lvl",
     "fontPaths": {
       "Inconsolata-Medium": "fonts/Inconsolata-Medium.ttf"
     }
