@@ -1,4 +1,4 @@
-project('MiniFPS', 'cpp', version: '0.0.3', default_options: ['cpp_std=c++11'])
+project('MiniFPS', 'cpp', version: '0.1.0', default_options: ['cpp_std=c++11'])
 
 sources = files(
   'src/main.cpp',
@@ -13,7 +13,6 @@ sources = files(
 
 headers = files(
   'src/Camera.h',
-  'src/Color.h',
   'src/Level.h',
   'src/Menu.h',
   'src/Player.h',

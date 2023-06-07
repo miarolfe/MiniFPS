@@ -3,13 +3,13 @@
 <plist version="1.0">
 <dict>
   <key>CFBundleGetInfoString</key>
-  <string>mini-fps</string>
+  <string>MiniFPS</string>
   <key>CFBundleExecutable</key>
-  <string>mini-fps.sh</string>
+  <string>MiniFPS.sh</string>
   <key>CFBundleIdentifier</key>
-  <string>com.pjhrolfe.mini-fps</string>
+  <string>com.pjhrolfe.MiniFPS</string>
   <key>CFBundleName</key>
-  <string>mini-fps</string>
+  <string>MiniFPS</string>
   <key>CFBundleIconFile</key>
   <string>testIcon.icns</string>
   <key>CFBundleShortVersionString</key>
