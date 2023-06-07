@@ -67,6 +67,7 @@ namespace MiniFPS {
 
         if (texture.name == "") {
             std::cerr << "Invalid texture: no texture mapped to id " << cellColor << std::endl;
+            texture = textureMap[-1]; // Fallback texture
         }
 
         return texture;

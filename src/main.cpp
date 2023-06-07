@@ -111,6 +111,8 @@ int main() {
         }
     }
 
+    textureMap[-1] = textureNameToTextureMap["fallback"];
+
     Player gamePlayer(&level, settings);
 
     float oldTime, curTime, frameDelta;
