@@ -14,7 +14,7 @@ namespace MiniFPS {
         Texture(std::string name, std::string filePath);
 
         string name;
-        Uint32** buffer;
+        uint32_t** buffer;
         size_t size;
     };
 }

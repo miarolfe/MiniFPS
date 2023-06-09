@@ -14,12 +14,12 @@ namespace MiniFPS {
         tempTextureSurface = SDL_ConvertSurfaceFormat(tempTextureSurface, SDL_PIXELFORMAT_ARGB8888, 0);
 
         size = tempTextureSurface->w;
-        buffer = new Uint32* [size];
+        buffer = new uint32_t* [size];
         for (int row = 0; row < size; row++) {
-            buffer[row] = new Uint32[size];
+            buffer[row] = new uint32_t[size];
         }
 
-        Uint32* pixels = (Uint32*) tempTextureSurface->pixels;
+        uint32_t* pixels = (uint32_t*) tempTextureSurface->pixels;
 
         for (int row = 0; row < size; row++) {
             for (int col = 0; col < size; col++) {

@@ -17,7 +17,7 @@ namespace MiniFPS {
      * @param x The x-coordinate of the frame texture to set.
      * @param y The y-coordinate of the frame texture to set.
      */
-    void SetPixel(void* pixels, int pitch, Uint32 color, int x, int y);
+    void SetPixel(void* pixels, int pitch, uint32_t color, int x, int y);
 
     /**
      * Writes the ceiling to the frame texture.

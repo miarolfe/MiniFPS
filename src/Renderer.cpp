@@ -10,13 +10,13 @@
 #include "Texture.h"
 #include "Utilities.h"
 
-const Uint32 CEILING = 0xFFA5A5A5;
-const Uint32 FLOOR   = 0xFF0000A5;
+const uint32_t CEILING = 0xFFA5A5A5;
+const uint32_t FLOOR   = 0xFF0000A5;
 
 namespace MiniFPS {
-    void SetPixel(void* pixels, int pitch, Uint32 color, int x, int y) {
-        Uint32* row;
-        row = (Uint32*) ((Uint8*) pixels + y * pitch);
+    void SetPixel(void* pixels, int pitch, uint32_t color, int x, int y) {
+        uint32_t* row;
+        row = (uint32_t*) ((Uint8*) pixels + y * pitch);
         row[x] = color;
     }
 

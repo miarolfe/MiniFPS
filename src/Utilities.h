@@ -75,7 +75,7 @@ namespace MiniFPS {
      * @param textureFilePath The path to the texture file within the assets folder.
      * @return Whether the texture was successfully loaded into the frame buffer.
      */
-    bool LoadTextureToBuffer(Uint32*** buffer, size_t &size, std::string assetsFolderPath, std::string textureFilePath);
+    bool LoadTextureToBuffer(uint32_t*** buffer, size_t &size, std::string assetsFolderPath, std::string textureFilePath);
 
     /**
      *
