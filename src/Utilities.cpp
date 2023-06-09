@@ -124,4 +124,23 @@ namespace MiniFPS {
         outFile << line << std::endl; // write line and append newline character
         outFile.close(); // close file
     }
+
+    std::vector<std::string> GetFilesInDirectory(const std::string& directoryPath) {
+        std::vector<std::string> files;
+        DIR* dir;
+        struct dirent* entry;
+
+        if ((dir = opendir(directoryPath.c_str())) != nullptr) {
+            while ((entry = readdir(dir)) != nullptr) {
+                if (entry->d_type == DT_REG) {  // regular file
+                    files.push_back(entry->d_name);
+                }
+            }
+            closedir(dir);
+        } else {
+            std::cerr << "Error opening directory: " << directoryPath << std::endl;
+        }
+
+        return files;
+    }
 }

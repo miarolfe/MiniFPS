@@ -1,9 +1,9 @@
 #pragma once
 
 #include <SDL_ttf.h>
+#include <dirent.h>
 
 namespace MiniFPS {
-
     const float PI_180 = (1.0 / 180.0) * M_PI;
 
     bool InitializeSDL();
@@ -33,4 +33,6 @@ namespace MiniFPS {
     void ClearFile(std::string fileName);
 
     void WriteLineToFile(std::string fileName, std::string line);
+
+    std::vector<std::string> GetFilesInDirectory(const std::string& directoryPath);
 }
