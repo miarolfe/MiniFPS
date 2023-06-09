@@ -68,16 +68,6 @@ namespace MiniFPS {
     std::string GetSDLAssetsFolderPath();
 
     /**
-     * Load a texture from a file into a frame buffer.
-     * @param buffer The pointer to the frame buffer.
-     * @param size The length of a side of the texture.
-     * @param assetsFolderPath The path to the assets folder.
-     * @param textureFilePath The path to the texture file within the assets folder.
-     * @return Whether the texture was successfully loaded into the frame buffer.
-     */
-    bool LoadTextureToBuffer(uint32_t*** buffer, size_t &size, std::string assetsFolderPath, std::string textureFilePath);
-
-    /**
      *
      * @param fontPath
      * @param pointSize
