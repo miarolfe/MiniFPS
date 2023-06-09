@@ -62,11 +62,11 @@ namespace MiniFPS {
         }
     }
 
-    Texture GetTexBuffer(short cellColor, std::unordered_map<short, Texture> &textureMap) {
-        Texture texture = textureMap[cellColor];
+    Texture GetTexBuffer(short textureId, std::unordered_map<short, Texture> &textureMap) {
+        Texture texture = textureMap[textureId];
 
         if (texture.name == "") {
-            std::cerr << "Invalid texture: no texture mapped to id " << cellColor << std::endl;
+            std::cerr << "Invalid texture: no texture mapped to id " << textureId << std::endl;
             texture = textureMap[-1]; // Fallback texture
         }
 
