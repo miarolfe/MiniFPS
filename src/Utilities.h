@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SDL_ttf.h>
+#include <vector>
 #include <string>
 #include <dirent.h>
 
