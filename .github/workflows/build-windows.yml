@@ -19,13 +19,13 @@ jobs:
           CC: gcc
           CXX: g++
         run: |
-          mkdir ci-build
-          cmake -G "CodeBlocks - MinGW Makefiles" -S . -B ci-build
-          cd ci-build
+          mkdir bin
+          cmake -G "CodeBlocks - MinGW Makefiles" -S . -B bin
+          cd bin
           mingw32-make
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v3
         with:
           name: MiniFPS-windows
-          path: ci-build/MiniFPS-windows
+          path: bin/MiniFPS-windows

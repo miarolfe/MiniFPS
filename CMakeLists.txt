@@ -5,6 +5,14 @@ project(MiniFPS VERSION 0.1.0)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Release)
+endif()
+
+set(CMAKE_CXX_FLAGS "-Wall -Wextra")
+set(CMAKE_CXX_FLAGS_DEBUG "-g")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+
 set(
         SOURCES
         src/main.cpp
@@ -44,13 +52,13 @@ if(WIN32)
     target_include_directories(MiniFPS PRIVATE "include/" "win-include/")
     target_link_libraries(MiniFPS PRIVATE ${CMAKE_SOURCE_DIR}/lib/SDL2.dll ${CMAKE_SOURCE_DIR}/lib/SDL2_image.dll ${CMAKE_SOURCE_DIR}/lib/SDL2_ttf.dll)
     add_custom_command(TARGET MiniFPS POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/MiniFPS-windows"
-            COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/MiniFPS-windows/assets"
-            COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/assets" "${CMAKE_BINARY_DIR}/MiniFPS-windows/assets"
-            COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/lib/SDL2.dll" "${CMAKE_BINARY_DIR}/MiniFPS-windows"
-            COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/lib/SDL2_image.dll" "${CMAKE_BINARY_DIR}/MiniFPS-windows"
-            COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/lib/SDL2_ttf.dll" "${CMAKE_BINARY_DIR}/MiniFPS-windows"
-            COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/MiniFPS.exe" "${CMAKE_BINARY_DIR}/MiniFPS-windows"
+            COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/MiniFPS-windows"
+            COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/MiniFPS-windows/assets"
+            COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/assets" "${CMAKE_CURRENT_BINARY_DIR}/MiniFPS-windows/assets"
+            COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/lib/SDL2.dll" "${CMAKE_CURRENT_BINARY_DIR}/MiniFPS-windows"
+            COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/lib/SDL2_image.dll" "${CMAKE_CURRENT_BINARY_DIR}/MiniFPS-windows"
+            COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/lib/SDL2_ttf.dll" "${CMAKE_CURRENT_BINARY_DIR}/MiniFPS-windows"
+            COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/MiniFPS.exe" "${CMAKE_CURRENT_BINARY_DIR}/MiniFPS-windows"
             )
 elseif(APPLE)
     # Find SDL2 and SDL2_image frameworks
@@ -77,6 +85,8 @@ elseif(APPLE)
             "${SDL2_IMAGE_FRAMEWORK}"
             "${SDL2_TTF_FRAMEWORK}"
     )
+
+    message(STATUS ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 
     add_custom_command(TARGET MiniFPS POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/MiniFPS.app/Contents/Frameworks

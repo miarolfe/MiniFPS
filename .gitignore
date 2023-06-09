@@ -33,6 +33,8 @@
 # Output folders
 bin/
 cmake-bin/
+cmake-bin-debug/
+cmake-bin-release/
 
 # macOS-specific files
 .DS_Store
