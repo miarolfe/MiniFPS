@@ -3,12 +3,10 @@
 #include "Camera.h"
 
 namespace MiniFPS {
-    // Calculates ratio of width to height
     float Camera::CalculateAspectRatio(size_t width, size_t height) {
         return static_cast<float>(width) / static_cast<float>(height);
     }
 
-// Calculates vertical field of view from horizontal field of view and aspect ratio
     float Camera::CalculateVerticalFieldOfView(float aspectRatio, float horizontalFieldOfView) {
         return(2.0f * atan(tan(horizontalFieldOfView / 2.0f) / aspectRatio));
     }
