@@ -35,6 +35,12 @@ namespace MiniFPS {
 
         Settings();
 
+        /**
+         * Load game settings from a file.
+         * @param assetsFilePath The path to the assets folder.
+         * @param settingsFilePath The path to the settings file within the assets folder.
+         * @return A Settings object loaded with the settings from the file.
+         */
         static Settings LoadSettings(string assetsFilePath, string settingsFilePath);
     };
 }
