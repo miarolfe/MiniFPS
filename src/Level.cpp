@@ -18,10 +18,10 @@ namespace MiniFPS {
     bool Level::HasCollided(const float x, const float y) {
         bool collided = false;
 
+        if (x < 0.05 || x > w - 0.05 || y < 0.05 || y > h - 0.05) return true;
+
         int roundedX = static_cast<int>(roundf(x));
         int roundedY = static_cast<int>(roundf(y));
-
-        if (x < 0.05 || x > w - 0.05 || y < 0.05 || y > h - 0.05) return true;
 
         for (int cellX = roundedX - 1; cellX <= roundedX + 1; cellX++) {
             for (int cellY = roundedY - 1; cellY <= roundedY + 1; cellY++) {
