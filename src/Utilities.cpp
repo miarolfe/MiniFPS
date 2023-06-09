@@ -9,7 +9,6 @@
 #include "Utilities.h"
 
 namespace MiniFPS {
-    // Initialize SDL subsystems
     bool InitializeSDL() {
         bool successful_initialization = true;
 
@@ -20,7 +19,6 @@ namespace MiniFPS {
         return successful_initialization;
     }
 
-    // Initialise window and renderer with parameters
     bool InitializeWindowAndRenderer(SDL_Window** window, SDL_Renderer** renderer, size_t screenWidth,
                                      size_t screenHeight, bool vSync) {
         bool successful_initialization = true;
@@ -52,7 +50,6 @@ namespace MiniFPS {
         return successful_initialization;
     }
 
-// Initialise SDL_image subsystem
     bool InitializeSDLImage() {
         bool successful_initialization = true;
 
@@ -63,7 +60,6 @@ namespace MiniFPS {
         return successful_initialization;
     }
 
-    // Initialise SDL_ttf subsystem
     bool InitializeSDLTTF() {
         bool successful_initialization = true;
 
@@ -74,7 +70,6 @@ namespace MiniFPS {
         return successful_initialization;
     }
 
-    // Shut down SDL subsystems and free window + renderer
     void Quit(SDL_Window* window, SDL_Renderer* renderer) {
         SDL_DestroyWindow(window);
         SDL_DestroyRenderer(renderer);
@@ -83,12 +78,10 @@ namespace MiniFPS {
         TTF_Quit();
     }
 
-    // Get frames per second as string
     std::string GetFramesPerSecond(const float oldTime, const float curTime) {
         return std::to_string(static_cast<int>((1.0f / GetFrameTime(oldTime, curTime))));
     }
 
-    // Get time between frames in seconds
     float GetFrameTime(const float oldTime, const float curTime) {
         float frameTime = (curTime - oldTime) / 1000.0f;
         return frameTime;
