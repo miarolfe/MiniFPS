@@ -7,16 +7,14 @@
 #include "Utilities.h"
 
 namespace MiniFPS {
-    Level::Level(std::string filePath) {
-        LoadFromLVL(filePath);
+    Level::Level(const std::string& filePath) {
+        Load(filePath);
     }
 
-// Gets the color of pixel at cell (x, y) in level
     short Level::Get(int x, int y) {
         return matrix[y][x];
     }
 
-// Returns whether a point is inside a wall cell in the level
     bool Level::HasCollided(const float x, const float y) {
         bool collided = false;
 
@@ -51,7 +49,6 @@ namespace MiniFPS {
         return collided;
     }
 
-// Prints the level's wall cells to cout
     void Level::Print() {
         for (int i = 0; i < w; i++) {
             for (int j = 0; j < h; j++) {
@@ -86,7 +83,7 @@ namespace MiniFPS {
         outfile.close();
     }
 
-    void Level::LoadFromLVL(std::string filePath) {
+    void Level::Load(std::string filePath) {
         std::ifstream infile(filePath);
         if (!infile) {
             std::cerr << "Error opening level file for reading: " << filePath << std::endl;
