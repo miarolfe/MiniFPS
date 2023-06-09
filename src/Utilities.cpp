@@ -79,6 +79,8 @@ namespace MiniFPS {
         SDL_DestroyWindow(window);
         SDL_DestroyRenderer(renderer);
         SDL_Quit();
+        IMG_Quit();
+        TTF_Quit();
     }
 
     // Get frames per second as string
