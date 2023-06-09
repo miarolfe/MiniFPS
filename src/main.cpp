@@ -22,6 +22,7 @@ int main() {
     if (!InitializeSDLImage()) {
         std::cerr << "SDL_image could not be initialized" << std::endl;
     }
+    
     if (!InitializeSDLTTF()) {
         std::cerr << "SDL_ttf could not be initialized" << std::endl;
     }
