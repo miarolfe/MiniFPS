@@ -14,6 +14,7 @@ set(
         src/Player.cpp
         src/Renderer.cpp
         src/Settings.cpp
+        src/Texture.cpp
         src/Utilities.cpp
 )
 
@@ -25,6 +26,7 @@ set(
         src/Player.h
         src/Renderer.h
         src/Settings.h
+        src/Texture.h
         src/Utilities.h
 )
 

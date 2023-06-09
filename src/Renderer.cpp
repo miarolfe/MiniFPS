@@ -6,40 +6,14 @@
 #include "Camera.h"
 #include "Level.h"
 #include "Menu.h"
-#include "Utilities.h"
 #include "Renderer.h"
+#include "Texture.h"
+#include "Utilities.h"
 
 const Uint32 CEILING = 0xFFA5A5A5;
 const Uint32 FLOOR   = 0xFF0000A5;
 
 namespace MiniFPS {
-    Texture::Texture() {
-
-    }
-
-    Texture::Texture(std::string name, std::string filePath) {
-        this->name = name;
-
-        SDL_Surface* tempTextureSurface = IMG_Load(filePath.c_str());
-        tempTextureSurface = SDL_ConvertSurfaceFormat(tempTextureSurface, SDL_PIXELFORMAT_ARGB8888, 0);
-
-        size = tempTextureSurface->w;
-        buffer = new Uint32* [size];
-        for (int row = 0; row < size; row++) {
-            buffer[row] = new Uint32[size];
-        }
-
-        Uint32* pixels = (Uint32*) tempTextureSurface->pixels;
-
-        for (int row = 0; row < size; row++) {
-            for (int col = 0; col < size; col++) {
-                buffer[row][col] = pixels[row * size + col];
-            }
-        }
-
-        SDL_FreeSurface(tempTextureSurface);
-    }
-
     void SetPixel(void* pixels, int pitch, Uint32 color, int x, int y) {
         Uint32* row;
         row = (Uint32*) ((Uint8*) pixels + y * pitch);

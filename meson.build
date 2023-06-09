@@ -8,6 +8,7 @@ sources = files(
   'src/Renderer.cpp',
   'src/Player.cpp',
   'src/Settings.cpp',
+  'src/Texture.cpp',
   'src/Utilities.cpp',
 )
 
@@ -18,6 +19,7 @@ headers = files(
   'src/Player.h',
   'src/Renderer.h',
   'src/Settings.h',
+  'src/Texture.h',
   'src/Utilities.h',
 )
 

@@ -6,18 +6,9 @@
 #include "Camera.h"
 #include "Level.h"
 #include "Menu.h"
+#include "Texture.h"
 
 namespace MiniFPS {
-    struct Texture {
-        Texture();
-
-        Texture(std::string name, std::string filePath);
-    
-        string name;
-        Uint32** buffer;
-        size_t size;
-    };
-
     /**
      * Sets a single pixel in the frame texture's pixel buffer.
      * @param pixels The pixel buffer of the frame texture.
