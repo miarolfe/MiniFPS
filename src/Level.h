@@ -46,7 +46,7 @@ namespace MiniFPS {
          * Saves the current level to a level file in .lvl format.
          * @param filePath The path to save the level file at, in .lvl format.
          */
-        void SaveToLVL(const std::string& filePath);
+        void Save(const std::string& filePath);
 
         /**
          * Load a level from a level file in .lvl format.

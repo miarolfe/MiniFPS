@@ -62,7 +62,7 @@ namespace MiniFPS {
         }
     }
 
-    void Level::SaveToLVL(const std::string &filePath) {
+    void Level::Save(const std::string &filePath) {
         std::ofstream outfile(filePath);
         if (!outfile) {
             std::cerr << "Error opening file for writing: " << filePath << std::endl;
