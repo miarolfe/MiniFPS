@@ -53,7 +53,7 @@ namespace MiniFPS {
     Texture GetTexBuffer(short textureId, std::unordered_map<short, Texture> &textureMap);
 
     /**
-     * Draws text to the frame texture.
+     * Renders text to a texture and copies that texture onto the frame texture.
      * @param sdlRenderer The SDL_Renderer object to use for drawing.
      * @param frameTexture The frame texture.
      * @param text The string value of the text.
