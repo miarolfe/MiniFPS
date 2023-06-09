@@ -86,7 +86,7 @@ namespace MiniFPS {
         float frameTime = (curTime - oldTime) / 1000.0f;
         return frameTime;
     }
-    
+
     std::string GetSDLAssetsFolderPath() {
         std::string file_path;
         const char* platform = SDL_GetPlatform();

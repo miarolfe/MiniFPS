@@ -68,10 +68,10 @@ namespace MiniFPS {
     std::string GetSDLAssetsFolderPath();
 
     /**
-     *
-     * @param fontPath
-     * @param pointSize
-     * @return
+     * Loads a font from a file.
+     * @param fontPath The path to the font file.
+     * @param pointSize The point size to load the font at.
+     * @return The loaded font.
      */
     TTF_Font* LoadFont(const std::string &fontPath, int pointSize);
 
