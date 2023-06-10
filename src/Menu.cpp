@@ -8,13 +8,12 @@ namespace MiniFPS {
 
     }
 
-    Font::Font(string name, string fontPath, int pointSize) {
+    Font::Font(const string& name, const string& fontPath, int pointSize) {
         this->name = name;
 
-        TTF_Font* ttf = LoadFont(fontPath, pointSize);
-        if (ttf != nullptr) {
-            this->ttf = ttf;
-            // std::cout << "Loaded font: " << fontPath << std::endl;
+        TTF_Font* loadedTtf = LoadFont(fontPath, pointSize);
+        if (loadedTtf != nullptr) {
+            ttf = loadedTtf;
         } else {
             std::cerr << "Font " << name << " at " << fontPath << " could not be loaded" << std::endl;
         }
@@ -22,15 +21,15 @@ namespace MiniFPS {
         this->pointSize = pointSize;
     }
 
-    MainMenu::MainMenu(Settings settings) {
+    MainMenu::MainMenu(const Settings& settings) {
         this->player = Player(nullptr, settings);
         this->player.inputState.inMainMenu = true;
         this->settings = settings;
     }
 
     SDL_Texture*
-    RenderTextToTexture(SDL_Renderer* sdlRenderer, Font font, const std::string &text, int r, int g, int b) {
-        SDL_Color textColor = {static_cast<Uint8>(r), static_cast<Uint8>(g), static_cast<Uint8>(b)};
+    RenderTextToTexture(SDL_Renderer* sdlRenderer, const Font& font, const std::string &text, int r, int g, int b) {
+        SDL_Color textColor = {static_cast<Uint8>(r), static_cast<Uint8>(g), static_cast<Uint8>(b), 255};
         SDL_Surface* textSurface = TTF_RenderText_Solid(font.ttf, text.c_str(), textColor);
         SDL_Texture* textTexture = SDL_CreateTextureFromSurface(sdlRenderer, textSurface);
         SDL_FreeSurface(textSurface);
