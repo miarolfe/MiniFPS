@@ -52,6 +52,8 @@ namespace MiniFPS {
 
         /**
          * Renders text to a texture and copies that texture onto the frame texture.
+         * NOTE: This *can't* be called DrawText because of a conflict with a Windows API function.
+         * TODO: Figure out why.
          * @param text The string value of the text.
          * @param font The font to use to draw the text.
          * @param x The x-coordinate to start drawing text from.
