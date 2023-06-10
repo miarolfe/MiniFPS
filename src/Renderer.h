@@ -58,7 +58,7 @@ namespace MiniFPS {
          * @param y The y-coordinate to start drawing text from.
          * @param width The required width for the drawn text.
          */
-        void DrawText(const std::string &text, Font font, float x, float y, int width);
+        void DrawTextStr(const std::string &text, Font font, float x, float y, int width);
 
         /**
          * Draws the main menu and copies it to the frame texture.

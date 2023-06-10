@@ -54,7 +54,7 @@ namespace MiniFPS {
         }
     }
 
-    void Renderer::DrawText(const std::string& text, Font font, float x, float y, int width) {
+    void Renderer::DrawTextStr(const std::string& text, Font font, float x, float y, int width) {
         SDL_SetRenderTarget(sdlRenderer, renderFrameTexture);
 
         int requestedWidth;
@@ -98,9 +98,9 @@ namespace MiniFPS {
         SDL_RenderCopy(sdlRenderer, streamingFrameTexture, nullptr, nullptr);
 
         // UI draw calls
-        Renderer::DrawText("MiniFPS", font, titleTextX, titleTextY, titleTextWidth);
-        Renderer::DrawText(settings.version, font, versionTextX, versionTextY, versionTextWidth);
-        Renderer::DrawText("Press [SPACE] or [ENTER] to start", font, startTextX, startTextY,startTextWidth);
+        DrawTextStr("MiniFPS", font, titleTextX, titleTextY, titleTextWidth);
+        DrawTextStr(settings.version, font, versionTextX, versionTextY, versionTextWidth);
+        DrawTextStr("Press [SPACE] or [ENTER] to start", font, startTextX, startTextY,startTextWidth);
 
         SDL_SetRenderTarget(sdlRenderer, nullptr);
         SDL_RenderCopy(sdlRenderer, renderFrameTexture, nullptr, nullptr);
