@@ -46,6 +46,6 @@ namespace MiniFPS {
          * Load a level from a level file in .lvl format.
          * @param filePath The path to load the level file from, in .lvl format.
          */
-        void Load(std::string filePath);
+        void Load(const std::string& filePath);
     };
 }

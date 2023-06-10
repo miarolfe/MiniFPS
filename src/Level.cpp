@@ -1,10 +1,8 @@
 #include <iostream>
-#include <fstream>
 #include <cmath>
 #include <vector>
 
 #include "Level.h"
-#include "Utilities.h"
 
 namespace MiniFPS {
     Level::Level(const std::string& filePath) {
@@ -63,7 +61,7 @@ namespace MiniFPS {
         }
     }
 
-    void Level::Load(std::string filePath) {
+    void Level::Load(const std::string& filePath) {
         std::ifstream infile(filePath);
         if (!infile) {
             std::cerr << "Error opening level file for reading: " << filePath << std::endl;
