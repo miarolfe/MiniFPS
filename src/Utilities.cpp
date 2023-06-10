@@ -108,12 +108,12 @@ namespace MiniFPS {
         return TTF_OpenFont(fontPath.c_str(), pointSize);
     }
 
-    void ClearFile(std::string fileName) {
+    void ClearFile(const std::string& fileName) {
         std::ofstream outFile(fileName, std::ofstream::out | std::ofstream::trunc);
         outFile.close();
     }
 
-    void WriteLineToFile(std::string fileName, std::string line) {
+    void WriteLineToFile(const std::string& fileName, const std::string& line) {
         std::ofstream outFile(fileName, std::ios::app); // open file in append mode
         outFile << line << std::endl; // write line and append newline character
         outFile.close(); // close file
@@ -127,7 +127,7 @@ namespace MiniFPS {
         if ((dir = opendir(directoryPath.c_str())) != nullptr) {
             while ((entry = readdir(dir)) != nullptr) {
                 if (entry->d_type == DT_REG) {  // regular file
-                    files.push_back(entry->d_name);
+                    files.emplace_back(entry->d_name);
                 }
             }
             closedir(dir);

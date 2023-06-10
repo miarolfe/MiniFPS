@@ -79,14 +79,14 @@ namespace MiniFPS {
      * Clear the contents of a file.
      * @param fileName The path to the file.
      */
-    void ClearFile(std::string fileName);
+    void ClearFile(const std::string& fileName);
 
     /**
      * Write a string to a file on a new line.
      * @param fileName The path to the file.
      * @param line The string to write to the file.
      */
-    void WriteLineToFile(std::string fileName, std::string line);
+    void WriteLineToFile(const std::string& fileName, const std::string& line);
 
     /**
      * Get the paths to all files in a directory.
