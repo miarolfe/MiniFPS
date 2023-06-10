@@ -38,13 +38,10 @@ int main() {
     Settings settings = Settings::LoadSettings(GetSDLAssetsFolderPath(), "settings.json");
 
     Audio audio(GetSDLAssetsFolderPath() + "audio/");
-//    if (!audio.effects.empty()) {
-//        Mix_PlayChannel(-1, audio.effects[0], 0);
-//    }
 
-//    if (!audio.tracks.empty()) {
-//        Mix_PlayMusic(audio.tracks[0], -1);
-//    }
+    if (!audio.tracks.empty()) {
+        Mix_PlayMusic(audio.tracks[0], -1);
+    }
 
     Font fonts[settings.fontPaths.size()];
     for (size_t i = 0; i < settings.fontPaths.size(); i++) {
@@ -81,6 +78,10 @@ int main() {
     while (mainMenu.player.InMainMenu() && !mainMenu.player.GameHasEnded()) {
         renderer.DrawMainMenu(settings, fonts[0], mainMenu.player.camera);
         mainMenu.player.Update(0, 0, 0);
+    }
+
+    if (!audio.effects.empty()) {
+        Mix_PlayChannel(-1, audio.effects[0], 0);
     }
 
     Level level = Level(GetSDLAssetsFolderPath() + settings.levelPath);
