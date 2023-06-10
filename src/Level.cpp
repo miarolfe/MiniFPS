@@ -73,7 +73,7 @@ namespace MiniFPS {
 
         matrix = new short* [h];
 
-        for (size_t i = 0; i < h; i++) {
+        for (int i = 0; i < h; i++) {
             matrix[i] = new short[w];
         }
 
