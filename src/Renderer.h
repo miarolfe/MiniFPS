@@ -74,6 +74,6 @@ namespace MiniFPS {
          * Draws the game world and copies it to the frame texture.
          * @param player The player who's view is being drawn.
          */
-        void Draw(Player player);
+        void Draw(Player player, const Font &font);
     };
 }

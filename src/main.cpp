@@ -100,7 +100,7 @@ int main() {
 
         gamePlayer.Update(frameDelta, settings.speedModifier, settings.rotationModifier);
 
-        renderer.Draw(gamePlayer);
+        renderer.Draw(gamePlayer, fonts[0]);
     }
 
     Quit(window, sdlRenderer);

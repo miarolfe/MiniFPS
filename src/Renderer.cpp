@@ -23,7 +23,7 @@ namespace MiniFPS {
 
     void Renderer::SetPixel(void* pixels, int pitch, uint32_t color, int x, int y) {
         uint32_t* row;
-        row = (uint32_t*) ((Uint8*) pixels + y * pitch);
+        row = (uint32_t*) ((uint8_t*) pixels + y * pitch);
         row[x] = color;
     }
 
@@ -107,7 +107,7 @@ namespace MiniFPS {
         SDL_RenderPresent(sdlRenderer);
     }
 
-    void Renderer::Draw(Player player) {
+    void Renderer::Draw(Player player, const Font& font) {
         int pitch;
         void* pixels;
         SDL_LockTexture(streamingFrameTexture, nullptr, &pixels, &pitch);
@@ -171,6 +171,8 @@ namespace MiniFPS {
         SDL_RenderCopy(sdlRenderer, streamingFrameTexture, nullptr, nullptr);
 
         // UI draw here
+        DrawTextStr("MiniFPS", font, 25, 25, 250);
+        DrawTextStr("peterrolfe.com", font, 25, 100, 175);
 
         SDL_SetRenderTarget(sdlRenderer, nullptr);
         SDL_RenderCopy(sdlRenderer, renderFrameTexture, nullptr, nullptr);
