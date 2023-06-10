@@ -98,9 +98,9 @@ namespace MiniFPS {
         SDL_RenderCopy(sdlRenderer, streamingFrameTexture, nullptr, nullptr);
 
         // UI draw calls
-        DrawText("MiniFPS", font, titleTextX, titleTextY, titleTextWidth);
-        DrawText(settings.version, font, versionTextX, versionTextY, versionTextWidth);
-        DrawText("Press [SPACE] or [ENTER] to start", font, startTextX, startTextY,startTextWidth);
+        // DrawText("MiniFPS", font, titleTextX, titleTextY, titleTextWidth);
+        // DrawText(settings.version, font, versionTextX, versionTextY, versionTextWidth);
+        // DrawText("Press [SPACE] or [ENTER] to start", font, startTextX, startTextY,startTextWidth);
 
         SDL_SetRenderTarget(sdlRenderer, nullptr);
         SDL_RenderCopy(sdlRenderer, renderFrameTexture, nullptr, nullptr);
