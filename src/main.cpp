@@ -28,7 +28,7 @@ int main() {
     }
 
     SDL_Window* window = nullptr;
-    SDL_Renderer* renderer = nullptr;
+    SDL_Renderer* sdlRenderer = nullptr;
 
     Settings settings = Settings::LoadSettings(GetSDLAssetsFolderPath(), "settings.json");
 
@@ -54,21 +54,18 @@ int main() {
         textureNameToTextureMap[name] = newTexture;
     }
 
-    if (!InitializeWindowAndRenderer(&window, &renderer, settings.screenWidth, settings.screenHeight, settings.vSync)) {
+    if (!InitializeWindowAndRenderer(&window, &sdlRenderer, settings.screenWidth, settings.screenHeight, settings.vSync)) {
         std::cerr << "Window and/or renderer could not be initialized" << std::endl;
     }
 
-    SDL_Texture* streamingFrameTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING,
-                                                           static_cast<int>(settings.screenWidth), static_cast<int>(settings.screenHeight));
-    SDL_Texture* renderFrameTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_TARGET,
-                                                        static_cast<int>(settings.screenWidth), static_cast<int>(settings.screenHeight));
+    Renderer renderer(sdlRenderer, settings);
 
     // Allow movement of cursor in menu
     SDL_SetRelativeMouseMode(SDL_FALSE);
     MainMenu mainMenu(settings);
 
     while (mainMenu.player.InMainMenu() && !mainMenu.player.GameHasEnded()) {
-        DrawMainMenu(settings, renderer, fonts[0], mainMenu.player.camera, streamingFrameTexture, renderFrameTexture);
+        renderer.DrawMainMenu(settings, fonts[0], mainMenu.player.camera);
         mainMenu.player.Update(0, 0, 0);
     }
 
@@ -87,6 +84,8 @@ int main() {
 
     Player gamePlayer(&level, settings);
 
+    renderer.textureMap = textureMap;
+
     float oldTime, curTime, frameDelta;
     curTime = 0;
 
@@ -101,10 +100,10 @@ int main() {
 
         gamePlayer.Update(frameDelta, settings.speedModifier, settings.rotationModifier);
 
-        Draw(renderer, gamePlayer, textureMap, streamingFrameTexture, renderFrameTexture);
+        renderer.Draw(gamePlayer, fonts[0]);
     }
 
-    Quit(window, renderer);
+    Quit(window, sdlRenderer);
 
     return 0;
 }
