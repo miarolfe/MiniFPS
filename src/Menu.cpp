@@ -27,8 +27,8 @@ namespace MiniFPS {
         this->settings = settings;
     }
 
-    SDL_Texture*
-    RenderTextToTexture(SDL_Renderer* sdlRenderer, const Font& font, const std::string &text, int r, int g, int b) {
+    SDL_Texture* RenderTextToTexture(SDL_Renderer* sdlRenderer, const Font& font, const std::string &text, int r, int g,
+                                     int b) {
         SDL_Color textColor = {static_cast<Uint8>(r), static_cast<Uint8>(g), static_cast<Uint8>(b), 255};
         SDL_Surface* textSurface = TTF_RenderText_Solid(font.ttf, text.c_str(), textColor);
         SDL_Texture* textTexture = SDL_CreateTextureFromSurface(sdlRenderer, textSurface);
