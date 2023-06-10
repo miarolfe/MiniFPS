@@ -1,4 +1,3 @@
-#include <cstddef>
 #include <cmath>
 #include "Camera.h"
 
