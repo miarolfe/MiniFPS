@@ -14,7 +14,7 @@ namespace MiniFPS {
 
     struct Player {
         Player();
-        Player(Level* level, Settings settings);
+        Player(Level* level, const Settings& settings);
 
         Level* level;
         Camera camera;
@@ -51,12 +51,12 @@ namespace MiniFPS {
          * Checks whether the game has ended.
          * @return Whether the game has ended.
          */
-        bool GameHasEnded();
+        bool GameHasEnded() const;
 
         /**
          * Checks if the game is on the main menu.
          * @return Whether the game is on the main menu.
          */
-        bool InMainMenu();
+        bool InMainMenu() const;
     };
 }

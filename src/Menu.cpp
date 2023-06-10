@@ -5,7 +5,8 @@
 
 namespace MiniFPS {
     Font::Font() {
-
+        ttf = nullptr;
+        pointSize = -1;
     }
 
     Font::Font(const string& name, const string& fontPath, int pointSize) {

@@ -9,7 +9,7 @@
 #include "Utilities.h"
 
 namespace MiniFPS {
-    Player::Player(Level* level, Settings settings) {
+    Player::Player(Level* level, const Settings& settings) {
         this->level = level;
         inputState = InputState();
         camera = Camera(settings.playerStartX, settings.playerStartY, settings.playerStartAngle,
@@ -115,11 +115,11 @@ namespace MiniFPS {
         camera.angle += inputState.mouseX * frameDelta * rotationModifier;
     }
 
-    bool Player::GameHasEnded() {
+    bool Player::GameHasEnded() const {
         return inputState.endGame;
     }
 
-    bool Player::InMainMenu() {
+    bool Player::InMainMenu() const {
         return inputState.inMainMenu;
     }
 

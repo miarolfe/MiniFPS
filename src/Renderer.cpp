@@ -39,7 +39,7 @@ namespace MiniFPS {
     Texture GetTexBuffer(short textureId, std::unordered_map<short, Texture> &textureMap) {
         Texture texture = textureMap[textureId];
 
-        if (texture.name == "") {
+        if (texture.name.empty()) {
             std::cerr << "Invalid texture: no texture mapped to id " << textureId << std::endl;
             texture = textureMap[-1]; // Fallback texture
         }
@@ -47,8 +47,8 @@ namespace MiniFPS {
         return texture;
     }
 
-    void DrawText(SDL_Renderer* sdlRenderer, SDL_Texture* renderFrameTexture, const std::string &text, Font font, int x,
-                  int y, int width) {
+    void DrawText(SDL_Renderer* sdlRenderer, SDL_Texture* renderFrameTexture, const std::string &text, const Font& font,
+                  int x, int y, int width) {
         SDL_SetRenderTarget(sdlRenderer, renderFrameTexture);
 
         int requestedWidth;
@@ -60,7 +60,7 @@ namespace MiniFPS {
 
         SDL_Rect destRect{x, y, width, height};
 
-        SDL_RenderCopy(sdlRenderer, RenderTextToTexture(sdlRenderer, font, text, 255, 255, 255), NULL, &destRect);
+        SDL_RenderCopy(sdlRenderer, RenderTextToTexture(sdlRenderer, font, text, 255, 255, 255), nullptr, &destRect);
         SDL_SetRenderTarget(sdlRenderer, nullptr);
     }
 
@@ -74,7 +74,7 @@ namespace MiniFPS {
         DrawFloor(player.camera, pitch, pixels);
 
         // Cast rays
-        for (size_t ray = 0; ray < player.camera.viewportWidth; ray++) {
+        for (int ray = 0; ray < player.camera.viewportWidth; ray++) {
             float rayScreenPos = (2 * ray / float(player.camera.viewportWidth) - 1) * player.camera.aspectRatio;
             float rayAngle = player.camera.angle + atan(rayScreenPos * tan(player.camera.horizontalFieldOfView / 2));
 
@@ -91,7 +91,7 @@ namespace MiniFPS {
                 if (cell != 0) {
                     Texture texture = GetTexBuffer(cell, textures);
                     float distance = t * cos(rayAngle - player.camera.angle);
-                    size_t columnHeight =
+                    int columnHeight =
                             ((player.camera.viewportHeight) * player.camera.distanceToProjectionPlane) / distance;
 
                     float hitX = cx - floor(cx + 0.5f);
@@ -99,7 +99,7 @@ namespace MiniFPS {
                     int texX = static_cast<int>(hitX * static_cast<float>(texture.size));
 
                     if (std::abs(hitY) > std::abs(hitX)) {
-                        texX = hitY * texture.size;
+                        texX = hitY * static_cast<float>(texture.size);
                     }
 
                     if (texX < 0) texX += texture.size;

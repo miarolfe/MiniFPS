@@ -33,7 +33,7 @@ int main() {
     Settings settings = Settings::LoadSettings(GetSDLAssetsFolderPath(), "settings.json");
 
     Font fonts[settings.fontPaths.size()];
-    for (int i = 0; i < settings.fontPaths.size(); i++) {
+    for (size_t i = 0; i < settings.fontPaths.size(); i++) {
         fonts[i] = Font(settings.fontPaths[i].first, GetSDLAssetsFolderPath() + settings.fontPaths[i].second, 24);
     }
 

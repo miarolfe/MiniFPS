@@ -11,7 +11,7 @@ namespace MiniFPS {
         return(2.0f * atan(tan(horizontalFieldOfView / 2.0f) / aspectRatio));
     }
 
-    Camera::Camera(float _x, float _y, float _angle, float _horizontalFieldOfView, size_t _viewportWidth, size_t _viewportHeight,
+    Camera::Camera(float _x, float _y, float _angle, float _horizontalFieldOfView, int _viewportWidth, int _viewportHeight,
                    float _rayIncrement, size_t _maxRendererDistance, float _distanceToProjectionPlane) {
         x = _x;
         y = _y;

@@ -1,16 +1,30 @@
 #include <cstddef>
-#include <fstream>
 #include <sstream>
 #include <json.hpp>
 
 #include "Settings.h"
 
 namespace MiniFPS {
-    Settings::Settings(std::string version, size_t screenWidth, size_t screenHeight, float renderRayIncrement,
+    Settings::Settings() {
+        screenWidth = 0;
+        screenHeight = 0;
+        renderRayIncrement = 0;
+        renderDistance = 0;
+        vSync = false;
+        fieldOfView = 0;
+        speedModifier = 0;
+        rotationModifier = 0;
+        playerStartX = 0;
+        playerStartY = 0;
+        playerStartAngle = 0;
+        playerDistanceToProjectionPlane = 0;
+    }
+
+    Settings::Settings(const std::string& version, size_t screenWidth, size_t screenHeight, float renderRayIncrement,
                        size_t renderDistance, bool vSync,
                        float fieldOfView, float speedModifier, float rotationModifier, float playerStartX,
                        float playerStartY, float playerStartAngle, float playerDistanceToProjectionPlane,
-                       std::string levelPath, const std::map<std::string, std::string> &fontPaths) {
+                       const std::string& levelPath, const std::map<std::string, std::string> &fontPaths) {
         this->version = version;
         this->screenWidth = screenWidth;
         this->screenHeight = screenHeight;
@@ -27,12 +41,11 @@ namespace MiniFPS {
         this->vSync = vSync;
 
         for (const auto &font: fontPaths) {
-            this->fontPaths.push_back(font);
+            this->fontPaths.emplace_back(font);
         }
     }
 
-// Use a settings path with .json extension
-    Settings Settings::LoadSettings(const std::string assetsFilePath, const std::string settingsFilePath) {
+    Settings Settings::LoadSettings(const std::string& assetsFilePath, const std::string& settingsFilePath) {
         std::ifstream f(assetsFilePath + settingsFilePath);
 
         if (!f.is_open()) {
@@ -80,9 +93,4 @@ namespace MiniFPS {
 
         return settings;
     }
-
-    Settings::Settings() {
-
-    }
-
 }

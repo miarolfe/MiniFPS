@@ -7,7 +7,6 @@
 #include <json.hpp>
 
 using json = nlohmann::json;
-using string = std::string;
 
 namespace MiniFPS {
     struct Settings {
@@ -24,16 +23,17 @@ namespace MiniFPS {
         float playerStartY;
         float playerStartAngle;
         float playerDistanceToProjectionPlane;
-        string levelPath;
-        std::vector<std::pair<string, string>> fontPaths;
+        std::string levelPath;
+        std::vector<std::pair<std::string, std::string>> fontPaths;
 
-        Settings(std::string version, size_t screenWidth, size_t screenHeight, float renderRayIncrement,
+        Settings();
+        Settings(const std::string& version, size_t screenWidth, size_t screenHeight, float renderRayIncrement,
                  size_t renderDistance, bool vSync, float fieldOfView, float speedModifier,
                  float rotationModifier, float playerStartX, float playerStartY,
                  float playerStartAngle, float playerDistanceToProjectionPlane,
-                 string levelPath, const std::map<string, string> &fontPaths);
+                 const std::string& levelPath, const std::map<std::string, std::string> &fontPaths);
 
-        Settings();
+
 
         /**
          * Load game settings from a file.
@@ -41,6 +41,6 @@ namespace MiniFPS {
          * @param settingsFilePath The path to the settings file within the assets folder.
          * @return A Settings object loaded with the settings from the file.
          */
-        static Settings LoadSettings(string assetsFilePath, string settingsFilePath);
+        static Settings LoadSettings(const std::string& assetsFilePath, const std::string& settingsFilePath);
     };
 }

@@ -5,7 +5,7 @@ namespace MiniFPS {
     public:
         Camera();
 
-        Camera(float _x, float _y, float _angle, float _horizontalFieldOfView, size_t viewportWidth, size_t viewportHeight,
+        Camera(float _x, float _y, float _angle, float _horizontalFieldOfView, int viewportWidth, int viewportHeight,
                float rayIncrement, size_t maxRenderDistance, float distanceToProjectionPlane);
 
         /**
@@ -29,7 +29,7 @@ namespace MiniFPS {
         // Angle & horizontal field of view in radians
         float angle, horizontalFieldOfView;
         // Size of viewport in pixels
-        size_t viewportWidth, viewportHeight;
+        int viewportWidth, viewportHeight;
         // Amount to increase raycast length by each iteration
         float rayIncrement;
         // Max distance for raycasts
