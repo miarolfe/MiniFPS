@@ -16,6 +16,7 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 set(
         SOURCES
         src/main.cpp
+        src/Audio.cpp
         src/Camera.cpp
         src/Level.cpp
         src/Menu.cpp
@@ -28,6 +29,7 @@ set(
 
 set(
         HEADERS
+        src/Audio.h
         src/Camera.h
         src/Level.h
         src/Menu.h
@@ -61,11 +63,6 @@ if(WIN32)
             COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/MiniFPS.exe" "${CMAKE_CURRENT_BINARY_DIR}/MiniFPS-windows"
             )
 elseif(APPLE)
-    # Find SDL2 and SDL2_image frameworks
-    find_library(SDL2_LIB SDL2)
-    find_library(SDL2_IMAGE_LIB SDL2_image)
-    find_library(SDL2_TTF_LIB SDL2_ttf)
-
     set(SDL2_FRAMEWORK "${PROJECT_SOURCE_DIR}/lib/SDL2.framework")
     set(SDL2_IMAGE_FRAMEWORK "${PROJECT_SOURCE_DIR}/lib/SDL2_image.framework")
     set(SDL2_TTF_FRAMEWORK "${PROJECT_SOURCE_DIR}/lib/SDL2_ttf.framework")
