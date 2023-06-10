@@ -54,7 +54,7 @@ namespace MiniFPS {
         }
     }
 
-    void Renderer::DrawText(const std::string &text, Font font, float x, float y, int width) {
+    void Renderer::DrawText(const std::string& text, Font font, float x, float y, int width) {
         SDL_SetRenderTarget(sdlRenderer, renderFrameTexture);
 
         int requestedWidth;
@@ -70,7 +70,7 @@ namespace MiniFPS {
         SDL_SetRenderTarget(sdlRenderer, nullptr);
     }
 
-    void Renderer::DrawMainMenu(const Settings &settings, const Font &font, Camera camera) {
+    void Renderer::DrawMainMenu(const Settings& settings, const Font &font, Camera camera) {
         int pitch;
         void* pixels;
         SDL_LockTexture(streamingFrameTexture, nullptr, &pixels, &pitch);
