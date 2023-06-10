@@ -58,17 +58,14 @@ int main() {
         std::cerr << "Window and/or renderer could not be initialized" << std::endl;
     }
 
-    SDL_Texture* streamingFrameTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING,
-                                                           static_cast<int>(settings.screenWidth), static_cast<int>(settings.screenHeight));
-    SDL_Texture* renderFrameTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_TARGET,
-                                                        static_cast<int>(settings.screenWidth), static_cast<int>(settings.screenHeight));
+    Renderer _renderer(renderer, settings);
 
     // Allow movement of cursor in menu
     SDL_SetRelativeMouseMode(SDL_FALSE);
     MainMenu mainMenu(settings);
 
     while (mainMenu.player.InMainMenu() && !mainMenu.player.GameHasEnded()) {
-        DrawMainMenu(settings, renderer, fonts[0], mainMenu.player.camera, streamingFrameTexture, renderFrameTexture);
+        _renderer.DrawMainMenu(settings, fonts[0], mainMenu.player.camera);
         mainMenu.player.Update(0, 0, 0);
     }
 
@@ -87,6 +84,8 @@ int main() {
 
     Player gamePlayer(&level, settings);
 
+    _renderer.textureMap = textureMap;
+
     float oldTime, curTime, frameDelta;
     curTime = 0;
 
@@ -101,7 +100,7 @@ int main() {
 
         gamePlayer.Update(frameDelta, settings.speedModifier, settings.rotationModifier);
 
-        Draw(renderer, gamePlayer, textureMap, streamingFrameTexture, renderFrameTexture);
+        _renderer.Draw(gamePlayer);
     }
 
     Quit(window, renderer);
