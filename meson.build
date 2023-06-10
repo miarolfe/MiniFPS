@@ -54,7 +54,7 @@ if host_machine.system() == 'darwin'
 
     mini_fps = executable('MiniFPS', sources + headers,
                           include_directories: include_dirs,
-                          dependencies: [sdl2_dep, sdl2_image_dep, sdl2_ttf_dep],
+                          dependencies: [sdl2_dep, sdl2_image_dep, sdl2_mixer_dep, sdl2_ttf_dep],
                           install : true,
                           install_dir: 'Contents/MacOS')
 endif
