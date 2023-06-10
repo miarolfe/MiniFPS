@@ -8,6 +8,9 @@
 
 namespace MiniFPS {
     Level::Level(const std::string& filePath) {
+        matrix = nullptr;
+        w = -1;
+        h = -1;
         Load(filePath);
     }
 
@@ -25,9 +28,7 @@ namespace MiniFPS {
 
         for (int cellX = roundedX - 1; cellX <= roundedX + 1; cellX++) {
             for (int cellY = roundedY - 1; cellY <= roundedY + 1; cellY++) {
-                if (cellX < 0 || cellX >= w || cellY < 0 || cellY >= h) {
-                    // std::cerr << "Invalid index" << std::endl;
-                } else {
+                if (!(cellX < 0 || cellX >= w || cellY < 0 || cellY >= h)) {
                     if (Get(cellX, cellY) != 0) {
                         if (x >= static_cast<double>(cellX) - 0.05 && x <= static_cast<double>(cellX) + 1 + 0.05 &&
                             y >= static_cast<double>(cellY) - 0.05 && y <= static_cast<double>(cellY) + 1 + 0.05) {
@@ -62,33 +63,10 @@ namespace MiniFPS {
         }
     }
 
-    void Level::Save(const std::string &filePath) {
-        std::ofstream outfile(filePath);
-        if (!outfile) {
-            std::cerr << "Error opening file for writing: " << filePath << std::endl;
-        }
-
-        outfile << w << " " << h << std::endl;
-        for (size_t i = 0; i < h; ++i) {
-            for (size_t j = 0; j < w; ++j) {
-                outfile << matrix[i][j] << (j < h - 1 ? " " : "");
-            }
-            outfile << std::endl;
-        }
-
-        for (std::pair<short, std::string> pair: textureIdMap) {
-            outfile << pair.first << " " << pair.second << std::endl;
-        }
-
-        outfile.close();
-    }
-
     void Level::Load(std::string filePath) {
         std::ifstream infile(filePath);
         if (!infile) {
             std::cerr << "Error opening level file for reading: " << filePath << std::endl;
-        } else {
-            // std::cout << "Loaded level file: " << filePath << std::endl;
         }
 
         infile >> w >> h;
