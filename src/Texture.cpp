@@ -4,10 +4,11 @@
 
 namespace MiniFPS {
     Texture::Texture() {
-
+        buffer = nullptr;
+        size = -1;
     }
 
-    Texture::Texture(std::string name, std::string filePath) {
+    Texture::Texture(const std::string& name, const std::string& filePath) {
         this->name = name;
 
         SDL_Surface* tempTextureSurface = IMG_Load(filePath.c_str());

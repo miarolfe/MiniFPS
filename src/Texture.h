@@ -9,12 +9,11 @@
 
 namespace MiniFPS {
     struct Texture {
-        Texture();
-
-        Texture(std::string name, std::string filePath);
-
         string name;
         uint32_t** buffer;
         int size;
+
+        Texture();
+        Texture(const std::string& name, const std::string& filePath);
     };
 }
