@@ -4,24 +4,25 @@
 
 #include <SDL.h>
 #include <SDL_image.h>
+#include <SDL_mixer.h>
 #include <SDL_ttf.h>
 
 #include "Utilities.h"
 
 namespace MiniFPS {
     bool InitializeSDL() {
-        bool successful_initialization = true;
+        bool successfulInitialization = true;
 
-        if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-            successful_initialization = false;
+        if (SDL_Init((SDL_INIT_VIDEO | SDL_INIT_VIDEO)) < 0) {
+            successfulInitialization = false;
         }
 
-        return successful_initialization;
+        return successfulInitialization;
     }
 
     bool InitializeWindowAndRenderer(SDL_Window** window, SDL_Renderer** renderer, size_t screenWidth,
                                      size_t screenHeight, bool vSync) {
-        bool successful_initialization = true;
+        bool successfulInitialization = true;
 
         *window = SDL_CreateWindow("MiniFPS",
                                    SDL_WINDOWPOS_CENTERED,
@@ -31,7 +32,7 @@ namespace MiniFPS {
                                    SDL_WINDOW_SHOWN);
 
         if (*window == nullptr) {
-            successful_initialization = false;
+            successfulInitialization = false;
         }
 
         if (vSync) {
@@ -41,13 +42,13 @@ namespace MiniFPS {
         }
 
         if (*renderer == nullptr) {
-            successful_initialization = false;
+            successfulInitialization = false;
         }
 
         // Capture mouse cursor and enable relative mouse mode
         SDL_SetWindowGrab(*window, SDL_TRUE);
 
-        return successful_initialization;
+        return successfulInitialization;
     }
 
     bool InitializeSDLImage() {
@@ -60,14 +61,24 @@ namespace MiniFPS {
         return successful_initialization;
     }
 
-    bool InitializeSDLTTF() {
-        bool successful_initialization = true;
+    bool InitializeSDLMixer() {
+        bool successfulInitialization = true;
 
-        if (TTF_Init() != 0) {
-            successful_initialization = false;
+        if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) != 0) {
+            successfulInitialization = false;
         }
 
-        return successful_initialization;
+        return successfulInitialization;
+    }
+
+    bool InitializeSDLTTF() {
+        bool successfulInitialization = true;
+
+        if (TTF_Init() != 0) {
+            successfulInitialization = false;
+        }
+
+        return successfulInitialization;
     }
 
     void Quit(SDL_Window* window, SDL_Renderer* renderer) {
@@ -75,6 +86,7 @@ namespace MiniFPS {
         SDL_DestroyRenderer(renderer);
         SDL_Quit();
         IMG_Quit();
+        Mix_CloseAudio();
         TTF_Quit();
     }
 
@@ -88,20 +100,20 @@ namespace MiniFPS {
     }
 
     std::string GetSDLAssetsFolderPath() {
-        std::string file_path;
+        std::string filePath;
         const char* platform = SDL_GetPlatform();
 
         // strcmp returns 0 if two strings are identical
         if (strcmp(platform, "Windows") == 0) {
-            file_path = "assets/";
+            filePath = "assets/";
         } else if (strcmp(platform, "Mac OS X") == 0) {
-            file_path = "../Resources/";
+            filePath = "../Resources/";
         } else {
             std::cerr << "Invalid platform: " << platform << std::endl;
-            file_path = "INVALID PLATFORM";
+            filePath = "INVALID PLATFORM";
         }
 
-        return file_path;
+        return filePath;
     }
 
     TTF_Font* LoadFont(const std::string &fontPath, int pointSize) {
@@ -136,5 +148,27 @@ namespace MiniFPS {
         }
 
         return files;
+    }
+
+    std::vector<std::string> GetFoldersInDirectory(const std::string& directoryPath) {
+        std::vector<std::string> folders;
+        DIR* dir;
+        struct dirent* entry;
+
+        if ((dir = opendir(directoryPath.c_str())) != nullptr) {
+            while ((entry = readdir(dir)) != nullptr) {
+                if (entry->d_type == DT_DIR) {  // directory
+                    std::string folderName = entry->d_name;
+                    if (folderName != "." && folderName != "..") {
+                        folders.push_back(folderName);
+                    }
+                }
+            }
+            closedir(dir);
+        } else {
+            std::cerr << "Error opening directory: " << directoryPath << std::endl;
+        }
+
+        return folders;
     }
 }

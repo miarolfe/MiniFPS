@@ -33,6 +33,12 @@ namespace MiniFPS {
     bool InitializeSDLImage();
 
     /**
+     * Initialize SDL_mixer's subsystems.
+     * @return Whether the initialization was successful.
+     */
+    bool InitializeSDLMixer();
+
+    /**
      * Initialize SDL_TTF.
      * @return Whether the initialization was successful.
      */
@@ -94,4 +100,11 @@ namespace MiniFPS {
      * @return A list of paths to all files in the directory.
      */
     std::vector<std::string> GetFilesInDirectory(const std::string& directoryPath);
+
+    /**
+     * Gets the paths to all folders in a directory.
+     * @param directoryPath The path to the directory
+     * @return A list of paths to all folders in the directory.
+     */
+    std::vector<std::string> GetFoldersInDirectory(const std::string& directoryPath);
 }
