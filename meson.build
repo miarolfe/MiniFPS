@@ -36,7 +36,7 @@ if host_machine.system() == 'darwin'
 
     sdl2_dep = dependency('SDL2', required: true, static: true, method: 'extraframework')
     sdl2_image_dep = dependency('SDL2_image', required: true, static: true, method: 'extraframework')
-    sdl2_mixer_dep = dependency('SDL2_mixer', true, true, 'extraframework')
+    sdl2_mixer_dep = dependency('SDL2_mixer', required: true, static: true, 'extraframework')
     sdl2_ttf_dep = dependency('SDL2_ttf', required: true, static: true, method: 'extraframework')
     include_dirs = include_directories('include', 'lib', '/Library/Frameworks/')
 
