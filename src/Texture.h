@@ -15,6 +15,6 @@ namespace MiniFPS {
 
         string name;
         uint32_t** buffer;
-        size_t size;
+        int size;
     };
 }
