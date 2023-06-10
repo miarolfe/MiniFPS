@@ -1,5 +1,4 @@
-// <iostream> needs to be here, or it doesn't compile, complaining about memset_pattern4
-#include <iostream>
+#include <iostream> // Won't compile without this (memset_pattern4)
 #include <cmath>
 
 #include <SDL.h>
