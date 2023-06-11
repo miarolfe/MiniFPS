@@ -80,9 +80,9 @@ int main() {
         mainMenu.player.Update(0, 0, 0);
     }
 
-    if (!audio.effects.empty()) {
-        Mix_PlayChannel(-1, audio.effects[0], 0);
-    }
+//    if (!audio.effects.empty()) {
+//        Mix_PlayChannel(-1, audio.effects[0], 0);
+//    }
 
     Level level = Level(GetSDLAssetsFolderPath() + settings.levelPath);
 
