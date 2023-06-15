@@ -39,10 +39,6 @@ int main() {
 
     Audio audio(GetSDLAssetsFolderPath() + "audio/");
 
-    if (!audio.tracks.empty()) {
-        Mix_PlayMusic(audio.tracks[0], -1);
-    }
-
     Font fonts[settings.fontPaths.size()];
     for (size_t i = 0; i < settings.fontPaths.size(); i++) {
         fonts[i] = Font(settings.fontPaths[i].first, GetSDLAssetsFolderPath() + settings.fontPaths[i].second, 24);
@@ -79,10 +75,6 @@ int main() {
         renderer.DrawMainMenu(settings, fonts[0], mainMenu.player.camera);
         mainMenu.player.Update(0, 0, 0);
     }
-
-//    if (!audio.effects.empty()) {
-//        Mix_PlayChannel(-1, audio.effects[0], 0);
-//    }
 
     Level level = Level(GetSDLAssetsFolderPath() + settings.levelPath);
 
