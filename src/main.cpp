@@ -2,6 +2,8 @@
 
 #include <iostream>
 #include <vector>
+#include <unordered_map>
+#include <map>
 
 #include <SDL.h>
 

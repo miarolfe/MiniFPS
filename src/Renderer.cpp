@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cmath>
+#include <unordered_map>
 
 #include <SDL.h>
 
@@ -165,7 +166,7 @@ namespace MiniFPS {
 
         for (int y = 0; y < player.weaponTexture.size; y++) {
             for (int x = 0; x < player.weaponTexture.size; x++) {
-                uint32_t pixelColor = player.weaponTexture.buffer[y][x];
+                const uint32_t pixelColor = player.weaponTexture.buffer[y][x];
 
                 // Check if alpha value is 0 (transparent)
                 if ((pixelColor & 0xFF000000) != 0) {
