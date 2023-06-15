@@ -20,6 +20,10 @@ namespace MiniFPS {
                                                             static_cast<int>(settings.screenWidth), static_cast<int>(settings.screenHeight));
     }
 
+    void Renderer::SetTextureMap(const std::unordered_map<short, Texture>& newTextureMap) {
+        textureMap = newTextureMap;
+    }
+
     void Renderer::SetPixel(void* pixels, int pitch, uint32_t color, int x, int y) {
         uint32_t* row;
         row = (uint32_t*) ((uint8_t*) pixels + y * pitch);
@@ -35,6 +39,25 @@ namespace MiniFPS {
         }
 
         return texture;
+    }
+
+    void Renderer::CopyTextureToFrameTexture(void* pixels, int pitch, Texture texture, int x, int y, int w, int h) {
+        float scaleX = static_cast<float>(texture.size) / w;
+        float scaleY = static_cast<float>(texture.size) / h;
+
+        for (int destinationY = 0; destinationY < h; destinationY++) {
+            for (int destinationX = 0; destinationX < w; destinationX++) {
+                int sourceX = static_cast<int>(destinationX * scaleX);
+                int sourceY = static_cast<int>(destinationY * scaleY);
+
+                const uint32_t pixel = texture.buffer[sourceY][sourceX];
+
+                // Check if alpha value is 0 (transparent)
+                if ((pixel & 0xFF000000) != 0) {
+                    SetPixel(pixels, pitch, pixel, x + destinationX - (w/2), y + destinationY - (h/2));
+                }
+            }
+        }
     }
 
     void Renderer::DrawCeiling(Camera camera, void* pixels, int pitch) {
@@ -164,16 +187,7 @@ namespace MiniFPS {
             }
         }
 
-        for (int y = 0; y < player.weaponTexture.size; y++) {
-            for (int x = 0; x < player.weaponTexture.size; x++) {
-                const uint32_t pixelColor = player.weaponTexture.buffer[y][x];
-
-                // Check if alpha value is 0 (transparent)
-                if ((pixelColor & 0xFF000000) != 0) {
-                    SetPixel(pixels, pitch, pixelColor, x + (player.camera.viewportWidth/2 - player.weaponTexture.size/2), y + (player.camera.viewportHeight - player.weaponTexture.size));
-                }
-            }
-        }
+        CopyTextureToFrameTexture(pixels, pitch, player.weaponTexture, player.camera.viewportWidth/2, player.camera.viewportHeight - 128, 256, 256);
 
         SDL_UnlockTexture(streamingFrameTexture);
 
