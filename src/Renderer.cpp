@@ -10,7 +10,7 @@
 #include "Texture.h"
 
 const uint32_t CEILING = 0xFFA5A5A5;
-const uint32_t FLOOR   = 0xFF0000A5;
+const uint32_t FLOOR   = 0xFFBBBBDD;
 
 namespace MiniFPS {
     Renderer::Renderer(SDL_Renderer* sdlRenderer, Settings settings) : sdlRenderer(sdlRenderer) {
@@ -19,6 +19,7 @@ namespace MiniFPS {
         renderFrameTexture = SDL_CreateTexture(sdlRenderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_TARGET,
                                                             static_cast<int>(settings.screenWidth), static_cast<int>(settings.screenHeight));
     }
+    
 
     void Renderer::SetTextureMap(const std::unordered_map<short, Texture>& newTextureMap) {
         textureMap = newTextureMap;
