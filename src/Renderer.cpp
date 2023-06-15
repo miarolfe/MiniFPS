@@ -163,6 +163,17 @@ namespace MiniFPS {
             }
         }
 
+        for (int y = 0; y < player.weaponTexture.size; y++) {
+            for (int x = 0; x < player.weaponTexture.size; x++) {
+                uint32_t pixelColor = player.weaponTexture.buffer[y][x];
+
+                // Check if alpha value is 0 (transparent)
+                if ((pixelColor & 0xFF000000) != 0) {
+                    SetPixel(pixels, pitch, pixelColor, x + (player.camera.viewportWidth/2 - player.weaponTexture.size/2), y + (player.camera.viewportHeight - player.weaponTexture.size));
+                }
+            }
+        }
+
         SDL_UnlockTexture(streamingFrameTexture);
 
         SDL_SetRenderTarget(sdlRenderer, renderFrameTexture);
