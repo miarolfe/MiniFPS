@@ -13,7 +13,8 @@ namespace MiniFPS {
         int mouseX, mouseY;
     };
 
-    struct Player {
+    class Player {
+    public:
         Player();
         Player(Level* level, const Settings& settings);
 
