@@ -40,7 +40,7 @@ namespace MiniFPS {
         void Rotate(float frameDelta, float rotationModifier);
 
         /**
-         *
+         * Updates the player proportionally to the frame delta.
          * @param frameDelta The time between frames in seconds.
          * @param speedModifier How fast the player moves.
          * @param rotationModifier How fast the player turns.

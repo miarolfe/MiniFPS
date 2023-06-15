@@ -36,11 +36,13 @@ if host_machine.system() == 'darwin'
 
     sdl2_dep = dependency('SDL2', required: true, static: true, method: 'extraframework')
     sdl2_image_dep = dependency('SDL2_image', required: true, static: true, method: 'extraframework')
+    sdl2_mixer_dep = dependency('SDL2_mixer', required: true, static: true, method: 'extraframework')
     sdl2_ttf_dep = dependency('SDL2_ttf', required: true, static: true, method: 'extraframework')
     include_dirs = include_directories('include', 'lib', '/Library/Frameworks/')
 
     install_subdir('lib/SDL2.framework', install_dir: 'Contents/Frameworks')
     install_subdir('lib/SDL2_image.framework', install_dir: 'Contents/Frameworks')
+    install_subdir('lib/SDL2_mixer.framework', install_dir: 'Contents/Frameworks')
     install_subdir('lib/SDL2_ttf.framework', install_dir: 'Contents/Frameworks')
     install_subdir('assets/fonts', install_dir: 'Contents/Resources')
     install_subdir('assets/levels', install_dir: 'Contents/Resources')
@@ -52,7 +54,7 @@ if host_machine.system() == 'darwin'
 
     mini_fps = executable('MiniFPS', sources + headers,
                           include_directories: include_dirs,
-                          dependencies: [sdl2_dep, sdl2_image_dep, sdl2_ttf_dep],
+                          dependencies: [sdl2_dep, sdl2_image_dep, sdl2_mixer_dep, sdl2_ttf_dep],
                           install : true,
                           install_dir: 'Contents/MacOS')
 endif

@@ -5,6 +5,7 @@
 
 #include <SDL.h>
 
+#include "Audio.h"
 #include "Level.h"
 #include "Player.h"
 #include "Renderer.h"
@@ -22,6 +23,10 @@ int main() {
     if (!InitializeSDLImage()) {
         std::cerr << "SDL_image could not be initialized" << std::endl;
     }
+
+    if (!InitializeSDLMixer()) {
+        std::cerr << "SDL_mixer could not be initialized" << std::endl;
+    }
     
     if (!InitializeSDLTTF()) {
         std::cerr << "SDL_ttf could not be initialized" << std::endl;
@@ -31,6 +36,12 @@ int main() {
     SDL_Renderer* sdlRenderer = nullptr;
 
     Settings settings = Settings::LoadSettings(GetSDLAssetsFolderPath(), "settings.json");
+
+    Audio audio(GetSDLAssetsFolderPath() + "audio/");
+
+    if (!audio.tracks.empty()) {
+        Mix_PlayMusic(audio.tracks[0], -1);
+    }
 
     Font fonts[settings.fontPaths.size()];
     for (size_t i = 0; i < settings.fontPaths.size(); i++) {
@@ -68,6 +79,10 @@ int main() {
         renderer.DrawMainMenu(settings, fonts[0], mainMenu.player.camera);
         mainMenu.player.Update(0, 0, 0);
     }
+
+//    if (!audio.effects.empty()) {
+//        Mix_PlayChannel(-1, audio.effects[0], 0);
+//    }
 
     Level level = Level(GetSDLAssetsFolderPath() + settings.levelPath);
 

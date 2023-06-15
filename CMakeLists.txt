@@ -52,19 +52,21 @@ if(WIN32)
             )
 
     target_include_directories(MiniFPS PRIVATE "include/" "win-include/")
-    target_link_libraries(MiniFPS PRIVATE ${CMAKE_SOURCE_DIR}/lib/SDL2.dll ${CMAKE_SOURCE_DIR}/lib/SDL2_image.dll ${CMAKE_SOURCE_DIR}/lib/SDL2_ttf.dll)
+    target_link_libraries(MiniFPS PRIVATE ${CMAKE_SOURCE_DIR}/lib/SDL2.dll ${CMAKE_SOURCE_DIR}/lib/SDL2_image.dll ${CMAKE_SOURCE_DIR}/lib/SDL2_mixer.dll ${CMAKE_SOURCE_DIR}/lib/SDL2_ttf.dll)
     add_custom_command(TARGET MiniFPS POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/MiniFPS-windows"
             COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/MiniFPS-windows/assets"
             COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/assets" "${CMAKE_CURRENT_BINARY_DIR}/MiniFPS-windows/assets"
             COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/lib/SDL2.dll" "${CMAKE_CURRENT_BINARY_DIR}/MiniFPS-windows"
             COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/lib/SDL2_image.dll" "${CMAKE_CURRENT_BINARY_DIR}/MiniFPS-windows"
+            COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/lib/SDL2_mixer.dll" "${CMAKE_CURRENT_BINARY_DIR}/MiniFPS-windows"
             COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/lib/SDL2_ttf.dll" "${CMAKE_CURRENT_BINARY_DIR}/MiniFPS-windows"
             COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/MiniFPS.exe" "${CMAKE_CURRENT_BINARY_DIR}/MiniFPS-windows"
             )
 elseif(APPLE)
     set(SDL2_FRAMEWORK "${PROJECT_SOURCE_DIR}/lib/SDL2.framework")
     set(SDL2_IMAGE_FRAMEWORK "${PROJECT_SOURCE_DIR}/lib/SDL2_image.framework")
+    set(SDL2_MIXER_FRAMEWORK "${PROJECT_SOURCE_DIR}/lib/SDL2_mixer.framework")
     set(SDL2_TTF_FRAMEWORK "${PROJECT_SOURCE_DIR}/lib/SDL2_ttf.framework")
     set(CMAKE_BUILD_RPATH "@executable_path/../Frameworks")
 
@@ -80,6 +82,7 @@ elseif(APPLE)
     target_link_libraries(MiniFPS PRIVATE
             "${SDL2_FRAMEWORK}"
             "${SDL2_IMAGE_FRAMEWORK}"
+            "${SDL2_MIXER_FRAMEWORK}"
             "${SDL2_TTF_FRAMEWORK}"
     )
 
@@ -89,12 +92,14 @@ elseif(APPLE)
             COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/MiniFPS.app/Contents/Frameworks
             COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/lib/SDL2.framework ${CMAKE_CURRENT_BINARY_DIR}/MiniFPS.app/Contents/Frameworks/SDL2.framework
             COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/lib/SDL2_image.framework ${CMAKE_CURRENT_BINARY_DIR}/MiniFPS.app/Contents/Frameworks/SDL2_image.framework
+            COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/lib/SDL2_mixer.framework ${CMAKE_CURRENT_BINARY_DIR}/MiniFPS.app/Contents/Frameworks/SDL2_mixer.framework
             COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/lib/SDL2_ttf.framework ${CMAKE_CURRENT_BINARY_DIR}/MiniFPS.app/Contents/Frameworks/SDL2_ttf.framework
             COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/MiniFPS.app/Contents/Resources
             COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/assets ${CMAKE_CURRENT_BINARY_DIR}/MiniFPS.app/Contents/Resources
 
             COMMAND install_name_tool -change ${CMAKE_CURRENT_SOURCE_DIR}/lib/SDL2.framework/Versions/A/SDL2 @executable_path/../Frameworks/SDL2.framework/Versions/A/SDL2 "${CMAKE_CURRENT_BINARY_DIR}/MiniFPS.app/Contents/MacOS/MiniFPS"
             COMMAND install_name_tool -change ${CMAKE_CURRENT_SOURCE_DIR}/lib/SDL2_image.framework/Versions/A/SDL2_image @executable_path/../Frameworks/SDL2_image.framework/Versions/A/SDL2_image "${CMAKE_CURRENT_BINARY_DIR}/MiniFPS.app/Contents/MacOS/MiniFPS"
+            COMMAND install_name_tool -change ${CMAKE_CURRENT_SOURCE_DIR}/lib/SDL2_image.framework/Versions/A/SDL2_mixer @executable_path/../Frameworks/SDL2_mixer.framework/Versions/A/SDL2_mixer "${CMAKE_CURRENT_BINARY_DIR}/MiniFPS.app/Contents/MacOS/MiniFPS"
             COMMAND install_name_tool -change ${CMAKE_CURRENT_SOURCE_DIR}/lib/SDL2_ttf.framework/Versions/A/SDL2_ttf @executable_path/../Frameworks/SDL2_ttf.framework/Versions/A/SDL2_ttf "${CMAKE_CURRENT_BINARY_DIR}/MiniFPS.app/Contents/MacOS/MiniFPS"
             )
 else()
