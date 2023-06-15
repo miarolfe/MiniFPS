@@ -1,12 +1,7 @@
 #pragma once
 
-#include <cstddef>
-#include <fstream>
 #include <vector>
 #include <map>
-#include <json.hpp>
-
-using json = nlohmann::json;
 
 namespace MiniFPS {
     struct Settings {
@@ -32,8 +27,6 @@ namespace MiniFPS {
                  float rotationModifier, float playerStartX, float playerStartY,
                  float playerStartAngle, float playerDistanceToProjectionPlane,
                  const std::string& levelPath, const std::map<std::string, std::string> &fontPaths);
-
-
 
         /**
          * Load game settings from a file.

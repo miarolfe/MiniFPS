@@ -1,6 +1,8 @@
 #include <iostream>
+#include <fstream>
 #include <cmath>
 #include <vector>
+#include <map>
 
 #include "Level.h"
 

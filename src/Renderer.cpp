@@ -4,11 +4,9 @@
 #include <SDL.h>
 
 #include "Camera.h"
-#include "Level.h"
 #include "Menu.h"
 #include "Renderer.h"
 #include "Texture.h"
-#include "Utilities.h"
 
 const uint32_t CEILING = 0xFFA5A5A5;
 const uint32_t FLOOR   = 0xFF0000A5;
