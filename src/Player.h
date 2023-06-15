@@ -3,6 +3,7 @@
 #include "Camera.h"
 #include "Level.h"
 #include "Settings.h"
+#include "Texture.h"
 
 namespace MiniFPS {
     struct InputState {
@@ -19,6 +20,7 @@ namespace MiniFPS {
         Level* level;
         Camera camera;
         InputState inputState;
+        Texture weaponTexture;
 
         /**
          * Gets input from the player.

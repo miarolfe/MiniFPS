@@ -90,6 +90,7 @@ int main() {
     textureMap[-1] = textureNameToTextureMap["fallback"];
 
     Player gamePlayer(&level, settings);
+    gamePlayer.weaponTexture = textureNameToTextureMap["Player_Weapon"];
 
     renderer.textureMap = textureMap;
 
