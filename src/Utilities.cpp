@@ -128,9 +128,9 @@ namespace MiniFPS {
     }
 
     void WriteLineToFile(const std::string& fileName, const std::string& line) {
-        std::ofstream outFile(fileName, std::ios::app); // open file in append mode
-        outFile << line << std::endl; // write line and append newline character
-        outFile.close(); // close file
+        std::ofstream outFile(fileName, std::ios::app);
+        outFile << line << std::endl;
+        outFile.close();
     }
 
     std::vector<std::string> GetFilesInDirectory(const std::string& directoryPath) {
