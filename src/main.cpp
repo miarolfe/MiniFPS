@@ -94,7 +94,7 @@ int main() {
     Player gamePlayer(&level, settings);
     gamePlayer.weaponTexture = textureNameToTextureMap["Player_Weapon"];
 
-    renderer.textureMap = textureMap;
+    renderer.SetTextureMap(textureMap);
 
     float oldTime, curTime, frameDelta;
     curTime = 0;
