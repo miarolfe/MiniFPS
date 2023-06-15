@@ -1,5 +1,7 @@
 #include <iostream>
 
+#include <SDL_ttf.h>
+
 #include "Menu.h"
 #include "Utilities.h"
 

@@ -1,14 +1,13 @@
 #include <iostream>
 #include <cmath>
+#include <unordered_map>
 
 #include <SDL.h>
 
 #include "Camera.h"
-#include "Level.h"
 #include "Menu.h"
 #include "Renderer.h"
 #include "Texture.h"
-#include "Utilities.h"
 
 const uint32_t CEILING = 0xFFA5A5A5;
 const uint32_t FLOOR   = 0xFF0000A5;
@@ -19,6 +18,10 @@ namespace MiniFPS {
                                                                static_cast<int>(settings.screenWidth), static_cast<int>(settings.screenHeight));
         renderFrameTexture = SDL_CreateTexture(sdlRenderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_TARGET,
                                                             static_cast<int>(settings.screenWidth), static_cast<int>(settings.screenHeight));
+    }
+
+    void Renderer::SetTextureMap(const std::unordered_map<short, Texture>& newTextureMap) {
+        textureMap = newTextureMap;
     }
 
     void Renderer::SetPixel(void* pixels, int pitch, uint32_t color, int x, int y) {
@@ -36,6 +39,25 @@ namespace MiniFPS {
         }
 
         return texture;
+    }
+
+    void Renderer::CopyTextureToFrameTexture(void* pixels, int pitch, Texture texture, int x, int y, int w, int h) {
+        float scaleX = static_cast<float>(texture.size) / w;
+        float scaleY = static_cast<float>(texture.size) / h;
+
+        for (int destinationY = 0; destinationY < h; destinationY++) {
+            for (int destinationX = 0; destinationX < w; destinationX++) {
+                int sourceX = static_cast<int>(destinationX * scaleX);
+                int sourceY = static_cast<int>(destinationY * scaleY);
+
+                const uint32_t pixel = texture.buffer[sourceY][sourceX];
+
+                // Check if alpha value is 0 (transparent)
+                if ((pixel & 0xFF000000) != 0) {
+                    SetPixel(pixels, pitch, pixel, x + destinationX - (w/2), y + destinationY - (h/2));
+                }
+            }
+        }
     }
 
     void Renderer::DrawCeiling(Camera camera, void* pixels, int pitch) {
@@ -165,11 +187,15 @@ namespace MiniFPS {
             }
         }
 
+        int weaponTextureSize = 0.25 * player.camera.viewportWidth;
+        CopyTextureToFrameTexture(pixels, pitch, player.weaponTexture, player.camera.viewportWidth/2, player.camera.viewportHeight - (weaponTextureSize/2), weaponTextureSize, weaponTextureSize);
+
         SDL_UnlockTexture(streamingFrameTexture);
 
         SDL_SetRenderTarget(sdlRenderer, renderFrameTexture);
         SDL_RenderCopy(sdlRenderer, streamingFrameTexture, nullptr, nullptr);
 
+        // TODO: Scale this with frame
         // UI draw here
         DrawTextStr("MiniFPS", font, 25, 25, 250);
         DrawTextStr("peterrolfe.com", font, 25, 100, 175);

@@ -10,17 +10,24 @@
 
 namespace MiniFPS {
     class Renderer {
-    public:
-        Renderer(SDL_Renderer* sdlRenderer, Settings settings);
+    private:
         SDL_Renderer* sdlRenderer;
         SDL_Texture* streamingFrameTexture;
         SDL_Texture* renderFrameTexture;
         std::unordered_map<short, Texture> textureMap;
+    public:
+        Renderer(SDL_Renderer* sdlRenderer, Settings settings);
+
+        /**
+         * Set the renderer's texture map to correspond with the currently loaded level.
+         * @param newTextureMap
+         */
+        void SetTextureMap(const std::unordered_map<short, Texture>& newTextureMap);
 
         /**
          * Sets a single pixel in the frame texture's pixel buffer.
          * @param pixels The pixel buffer of the frame texture.
-         * @param pitch The pitch of the frame texture
+         * @param pitch The pitch of the frame texture.
          * @param color The color to set the pixel in the frame texture.
          * @param x The x-coordinate of the frame texture to set.
          * @param y The y-coordinate of the frame texture to set.
@@ -33,6 +40,18 @@ namespace MiniFPS {
          * @return The Texture object associated with the provided texture ID.
          */
         Texture GetTexBuffer(short textureId);
+
+        /**
+         * Copies a texture to the frame texture.
+         * @param pixels The pixel buffer of the frame texture.
+         * @param pitch The pitch of the frame texture.
+         * @param texture The texture to copy to the frame texture.
+         * @param x The centered x-coordinate to copy the texture to.
+         * @param y The centered y-coordinate to copy the texture to.
+         * @param w The width to copy it with.
+         * @param h The height to copy it with.
+         */
+        void CopyTextureToFrameTexture(void* pixels, int pitch, Texture texture, int x, int y, int w, int h);
 
         /**
          * Writes the ceiling to the frame texture.

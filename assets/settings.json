@@ -3,13 +3,13 @@
     "version": {
       "major": 0,
       "minor": 1,
-      "patch": 0
+      "patch": 1
     }
   },
 
   "graphics": {
-    "screenWidth": 900,
-    "screenHeight": 600,
+    "screenWidth": 1280,
+    "screenHeight": 720,
     "horizontalFieldOfView": 90,
     "vSync": true
   },
@@ -24,7 +24,7 @@
     "speedModifier": 5,
     "rotationModifier": 0.5,
     "startX": 1.5,
-    "startY": 2,
+    "startY": 1.5,
     "startAngle": 1.523
   },
 

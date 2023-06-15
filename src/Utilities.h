@@ -1,9 +1,9 @@
 #pragma once
 
-#include <SDL_ttf.h>
-#include <vector>
 #include <string>
-#include <dirent.h>
+
+#include <SDL.h>
+#include <SDL_ttf.h>
 
 namespace MiniFPS {
     const float PI_180 = (1.0 / 180.0) * M_PI;

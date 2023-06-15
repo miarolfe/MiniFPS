@@ -2,6 +2,8 @@
 
 #include <iostream>
 #include <vector>
+#include <unordered_map>
+#include <map>
 
 #include <SDL.h>
 
@@ -38,10 +40,6 @@ int main() {
     Settings settings = Settings::LoadSettings(GetSDLAssetsFolderPath(), "settings.json");
 
     Audio audio(GetSDLAssetsFolderPath() + "audio/");
-
-    if (!audio.tracks.empty()) {
-        Mix_PlayMusic(audio.tracks[0], -1);
-    }
 
     Font fonts[settings.fontPaths.size()];
     for (size_t i = 0; i < settings.fontPaths.size(); i++) {
@@ -80,10 +78,6 @@ int main() {
         mainMenu.player.Update(0, 0, 0);
     }
 
-//    if (!audio.effects.empty()) {
-//        Mix_PlayChannel(-1, audio.effects[0], 0);
-//    }
-
     Level level = Level(GetSDLAssetsFolderPath() + settings.levelPath);
 
     std::unordered_map<short, Texture> textureMap;
@@ -98,8 +92,9 @@ int main() {
     textureMap[-1] = textureNameToTextureMap["fallback"];
 
     Player gamePlayer(&level, settings);
+    gamePlayer.weaponTexture = textureNameToTextureMap["Player_Weapon"];
 
-    renderer.textureMap = textureMap;
+    renderer.SetTextureMap(textureMap);
 
     float oldTime, curTime, frameDelta;
     curTime = 0;

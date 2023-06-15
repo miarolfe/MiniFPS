@@ -1,9 +1,8 @@
 #pragma once
 
-#include <vector>
-#include <SDL.h>
+#include <map>
 
-#include "Settings.h"
+#include <SDL.h>
 
 namespace MiniFPS {
     struct Level {
