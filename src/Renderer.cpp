@@ -187,13 +187,15 @@ namespace MiniFPS {
             }
         }
 
-        CopyTextureToFrameTexture(pixels, pitch, player.weaponTexture, player.camera.viewportWidth/2, player.camera.viewportHeight - 128, 256, 256);
+        int weaponTextureSize = 0.25 * player.camera.viewportWidth;
+        CopyTextureToFrameTexture(pixels, pitch, player.weaponTexture, player.camera.viewportWidth/2, player.camera.viewportHeight - (weaponTextureSize/2), weaponTextureSize, weaponTextureSize);
 
         SDL_UnlockTexture(streamingFrameTexture);
 
         SDL_SetRenderTarget(sdlRenderer, renderFrameTexture);
         SDL_RenderCopy(sdlRenderer, streamingFrameTexture, nullptr, nullptr);
 
+        // TODO: Scale this with frame
         // UI draw here
         DrawTextStr("MiniFPS", font, 25, 25, 250);
         DrawTextStr("peterrolfe.com", font, 25, 100, 175);
