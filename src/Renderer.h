@@ -78,8 +78,24 @@ namespace MiniFPS {
          * @param x The x-coordinate to start drawing text from.
          * @param y The y-coordinate to start drawing text from.
          * @param width The required width for the drawn text.
+         * @param r The red value for the text.
+         * @param g The green value for the text.
+         * @param b The blue value for the text.
          */
-        void DrawTextStr(const std::string &text, Font font, float x, float y, int width);
+        void DrawTextStr(const std::string &text, const Font& font, float x, float y, int width, int r, int g, int b);
+
+        /**
+         * Renders text to a texture and copies that texture onto the frame texture.
+         * @param text The string value of the text.
+         * @param font The font to use to draw the text.
+         * @param x The x-coordinate to start drawing text from.
+         * @param y The y-coordinate to start drawing text from.
+         * @param height The required height for the drawn text.
+         * @param r The red value for the text.
+         * @param g The green value for the text.
+         * @param b The blue value for the text.
+         */
+        void DrawTextStrH(const std::string& text, const Font& font, float x, float y, int height, int r, int g, int b);
 
         /**
          * Draws the main menu and copies it to the frame texture.
@@ -92,7 +108,9 @@ namespace MiniFPS {
         /**
          * Draws the game world and copies it to the frame texture.
          * @param player The player who's view is being drawn.
+         * @param font The font to use for UI.
+         * @param frameDelta The time elapsed between frames in seconds.
          */
-        void Draw(Player player, const Font &font);
+        void Draw(Player player, const Font &font, float frameDelta);
     };
 }

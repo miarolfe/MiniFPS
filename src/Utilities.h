@@ -53,11 +53,10 @@ namespace MiniFPS {
 
     /**
      * Get the current frames per second (FPS).
-     * @param oldTime The time at the start of the frame in milliseconds.
-     * @param curTime The time at the end of the frame in milliseconds.
+     * @param The time elapsed between frames in seconds.
      * @return The current FPS as a string.
      */
-    std::string GetFramesPerSecond(float oldTime, float curTime);
+    std::string GetFramesPerSecond(float frameDelta);
 
     /**
      * Get the time elapsed during the frame.

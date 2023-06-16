@@ -15,7 +15,7 @@ namespace MiniFPS {
     bool InitializeSDL() {
         bool successfulInitialization = true;
 
-        if (SDL_Init((SDL_INIT_VIDEO | SDL_INIT_VIDEO)) < 0) {
+        if (SDL_Init((SDL_INIT_VIDEO | SDL_INIT_AUDIO)) < 0) {
             successfulInitialization = false;
         }
 
@@ -92,8 +92,8 @@ namespace MiniFPS {
         TTF_Quit();
     }
 
-    std::string GetFramesPerSecond(const float oldTime, const float curTime) {
-        return std::to_string(static_cast<int>((1.0f / GetFrameTime(oldTime, curTime))));
+    std::string GetFramesPerSecond(const float frameDelta) {
+        return std::to_string(static_cast<int>((1.0f / frameDelta)));
     }
 
     float GetFrameTime(const float oldTime, const float curTime) {
