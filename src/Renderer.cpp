@@ -148,8 +148,8 @@ namespace MiniFPS {
     }
 
     void Renderer::Draw(Player player, const Font& font, const float frameDelta) {
-        int pitch;
-        void* pixels;
+        int pitch = -1;
+        void* pixels = nullptr;
         SDL_LockTexture(streamingFrameTexture, nullptr, &pixels, &pitch);
 
         DrawCeiling(player.camera, pixels, pitch);
@@ -181,13 +181,13 @@ namespace MiniFPS {
                     int texX = static_cast<int>(hitX * static_cast<float>(texture.size));
 
                     if (std::abs(hitY) > std::abs(hitX)) {
-                        texX = hitY * static_cast<float>(texture.size);
+                        texX = static_cast<int>(hitY * static_cast<float>(texture.size));
                     }
 
                     if (texX < 0) texX += texture.size;
 
                     int drawStart =
-                            (static_cast<int>(player.camera.viewportHeight) / 2) - (static_cast<int>(columnHeight) / 2);
+                            ((player.camera.viewportHeight / 2) - (columnHeight / 2));
 
                     int drawEnd = drawStart + columnHeight;
 
@@ -205,7 +205,7 @@ namespace MiniFPS {
             }
         }
 
-        int weaponTextureSize = 0.25 * player.camera.viewportWidth;
+        int weaponTextureSize = player.camera.viewportWidth / 4;
         CopyTextureToFrameTexture(pixels, pitch, player.weaponTexture, player.camera.viewportWidth/2, player.camera.viewportHeight - (weaponTextureSize/2), weaponTextureSize, weaponTextureSize);
 
         SDL_UnlockTexture(streamingFrameTexture);

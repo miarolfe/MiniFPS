@@ -11,7 +11,7 @@
     "screenWidth": 1280,
     "screenHeight": 720,
     "horizontalFieldOfView": 90,
-    "vSync": true
+    "vSync": false
   },
 
   "rendering": {
