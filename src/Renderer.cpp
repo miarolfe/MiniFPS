@@ -90,7 +90,7 @@ namespace MiniFPS {
 
         SDL_Rect destRect{static_cast<int>(x), static_cast<int>(y), width, height};
 
-        SDL_RenderCopy(sdlRenderer, RenderTextToTexture(sdlRenderer, font, text, 255, 255, 255), nullptr, &destRect);
+        SDL_RenderCopy(sdlRenderer, RenderTextToTexture(sdlRenderer, font, text, r, g, b), nullptr, &destRect);
         SDL_SetRenderTarget(sdlRenderer, nullptr);
     }
 
