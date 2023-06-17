@@ -102,6 +102,8 @@ int main() {
     // Disable movement of cursor in game
     SDL_SetRelativeMouseMode(SDL_TRUE);
 
+    audio.PlayTrack("TrackTest1", -1);
+
     while (!gamePlayer.GameHasEnded()) {
         oldTime = curTime;
         curTime = static_cast<float>(SDL_GetTicks64());
@@ -109,6 +111,10 @@ int main() {
         frameDelta = GetFrameTime(oldTime, curTime);
 
         gamePlayer.Update(frameDelta, settings.speedModifier, settings.rotationModifier);
+
+        if (gamePlayer.inputState.leftMouseButtonPressed) {
+            audio.PlayEffect("testEffect");
+        }
 
         renderer.Draw(gamePlayer, fonts[0], frameDelta);
     }
