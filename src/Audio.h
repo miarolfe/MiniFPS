@@ -19,10 +19,11 @@ namespace MiniFPS {
     };
 
     class Audio {
-    public:
-        explicit Audio(const std::string& audioFolderPath);
+    private:
         std::map<std::string, Effect> effects;
         std::map<std::string, Track> tracks;
+    public:
+        explicit Audio(const std::string& audioFolderPath);
 
         /**
          * Play an effect (sound file a few seconds in length at most).
@@ -46,9 +47,9 @@ namespace MiniFPS {
         void Pause();
 
         /**
-         * Play all audio channels.
+         * Resume all audio channels.
          */
-        void Play();
+        void Resume();
     };
 }
 

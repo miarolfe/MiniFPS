@@ -87,7 +87,7 @@ namespace MiniFPS {
         }
     }
 
-    void Audio::Play() {
+    void Audio::Resume() {
         for (int i = 0; i < Mix_AllocateChannels(-1); i++) {
             if (Mix_Paused(i) == 0) {
                 Mix_Resume(i);
