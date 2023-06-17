@@ -102,7 +102,7 @@ int main() {
     // Disable movement of cursor in game
     SDL_SetRelativeMouseMode(SDL_TRUE);
 
-    audio.PlayTrack("TrackTest1", -1);
+    audio.PlayTrack("DrumLoop1", -1);
 
     while (!gamePlayer.GameHasEnded()) {
         oldTime = curTime;
@@ -113,7 +113,7 @@ int main() {
         gamePlayer.Update(frameDelta, settings.speedModifier, settings.rotationModifier);
 
         if (gamePlayer.inputState.leftMouseButtonPressed) {
-            audio.PlayEffect("testEffect");
+            audio.PlayEffect("GunShoot1");
         }
 
         renderer.Draw(gamePlayer, fonts[0], frameDelta);
