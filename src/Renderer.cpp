@@ -8,9 +8,10 @@
 #include "Menu.h"
 #include "Renderer.h"
 #include "Texture.h"
+#include "Utilities.h"
 
 const uint32_t CEILING = 0xFFA5A5A5;
-const uint32_t FLOOR   = 0xFF0000A5;
+const uint32_t FLOOR   = 0xFFBBBBDD;
 
 namespace MiniFPS {
     Renderer::Renderer(SDL_Renderer* sdlRenderer, Settings settings) : sdlRenderer(sdlRenderer) {
@@ -19,6 +20,7 @@ namespace MiniFPS {
         renderFrameTexture = SDL_CreateTexture(sdlRenderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_TARGET,
                                                             static_cast<int>(settings.screenWidth), static_cast<int>(settings.screenHeight));
     }
+
 
     void Renderer::SetTextureMap(const std::unordered_map<short, Texture>& newTextureMap) {
         textureMap = newTextureMap;
@@ -76,7 +78,7 @@ namespace MiniFPS {
         }
     }
 
-    void Renderer::DrawTextStr(const std::string& text, Font font, float x, float y, int width) {
+    void Renderer::DrawTextStr(const std::string& text, const Font& font, float x, float y, int width, int r=255, int g=255, int b=255) {
         SDL_SetRenderTarget(sdlRenderer, renderFrameTexture);
 
         int requestedWidth;
@@ -88,7 +90,23 @@ namespace MiniFPS {
 
         SDL_Rect destRect{static_cast<int>(x), static_cast<int>(y), width, height};
 
-        SDL_RenderCopy(sdlRenderer, RenderTextToTexture(sdlRenderer, font, text, 255, 255, 255), nullptr, &destRect);
+        SDL_RenderCopy(sdlRenderer, RenderTextToTexture(sdlRenderer, font, text, r, g, b), nullptr, &destRect);
+        SDL_SetRenderTarget(sdlRenderer, nullptr);
+    }
+
+    void Renderer::DrawTextStrH(const std::string& text, const Font& font, float x, float y, int height, int r=255, int g=255, int b=255) {
+        SDL_SetRenderTarget(sdlRenderer, renderFrameTexture);
+
+        int requestedWidth;
+        int requestedHeight;
+        TTF_SizeUTF8(font.ttf, text.c_str(), &requestedWidth, &requestedHeight);
+        float ratio = static_cast<float>(requestedHeight) / static_cast<float>(requestedWidth);
+
+        int width = static_cast<int>(static_cast<float>(height) / ratio);
+
+        SDL_Rect destRect{static_cast<int>(x), static_cast<int>(y), width, height};
+
+        SDL_RenderCopy(sdlRenderer, RenderTextToTexture(sdlRenderer, font, text, r, g, b), nullptr, &destRect);
         SDL_SetRenderTarget(sdlRenderer, nullptr);
     }
 
@@ -129,9 +147,9 @@ namespace MiniFPS {
         SDL_RenderPresent(sdlRenderer);
     }
 
-    void Renderer::Draw(Player player, const Font& font) {
-        int pitch;
-        void* pixels;
+    void Renderer::Draw(Player player, const Font& font, const float frameDelta) {
+        int pitch = -1;
+        void* pixels = nullptr;
         SDL_LockTexture(streamingFrameTexture, nullptr, &pixels, &pitch);
 
         DrawCeiling(player.camera, pixels, pitch);
@@ -163,13 +181,13 @@ namespace MiniFPS {
                     int texX = static_cast<int>(hitX * static_cast<float>(texture.size));
 
                     if (std::abs(hitY) > std::abs(hitX)) {
-                        texX = hitY * static_cast<float>(texture.size);
+                        texX = static_cast<int>(hitY * static_cast<float>(texture.size));
                     }
 
                     if (texX < 0) texX += texture.size;
 
                     int drawStart =
-                            (static_cast<int>(player.camera.viewportHeight) / 2) - (static_cast<int>(columnHeight) / 2);
+                            ((player.camera.viewportHeight / 2) - (columnHeight / 2));
 
                     int drawEnd = drawStart + columnHeight;
 
@@ -187,7 +205,7 @@ namespace MiniFPS {
             }
         }
 
-        int weaponTextureSize = 0.25 * player.camera.viewportWidth;
+        int weaponTextureSize = player.camera.viewportWidth / 4;
         CopyTextureToFrameTexture(pixels, pitch, player.weaponTexture, player.camera.viewportWidth/2, player.camera.viewportHeight - (weaponTextureSize/2), weaponTextureSize, weaponTextureSize);
 
         SDL_UnlockTexture(streamingFrameTexture);
@@ -199,6 +217,7 @@ namespace MiniFPS {
         // UI draw here
         DrawTextStr("MiniFPS", font, 25, 25, 250);
         DrawTextStr("peterrolfe.com", font, 25, 100, 175);
+        DrawTextStrH(GetFramesPerSecond(frameDelta), font, player.camera.viewportWidth - 100, 25, 50, 255, 0, 0);
 
         SDL_SetRenderTarget(sdlRenderer, nullptr);
         SDL_RenderCopy(sdlRenderer, renderFrameTexture, nullptr, nullptr);

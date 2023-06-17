@@ -26,6 +26,8 @@ namespace MiniFPS {
         inputState.mouseX = 0;
         inputState.mouseY = 0;
         inputState.endGame = false;
+        inputState.leftMouseButtonPressed = false;
+        inputState.rightMouseButtonPressed = false;
 
         SDL_Event event;
 
@@ -37,6 +39,14 @@ namespace MiniFPS {
             if (event.type == SDL_MOUSEMOTION) {
                 inputState.mouseX = event.motion.xrel;
                 inputState.mouseY = event.motion.yrel;
+            }
+
+            if (event.type == SDL_MOUSEBUTTONDOWN) {
+                if (event.button.button == SDL_BUTTON_LEFT) {
+                    inputState.leftMouseButtonPressed = true;
+                } else if (event.button.button == SDL_BUTTON_RIGHT) {
+                    inputState.rightMouseButtonPressed = true;
+                }
             }
         }
 
@@ -136,6 +146,8 @@ namespace MiniFPS {
         moveBack = false;
         endGame = false;
         inMainMenu = false;
+        leftMouseButtonPressed = false;
+        rightMouseButtonPressed = false;
         mouseX = 0;
         mouseY = 0;
     }
