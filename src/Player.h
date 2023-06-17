@@ -9,7 +9,8 @@ namespace MiniFPS {
     struct InputState {
         InputState();
 
-        bool moveLeft, moveRight, moveForward, moveBack, endGame, inMainMenu;
+        bool moveLeft, moveRight, moveForward, moveBack, endGame, inMainMenu, leftMouseButtonPressed,
+        rightMouseButtonPressed;
         int mouseX, mouseY;
     };
 
