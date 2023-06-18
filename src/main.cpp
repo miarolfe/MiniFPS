@@ -46,8 +46,8 @@ int main() {
         fonts[i] = Font(settings.fontPaths[i].first, GetSDLAssetsFolderPath() + settings.fontPaths[i].second, 24);
     }
 
-    std::vector<std::string> spriteFileNames = GetFilesInDirectory(GetSDLAssetsFolderPath() + "sprites/");
     std::map<std::string, Texture> textureNameToTextureMap;
+    const std::vector<std::string> spriteFileNames = GetFilesInDirectory(GetSDLAssetsFolderPath() + "sprites/");
 
     for (const auto& file : spriteFileNames) {
         std::string name = file;
@@ -96,8 +96,9 @@ int main() {
 
     renderer.SetTextureMap(textureMap);
 
-    float oldTime, curTime, frameDelta;
-    curTime = 0;
+    float oldTime = 0.0;
+    float curTime = 0.0;
+    float frameDelta = 0.0;
 
     // Disable movement of cursor in game
     SDL_SetRelativeMouseMode(SDL_TRUE);
