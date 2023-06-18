@@ -44,12 +44,12 @@ namespace MiniFPS {
         /**
          * Pause all audio channels.
          */
-        void Pause();
+        static void Pause();
 
         /**
          * Resume all audio channels.
          */
-        void Resume();
+        static void Resume();
     };
 }
 

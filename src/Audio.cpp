@@ -7,33 +7,34 @@
 #include "Utilities.h"
 
 namespace MiniFPS {
-    Effect::Effect() {
-        this->chunk = nullptr;
+    Effect::Effect() : chunk(nullptr) {
+
     }
 
-    Effect::Effect(Mix_Chunk* chunk) {
-        this->chunk = chunk;
+    Effect::Effect(Mix_Chunk* chunk) : chunk(chunk) {
+
     }
 
-    Track::Track() {
-        this->music = nullptr;
+    Track::Track() : music(nullptr) {
+
     }
 
-    Track::Track(Mix_Music* music) {
-        this->music = music;
+    Track::Track(Mix_Music* music) : music(music) {
+
     }
 
     Audio::Audio(const std::string& audioFolderPath) {
-        std::vector<std::string> folders = GetFoldersInDirectory(audioFolderPath);
+        const std::vector<std::string> folders = GetFoldersInDirectory(audioFolderPath);
 
         for (const std::string& folder : folders) {
             if (folder == "effects") {
                 std::vector<std::string> const effectFiles = GetFilesInDirectory(audioFolderPath + folder);
 
                 for (const std::string& file : effectFiles) {
-                    Mix_Chunk* effect = Mix_LoadWAV((audioFolderPath + folder + "/" + file).c_str());
+                    const std::string effectFilePath = audioFolderPath + folder + "/" + file;
+                    Mix_Chunk* effect = Mix_LoadWAV((effectFilePath).c_str());
                     if (effect) {
-                        std::string name = file.substr(0, file.size()-4);
+                        const std::string name = file.substr(0, file.size()-4);
                         effects[name] = Effect(effect);
                     } else {
                         std::cerr << "Effect file " << file << " could not be loaded" << std::endl;
@@ -45,14 +46,19 @@ namespace MiniFPS {
                 std::vector<std::string> const trackFiles = GetFilesInDirectory(audioFolderPath + folder);
 
                 for (const std::string& file : trackFiles) {
-                    Mix_Music* track = Mix_LoadMUS((audioFolderPath + folder + "/" + file).c_str());
+                    const std::string trackFilePath = audioFolderPath + folder + "/" + file;
+                    Mix_Music* track = Mix_LoadMUS((trackFilePath).c_str());
                     if (track) {
-                        std::string name = file.substr(0, file.size()-4);
+                        const std::string name = file.substr(0, file.size()-4);
                         tracks[name] = Track(track);
                     } else {
                         std::cerr << "Track file " << file << " could not be loaded" << std::endl;
                     }
                 }
+            }
+
+            else {
+                std::cerr << "Folder " << folder << " is not a valid folder for audio files" << std::endl;
             }
         }
     }
