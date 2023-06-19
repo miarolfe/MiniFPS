@@ -16,11 +16,12 @@ const uint32_t FLOOR   = 0xFFBBBBDD;
 namespace MiniFPS {
     Renderer::Renderer(SDL_Renderer* sdlRenderer, Settings settings) : sdlRenderer(sdlRenderer) {
         streamingFrameTexture = SDL_CreateTexture(sdlRenderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING,
-                                                               static_cast<int>(settings.screenWidth), static_cast<int>(settings.screenHeight));
+                                                  static_cast<int>(settings.screenWidth),
+                                                  static_cast<int>(settings.screenHeight));
         renderFrameTexture = SDL_CreateTexture(sdlRenderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_TARGET,
-                                                            static_cast<int>(settings.screenWidth), static_cast<int>(settings.screenHeight));
+                                               static_cast<int>(settings.screenWidth),
+                                               static_cast<int>(settings.screenHeight));
     }
-
 
     void Renderer::SetTextureMap(const std::unordered_map<short, Texture>& newTextureMap) {
         textureMap = newTextureMap;
@@ -178,6 +179,7 @@ namespace MiniFPS {
 
                     float hitX = cx - floor(cx + 0.5f);
                     float hitY = cy - floor(cy + 0.5f);
+
                     int texX = static_cast<int>(hitX * static_cast<float>(texture.size));
 
                     if (std::abs(hitY) > std::abs(hitX)) {
