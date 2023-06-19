@@ -42,7 +42,7 @@ namespace MiniFPS {
                 }
             }
 
-            if (folder == "tracks") {
+            else if (folder == "tracks") {
                 std::vector<std::string> const trackFiles = GetFilesInDirectory(audioFolderPath + folder);
 
                 for (const std::string& file : trackFiles) {
