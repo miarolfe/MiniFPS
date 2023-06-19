@@ -29,7 +29,7 @@
   },
 
   "files": {
-    "levelPath": "levels/OldCastle1.lvl",
+    "levelPath": "levels/TextureFlipTest.lvl",
     "fontPaths": {
       "Inconsolata-Medium": "fonts/Inconsolata-Medium.ttf"
     }
