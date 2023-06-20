@@ -173,4 +173,26 @@ namespace MiniFPS {
 
         return folders;
     }
+
+    float CalculateCrossProduct(float x1, float y1, float x2, float y2) {
+        return ((x1 * y2) - (x2 * y1));
+    }
+
+    bool IsPointInRightAngledTriangle(float pointX, float pointY, float x1, float y1, float x2, float y2, float x3, float y3) {
+        const float v1x = pointX - x1;
+        const float v1y = pointY - y1;
+        const float v2x = pointX - x2;
+        const float v2y = pointY - y2;
+        const float v3x = pointX - x3;
+        const float v3y = pointY - y3;
+
+        // Calculate the cross products of these vectors
+        const float cp1 = CalculateCrossProduct(v1x, v1y, v2x, v2y);
+        const float cp2 = CalculateCrossProduct(v2x, v2y, v3x, v3y);
+        const float cp3 = CalculateCrossProduct(v3x, v3y, v1x, v1y);
+
+        // If all cross products have the same sign, the point is inside the triangle
+        return ((cp1 >= 0 && cp2 >= 0 && cp3 >= 0) || (cp1 <= 0 && cp2 <= 0 && cp3 <= 0));
+
+    }
 }
