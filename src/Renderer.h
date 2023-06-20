@@ -9,6 +9,10 @@
 #include "Texture.h"
 
 namespace MiniFPS {
+    const uint32_t CEILING = 0xFFA5A5A5;
+    const uint32_t FLOOR = 0xFFBBBBDD;
+    const uint32_t TRANSPARENCY_MASK = 0xFF000000;
+
     class Renderer {
     private:
         SDL_Renderer* sdlRenderer;

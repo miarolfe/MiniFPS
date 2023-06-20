@@ -106,4 +106,28 @@ namespace MiniFPS {
      * @return A list of paths to all folders in the directory.
      */
     std::vector<std::string> GetFoldersInDirectory(const std::string& directoryPath);
+
+    /**
+     * Calculates the cross product of two vectors.
+     * @param x1 x component of first vector.
+     * @param y1 y component of first vector.
+     * @param x2 x component of second vector.
+     * @param y2 y component of second vector.
+     * @return The cross product of the first and second vectors.
+     */
+    float CalculateCrossProduct(float x1, float y1, float x2, float y2);
+
+    /**
+     * Checks if a point is within a right-angled triangle.
+     * @param pointX x coordinate of the point.
+     * @param pointY y coordinate of the point.
+     * @param x1 x coordinate of first vertex.
+     * @param y1 y coordinate of first vertex.
+     * @param x2 x coordinate of second vertex.
+     * @param y2 y coordinate of second vertex.
+     * @param x3 x coordinate of third vertex.
+     * @param y3 y coordinate of third vertex.
+     * @return Whether the point is inside the right-angled triangle.
+     */
+    bool IsPointInRightAngledTriangle(float pointX, float pointY, float x1, float y1, float x2, float y2, float x3, float y3);
 }
