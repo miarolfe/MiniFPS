@@ -16,15 +16,26 @@ namespace MiniFPS {
     }
 
     bool Button::Pressed(float mouseX, float mouseY) {
-        const float leftBound = x - (width/2);
-        const float rightBound = x + (width/2);
-        const float bottomBound = y + (height/2);
-        const float topBound = y - (height/2);
-
-        if (mouseX >= leftBound && mouseX <= rightBound && mouseY <= bottomBound && mouseY >= topBound) {
+        if (mouseX >= GetLeftBound() && mouseX <= GetRightBound() && mouseY <= GetBottomBound() && mouseY >= GetTopBound()) {
             return true;
         } else {
             return false;
         }
+    }
+
+    float Button::GetLeftBound() {
+        return x - (width/2);
+    }
+
+    float Button::GetRightBound() {
+        return x + (width/2);
+    }
+
+    float Button::GetBottomBound() {
+        return y + (height/2);
+    }
+
+    float Button::GetTopBound() {
+        return y - (height/2);
     }
 }

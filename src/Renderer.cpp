@@ -75,6 +75,34 @@ namespace MiniFPS {
         }
     }
 
+    void Renderer::DrawButton(Button button) {
+        SDL_SetRenderTarget(sdlRenderer, renderFrameTexture);
+        SDL_Texture* buttonTexture = SDL_CreateTexture(sdlRenderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, button.width, button.height);
+
+        const SDL_Rect sdlRect {
+            static_cast<int>(button.GetLeftBound()),
+            static_cast<int>(button.GetTopBound()),
+            static_cast<int>(button.width),
+            static_cast<int>(button.height)
+        };
+
+        void* pixels = nullptr;
+        int pitch = -1;
+
+        SDL_LockTexture(buttonTexture, nullptr, &pixels, &pitch);
+
+        for (int x = 0; x < button.width; x++) {
+            for (int y = 0; y < button.height; y++) {
+                SetPixel(pixels, pitch, 0xFFA5A5A5, x, y);
+            }
+        }
+
+        SDL_UnlockTexture(buttonTexture);
+
+        SDL_RenderCopy(sdlRenderer, buttonTexture, nullptr, &sdlRect);
+        SDL_SetRenderTarget(sdlRenderer, nullptr);
+    }
+
     void Renderer::DrawTextStr(const std::string& text, const Font& font, float x, float y, int width, int r=255, int g=255, int b=255) {
         SDL_SetRenderTarget(sdlRenderer, renderFrameTexture);
 
@@ -130,11 +158,15 @@ namespace MiniFPS {
         const int startTextY = static_cast<int>(6 * (mainMenu.player.camera.viewportHeight / 8));
         const int startTextWidth = static_cast<int>(10 * (mainMenu.player.camera.viewportWidth / 12));
 
+
+
         SDL_UnlockTexture(streamingFrameTexture);
         SDL_SetRenderTarget(sdlRenderer, renderFrameTexture);
         SDL_RenderCopy(sdlRenderer, streamingFrameTexture, nullptr, nullptr);
 
         // UI draw calls
+
+        DrawButton(mainMenu.startButton);
         DrawTextStr("MiniFPS", mainMenu.font, titleTextX, titleTextY, titleTextWidth);
         DrawTextStr(mainMenu.settings.version, mainMenu.font, versionTextX, versionTextY, versionTextWidth);
         DrawTextStr("Press [SPACE] or [ENTER] to start", mainMenu.font, startTextX, startTextY,startTextWidth);

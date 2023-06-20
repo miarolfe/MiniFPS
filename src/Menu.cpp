@@ -30,13 +30,16 @@ namespace MiniFPS {
         this->settings = settings;
         this->font = font;
         startButton = Button {static_cast<float>(settings.screenWidth/2),
-                              static_cast<float>(settings.screenHeight/2),
-                              static_cast<float>(settings.screenWidth/2),
-                              static_cast<float>(settings.screenHeight/2)};
+                              static_cast<float>(settings.screenHeight/2) + 50,
+                              static_cast<float>(settings.screenWidth/6),
+                              static_cast<float>(settings.screenHeight/6)};
     }
 
     void MainMenu::Update() {
         player.Update(0, 0, 0);
+        if (startButton.Pressed(player.inputState.mousePosX, player.inputState.mousePosY) && player.inputState.leftMouseButtonPressed) {
+            player.inputState.inMainMenu = false;
+        }
     }
 
     SDL_Texture* RenderTextToTexture(SDL_Renderer* sdlRenderer, const Font& font, const std::string &text, int r, int g,
