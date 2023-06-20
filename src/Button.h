@@ -8,6 +8,7 @@ namespace MiniFPS {
         float width;
         float height;
     public:
+        Button();
         Button(float x, float y, float width, float height);
 
         void Draw();

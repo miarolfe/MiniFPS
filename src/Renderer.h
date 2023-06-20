@@ -107,7 +107,7 @@ namespace MiniFPS {
          * @param font The font to use for text on the menu.
          * @param camera The camera object.
          */
-        void DrawMainMenu(const Settings &settings, const Font &font, Camera camera);
+        void DrawMainMenu(const MainMenu& mainMenu);
 
         /**
          * Draws the game world and copies it to the frame texture.

@@ -2,6 +2,7 @@
 
 #include <SDL_ttf.h>
 
+#include "Button.h"
 #include "Player.h"
 
 using string = std::string;
@@ -16,11 +17,16 @@ namespace MiniFPS {
         int pointSize;
     };
 
-    struct MainMenu {
-        explicit MainMenu(const Settings& settings);
+    class MainMenu {
+    public:
+        MainMenu(const Settings& settings, const Font& font);
 
+        Font font;
         Player player;
         Settings settings;
+        Button startButton;
+
+        void Update();
     };
 
     /**
