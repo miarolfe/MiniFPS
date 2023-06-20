@@ -11,7 +11,7 @@ namespace MiniFPS {
 
         bool moveLeft, moveRight, moveForward, moveBack, endGame, inMainMenu, leftMouseButtonPressed,
         rightMouseButtonPressed;
-        int mouseX, mouseY;
+        int mousePosX, mousePosY, mouseMotionX, mouseMotionY;
     };
 
     class Player {
