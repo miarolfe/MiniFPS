@@ -11,7 +11,8 @@
 #include "Utilities.h"
 
 const uint32_t CEILING = 0xFFA5A5A5;
-const uint32_t FLOOR   = 0xFFBBBBDD;
+const uint32_t FLOOR = 0xFFBBBBDD;
+const uint32_t TRANSPARENCY_MASK = 0xFF000000;
 
 namespace MiniFPS {
     Renderer::Renderer(SDL_Renderer* sdlRenderer, const Settings& settings) : sdlRenderer(sdlRenderer) {
@@ -55,7 +56,7 @@ namespace MiniFPS {
                 const uint32_t pixel = texture.buffer[sourceY][sourceX];
 
                 // Check if alpha value is 0 (transparent)
-                if ((pixel & 0xFF000000) != 0) {
+                if ((pixel & TRANSPARENCY_MASK) != 0) {
                     SetPixel(pixels, pitch, pixel, x + destinationX - (w/2), y + destinationY - (h/2));
                 }
             }
