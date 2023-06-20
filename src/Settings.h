@@ -6,10 +6,10 @@
 namespace MiniFPS {
     struct Settings {
         std::string version;
-        size_t screenWidth;
-        size_t screenHeight;
+        int screenWidth;
+        int screenHeight;
         float renderRayIncrement;
-        size_t renderDistance;
+        int renderDistance;
         bool vSync;
         float fieldOfView;
         float speedModifier;
@@ -22,8 +22,8 @@ namespace MiniFPS {
         std::vector<std::pair<std::string, std::string>> fontPaths;
 
         Settings();
-        Settings(const std::string& version, size_t screenWidth, size_t screenHeight, float renderRayIncrement,
-                 size_t renderDistance, bool vSync, float fieldOfView, float speedModifier,
+        Settings(const std::string& version, int screenWidth, int screenHeight, float renderRayIncrement,
+                 int renderDistance, bool vSync, float fieldOfView, float speedModifier,
                  float rotationModifier, float playerStartX, float playerStartY,
                  float playerStartAngle, float playerDistanceToProjectionPlane,
                  const std::string& levelPath, const std::map<std::string, std::string> &fontPaths);
