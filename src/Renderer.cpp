@@ -14,7 +14,7 @@ const uint32_t CEILING = 0xFFA5A5A5;
 const uint32_t FLOOR   = 0xFFBBBBDD;
 
 namespace MiniFPS {
-    Renderer::Renderer(SDL_Renderer* sdlRenderer, Settings settings) : sdlRenderer(sdlRenderer) {
+    Renderer::Renderer(SDL_Renderer* sdlRenderer, const Settings& settings) : sdlRenderer(sdlRenderer) {
         streamingFrameTexture = SDL_CreateTexture(sdlRenderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING,
                                                   static_cast<int>(settings.screenWidth),
                                                   static_cast<int>(settings.screenHeight));
@@ -44,7 +44,7 @@ namespace MiniFPS {
         return texture;
     }
 
-    void Renderer::CopyTextureToFrameTexture(void* pixels, int pitch, Texture texture, int x, int y, int w, int h) {
+    void Renderer::CopyTextureToFrameTexture(void* pixels, int pitch, const Texture& texture, int x, int y, int w, int h) {
         float scaleX = static_cast<float>(texture.size) / w;
         float scaleY = static_cast<float>(texture.size) / h;
 
@@ -158,47 +158,50 @@ namespace MiniFPS {
 
         // Cast rays
         for (int ray = 0; ray < player.camera.viewportWidth; ray++) {
-            float rayScreenPos = (2 * ray / float(player.camera.viewportWidth) - 1) * player.camera.aspectRatio;
-            float rayAngle = player.camera.angle + atan(rayScreenPos * tan(player.camera.horizontalFieldOfView / 2));
+            const float rayScreenPos = (2 * ray / float(player.camera.viewportWidth) - 1) * player.camera.aspectRatio;
+            const float rayAngle = player.camera.angle + atan(rayScreenPos * tan(player.camera.horizontalFieldOfView / 2));
+            const float cosRayAngle = cos(rayAngle); // X component
+            const float sinRayAngle = sin(rayAngle); // Y component
 
-            float t;
-            float cosRayAngle = cos(rayAngle);
-            float sinRayAngle = sin(rayAngle);
+            // TODO: DDA?
+            for (float rayDistance = 0; rayDistance < player.camera.maxRenderDistance; rayDistance += player.camera.rayIncrement) {
+                const float cellX = player.camera.x + rayDistance * cosRayAngle;
+                const float cellY = player.camera.y + rayDistance * sinRayAngle;
 
-            for (t = 0; t < player.camera.maxRenderDistance; t += player.camera.rayIncrement) {
-                float cx = player.camera.x + t * cosRayAngle;
-                float cy = player.camera.y + t * sinRayAngle;
-
-                const short cell = player.level->Get(static_cast<int>(cx), static_cast<int>(cy));
+                const short cell = player.level->Get(static_cast<int>(cellX), static_cast<int>(cellY));
 
                 if (cell != 0) {
-                    Texture texture = GetTexBuffer(cell);
-                    float distance = t * cos(rayAngle - player.camera.angle);
-                    int columnHeight =
-                            ((player.camera.viewportHeight) * player.camera.distanceToProjectionPlane) / distance;
+                    const Texture texture = GetTexBuffer(cell);
+                    const float distance = rayDistance * cos(rayAngle - player.camera.angle);
+                    const int columnHeight = ((player.camera.viewportHeight) * player.camera.distanceToProjectionPlane) / distance;
 
-                    float hitX = cx - floor(cx + 0.5f);
-                    float hitY = cy - floor(cy + 0.5f);
+                    const float hitX = cellX - floor(cellX + 0.5f); // Fractional part of cellX
+                    const float hitY = cellY - floor(cellY + 0.5f); // Fractional part of cellY
 
-                    int texX = static_cast<int>(hitX * static_cast<float>(texture.size));
+                    int texX;
 
-                    if (std::abs(hitY) > std::abs(hitX)) {
+                    if (std::abs(hitY) > std::abs(hitX)) { // West-East
                         texX = static_cast<int>(hitY * static_cast<float>(texture.size));
+                    } else { // North-South
+                        texX = static_cast<int>(hitX * static_cast<float>(texture.size));
                     }
+
+                    // TODO
+                    // 1. Check if face is North or East
+                    // 2. texX = texture.size - texX - 1;
 
                     if (texX < 0) texX += texture.size;
 
-                    int drawStart =
-                            ((player.camera.viewportHeight / 2) - (columnHeight / 2));
+                    const int drawStart = ((player.camera.viewportHeight / 2) - (columnHeight / 2));
 
-                    int drawEnd = drawStart + columnHeight;
+                    const int drawEnd = drawStart + columnHeight;
 
                     for (int y = drawStart; y < drawEnd; y++) {
                         if (y < 0 || y >= player.camera.viewportHeight) {
                             continue;
                         }
 
-                        int texY = ((y - drawStart) * texture.size) / columnHeight;
+                        const int texY = ((y - drawStart) * texture.size) / columnHeight;
                         SetPixel(pixels, pitch, texture.buffer[texY][texX], ray, y);
                     }
 
@@ -207,7 +210,7 @@ namespace MiniFPS {
             }
         }
 
-        int weaponTextureSize = player.camera.viewportWidth / 4;
+        const int weaponTextureSize = player.camera.viewportWidth / 4;
         CopyTextureToFrameTexture(pixels, pitch, player.weaponTexture, player.camera.viewportWidth/2, player.camera.viewportHeight - (weaponTextureSize/2), weaponTextureSize, weaponTextureSize);
 
         SDL_UnlockTexture(streamingFrameTexture);
@@ -217,8 +220,8 @@ namespace MiniFPS {
 
         // TODO: Scale this with frame
         // UI draw here
-        DrawTextStr("MiniFPS", font, 25, 25, 250);
-        DrawTextStr("peterrolfe.com", font, 25, 100, 175);
+        DrawTextStrH("MiniFPS", font, 25, 25, 100);
+        DrawTextStrH("peterrolfe.com", font, 25, 125, 50);
         DrawTextStrH(GetFramesPerSecond(frameDelta), font, player.camera.viewportWidth - 100, 25, 50, 255, 0, 0);
 
         SDL_SetRenderTarget(sdlRenderer, nullptr);

@@ -16,7 +16,7 @@ namespace MiniFPS {
         SDL_Texture* renderFrameTexture;
         std::unordered_map<short, Texture> textureMap;
     public:
-        Renderer(SDL_Renderer* sdlRenderer, Settings settings);
+        Renderer(SDL_Renderer* sdlRenderer, const Settings& settings);
 
         /**
          * Set the renderer's texture map to correspond with the currently loaded level.
@@ -51,7 +51,7 @@ namespace MiniFPS {
          * @param w The width to copy it with.
          * @param h The height to copy it with.
          */
-        void CopyTextureToFrameTexture(void* pixels, int pitch, Texture texture, int x, int y, int w, int h);
+        void CopyTextureToFrameTexture(void* pixels, int pitch, const Texture& texture, int x, int y, int w, int h);
 
         /**
          * Writes the ceiling to the frame texture.
