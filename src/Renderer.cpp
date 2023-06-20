@@ -28,8 +28,7 @@ namespace MiniFPS {
     }
 
     void Renderer::SetPixel(void* pixels, int pitch, uint32_t color, int x, int y) {
-        uint32_t* row;
-        row = (uint32_t*) ((uint8_t*) pixels + y * pitch);
+        uint32_t* row = (uint32_t*) ((uint8_t*) pixels + y * pitch);
         row[x] = color;
     }
 
