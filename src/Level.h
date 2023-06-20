@@ -5,6 +5,8 @@
 #include <SDL.h>
 
 namespace MiniFPS {
+    const float collisionThreshold = 0.05;
+
     struct Level {
     private:
         short** matrix; // 2D array representing the level as a grid of texture IDs, where 0 is empty space

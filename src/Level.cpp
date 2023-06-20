@@ -14,24 +14,29 @@ namespace MiniFPS {
         Load(filePath);
     }
 
-    short Level::Get(int x, int y) {
+    short Level::Get(const int x, const int y) {
         return matrix[y][x];
     }
 
     bool Level::HasCollided(const float x, const float y) {
         bool collided = false;
 
-        if (x < 0.05 || x > w - 0.05 || y < 0.05 || y > h - 0.05) return true;
+        // Check if out-of-bounds
+        if (x < collisionThreshold || x > w - collisionThreshold || y < collisionThreshold ||
+            y > h - collisionThreshold)
+            return true;
 
-        int roundedX = static_cast<int>(roundf(x));
-        int roundedY = static_cast<int>(roundf(y));
+        const int roundedX = static_cast<int>(roundf(x));
+        const int roundedY = static_cast<int>(roundf(y));
 
         for (int cellX = roundedX - 1; cellX <= roundedX + 1; cellX++) {
             for (int cellY = roundedY - 1; cellY <= roundedY + 1; cellY++) {
                 if (!(cellX < 0 || cellX >= w || cellY < 0 || cellY >= h)) {
                     if (Get(cellX, cellY) != 0) {
-                        if (x >= static_cast<double>(cellX) - 0.05 && x <= static_cast<double>(cellX) + 1 + 0.05 &&
-                            y >= static_cast<double>(cellY) - 0.05 && y <= static_cast<double>(cellY) + 1 + 0.05) {
+                        if (x >= static_cast<double>(cellX) - collisionThreshold &&
+                            x <= static_cast<double>(cellX) + 1 + collisionThreshold &&
+                            y >= static_cast<double>(cellY) - collisionThreshold &&
+                            y <= static_cast<double>(cellY) + 1 + collisionThreshold) {
                             collided = true;
                         }
                     }
@@ -63,7 +68,7 @@ namespace MiniFPS {
         }
     }
 
-    void Level::Load(const std::string& filePath) {
+    void Level::Load(const std::string &filePath) {
         std::ifstream infile(filePath);
         if (!infile) {
             std::cerr << "Error opening level file for reading: " << filePath << std::endl;
