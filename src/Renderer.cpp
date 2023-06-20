@@ -10,10 +10,6 @@
 #include "Texture.h"
 #include "Utilities.h"
 
-const uint32_t CEILING = 0xFFA5A5A5;
-const uint32_t FLOOR = 0xFFBBBBDD;
-const uint32_t TRANSPARENCY_MASK = 0xFF000000;
-
 namespace MiniFPS {
     Renderer::Renderer(SDL_Renderer* sdlRenderer, const Settings& settings) : sdlRenderer(sdlRenderer) {
         streamingFrameTexture = SDL_CreateTexture(sdlRenderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING,
