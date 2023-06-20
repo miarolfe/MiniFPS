@@ -176,10 +176,6 @@ namespace MiniFPS {
 
                     int texX;
 
-                    if ((ray == player.camera.viewportWidth/2) && cellID == 1) {
-
-                    }
-
                     if (std::abs(hitY) > std::abs(hitX)) { // West-East
                         texX = static_cast<int>(hitY * static_cast<float>(texture.size));
                     } else { // North-South
