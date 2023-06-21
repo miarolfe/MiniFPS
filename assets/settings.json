@@ -20,6 +20,11 @@
     "distanceToProjectionPlane": 0.5
   },
 
+  "audio": {
+    "effectVolume": 0.5,
+    "musicVolume": 0.25
+  },
+
   "player": {
     "speedModifier": 5,
     "rotationModifier": 0.5,
@@ -29,7 +34,7 @@
   },
 
   "files": {
-    "levelPath": "levels/TextureFlipTest.lvl",
+    "levelPath": "levels/OldCastle1.lvl",
     "fontPaths": {
       "Inconsolata-Medium": "fonts/Inconsolata-Medium.ttf"
     }

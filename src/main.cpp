@@ -40,7 +40,7 @@ int main() {
 
     Settings settings = Settings::LoadSettings(GetSDLAssetsFolderPath(), "settings.json");
 
-    Audio audio(GetSDLAssetsFolderPath() + "audio/");
+    Audio audio(GetSDLAssetsFolderPath() + "audio/", settings);
 
     Font fonts[settings.fontPaths.size()];
     for (size_t i = 0; i < settings.fontPaths.size(); i++) {

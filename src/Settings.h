@@ -18,6 +18,8 @@ namespace MiniFPS {
         float playerStartY;
         float playerStartAngle;
         float playerDistanceToProjectionPlane;
+        float effectVolume;
+        float musicVolume;
         std::string levelPath;
         std::vector<std::pair<std::string, std::string>> fontPaths;
 
@@ -25,7 +27,7 @@ namespace MiniFPS {
         Settings(const std::string& version, int screenWidth, int screenHeight, float renderRayIncrement,
                  int renderDistance, bool vSync, float fieldOfView, float speedModifier,
                  float rotationModifier, float playerStartX, float playerStartY,
-                 float playerStartAngle, float playerDistanceToProjectionPlane,
+                 float playerStartAngle, float playerDistanceToProjectionPlane, float effectVolume, float musicVolume,
                  const std::string& levelPath, const std::map<std::string, std::string> &fontPaths);
 
         /**

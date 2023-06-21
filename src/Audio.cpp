@@ -5,6 +5,7 @@
 
 #include "Audio.h"
 #include "Utilities.h"
+#include "Settings.h"
 
 namespace MiniFPS {
     Effect::Effect() : chunk(nullptr) {
@@ -23,7 +24,10 @@ namespace MiniFPS {
 
     }
 
-    Audio::Audio(const std::string& audioFolderPath) {
+    Audio::Audio(const std::string& audioFolderPath, const Settings& settings) {
+        SetEffectVolume(settings.effectVolume);
+        SetMusicVolume(settings.musicVolume);
+
         const std::vector<std::string> folders = GetFoldersInDirectory(audioFolderPath);
 
         for (const std::string& folder : folders) {
@@ -81,6 +85,24 @@ namespace MiniFPS {
         }
 
         return false;
+    }
+
+    void Audio::SetEffectVolume(float volume) {
+        if (volume < 0) volume = 0;
+        if (volume > 1) volume = 1;
+
+        this->effectVolume = volume;
+
+        Mix_MasterVolume(static_cast<int>(static_cast<float>(SDL_MIX_MAXVOLUME) * this->effectVolume));
+    }
+
+    void Audio::SetMusicVolume(float volume) {
+        if (volume < 0) volume = 0;
+        if (volume > 1) volume = 1;
+
+        this->musicVolume = volume;
+
+        Mix_VolumeMusic(static_cast<int>(static_cast<float>(SDL_MIX_MAXVOLUME) * this->musicVolume));
     }
 
     void Audio::Pause() {
