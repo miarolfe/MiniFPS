@@ -5,8 +5,16 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 
+#include "Settings.h"
+
 namespace MiniFPS {
     const float PI_180 = (1.0 / 180.0) * M_PI;
+
+    /**
+     * Initializes all the SDL subsystems (SDL, SDL_image, SDL_mixer, SDL_ttf).
+     * @return Whether all the SDL subsystems were initialized properly.
+     */
+    bool InitializeSDLSubsystems();
 
     /**
      * Initialize SDL's video subsystem.

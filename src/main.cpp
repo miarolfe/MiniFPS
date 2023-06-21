@@ -19,21 +19,7 @@
 using namespace MiniFPS;
 
 int main() {
-    if (!InitializeSDL()) {
-        std::cerr << "SDL could not be initialized:" << SDL_GetError();
-    }
-
-    if (!InitializeSDLImage()) {
-        std::cerr << "SDL_image could not be initialized" << std::endl;
-    }
-
-    if (!InitializeSDLMixer()) {
-        std::cerr << "SDL_mixer could not be initialized" << std::endl;
-    }
-    
-    if (!InitializeSDLTTF()) {
-        std::cerr << "SDL_ttf could not be initialized" << std::endl;
-    }
+    InitializeSDLSubsystems();
 
     SDL_Window* window = nullptr;
     SDL_Renderer* sdlRenderer = nullptr;

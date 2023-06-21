@@ -12,6 +12,32 @@
 #include "Utilities.h"
 
 namespace MiniFPS {
+    bool InitializeSDLSubsystems() {
+        bool successfulInitialization = true;
+
+        if (!InitializeSDL()) {
+            std::cerr << "SDL could not be initialized:" << SDL_GetError();
+            successfulInitialization = false;
+        }
+
+        if (!InitializeSDLImage()) {
+            std::cerr << "SDL_image could not be initialized" << std::endl;
+            successfulInitialization = false;
+        }
+
+        if (!InitializeSDLMixer()) {
+            std::cerr << "SDL_mixer could not be initialized" << std::endl;
+            successfulInitialization = false;
+        }
+
+        if (!InitializeSDLTTF()) {
+            std::cerr << "SDL_ttf could not be initialized" << std::endl;
+            successfulInitialization = false;
+        }
+
+        return successfulInitialization;
+    }
+
     bool InitializeSDL() {
         bool successfulInitialization = true;
 
