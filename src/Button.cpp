@@ -3,13 +3,9 @@
 #include "Button.h"
 
 namespace MiniFPS {
-    Button::Button() {
+    Button::Button() {}
 
-    }
-
-    Button::Button(float x, float y, float width, float height) : x(x), y(y), width(width), height(height) {
-
-    }
+    Button::Button(float x, float y, float width, float height) : x(x), y(y), width(width), height(height) {}
 
     bool Button::Pressed(int mouseX, int mouseY) {
         if (static_cast<float>(mouseX) >= GetLeftBound() && static_cast<float>(mouseX) <= GetRightBound() &&

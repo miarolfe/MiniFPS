@@ -26,6 +26,7 @@ namespace MiniFPS {
         std::map<std::string, Track> tracks;
         float effectVolume;
         float musicVolume;
+
     public:
         explicit Audio(const std::string& audioFolderPath, const Settings& settings);
 
