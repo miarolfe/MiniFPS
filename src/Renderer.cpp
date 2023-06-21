@@ -60,6 +60,21 @@ namespace MiniFPS {
         }
     }
 
+//    size = tempTextureSurface->w;
+//    buffer = new Color* [size];
+//    for (int row = 0; row < size; row++)
+//        buffer[row] = new Color[size];
+
+    void Renderer::FreeTextures() {
+        for (const auto& idTexturePair : textureMap) {
+            for (int row = 0; row < idTexturePair.second.size; row++) {
+                delete[] idTexturePair.second.buffer[row];
+            }
+
+            delete[] idTexturePair.second.buffer;
+        }
+    }
+
     void Renderer::DrawCeiling(Camera camera, void* pixels, int pitch) {
         for (int frameY = 0; frameY < camera.viewportHeight / 2; frameY++) {
             for (int frameX = 0; frameX < camera.viewportWidth; frameX++) {

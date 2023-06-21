@@ -9,6 +9,7 @@
 #include <SDL_ttf.h>
 #include <dirent.h>
 
+#include "Audio.h"
 #include "Utilities.h"
 
 namespace MiniFPS {
@@ -36,6 +37,24 @@ namespace MiniFPS {
         }
 
         return successfulInitialization;
+    }
+
+    void DeactivateSDLSubsystems() {
+        SDL_Quit();
+        IMG_Quit();
+
+        Mix_CloseAudio();
+        Mix_Quit();
+
+        // TODO: Free fonts
+        TTF_Quit();
+    }
+
+    void FreeResources(Renderer renderer, Audio audio, FontManager fontManager) {
+        renderer.FreeTextures();
+        audio.FreeEffects();
+        audio.FreeTracks();
+        fontManager.FreeFonts();
     }
 
     bool InitializeSDL() {
@@ -112,10 +131,6 @@ namespace MiniFPS {
     void Quit(SDL_Window* window, SDL_Renderer* renderer) {
         SDL_DestroyWindow(window);
         SDL_DestroyRenderer(renderer);
-        SDL_Quit();
-        IMG_Quit();
-        Mix_CloseAudio();
-        TTF_Quit();
     }
 
     std::string GetFramesPerSecond(const float frameDelta) {

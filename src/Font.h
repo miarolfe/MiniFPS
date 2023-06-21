@@ -1,8 +1,11 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 #include <SDL_ttf.h>
+
+#include "Settings.h"
 
 namespace MiniFPS {
     struct Font {
@@ -19,6 +22,15 @@ namespace MiniFPS {
          * @param pointSize The point size to load the font at.
          * @return The loaded font.
          */
-        TTF_Font* LoadFont(const std::string &fontPath, int pointSize);
+        static TTF_Font* LoadFont(const std::string &fontPath, int pointSize);
+    };
+
+    class FontManager {
+    public:
+        explicit FontManager(const Settings& settings);
+
+        std::vector<Font> fonts;
+
+        void FreeFonts();
     };
 }

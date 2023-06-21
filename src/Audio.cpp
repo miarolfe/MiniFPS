@@ -112,4 +112,16 @@ namespace MiniFPS {
             }
         }
     }
+
+    void Audio::FreeEffects() {
+        for (auto iter = effects.begin(); iter != effects.end(); iter++) {
+            Mix_FreeChunk(iter->second.chunk);
+        }
+    }
+
+    void Audio::FreeTracks() {
+        for (auto iter = tracks.begin(); iter != tracks.end(); iter++) {
+            Mix_FreeMusic(iter->second.music);
+        }
+    }
 }
