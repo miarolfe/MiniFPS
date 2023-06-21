@@ -48,6 +48,7 @@ namespace MiniFPS {
 
         /**
          * Resume all audio channels.
+         * Resume all audio channels.
          */
         static void Resume();
     };

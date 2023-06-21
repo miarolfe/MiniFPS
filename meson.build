@@ -5,6 +5,7 @@ sources = files(
   'src/Audio.cpp',
   'src/Button.cpp',
   'src/Camera.cpp',
+  'src/Color.cpp',
   'src/Font.cpp',
   'src/Level.cpp',
   'src/Menu.cpp',
@@ -19,6 +20,7 @@ headers = files(
   'src/Audio.h',
   'src/Button.h',
   'src/Camera.h',
+  'src/Color.h',
   'src/Font.h',
   'src/Level.h',
   'src/Menu.h',
@@ -48,6 +50,7 @@ if host_machine.system() == 'darwin'
     install_subdir('lib/SDL2_image.framework', install_dir: 'Contents/Frameworks')
     install_subdir('lib/SDL2_mixer.framework', install_dir: 'Contents/Frameworks')
     install_subdir('lib/SDL2_ttf.framework', install_dir: 'Contents/Frameworks')
+    install_subdir('assets/audio', install_dir: 'Contents/Resources')
     install_subdir('assets/fonts', install_dir: 'Contents/Resources')
     install_subdir('assets/levels', install_dir: 'Contents/Resources')
     install_subdir('assets/sprites', install_dir: 'Contents/Resources')

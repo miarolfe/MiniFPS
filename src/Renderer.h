@@ -9,8 +9,10 @@
 #include "Texture.h"
 
 namespace MiniFPS {
-    const uint32_t CEILING = 0xFFA5A5A5;
-    const uint32_t FLOOR = 0xFFBBBBDD;
+    const Color MAIN_MENU_BACKGROUND = Color(0xFF000000);
+    const Color CEILING = Color(0xFFA5A5A5);
+    const Color FLOOR = Color(0xFFBBBBDD);
+    const Color BUTTON = Color(0xFFD0D0D0);
     const uint32_t TRANSPARENCY_MASK = 0xFF000000;
 
     class Renderer {
@@ -36,7 +38,7 @@ namespace MiniFPS {
          * @param x The x-coordinate of the frame texture to set.
          * @param y The y-coordinate of the frame texture to set.
          */
-        void SetPixel(void* pixels, int pitch, uint32_t color, int x, int y);
+        void SetPixel(void* pixels, int pitch, Color color, int x, int y);
 
         /**
          * Returns the texture buffer that corresponds to the provided texture ID.
