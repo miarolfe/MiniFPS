@@ -68,6 +68,16 @@ namespace MiniFPS {
          * Resume all audio channels.
          */
         static void Resume();
+
+        /**
+         * Free all memory allocated to sound effects.
+         */
+        void FreeEffects();
+
+        /**
+         * Free all memory allocated to music tracks.
+         */
+        void FreeTracks();
     };
 }
 

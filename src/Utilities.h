@@ -1,10 +1,14 @@
 #pragma once
 
 #include <string>
+#include <map>
+#include <unordered_map>
 
 #include <SDL.h>
 #include <SDL_ttf.h>
 
+#include "Audio.h"
+#include "Renderer.h"
 #include "Settings.h"
 
 namespace MiniFPS {
@@ -15,6 +19,19 @@ namespace MiniFPS {
      * @return Whether all the SDL subsystems were initialized properly.
      */
     bool InitializeSDLSubsystems();
+
+    /**
+     * Deactivate the SDL subsystems (SDL, SDL_image, SDL_mixer, SDL_ttf).
+     */
+    void DeactivateSDLSubsystems();
+
+    /**
+     * Free all memory allocated for game content.
+     * @param renderer The game renderer.
+     * @param audio The audio manager.
+     * @param fontManager The font manager.
+     */
+    void FreeResources(Renderer renderer, Audio audio, FontManager fontManager);
 
     /**
      * Initialize SDL's video subsystem.

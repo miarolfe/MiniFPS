@@ -61,6 +61,11 @@ namespace MiniFPS {
         void CopyTextureToFrameTexture(void* pixels, int pitch, const Texture& texture, int x, int y, int w, int h);
 
         /**
+         * Free the memory allocated to all textures.
+         */
+        void FreeTextures();
+
+        /**
          * Writes the ceiling to the frame texture.
          * @param camera The camera object.
          * @param pixels The pixel buffer of the frame texture.

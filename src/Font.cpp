@@ -4,6 +4,8 @@
 #include <SDL_ttf.h>
 
 #include "Font.h"
+#include "Settings.h"
+#include "Utilities.h"
 
 namespace MiniFPS {
     Font::Font() {
@@ -26,5 +28,17 @@ namespace MiniFPS {
 
     TTF_Font* Font::LoadFont(const std::string &fontPath, int pointSize) {
         return TTF_OpenFont(fontPath.c_str(), pointSize);
+    }
+
+    FontManager::FontManager(const Settings& settings) {
+        for (const auto & fontPath : settings.fontPaths) {
+            fonts.emplace_back(fontPath.first, GetSDLAssetsFolderPath() + fontPath.second, 24);
+        }
+    }
+
+    void FontManager::FreeFonts() {
+        for (const Font& font : fonts) {
+            TTF_CloseFont(font.ttf);
+        }
     }
 }

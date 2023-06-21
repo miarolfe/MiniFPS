@@ -27,16 +27,13 @@ int main() {
 
     Audio audio(GetSDLAssetsFolderPath() + "audio/", settings);
 
-    Font fonts[settings.fontPaths.size()];
-    for (size_t i = 0; i < settings.fontPaths.size(); i++) {
-        fonts[i] = Font(settings.fontPaths[i].first, GetSDLAssetsFolderPath() + settings.fontPaths[i].second, 24);
-    }
+    FontManager fontManager(settings);
 
     std::map<std::string, Texture> textureNameToTextureMap;
     const std::vector<std::string> spriteFileNames = GetFilesInDirectory(GetSDLAssetsFolderPath() + "sprites/");
 
     for (const auto& file : spriteFileNames) {
-        std::string name = file.substr(0, file.size()-4);
+        const std::string name = file.substr(0, file.size()-4);
 
         Texture newTexture(name, GetSDLAssetsFolderPath() + "sprites/" + file);
         textureNameToTextureMap[name] = newTexture;
@@ -50,7 +47,7 @@ int main() {
 
     // Allow movement of cursor in menu
     SDL_SetRelativeMouseMode(SDL_FALSE);
-    MainMenu mainMenu(settings, fonts[0]);
+    MainMenu mainMenu(settings, fontManager.fonts[0]);
 
     while (mainMenu.player.InMainMenu() && !mainMenu.player.GameHasEnded()) {
         renderer.DrawMainMenu(mainMenu);
@@ -96,9 +93,11 @@ int main() {
             audio.PlayEffect("GunShoot1");
         }
 
-        renderer.Draw(gamePlayer, fonts[0], frameDelta);
+        renderer.Draw(gamePlayer, fontManager.fonts[0], frameDelta);
     }
 
+    FreeResources(renderer, audio, fontManager);
+    DeactivateSDLSubsystems();
     Quit(window, sdlRenderer);
 
     return 0;
