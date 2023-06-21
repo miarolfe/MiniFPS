@@ -1,6 +1,8 @@
 #pragma once
 
 #include <string>
+#include <map>
+#include <unordered_map>
 
 #include <SDL.h>
 #include <SDL_ttf.h>
