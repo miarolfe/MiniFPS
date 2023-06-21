@@ -24,6 +24,8 @@ namespace MiniFPS {
     }
 
     Audio::Audio(const std::string& audioFolderPath) {
+        Mix_VolumeMusic(8); // TEMP
+
         const std::vector<std::string> folders = GetFoldersInDirectory(audioFolderPath);
 
         for (const std::string& folder : folders) {
