@@ -8,6 +8,7 @@
 #include <SDL.h>
 
 #include "Audio.h"
+#include "Button.h"
 #include "Level.h"
 #include "Player.h"
 #include "Renderer.h"
@@ -71,11 +72,11 @@ int main() {
 
     // Allow movement of cursor in menu
     SDL_SetRelativeMouseMode(SDL_FALSE);
-    MainMenu mainMenu(settings);
+    MainMenu mainMenu(settings, fonts[0]);
 
     while (mainMenu.player.InMainMenu() && !mainMenu.player.GameHasEnded()) {
-        renderer.DrawMainMenu(settings, fonts[0], mainMenu.player.camera);
-        mainMenu.player.Update(0, 0, 0);
+        renderer.DrawMainMenu(mainMenu);
+        mainMenu.Update();
     }
 
     Level level = Level(GetSDLAssetsFolderPath() + settings.levelPath);

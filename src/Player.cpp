@@ -15,7 +15,8 @@ namespace MiniFPS {
         camera = Camera(settings.playerStartX, settings.playerStartY, settings.playerStartAngle,
                         settings.fieldOfView * PI_180, settings.screenWidth,
                         settings.screenHeight, settings.renderRayIncrement,
-                        settings.renderDistance, settings.playerDistanceToProjectionPlane);
+                        settings.renderDistance,
+                        settings.playerDistanceToProjectionPlane);
     }
 
     Player::Player() {
@@ -23,8 +24,8 @@ namespace MiniFPS {
     }
 
     void Player::UpdateInputState() {
-        inputState.mouseX = 0;
-        inputState.mouseY = 0;
+        inputState.mouseMotionX = 0;
+        inputState.mouseMotionY = 0;
         inputState.endGame = false;
         inputState.leftMouseButtonPressed = false;
         inputState.rightMouseButtonPressed = false;
@@ -37,8 +38,10 @@ namespace MiniFPS {
             }
 
             if (event.type == SDL_MOUSEMOTION) {
-                inputState.mouseX = event.motion.xrel;
-                inputState.mouseY = event.motion.yrel;
+                inputState.mouseMotionX = event.motion.xrel;
+                inputState.mouseMotionY = event.motion.yrel;
+                inputState.mousePosX = event.button.x;
+                inputState.mousePosY = event.button.y;
             }
 
             if (event.type == SDL_MOUSEBUTTONDOWN) {
@@ -46,6 +49,7 @@ namespace MiniFPS {
                     inputState.leftMouseButtonPressed = true;
                 } else if (event.button.button == SDL_BUTTON_RIGHT) {
                     inputState.rightMouseButtonPressed = true;
+
                 }
             }
         }
@@ -79,16 +83,12 @@ namespace MiniFPS {
         } else {
             inputState.moveRight = false;
         }
-
-        if (currentKeyStates[SDL_SCANCODE_SPACE] || currentKeyStates[SDL_SCANCODE_RETURN]) {
-            inputState.inMainMenu = false;
-        }
     }
 
     void Player::Move(float frameDelta, float speedModifier) {
         if (frameDelta != 0 && speedModifier != 0) {
-            float prevX = camera.x;
-            float prevY = camera.y;
+            const float prevX = camera.x;
+            const float prevY = camera.y;
 
             if (inputState.moveForward != inputState.moveBack) {
                 if (inputState.moveForward) {
@@ -122,7 +122,7 @@ namespace MiniFPS {
     }
 
     void Player::Rotate(float frameDelta, float rotationModifier) {
-        camera.angle += inputState.mouseX * frameDelta * rotationModifier;
+        camera.angle += inputState.mouseMotionX * frameDelta * rotationModifier;
     }
 
     bool Player::GameHasEnded() const {
@@ -148,7 +148,7 @@ namespace MiniFPS {
         inMainMenu = false;
         leftMouseButtonPressed = false;
         rightMouseButtonPressed = false;
-        mouseX = 0;
-        mouseY = 0;
+        mousePosX = 0;
+        mousePosY = 0;
     }
 }

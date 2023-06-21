@@ -40,9 +40,7 @@ namespace MiniFPS {
                         std::cerr << "Effect file " << file << " could not be loaded" << std::endl;
                     }
                 }
-            }
-
-            else if (folder == "tracks") {
+            } else if (folder == "tracks") {
                 std::vector<std::string> const trackFiles = GetFilesInDirectory(audioFolderPath + folder);
 
                 for (const std::string& file : trackFiles) {
@@ -52,12 +50,12 @@ namespace MiniFPS {
                         const std::string name = file.substr(0, file.size()-4);
                         tracks[name] = Track(track);
                     } else {
-                        std::cerr << "Track file " << file << " could not be loaded" << std::endl;
+                        if (file != ".DS_Store") { // macOS-specific hidden file
+                            std::cerr << "Track file " << file << " could not be loaded" << std::endl;
+                        }
                     }
                 }
-            }
-
-            else {
+            } else {
                 std::cerr << "Folder " << folder << " is not a valid folder for audio files" << std::endl;
             }
         }

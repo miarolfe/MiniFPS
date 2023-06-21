@@ -118,10 +118,6 @@ namespace MiniFPS {
         return filePath;
     }
 
-    TTF_Font* LoadFont(const std::string &fontPath, int pointSize) {
-        return TTF_OpenFont(fontPath.c_str(), pointSize);
-    }
-
     void ClearFile(const std::string& fileName) {
         std::ofstream outFile(fileName, std::ofstream::out | std::ofstream::trunc);
         outFile.close();

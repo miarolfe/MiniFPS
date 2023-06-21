@@ -2,25 +2,23 @@
 
 #include <SDL_ttf.h>
 
+#include "Button.h"
+#include "Font.h"
 #include "Player.h"
 
 using string = std::string;
 
 namespace MiniFPS {
-    struct Font {
-        Font();
-        Font(const string& name, const string& fontPath, int pointSize);
+    class MainMenu {
+    public:
+        MainMenu(const Settings& settings, const Font& font);
 
-        string name;
-        TTF_Font* ttf;
-        int pointSize;
-    };
-
-    struct MainMenu {
-        explicit MainMenu(const Settings& settings);
-
+        Font font;
         Player player;
         Settings settings;
+        Button startButton;
+
+        void Update();
     };
 
     /**

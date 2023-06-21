@@ -75,6 +75,34 @@ namespace MiniFPS {
         }
     }
 
+    void Renderer::DrawButton(Button button) {
+        SDL_SetRenderTarget(sdlRenderer, renderFrameTexture);
+        SDL_Texture* buttonTexture = SDL_CreateTexture(sdlRenderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, button.width, button.height);
+
+        const SDL_Rect sdlRect {
+            static_cast<int>(button.GetLeftBound()),
+            static_cast<int>(button.GetTopBound()),
+            static_cast<int>(button.width),
+            static_cast<int>(button.height)
+        };
+
+        void* pixels = nullptr;
+        int pitch = -1;
+
+        SDL_LockTexture(buttonTexture, nullptr, &pixels, &pitch);
+
+        for (int x = 0; x < button.width; x++) {
+            for (int y = 0; y < button.height; y++) {
+                SetPixel(pixels, pitch, 0xFFA5A5A5, x, y);
+            }
+        }
+
+        SDL_UnlockTexture(buttonTexture);
+
+        SDL_RenderCopy(sdlRenderer, buttonTexture, nullptr, &sdlRect);
+        SDL_SetRenderTarget(sdlRenderer, nullptr);
+    }
+
     void Renderer::DrawTextStr(const std::string& text, const Font& font, float x, float y, int width, int r=255, int g=255, int b=255) {
         SDL_SetRenderTarget(sdlRenderer, renderFrameTexture);
 
@@ -107,37 +135,38 @@ namespace MiniFPS {
         SDL_SetRenderTarget(sdlRenderer, nullptr);
     }
 
-    void Renderer::DrawMainMenu(const Settings& settings, const Font &font, Camera camera) {
+    void Renderer::DrawMainMenu(const MainMenu& mainMenu) {
         int pitch;
         void* pixels;
         SDL_LockTexture(streamingFrameTexture, nullptr, &pixels, &pitch);
 
-        for (int frameY = 0; frameY < static_cast<int>(camera.viewportHeight); frameY++) {
-            for (int frameX = 0; frameX < static_cast<int>(camera.viewportWidth); frameX++) {
+        for (int frameY = 0; frameY < static_cast<int>(mainMenu.player.camera.viewportHeight); frameY++) {
+            for (int frameX = 0; frameX < static_cast<int>(mainMenu.player.camera.viewportWidth); frameX++) {
                 SetPixel(pixels, pitch, 0xFF000000, frameX, frameY);
             }
         }
 
-        const int titleTextX = static_cast<int>(camera.viewportWidth / 4);
-        const int titleTextY = static_cast<int>(camera.viewportHeight / 16);
-        const int titleTextWidth = static_cast<int>(camera.viewportWidth / 2);
+        const int titleTextX = static_cast<int>(mainMenu.player.camera.viewportWidth / 4);
+        const int titleTextY = static_cast<int>(mainMenu.player.camera.viewportHeight / 16);
+        const int titleTextWidth = static_cast<int>(mainMenu.player.camera.viewportWidth / 2);
 
-        const int versionTextX = static_cast<int>(3 * (camera.viewportWidth / 8));
-        const int versionTextY = static_cast<int>(5 * (camera.viewportHeight / 16));
-        const int versionTextWidth = static_cast<int>(camera.viewportWidth / 4);
+        const int versionTextX = static_cast<int>(3 * (mainMenu.player.camera.viewportWidth / 8));
+        const int versionTextY = static_cast<int>(5 * (mainMenu.player.camera.viewportHeight / 16));
+        const int versionTextWidth = static_cast<int>(mainMenu.player.camera.viewportWidth / 4);
 
-        const int startTextX = static_cast<int>(camera.viewportWidth / 12);
-        const int startTextY = static_cast<int>(6 * (camera.viewportHeight / 8));
-        const int startTextWidth = static_cast<int>(10 * (camera.viewportWidth / 12));
+        const int startTextX = static_cast<int>(mainMenu.startButton.x - mainMenu.startButton.width/4);
+        const int startTextY = static_cast<int>(mainMenu.startButton.y - mainMenu.startButton.height/2);
 
         SDL_UnlockTexture(streamingFrameTexture);
         SDL_SetRenderTarget(sdlRenderer, renderFrameTexture);
         SDL_RenderCopy(sdlRenderer, streamingFrameTexture, nullptr, nullptr);
 
         // UI draw calls
-        DrawTextStr("MiniFPS", font, titleTextX, titleTextY, titleTextWidth);
-        DrawTextStr(settings.version, font, versionTextX, versionTextY, versionTextWidth);
-        DrawTextStr("Press [SPACE] or [ENTER] to start", font, startTextX, startTextY,startTextWidth);
+
+        DrawButton(mainMenu.startButton);
+        DrawTextStr("MiniFPS", mainMenu.font, titleTextX, titleTextY, titleTextWidth);
+        DrawTextStr(mainMenu.settings.version, mainMenu.font, versionTextX, versionTextY, versionTextWidth);
+        DrawTextStrH("Start", mainMenu.font, startTextX, startTextY, mainMenu.startButton.height);
 
         SDL_SetRenderTarget(sdlRenderer, nullptr);
         SDL_RenderCopy(sdlRenderer, renderFrameTexture, nullptr, nullptr);

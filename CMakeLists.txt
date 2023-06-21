@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.23)
 
-project(MiniFPS VERSION 0.1.2)
+project(MiniFPS VERSION 0.1.3)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
@@ -17,7 +17,9 @@ set(
         SOURCES
         src/main.cpp
         src/Audio.cpp
+        src/Button.cpp
         src/Camera.cpp
+        src/Font.cpp
         src/Level.cpp
         src/Menu.cpp
         src/Player.cpp
@@ -30,7 +32,9 @@ set(
 set(
         HEADERS
         src/Audio.h
+        src/Button.h
         src/Camera.h
+        src/Font.h
         src/Level.h
         src/Menu.h
         src/Player.h
