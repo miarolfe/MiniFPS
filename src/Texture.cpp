@@ -3,6 +3,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
+#include "Color.h"
 #include "Texture.h"
 
 namespace MiniFPS {
@@ -18,16 +19,16 @@ namespace MiniFPS {
         tempTextureSurface = SDL_ConvertSurfaceFormat(tempTextureSurface, SDL_PIXELFORMAT_ARGB8888, 0);
 
         size = tempTextureSurface->w;
-        buffer = new uint32_t* [size];
+        buffer = new Color* [size];
         for (int row = 0; row < size; row++) {
-            buffer[row] = new uint32_t[size];
+            buffer[row] = new Color[size];
         }
 
         uint32_t* pixels = (uint32_t*) tempTextureSurface->pixels;
 
         for (int row = 0; row < size; row++) {
             for (int col = 0; col < size; col++) {
-                buffer[row][col] = pixels[row * size + col];
+                buffer[row][col].argb = pixels[row * size + col];
             }
         }
 

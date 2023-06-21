@@ -1,9 +1,13 @@
 #pragma once
 
+#include <string>
+
+#include "Color.h"
+
 namespace MiniFPS {
     struct Texture {
         std::string name;
-        uint32_t** buffer;
+        Color** buffer;
         int size;
 
         Texture();

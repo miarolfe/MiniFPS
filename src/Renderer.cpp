@@ -5,6 +5,7 @@
 #include <SDL.h>
 
 #include "Camera.h"
+#include "Color.h"
 #include "Menu.h"
 #include "Renderer.h"
 #include "Texture.h"
@@ -24,9 +25,9 @@ namespace MiniFPS {
         textureMap = newTextureMap;
     }
 
-    void Renderer::SetPixel(void* pixels, int pitch, uint32_t color, int x, int y) {
+    void Renderer::SetPixel(void* pixels, int pitch, Color color, int x, int y) {
         uint32_t* row = (uint32_t*) ((uint8_t*) pixels + y * pitch);
-        row[x] = color;
+        row[x] = color.argb;
     }
 
     Texture Renderer::GetTexBuffer(short textureId) {
@@ -49,10 +50,10 @@ namespace MiniFPS {
                 const int sourceX = static_cast<int>(destinationX * scaleX);
                 const int sourceY = static_cast<int>(destinationY * scaleY);
 
-                const uint32_t pixel = texture.buffer[sourceY][sourceX];
+                const Color pixel = texture.buffer[sourceY][sourceX];
 
                 // Check if alpha value is 0 (transparent)
-                if ((pixel & TRANSPARENCY_MASK) != 0) {
+                if ((pixel.argb & TRANSPARENCY_MASK) != 0) {
                     SetPixel(pixels, pitch, pixel, x + destinationX - (w/2), y + destinationY - (h/2));
                 }
             }
@@ -93,7 +94,7 @@ namespace MiniFPS {
 
         for (int x = 0; x < button.width; x++) {
             for (int y = 0; y < button.height; y++) {
-                SetPixel(pixels, pitch, 0xFFA5A5A5, x, y);
+                SetPixel(pixels, pitch, BUTTON, x, y);
             }
         }
 
@@ -142,7 +143,7 @@ namespace MiniFPS {
 
         for (int frameY = 0; frameY < static_cast<int>(mainMenu.player.camera.viewportHeight); frameY++) {
             for (int frameX = 0; frameX < static_cast<int>(mainMenu.player.camera.viewportWidth); frameX++) {
-                SetPixel(pixels, pitch, 0xFF000000, frameX, frameY);
+                SetPixel(pixels, pitch, MAIN_MENU_BACKGROUND, frameX, frameY);
             }
         }
 
