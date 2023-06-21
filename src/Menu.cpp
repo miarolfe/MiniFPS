@@ -2,28 +2,11 @@
 
 #include <SDL_ttf.h>
 
+#include "Font.h"
 #include "Menu.h"
 #include "Utilities.h"
 
 namespace MiniFPS {
-    Font::Font() {
-        ttf = nullptr;
-        pointSize = -1;
-    }
-
-    Font::Font(const string& name, const string& fontPath, int pointSize) {
-        this->name = name;
-
-        TTF_Font* loadedTtf = LoadFont(fontPath, pointSize);
-        if (loadedTtf != nullptr) {
-            ttf = loadedTtf;
-        } else {
-            std::cerr << "Font " << name << " at " << fontPath << " could not be loaded" << std::endl;
-        }
-
-        this->pointSize = pointSize;
-    }
-
     MainMenu::MainMenu(const Settings& settings, const Font& font) {
         this->player = Player(nullptr, settings);
         this->player.inputState.inMainMenu = true;

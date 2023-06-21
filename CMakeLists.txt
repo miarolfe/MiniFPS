@@ -19,6 +19,7 @@ set(
         src/Audio.cpp
         src/Button.cpp
         src/Camera.cpp
+        src/Font.cpp
         src/Level.cpp
         src/Menu.cpp
         src/Player.cpp
@@ -33,6 +34,7 @@ set(
         src/Audio.h
         src/Button.h
         src/Camera.h
+        src/Font.h
         src/Level.h
         src/Menu.h
         src/Player.h

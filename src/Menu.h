@@ -3,20 +3,12 @@
 #include <SDL_ttf.h>
 
 #include "Button.h"
+#include "Font.h"
 #include "Player.h"
 
 using string = std::string;
 
 namespace MiniFPS {
-    struct Font {
-        Font();
-        Font(const string& name, const string& fontPath, int pointSize);
-
-        string name;
-        TTF_Font* ttf;
-        int pointSize;
-    };
-
     class MainMenu {
     public:
         MainMenu(const Settings& settings, const Font& font);
