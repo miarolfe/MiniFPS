@@ -30,8 +30,8 @@ namespace MiniFPS {
         this->settings = settings;
         this->font = font;
         startButton = Button {static_cast<float>(settings.screenWidth/2),
-                              static_cast<float>(settings.screenHeight/2) + 50,
-                              static_cast<float>(settings.screenWidth/6),
+                              static_cast<float>(3*settings.screenHeight/4),
+                              static_cast<float>(settings.screenWidth/2),
                               static_cast<float>(settings.screenHeight/6)};
     }
 

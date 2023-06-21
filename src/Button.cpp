@@ -11,12 +11,9 @@ namespace MiniFPS {
 
     }
 
-    void Button::Draw() {
-
-    }
-
-    bool Button::Pressed(float mouseX, float mouseY) {
-        if (mouseX >= GetLeftBound() && mouseX <= GetRightBound() && mouseY <= GetBottomBound() && mouseY >= GetTopBound()) {
+    bool Button::Pressed(int mouseX, int mouseY) {
+        if (static_cast<float>(mouseX) >= GetLeftBound() && static_cast<float>(mouseX) <= GetRightBound() &&
+            static_cast<float>(mouseY) <= GetBottomBound() && static_cast<float>(mouseY) >= GetTopBound()) {
             return true;
         } else {
             return false;

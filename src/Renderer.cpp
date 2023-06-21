@@ -154,11 +154,8 @@ namespace MiniFPS {
         const int versionTextY = static_cast<int>(5 * (mainMenu.player.camera.viewportHeight / 16));
         const int versionTextWidth = static_cast<int>(mainMenu.player.camera.viewportWidth / 4);
 
-        const int startTextX = static_cast<int>(mainMenu.player.camera.viewportWidth / 12);
-        const int startTextY = static_cast<int>(6 * (mainMenu.player.camera.viewportHeight / 8));
-        const int startTextWidth = static_cast<int>(10 * (mainMenu.player.camera.viewportWidth / 12));
-
-
+        const int startTextX = static_cast<int>(mainMenu.startButton.x - mainMenu.startButton.width/4);
+        const int startTextY = static_cast<int>(mainMenu.startButton.y - mainMenu.startButton.height/2);
 
         SDL_UnlockTexture(streamingFrameTexture);
         SDL_SetRenderTarget(sdlRenderer, renderFrameTexture);
@@ -169,7 +166,7 @@ namespace MiniFPS {
         DrawButton(mainMenu.startButton);
         DrawTextStr("MiniFPS", mainMenu.font, titleTextX, titleTextY, titleTextWidth);
         DrawTextStr(mainMenu.settings.version, mainMenu.font, versionTextX, versionTextY, versionTextWidth);
-        DrawTextStr("Press [SPACE] or [ENTER] to start", mainMenu.font, startTextX, startTextY,startTextWidth);
+        DrawTextStrH("Start", mainMenu.font, startTextX, startTextY, mainMenu.startButton.height);
 
         SDL_SetRenderTarget(sdlRenderer, nullptr);
         SDL_RenderCopy(sdlRenderer, renderFrameTexture, nullptr, nullptr);

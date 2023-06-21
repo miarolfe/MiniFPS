@@ -11,8 +11,7 @@ namespace MiniFPS {
         Button();
         Button(float x, float y, float width, float height);
 
-        void Draw();
-        bool Pressed(float mouseX, float mouseY);
+        bool Pressed(int mouseX, int mouseY);
         float GetLeftBound();
         float GetRightBound();
         float GetBottomBound();

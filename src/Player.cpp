@@ -15,7 +15,8 @@ namespace MiniFPS {
         camera = Camera(settings.playerStartX, settings.playerStartY, settings.playerStartAngle,
                         settings.fieldOfView * PI_180, settings.screenWidth,
                         settings.screenHeight, settings.renderRayIncrement,
-                        settings.renderDistance, settings.playerDistanceToProjectionPlane);
+                        settings.renderDistance,
+                        settings.playerDistanceToProjectionPlane);
     }
 
     Player::Player() {
@@ -81,10 +82,6 @@ namespace MiniFPS {
             inputState.moveRight = true;
         } else {
             inputState.moveRight = false;
-        }
-
-        if (currentKeyStates[SDL_SCANCODE_SPACE] || currentKeyStates[SDL_SCANCODE_RETURN]) {
-            inputState.inMainMenu = false;
         }
     }
 
