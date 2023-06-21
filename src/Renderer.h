@@ -21,6 +21,7 @@ namespace MiniFPS {
         SDL_Texture* streamingFrameTexture;
         SDL_Texture* renderFrameTexture;
         std::unordered_map<short, Texture> textureMap;
+
     public:
         Renderer(SDL_Renderer* sdlRenderer, const Settings& settings);
 

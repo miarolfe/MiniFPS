@@ -12,6 +12,7 @@ namespace MiniFPS {
         short** matrix; // 2D array representing the level as a grid of texture IDs, where 0 is empty space
         int w; // Width of the level
         int h; // Height of the level
+
     public:
         // TODO: Abstract this out
         std::map<short, std::string> textureIdMap; // Map of texture IDs to their names

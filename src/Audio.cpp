@@ -8,21 +8,13 @@
 #include "Settings.h"
 
 namespace MiniFPS {
-    Effect::Effect() : chunk(nullptr) {
+    Effect::Effect() : chunk(nullptr) {}
 
-    }
+    Effect::Effect(Mix_Chunk* chunk) : chunk(chunk) {}
 
-    Effect::Effect(Mix_Chunk* chunk) : chunk(chunk) {
+    Track::Track() : music(nullptr) {}
 
-    }
-
-    Track::Track() : music(nullptr) {
-
-    }
-
-    Track::Track(Mix_Music* music) : music(music) {
-
-    }
+    Track::Track(Mix_Music* music) : music(music) {}
 
     Audio::Audio(const std::string& audioFolderPath, const Settings& settings) {
         SetEffectVolume(settings.effectVolume);

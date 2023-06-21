@@ -49,7 +49,6 @@ namespace MiniFPS {
                     inputState.leftMouseButtonPressed = true;
                 } else if (event.button.button == SDL_BUTTON_RIGHT) {
                     inputState.rightMouseButtonPressed = true;
-
                 }
             }
         }
