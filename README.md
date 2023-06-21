@@ -4,6 +4,7 @@
 
 [![Build MiniFPS for Windows](https://github.com/pjhrolfe/MiniFPS/actions/workflows/build-windows.yml/badge.svg)](https://github.com/pjhrolfe/MiniFPS/actions/workflows/build-windows.yml)
 [![Build MiniFPS for macOS](https://github.com/pjhrolfe/MiniFPS/actions/workflows/build-macos.yml/badge.svg)](https://github.com/pjhrolfe/MiniFPS/actions/workflows/build-macos.yml)
+[![CodeFactor](https://www.codefactor.io/repository/github/pjhrolfe/minifps/badge/main)](https://www.codefactor.io/repository/github/pjhrolfe/minifps/overview/main)
 
 
 A 90s-style FPS made from scratch using C++11 and SDL2. Think *Wolfenstein 3D*.
