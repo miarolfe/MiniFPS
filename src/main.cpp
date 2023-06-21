@@ -8,7 +8,6 @@
 #include <SDL.h>
 
 #include "Audio.h"
-#include "Button.h"
 #include "Level.h"
 #include "Player.h"
 #include "Renderer.h"
@@ -37,14 +36,7 @@ int main() {
     const std::vector<std::string> spriteFileNames = GetFilesInDirectory(GetSDLAssetsFolderPath() + "sprites/");
 
     for (const auto& file : spriteFileNames) {
-        std::string name = file;
-        std::string pngExtension = ".png";
-        size_t pos = name.find(pngExtension);
-
-        // Strip file extension
-        if (pos != std::string::npos) {
-            name.erase(pos, pngExtension.size());
-        }
+        std::string name = file.substr(0, file.size()-4);
 
         Texture newTexture(name, GetSDLAssetsFolderPath() + "sprites/" + file);
         textureNameToTextureMap[name] = newTexture;
