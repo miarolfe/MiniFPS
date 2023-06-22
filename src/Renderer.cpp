@@ -233,8 +233,11 @@ namespace MiniFPS {
 
                     int texX;
 
+                    bool shadePixel = false;
+
                     if (std::abs(hitY) > std::abs(hitX)) { // West-East
                         texX = static_cast<int>(hitY * static_cast<float>(texture.size));
+                        shadePixel = true;
                     } else { // North-South
                         texX = static_cast<int>(hitX * static_cast<float>(texture.size));
                     }
@@ -248,6 +251,8 @@ namespace MiniFPS {
                     const float y2 = floorCellY + 1;
                     const float x3 = floorCellX + 1;
                     const float y3 = floorCellY;
+
+
 
                     if (IsPointInRightAngledTriangle(cellX, cellY, x1, y1, x2, y2, x3, y3)) {
                         texX = texture.size - texX - 1;
@@ -266,7 +271,21 @@ namespace MiniFPS {
                         }
 
                         const int texY = ((y - drawStart) * texture.size) / columnHeight;
-                        SetPixel(pixels, pitch, texture.buffer[texY][texX], ray, y);
+
+                        if (shadePixel) {
+                            int r = texture.buffer[texY][texX].argb & RED_MASK;
+                            r = r >> (16 + 1);
+                            int g = texture.buffer[texY][texX].argb & GREEN_MASK;
+                            g = g >> (8 + 1);
+                            int b = texture.buffer[texY][texX].argb & BLUE_MASK;
+                            b = b >> (1);
+                            int a = texture.buffer[texY][texX].argb & ALPHA_MASK;
+
+                            Color shadedTexPixel(r, g, b, a);
+                            SetPixel(pixels, pitch, shadedTexPixel, ray, y);
+                        } else {
+                            SetPixel(pixels, pitch, texture.buffer[texY][texX], ray, y);
+                        }
                     }
 
                     break;
