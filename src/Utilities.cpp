@@ -69,8 +69,8 @@ namespace MiniFPS {
         return successfulInitialization;
     }
 
-    bool InitializeWindowAndRenderer(SDL_Window** window, SDL_Renderer** renderer, size_t screenWidth,
-                                     size_t screenHeight, bool vSync) {
+    bool InitializeWindowAndRenderer(SDL_Window** window, SDL_Renderer** renderer, int screenWidth,
+                                     int screenHeight, bool vSync) {
         bool successfulInitialization = true;
 
         *window = SDL_CreateWindow("MiniFPS",

@@ -48,8 +48,8 @@ namespace MiniFPS {
      * @param vSync Whether to enable VSync.
      * @return Whether the initialization was successful.
      */
-    bool InitializeWindowAndRenderer(SDL_Window** window, SDL_Renderer** renderer, size_t screenWidth,
-                                     size_t screenHeight, bool vSync);
+    bool InitializeWindowAndRenderer(SDL_Window** window, SDL_Renderer** renderer, int screenWidth,
+                                     int screenHeight, bool vSync);
 
     /**
      * Initialize SDL_Image's PNG subsystem.
