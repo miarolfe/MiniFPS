@@ -93,6 +93,8 @@ namespace MiniFPS {
 
     void Renderer::DrawButton(Button button) {
         SDL_SetRenderTarget(sdlRenderer, renderFrameTexture);
+
+        // TODO: Make this more efficient
         SDL_Texture* buttonTexture = SDL_CreateTexture(sdlRenderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, button.width, button.height);
 
         const SDL_Rect sdlRect {
@@ -117,6 +119,8 @@ namespace MiniFPS {
 
         SDL_RenderCopy(sdlRenderer, buttonTexture, nullptr, &sdlRect);
         SDL_SetRenderTarget(sdlRenderer, nullptr);
+
+        SDL_DestroyTexture(buttonTexture);
     }
 
     void Renderer::DrawTextStr(const std::string& text, const Font& font, float x, float y, int width, int r=255, int g=255, int b=255) {
@@ -131,8 +135,12 @@ namespace MiniFPS {
 
         const SDL_Rect destRect{static_cast<int>(x), static_cast<int>(y), width, height};
 
-        SDL_RenderCopy(sdlRenderer, RenderTextToTexture(sdlRenderer, font, text, r, g, b), nullptr, &destRect);
+        SDL_Texture* texture = RenderTextToTexture(sdlRenderer, font, text, r, g, b);
+
+        SDL_RenderCopy(sdlRenderer, texture, nullptr, &destRect);
         SDL_SetRenderTarget(sdlRenderer, nullptr);
+
+        SDL_DestroyTexture(texture);
     }
 
     void Renderer::DrawTextStrH(const std::string& text, const Font& font, float x, float y, int height, int r=255, int g=255, int b=255) {
@@ -147,8 +155,12 @@ namespace MiniFPS {
 
         const SDL_Rect destRect{static_cast<int>(x), static_cast<int>(y), width, height};
 
-        SDL_RenderCopy(sdlRenderer, RenderTextToTexture(sdlRenderer, font, text, r, g, b), nullptr, &destRect);
+        SDL_Texture* texture = RenderTextToTexture(sdlRenderer, font, text, r, g, b);
+
+        SDL_RenderCopy(sdlRenderer, texture, nullptr, &destRect);
         SDL_SetRenderTarget(sdlRenderer, nullptr);
+
+        SDL_DestroyTexture(texture);
     }
 
     void Renderer::DrawMainMenu(const MainMenu& mainMenu) {
