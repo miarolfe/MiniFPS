@@ -232,6 +232,5 @@ namespace MiniFPS {
 
         // If all cross products have the same sign, the point is inside the triangle
         return ((cp1 >= 0 && cp2 >= 0 && cp3 >= 0) || (cp1 <= 0 && cp2 <= 0 && cp3 <= 0));
-
     }
 }
