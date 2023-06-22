@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.23)
 
-project(MiniFPS VERSION 0.1.3)
+project(MiniFPS VERSION 0.1.4)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
