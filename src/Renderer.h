@@ -14,10 +14,6 @@ namespace MiniFPS {
     const Color FLOOR = Color(0xFFBBBBDD);
     const Color BUTTON = Color(0xFFD0D0D0);
     const uint32_t TRANSPARENCY_MASK = 0xFF000000;
-    const uint32_t RED_MASK = 0x00FF0000;
-    const uint32_t GREEN_MASK = 0x0000FF00;
-    const uint32_t BLUE_MASK = 0x000000FF;
-    const uint32_t ALPHA_MASK = 0xFF000000;
 
     class Renderer {
     private:
@@ -46,11 +42,28 @@ namespace MiniFPS {
         void SetPixel(void* pixels, int pitch, Color color, int x, int y);
 
         /**
+         * Checks whether to darken a pixel when rendering.
+         * @param cellX The x-coordinate of the cell.
+         * @param cellY The y-coordinate of the cell.
+         * @return Whether to shade a pixel.
+         */
+        static bool ShouldShadePixel(float cellX, float cellY);
+
+        /**
          * Returns the texture buffer that corresponds to the provided texture ID.
          * @param textureId The ID of the texture for which the texture buffer is requested.
          * @return The Texture object associated with the provided texture ID.
          */
         Texture GetTexBuffer(short textureId);
+
+        /**
+         * Gets the appropriate texture X coordinate.
+         * @param cellX The cell's X coordinate.
+         * @param cellY The cell's Y coordinate.
+         * @param textureSize The size of the texture.
+         * @return The appropriate texture X coordinate.
+         */
+        int GetTexX(float cellX, float cellY, int textureSize);
 
         /**
          * Copies a texture to the frame texture.

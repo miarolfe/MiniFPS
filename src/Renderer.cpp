@@ -30,6 +30,19 @@ namespace MiniFPS {
         row[x] = color.argb;
     }
 
+    bool Renderer::ShouldShadePixel(float cellX, float cellY) {
+        const float hitX = cellX - floor(cellX + 0.5f); // Fractional part of cellX
+        const float hitY = cellY - floor(cellY + 0.5f); // Fractional part of cellY
+
+        bool shouldShadePixel = false;
+
+        if (std::abs(hitY) > std::abs(hitX)) { // West-East
+            shouldShadePixel = true;
+        }
+
+        return shouldShadePixel;
+    }
+
     Texture Renderer::GetTexBuffer(short textureId) {
         Texture texture = textureMap[textureId];
 
@@ -39,6 +52,38 @@ namespace MiniFPS {
         }
 
         return texture;
+    }
+
+    int Renderer::GetTexX(float cellX, float cellY, int textureSize) {
+        const float hitX = cellX - floor(cellX + 0.5f); // Fractional part of cellX
+        const float hitY = cellY - floor(cellY + 0.5f); // Fractional part of cellY
+
+        int texX = -1;
+
+        if (std::abs(hitY) > std::abs(hitX)) { // West-East
+            texX = static_cast<int>(hitY * static_cast<float>(textureSize));
+        } else { // North-South
+            texX = static_cast<int>(hitX * static_cast<float>(textureSize));
+        }
+
+        const float floorCellX = floor(cellX);
+        const float floorCellY = floor(cellY);
+
+        const float x1 = floorCellX;
+        const float y1 = floorCellY;
+        const float x2 = floorCellX + 1;
+        const float y2 = floorCellY + 1;
+        const float x3 = floorCellX + 1;
+        const float y3 = floorCellY;
+
+        if (IsPointInRightAngledTriangle(cellX, cellY, x1, y1, x2, y2, x3, y3)) {
+            texX = textureSize - texX - 1;
+        }
+
+        if (texX < 0) texX += textureSize;
+        if (texX >= textureSize) texX -= textureSize;
+
+        return texX;
     }
 
     void Renderer::CopyTextureToFrameTexture(void* pixels, int pitch, const Texture& texture, int x, int y, int w, int h) {
@@ -59,11 +104,6 @@ namespace MiniFPS {
             }
         }
     }
-
-//    size = tempTextureSurface->w;
-//    buffer = new Color* [size];
-//    for (int row = 0; row < size; row++)
-//        buffer[row] = new Color[size];
 
     void Renderer::FreeTextures() {
         for (const auto& idTexturePair : textureMap) {
@@ -216,10 +256,14 @@ namespace MiniFPS {
             const float cosRayAngle = cos(rayAngle); // X component
             const float sinRayAngle = sin(rayAngle); // Y component
 
+            if (ray == 0) std::cout << "**START**" << std::endl;
+
             // TODO: DDA?
             for (float rayDistance = 0; rayDistance < player.camera.maxRenderDistance; rayDistance += player.camera.rayIncrement) {
                 const float cellX = player.camera.x + rayDistance * cosRayAngle;
                 const float cellY = player.camera.y + rayDistance * sinRayAngle;
+
+                if (ray == 0) std::cout << "(" << cellX << ", " << cellY << ")" << std::endl;
 
                 const short cellID = player.level->Get(static_cast<int>(cellX), static_cast<int>(cellY));
 
@@ -228,41 +272,11 @@ namespace MiniFPS {
                     const float distance = rayDistance * cos(rayAngle - player.camera.angle);
                     const int columnHeight = ((player.camera.viewportHeight) * player.camera.distanceToProjectionPlane) / distance;
 
-                    const float hitX = cellX - floor(cellX + 0.5f); // Fractional part of cellX
-                    const float hitY = cellY - floor(cellY + 0.5f); // Fractional part of cellY#
+                    const int texX = GetTexX(cellX, cellY, texture.size);
 
-                    int texX;
-
-                    bool shadePixel = false;
-
-                    if (std::abs(hitY) > std::abs(hitX)) { // West-East
-                        texX = static_cast<int>(hitY * static_cast<float>(texture.size));
-                        shadePixel = true;
-                    } else { // North-South
-                        texX = static_cast<int>(hitX * static_cast<float>(texture.size));
-                    }
-
-                    const float floorCellX = floor(cellX);
-                    const float floorCellY = floor(cellY);
-
-                    const float x1 = floorCellX;
-                    const float y1 = floorCellY;
-                    const float x2 = floorCellX + 1;
-                    const float y2 = floorCellY + 1;
-                    const float x3 = floorCellX + 1;
-                    const float y3 = floorCellY;
-
-
-
-                    if (IsPointInRightAngledTriangle(cellX, cellY, x1, y1, x2, y2, x3, y3)) {
-                        texX = texture.size - texX - 1;
-                    }
-
-                    if (texX < 0) texX += texture.size;
-                    if (texX >= texture.size) texX -= texture.size;
+                    const bool shadePixel = ShouldShadePixel(cellX, cellY);
 
                     const int drawStart = ((player.camera.viewportHeight / 2) - (columnHeight / 2));
-
                     const int drawEnd = drawStart + columnHeight;
 
                     for (int y = drawStart; y < drawEnd; y++) {
@@ -273,15 +287,7 @@ namespace MiniFPS {
                         const int texY = ((y - drawStart) * texture.size) / columnHeight;
 
                         if (shadePixel) {
-                            int r = texture.buffer[texY][texX].argb & RED_MASK;
-                            r = r >> (16 + 1);
-                            int g = texture.buffer[texY][texX].argb & GREEN_MASK;
-                            g = g >> (8 + 1);
-                            int b = texture.buffer[texY][texX].argb & BLUE_MASK;
-                            b = b >> (1);
-                            int a = texture.buffer[texY][texX].argb & ALPHA_MASK;
-
-                            Color shadedTexPixel(r, g, b, a);
+                            const Color shadedTexPixel = Color::ShadePixel(texture.buffer[texY][texX]);
                             SetPixel(pixels, pitch, shadedTexPixel, ray, y);
                         } else {
                             SetPixel(pixels, pitch, texture.buffer[texY][texX], ray, y);
@@ -291,6 +297,8 @@ namespace MiniFPS {
                     break;
                 }
             }
+
+            if (ray == 0) std::cout << "**END**" << std::endl;
         }
 
         const int weaponTextureSize = player.camera.viewportWidth / 4;
