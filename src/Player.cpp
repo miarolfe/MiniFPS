@@ -113,7 +113,7 @@ namespace MiniFPS {
                 }
             }
 
-            if (level->HasCollided(camera.x, camera.y)) {
+            if (level->HasCollided({camera.x, camera.y})) {
                 camera.x = prevX;
                 camera.y = prevY;
             }

@@ -4,6 +4,8 @@
 
 #include <SDL.h>
 
+#include "Point.h"
+
 namespace MiniFPS {
     const float collisionThreshold = 0.05;
 
@@ -24,28 +26,25 @@ namespace MiniFPS {
         explicit Level(const std::string& filePath);
 
         /**
-         * Gets the texture ID of the cell at position (x, y) in the level. Does not check if cell position is valid.
-         * @param x The x-coordinate of the cell.
-         * @param y The y-coordinate of the cell.
+         * Gets the texture ID of the cell at a position in the level. Does not check if cell position is valid.
+         * @param The cell's position in the level.
          * @return The texture ID of the cell.
          */
-        short Get (int x, int y);
+        short Get (IntPoint point);
 
         /**
          * Checks if the cell at position (x, y) in the level is occupied by a wall.
-         * @param x The x-coordinate of the cell.
-         * @param y The y-coordinate of the cell.
+         * @param The cell's position in the level.
          * @return The occupation status of the cell.
          */
-        bool HasCollided(float x, float y);
+        bool HasCollided(FloatPoint point);
 
         /**
          * Checks if the position (x, y) is a valid position in the level.
-         * @param x The x-coordinate of the cell.
-         * @param y The y-coordinate of the cell.
+         * @param The cell's position in the level.
          * @return Whether the position is valid.
          */
-        bool IsPositionValid(float x, float y);
+        bool IsPositionValid(FloatPoint point);
 
         /**
          * Prints a birds-eye view outline of the level to std::cout.

@@ -287,8 +287,8 @@ namespace MiniFPS {
                 const float cellX = player.camera.x + rayDistance * cosRayAngle;
                 const float cellY = player.camera.y + rayDistance * sinRayAngle;
 
-                if (player.level->IsPositionValid(cellX, cellY)) {
-                    const short cellID = player.level->Get((int) cellX, ((int) cellY));
+                if (player.level->IsPositionValid({cellX, cellY})) {
+                    const short cellID = player.level->Get({static_cast<int>(cellX), static_cast<int>(cellY)});
 
                     if (cellID != 0) {
                         const Texture texture = GetTexBuffer(cellID);
