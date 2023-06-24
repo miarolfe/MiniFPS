@@ -15,6 +15,10 @@ namespace MiniFPS {
     }
 
     short Level::Get(const int x, const int y) {
+        assert(x >= 0);
+        assert(x < w);
+        assert(y >= 0);
+        assert(y < h);
         return matrix[y][x];
     }
 
@@ -53,6 +57,10 @@ namespace MiniFPS {
         }
 
         return collided;
+    }
+
+    bool Level::IsPositionValid(float x, float y) {
+        return (x >= 0 && x < w && y >= 0 && y < h);
     }
 
     void Level::Print() {

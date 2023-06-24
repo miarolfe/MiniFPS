@@ -115,6 +115,33 @@ namespace MiniFPS {
         }
     }
 
+    void Renderer::DrawTexturedColumn(const Texture &texture, Camera camera, void* pixels, int pitch, float distance,
+                                      float cellX, float cellY, int rayX) {
+        const int columnHeight = ((camera.viewportHeight) * camera.distanceToProjectionPlane) / distance;
+
+        const int texX = GetTexX(cellX, cellY, texture.size);
+
+        const bool shadePixel = ShouldShadePixel(cellX, cellY);
+
+        const int drawStart = ((camera.viewportHeight / 2) - (columnHeight / 2));
+        const int drawEnd = drawStart + columnHeight;
+
+        for (int rayY = drawStart; rayY < drawEnd; rayY++) {
+            if (rayY < 0 || rayY >= camera.viewportHeight) {
+                continue;
+            }
+
+            const int texY = ((rayY - drawStart) * texture.size) / columnHeight;
+
+            if (shadePixel) {
+                const Color shadedTexPixel = Color::ShadePixel(texture.buffer[texY][texX]);
+                SetPixel(pixels, pitch, shadedTexPixel, rayX, rayY);
+            } else {
+                SetPixel(pixels, pitch, texture.buffer[texY][texX], rayX, rayY);
+            }
+        }
+    }
+
     void Renderer::DrawCeiling(Camera camera, void* pixels, int pitch) {
         for (int frameY = 0; frameY < camera.viewportHeight / 2; frameY++) {
             for (int frameX = 0; frameX < camera.viewportWidth; frameX++) {
@@ -241,7 +268,7 @@ namespace MiniFPS {
         SDL_RenderPresent(sdlRenderer);
     }
 
-    void Renderer::Draw(Player player, const Font& font, const float frameDelta) {
+    void Renderer::Draw(const Player& player, const Font& font, const float frameDelta) {
         int pitch = -1;
         void* pixels = nullptr;
         SDL_LockTexture(streamingFrameTexture, nullptr, &pixels, &pitch);
@@ -256,49 +283,25 @@ namespace MiniFPS {
             const float cosRayAngle = cos(rayAngle); // X component
             const float sinRayAngle = sin(rayAngle); // Y component
 
-            if (ray == 0) std::cout << "**START**" << std::endl;
-
-            // TODO: DDA?
             for (float rayDistance = 0; rayDistance < player.camera.maxRenderDistance; rayDistance += player.camera.rayIncrement) {
                 const float cellX = player.camera.x + rayDistance * cosRayAngle;
                 const float cellY = player.camera.y + rayDistance * sinRayAngle;
 
-                if (ray == 0) std::cout << "(" << cellX << ", " << cellY << ")" << std::endl;
+                if (player.level->IsPositionValid(cellX, cellY)) {
+                    const short cellID = player.level->Get((int) cellX, ((int) cellY));
 
-                const short cellID = player.level->Get(static_cast<int>(cellX), static_cast<int>(cellY));
+                    if (cellID != 0) {
+                        const Texture texture = GetTexBuffer(cellID);
+                        const float distance = rayDistance * cos(rayAngle - player.camera.angle);
 
-                if (cellID != 0) {
-                    const Texture texture = GetTexBuffer(cellID);
-                    const float distance = rayDistance * cos(rayAngle - player.camera.angle);
-                    const int columnHeight = ((player.camera.viewportHeight) * player.camera.distanceToProjectionPlane) / distance;
+                        DrawTexturedColumn(texture, player.camera, pixels, pitch, distance, cellX, cellY, ray);
 
-                    const int texX = GetTexX(cellX, cellY, texture.size);
-
-                    const bool shadePixel = ShouldShadePixel(cellX, cellY);
-
-                    const int drawStart = ((player.camera.viewportHeight / 2) - (columnHeight / 2));
-                    const int drawEnd = drawStart + columnHeight;
-
-                    for (int y = drawStart; y < drawEnd; y++) {
-                        if (y < 0 || y >= player.camera.viewportHeight) {
-                            continue;
-                        }
-
-                        const int texY = ((y - drawStart) * texture.size) / columnHeight;
-
-                        if (shadePixel) {
-                            const Color shadedTexPixel = Color::ShadePixel(texture.buffer[texY][texX]);
-                            SetPixel(pixels, pitch, shadedTexPixel, ray, y);
-                        } else {
-                            SetPixel(pixels, pitch, texture.buffer[texY][texX], ray, y);
-                        }
+                        break;
                     }
-
+                } else {
                     break;
                 }
             }
-
-            if (ray == 0) std::cout << "**END**" << std::endl;
         }
 
         const int weaponTextureSize = player.camera.viewportWidth / 4;

@@ -24,7 +24,7 @@ namespace MiniFPS {
         explicit Level(const std::string& filePath);
 
         /**
-         * Gets the texture ID of the cell at position (x, y) in the level.
+         * Gets the texture ID of the cell at position (x, y) in the level. Does not check if cell position is valid.
          * @param x The x-coordinate of the cell.
          * @param y The y-coordinate of the cell.
          * @return The texture ID of the cell.
@@ -38,6 +38,14 @@ namespace MiniFPS {
          * @return The occupation status of the cell.
          */
         bool HasCollided(float x, float y);
+
+        /**
+         * Checks if the position (x, y) is a valid position in the level.
+         * @param x The x-coordinate of the cell.
+         * @param y The y-coordinate of the cell.
+         * @return Whether the position is valid.
+         */
+        bool IsPositionValid(float x, float y);
 
         /**
          * Prints a birds-eye view outline of the level to std::cout.

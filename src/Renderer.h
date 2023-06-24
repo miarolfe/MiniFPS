@@ -82,6 +82,9 @@ namespace MiniFPS {
          */
         void FreeTextures();
 
+        void DrawTexturedColumn(const Texture& texture, Camera camera, void* pixels, int pitch, float distance,
+                                float cellX, float cellY, int rayX);
+
         /**
          * Writes the ceiling to the frame texture.
          * @param camera The camera object.
@@ -146,6 +149,6 @@ namespace MiniFPS {
          * @param font The font to use for UI.
          * @param frameDelta The time elapsed between frames in seconds.
          */
-        void Draw(Player player, const Font &font, float frameDelta);
+        void Draw(const Player& player, const Font &font, float frameDelta);
     };
 }
