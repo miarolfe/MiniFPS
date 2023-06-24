@@ -36,18 +36,16 @@ namespace MiniFPS {
          * @param pixels The pixel buffer of the frame texture.
          * @param pitch The pitch of the frame texture.
          * @param color The color to set the pixel in the frame texture.
-         * @param x The x-coordinate of the frame texture to set.
-         * @param y The y-coordinate of the frame texture to set.
+         * @param point The pixel's coordinates in the frame texture.
          */
-        void SetPixel(void* pixels, int pitch, Color color, int x, int y);
+        void SetPixel(void* pixels, int pitch, Color color, IntPoint point);
 
         /**
          * Checks whether to darken a pixel when rendering.
-         * @param cellX The x-coordinate of the cell.
-         * @param cellY The y-coordinate of the cell.
+         * @param point The pixel's coordinates.
          * @return Whether to shade a pixel.
          */
-        static bool ShouldShadePixel(float cellX, float cellY);
+        static bool ShouldShadePixel(FloatPoint point);
 
         /**
          * Returns the texture buffer that corresponds to the provided texture ID.
@@ -58,32 +56,40 @@ namespace MiniFPS {
 
         /**
          * Gets the appropriate texture X coordinate.
-         * @param cellX The cell's X coordinate.
-         * @param cellY The cell's Y coordinate.
+         * @param point The cell's position.
          * @param textureSize The size of the texture.
          * @return The appropriate texture X coordinate.
          */
-        int GetTexX(float cellX, float cellY, int textureSize);
+        int GetTexX(FloatPoint point, int textureSize);
 
         /**
          * Copies a texture to the frame texture.
          * @param pixels The pixel buffer of the frame texture.
          * @param pitch The pitch of the frame texture.
          * @param texture The texture to copy to the frame texture.
-         * @param x The centered x-coordinate to copy the texture to.
-         * @param y The centered y-coordinate to copy the texture to.
+         * @param point The position to copy the texture to (centered).
          * @param w The width to copy it with.
          * @param h The height to copy it with.
          */
-        void CopyTextureToFrameTexture(void* pixels, int pitch, const Texture& texture, int x, int y, int w, int h);
+        void CopyTextureToFrameTexture(void* pixels, int pitch, const Texture& texture, IntPoint point, int w, int h);
 
         /**
          * Free the memory allocated to all textures.
          */
         void FreeTextures();
 
+        /**
+         * Draw a textured column to the frame texture.
+         * @param texture The texture to use for the column.
+         * @param camera The camera to render from.
+         * @param pixels The frame buffer of the frame texture.
+         * @param pitch The pitch of the frame texture.
+         * @param distance The distance from the camera to the cell.
+         * @param cell The cell position the raycaster hit.
+         * @param rayX The ray to draw.
+         */
         void DrawTexturedColumn(const Texture& texture, Camera camera, void* pixels, int pitch, float distance,
-                                float cellX, float cellY, int rayX);
+                                FloatPoint cell, int rayX);
 
         /**
          * Writes the ceiling to the frame texture.
@@ -113,27 +119,25 @@ namespace MiniFPS {
          * TODO: Figure out why.
          * @param text The string value of the text.
          * @param font The font to use to draw the text.
-         * @param x The x-coordinate to start drawing text from.
-         * @param y The y-coordinate to start drawing text from.
+         * @param point The top-left corner of the text on the screen.
          * @param width The required width for the drawn text.
          * @param r The red value for the text.
          * @param g The green value for the text.
          * @param b The blue value for the text.
          */
-        void DrawTextStr(const std::string &text, const Font& font, float x, float y, int width, int r, int g, int b);
+        void DrawTextStr(const std::string &text, const Font& font, FloatPoint point, int width, int r, int g, int b);
 
         /**
          * Renders text to a texture and copies that texture onto the frame texture.
          * @param text The string value of the text.
          * @param font The font to use to draw the text.
-         * @param x The x-coordinate to start drawing text from.
-         * @param y The y-coordinate to start drawing text from.
+         * @param point The top-left corner of the text on the screen.
          * @param height The required height for the drawn text.
          * @param r The red value for the text.
          * @param g The green value for the text.
          * @param b The blue value for the text.
          */
-        void DrawTextStrH(const std::string& text, const Font& font, float x, float y, int height, int r, int g, int b);
+        void DrawTextStrH(const std::string& text, const Font& font, FloatPoint point, int height, int r, int g, int b);
 
         /**
          * Draws the main menu and copies it to the frame texture.

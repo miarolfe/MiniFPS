@@ -86,36 +86,36 @@ namespace MiniFPS {
 
     void Player::Move(float frameDelta, float speedModifier) {
         if (frameDelta != 0 && speedModifier != 0) {
-            const float prevX = camera.x;
-            const float prevY = camera.y;
+            const float prevX = camera.pos.x;
+            const float prevY = camera.pos.y;
 
             if (inputState.moveForward != inputState.moveBack) {
                 if (inputState.moveForward) {
-                    camera.x += frameDelta * speedModifier * cos(camera.angle);
-                    camera.y += frameDelta * speedModifier * sin(camera.angle);
+                    camera.pos.x += frameDelta * speedModifier * cos(camera.angle);
+                    camera.pos.y += frameDelta * speedModifier * sin(camera.angle);
                 }
 
                 if (inputState.moveBack) {
-                    camera.x -= frameDelta * speedModifier * cos(camera.angle);
-                    camera.y -= frameDelta * speedModifier * sin(camera.angle);
+                    camera.pos.x -= frameDelta * speedModifier * cos(camera.angle);
+                    camera.pos.y -= frameDelta * speedModifier * sin(camera.angle);
                 }
             }
 
             if (inputState.moveLeft != inputState.moveRight) {
                 if (inputState.moveLeft) {
-                    camera.x += frameDelta * speedModifier * cos(camera.angle - M_PI / 2);
-                    camera.y += frameDelta * speedModifier * sin(camera.angle - M_PI / 2);
+                    camera.pos.x += frameDelta * speedModifier * cos(camera.angle - M_PI / 2);
+                    camera.pos.y += frameDelta * speedModifier * sin(camera.angle - M_PI / 2);
                 }
 
                 if (inputState.moveRight) {
-                    camera.x += frameDelta * speedModifier * cos(camera.angle + M_PI / 2);
-                    camera.y += frameDelta * speedModifier * sin(camera.angle + M_PI / 2);
+                    camera.pos.x += frameDelta * speedModifier * cos(camera.angle + M_PI / 2);
+                    camera.pos.y += frameDelta * speedModifier * sin(camera.angle + M_PI / 2);
                 }
             }
 
-            if (level->HasCollided(camera.x, camera.y)) {
-                camera.x = prevX;
-                camera.y = prevY;
+            if (level->HasCollided({camera.pos.x, camera.pos.y})) {
+                camera.pos.x = prevX;
+                camera.pos.y = prevY;
             }
         }
     }

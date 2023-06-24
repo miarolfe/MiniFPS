@@ -1,11 +1,12 @@
 #include <iostream>
 
 #include "Button.h"
+#include "Point.h"
 
 namespace MiniFPS {
     Button::Button() {}
-
-    Button::Button(float x, float y, float width, float height) : x(x), y(y), width(width), height(height) {}
+    
+    Button::Button(FloatPoint pos, float width, float height) : pos(pos), width(width), height(height) {}
 
     bool Button::Pressed(int mouseX, int mouseY) {
         if (static_cast<float>(mouseX) >= GetLeftBound() && static_cast<float>(mouseX) <= GetRightBound() &&
@@ -17,18 +18,18 @@ namespace MiniFPS {
     }
 
     float Button::GetLeftBound() {
-        return x - (width/2);
+        return pos.x - (width/2);
     }
 
     float Button::GetRightBound() {
-        return x + (width/2);
+        return pos.x + (width/2);
     }
 
     float Button::GetBottomBound() {
-        return y + (height/2);
+        return pos.y + (height/2);
     }
 
     float Button::GetTopBound() {
-        return y - (height/2);
+        return pos.y - (height/2);
     }
 }

@@ -25,6 +25,7 @@ headers = files(
   'src/Level.h',
   'src/Menu.h',
   'src/Player.h',
+  'src/Point.h',
   'src/Renderer.h',
   'src/Settings.h',
   'src/Texture.h',

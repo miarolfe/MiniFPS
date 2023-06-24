@@ -15,33 +15,33 @@ namespace MiniFPS {
         Load(filePath);
     }
 
-    short Level::Get(const int x, const int y) {
-        assert(x >= 0);
-        assert(x < w);
-        assert(y >= 0);
-        assert(y < h);
-        return matrix[y][x];
+    short Level::Get(IntPoint point) {
+        assert(point.x >= 0);
+        assert(point.x < w);
+        assert(point.y >= 0);
+        assert(point.y < h);
+        return matrix[point.y][point.x];
     }
 
-    bool Level::HasCollided(const float x, const float y) {
+    bool Level::HasCollided(const FloatPoint point) {
         bool collided = false;
 
         // Check if out-of-bounds
-        if (x < collisionThreshold || x > w - collisionThreshold || y < collisionThreshold ||
-            y > h - collisionThreshold)
+        if (point.x < collisionThreshold || point.x > w - collisionThreshold || point.y < collisionThreshold ||
+                point.y > h - collisionThreshold)
             return true;
 
-        const int roundedX = static_cast<int>(roundf(x));
-        const int roundedY = static_cast<int>(roundf(y));
+        const int roundedX = static_cast<int>(roundf(point.x));
+        const int roundedY = static_cast<int>(roundf(point.y));
 
         for (int cellX = roundedX - 1; cellX <= roundedX + 1; cellX++) {
             for (int cellY = roundedY - 1; cellY <= roundedY + 1; cellY++) {
                 if (!(cellX < 0 || cellX >= w || cellY < 0 || cellY >= h)) {
-                    if (Get(cellX, cellY) != 0) {
-                        if (x >= static_cast<double>(cellX) - collisionThreshold &&
-                            x <= static_cast<double>(cellX) + 1 + collisionThreshold &&
-                            y >= static_cast<double>(cellY) - collisionThreshold &&
-                            y <= static_cast<double>(cellY) + 1 + collisionThreshold) {
+                    if (Get({cellX, cellY}) != 0) {
+                        if (point.x >= static_cast<double>(cellX) - collisionThreshold &&
+                                point.x <= static_cast<double>(cellX) + 1 + collisionThreshold &&
+                                point.y >= static_cast<double>(cellY) - collisionThreshold &&
+                                point.y <= static_cast<double>(cellY) + 1 + collisionThreshold) {
                             collided = true;
                         }
                     }
@@ -60,14 +60,14 @@ namespace MiniFPS {
         return collided;
     }
 
-    bool Level::IsPositionValid(float x, float y) {
-        return (x >= 0 && x < w && y >= 0 && y < h);
+    bool Level::IsPositionValid(const FloatPoint point) {
+        return (point.x >= 0 && point.x < w && point.y >= 0 && point.y < h);
     }
 
     void Level::Print() {
         for (int i = 0; i < w; i++) {
             for (int j = 0; j < h; j++) {
-                if (Get(j, i) == 0) {
+                if (Get({j, i}) == 0) {
                     std::cout << "  ";
                 } else {
                     std::cout << "* ";

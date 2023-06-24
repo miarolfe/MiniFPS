@@ -25,14 +25,14 @@ namespace MiniFPS {
         textureMap = newTextureMap;
     }
 
-    void Renderer::SetPixel(void* pixels, int pitch, Color color, int x, int y) {
-        uint32_t* row = (uint32_t*) ((uint8_t*) pixels + y * pitch);
-        row[x] = color.argb;
+    void Renderer::SetPixel(void* pixels, int pitch, Color color, IntPoint point) {
+        uint32_t* row = (uint32_t*) ((uint8_t*) pixels + point.y * pitch);
+        row[point.x] = color.argb;
     }
 
-    bool Renderer::ShouldShadePixel(float cellX, float cellY) {
-        const float hitX = cellX - floor(cellX + 0.5f); // Fractional part of cellX
-        const float hitY = cellY - floor(cellY + 0.5f); // Fractional part of cellY
+    bool Renderer::ShouldShadePixel(const FloatPoint point) {
+        const float hitX = point.x - floor(point.x + 0.5f); // Fractional part of cellX
+        const float hitY = point.y - floor(point.y + 0.5f); // Fractional part of cellY
 
         bool shouldShadePixel = false;
 
@@ -54,9 +54,9 @@ namespace MiniFPS {
         return texture;
     }
 
-    int Renderer::GetTexX(float cellX, float cellY, int textureSize) {
-        const float hitX = cellX - floor(cellX + 0.5f); // Fractional part of cellX
-        const float hitY = cellY - floor(cellY + 0.5f); // Fractional part of cellY
+    int Renderer::GetTexX(FloatPoint point, int textureSize) {
+        const float hitX = point.x - floor(point.x + 0.5f); // Fractional part of cellX
+        const float hitY = point.y - floor(point.y + 0.5f); // Fractional part of cellY
 
         int texX = -1;
 
@@ -66,8 +66,8 @@ namespace MiniFPS {
             texX = static_cast<int>(hitX * static_cast<float>(textureSize));
         }
 
-        const float floorCellX = floor(cellX);
-        const float floorCellY = floor(cellY);
+        const float floorCellX = floor(point.x);
+        const float floorCellY = floor(point.y);
 
         const float x1 = floorCellX;
         const float y1 = floorCellY;
@@ -76,7 +76,7 @@ namespace MiniFPS {
         const float x3 = floorCellX + 1;
         const float y3 = floorCellY;
 
-        if (IsPointInRightAngledTriangle(cellX, cellY, x1, y1, x2, y2, x3, y3)) {
+        if (IsPointInRightAngledTriangle(point, {x1, y1}, {x2, y2}, {x3, y3})) {
             texX = textureSize - texX - 1;
         }
 
@@ -86,7 +86,7 @@ namespace MiniFPS {
         return texX;
     }
 
-    void Renderer::CopyTextureToFrameTexture(void* pixels, int pitch, const Texture& texture, int x, int y, int w, int h) {
+    void Renderer::CopyTextureToFrameTexture(void* pixels, int pitch, const Texture& texture, IntPoint point, int w, int h) {
         const float scaleX = static_cast<float>(texture.size) / w;
         const float scaleY = static_cast<float>(texture.size) / h;
 
@@ -99,7 +99,7 @@ namespace MiniFPS {
 
                 // Check if alpha value is 0 (transparent)
                 if ((pixel.argb & TRANSPARENCY_MASK) != 0) {
-                    SetPixel(pixels, pitch, pixel, x + destinationX - (w/2), y + destinationY - (h/2));
+                    SetPixel(pixels, pitch, pixel, {point.x + destinationX - (w/2), point.y + destinationY - (h/2)});
                 }
             }
         }
@@ -116,12 +116,13 @@ namespace MiniFPS {
     }
 
     void Renderer::DrawTexturedColumn(const Texture &texture, Camera camera, void* pixels, int pitch, float distance,
-                                      float cellX, float cellY, int rayX) {
+                                      FloatPoint cell, int rayX) {
+
         const int columnHeight = ((camera.viewportHeight) * camera.distanceToProjectionPlane) / distance;
 
-        const int texX = GetTexX(cellX, cellY, texture.size);
+        const int texX = GetTexX(cell, texture.size);
 
-        const bool shadePixel = ShouldShadePixel(cellX, cellY);
+        const bool shadePixel = ShouldShadePixel(cell);
 
         const int drawStart = ((camera.viewportHeight / 2) - (columnHeight / 2));
         const int drawEnd = drawStart + columnHeight;
@@ -135,9 +136,9 @@ namespace MiniFPS {
 
             if (shadePixel) {
                 const Color shadedTexPixel = Color::ShadePixel(texture.buffer[texY][texX]);
-                SetPixel(pixels, pitch, shadedTexPixel, rayX, rayY);
+                SetPixel(pixels, pitch, shadedTexPixel, {rayX, rayY});
             } else {
-                SetPixel(pixels, pitch, texture.buffer[texY][texX], rayX, rayY);
+                SetPixel(pixels, pitch, texture.buffer[texY][texX], {rayX, rayY});
             }
         }
     }
@@ -145,7 +146,7 @@ namespace MiniFPS {
     void Renderer::DrawCeiling(Camera camera, void* pixels, int pitch) {
         for (int frameY = 0; frameY < camera.viewportHeight / 2; frameY++) {
             for (int frameX = 0; frameX < camera.viewportWidth; frameX++) {
-                SetPixel(pixels, pitch, CEILING, frameX, frameY);
+                SetPixel(pixels, pitch, CEILING, {frameX, frameY});
             }
         }
     }
@@ -153,7 +154,7 @@ namespace MiniFPS {
     void Renderer::DrawFloor(Camera camera, void* pixels, int pitch) {
         for (int frameY = static_cast<int>(camera.viewportHeight / 2); frameY < camera.viewportHeight; frameY++) {
             for (int frameX = 0; frameX < camera.viewportWidth; frameX++) {
-                SetPixel(pixels, pitch, FLOOR, frameX, frameY);
+                SetPixel(pixels, pitch, FLOOR, {frameX, frameY});
             }
         }
     }
@@ -178,7 +179,7 @@ namespace MiniFPS {
 
         for (int x = 0; x < button.width; x++) {
             for (int y = 0; y < button.height; y++) {
-                SetPixel(pixels, pitch, BUTTON, x, y);
+                SetPixel(pixels, pitch, BUTTON, {x, y});
             }
         }
 
@@ -190,7 +191,7 @@ namespace MiniFPS {
         SDL_DestroyTexture(buttonTexture);
     }
 
-    void Renderer::DrawTextStr(const std::string& text, const Font& font, float x, float y, int width, int r=255, int g=255, int b=255) {
+    void Renderer::DrawTextStr(const std::string& text, const Font& font, FloatPoint point, int width, int r=255, int g=255, int b=255) {
         SDL_SetRenderTarget(sdlRenderer, renderFrameTexture);
 
         int requestedWidth;
@@ -200,7 +201,7 @@ namespace MiniFPS {
 
         const int height = static_cast<int>(static_cast<float>(width) / ratio);
 
-        const SDL_Rect destRect{static_cast<int>(x), static_cast<int>(y), width, height};
+        const SDL_Rect destRect{static_cast<int>(point.x), static_cast<int>(point.y), width, height};
 
         SDL_Texture* texture = RenderTextToTexture(sdlRenderer, font, text, r, g, b);
 
@@ -210,7 +211,7 @@ namespace MiniFPS {
         SDL_DestroyTexture(texture);
     }
 
-    void Renderer::DrawTextStrH(const std::string& text, const Font& font, float x, float y, int height, int r=255, int g=255, int b=255) {
+    void Renderer::DrawTextStrH(const std::string& text, const Font& font, FloatPoint point, int height, int r=255, int g=255, int b=255) {
         SDL_SetRenderTarget(sdlRenderer, renderFrameTexture);
 
         int requestedWidth;
@@ -220,7 +221,7 @@ namespace MiniFPS {
 
         const int width = static_cast<int>(static_cast<float>(height) / ratio);
 
-        const SDL_Rect destRect{static_cast<int>(x), static_cast<int>(y), width, height};
+        const SDL_Rect destRect{static_cast<int>(point.x), static_cast<int>(point.y), width, height};
 
         SDL_Texture* texture = RenderTextToTexture(sdlRenderer, font, text, r, g, b);
 
@@ -237,7 +238,7 @@ namespace MiniFPS {
 
         for (int frameY = 0; frameY < static_cast<int>(mainMenu.player.camera.viewportHeight); frameY++) {
             for (int frameX = 0; frameX < static_cast<int>(mainMenu.player.camera.viewportWidth); frameX++) {
-                SetPixel(pixels, pitch, MAIN_MENU_BACKGROUND, frameX, frameY);
+                SetPixel(pixels, pitch, MAIN_MENU_BACKGROUND, {frameX, frameY});
             }
         }
 
@@ -249,8 +250,8 @@ namespace MiniFPS {
         const int versionTextY = static_cast<int>(5 * (mainMenu.player.camera.viewportHeight / 16));
         const int versionTextWidth = static_cast<int>(mainMenu.player.camera.viewportWidth / 4);
 
-        const int startTextX = static_cast<int>(mainMenu.startButton.x - mainMenu.startButton.width/4);
-        const int startTextY = static_cast<int>(mainMenu.startButton.y - mainMenu.startButton.height/2);
+        const int startTextX = static_cast<int>(mainMenu.startButton.pos.x - mainMenu.startButton.width/4);
+        const int startTextY = static_cast<int>(mainMenu.startButton.pos.x - mainMenu.startButton.height/2);
 
         SDL_UnlockTexture(streamingFrameTexture);
         SDL_SetRenderTarget(sdlRenderer, renderFrameTexture);
@@ -259,9 +260,9 @@ namespace MiniFPS {
         // UI draw calls
 
         DrawButton(mainMenu.startButton);
-        DrawTextStr("MiniFPS", mainMenu.font, titleTextX, titleTextY, titleTextWidth);
-        DrawTextStr(mainMenu.settings.version, mainMenu.font, versionTextX, versionTextY, versionTextWidth);
-        DrawTextStrH("Start", mainMenu.font, startTextX, startTextY, mainMenu.startButton.height);
+        DrawTextStr("MiniFPS", mainMenu.font, {static_cast<float>(titleTextX), static_cast<float>(titleTextY)}, titleTextWidth);
+        DrawTextStr(mainMenu.settings.version, mainMenu.font, {static_cast<float>(versionTextX), static_cast<float>(versionTextY)}, versionTextWidth);
+        DrawTextStrH("Start", mainMenu.font, {static_cast<float>(startTextX), static_cast<float>(startTextY)}, mainMenu.startButton.height);
 
         SDL_SetRenderTarget(sdlRenderer, nullptr);
         SDL_RenderCopy(sdlRenderer, renderFrameTexture, nullptr, nullptr);
@@ -284,17 +285,17 @@ namespace MiniFPS {
             const float sinRayAngle = sin(rayAngle); // Y component
 
             for (float rayDistance = 0; rayDistance < player.camera.maxRenderDistance; rayDistance += player.camera.rayIncrement) {
-                const float cellX = player.camera.x + rayDistance * cosRayAngle;
-                const float cellY = player.camera.y + rayDistance * sinRayAngle;
+                const float cellX = player.camera.pos.x + rayDistance * cosRayAngle;
+                const float cellY = player.camera.pos.y + rayDistance * sinRayAngle;
 
-                if (player.level->IsPositionValid(cellX, cellY)) {
-                    const short cellID = player.level->Get((int) cellX, ((int) cellY));
+                if (player.level->IsPositionValid({cellX, cellY})) {
+                    const short cellID = player.level->Get({static_cast<int>(cellX), static_cast<int>(cellY)});
 
                     if (cellID != 0) {
                         const Texture texture = GetTexBuffer(cellID);
                         const float distance = rayDistance * cos(rayAngle - player.camera.angle);
 
-                        DrawTexturedColumn(texture, player.camera, pixels, pitch, distance, cellX, cellY, ray);
+                        DrawTexturedColumn(texture, player.camera, pixels, pitch, distance, {cellX, cellY}, ray);
 
                         break;
                     }
@@ -305,7 +306,7 @@ namespace MiniFPS {
         }
 
         const int weaponTextureSize = player.camera.viewportWidth / 4;
-        CopyTextureToFrameTexture(pixels, pitch, player.weaponTexture, player.camera.viewportWidth/2, player.camera.viewportHeight - (weaponTextureSize/2), weaponTextureSize, weaponTextureSize);
+        CopyTextureToFrameTexture(pixels, pitch, player.weaponTexture, {player.camera.viewportWidth/2, player.camera.viewportHeight - (weaponTextureSize/2)}, weaponTextureSize, weaponTextureSize);
 
         SDL_UnlockTexture(streamingFrameTexture);
 
@@ -314,9 +315,9 @@ namespace MiniFPS {
 
         // TODO: Scale this with frame
         // UI draw here
-        DrawTextStrH("MiniFPS", font, 25, 25, 100);
-        DrawTextStrH("peterrolfe.com", font, 25, 125, 50);
-        DrawTextStrH(GetFramesPerSecond(frameDelta), font, player.camera.viewportWidth - 100, 25, 50, 255, 0, 0);
+        DrawTextStrH("MiniFPS", font, {25, 25}, 100);
+        DrawTextStrH("peterrolfe.com", font, {25, 125}, 50);
+        DrawTextStrH(GetFramesPerSecond(frameDelta), font, {static_cast<float>(player.camera.viewportWidth - 100), 25}, 50, 255, 0, 0);
 
         SDL_SetRenderTarget(sdlRenderer, nullptr);
         SDL_RenderCopy(sdlRenderer, renderFrameTexture, nullptr, nullptr);
