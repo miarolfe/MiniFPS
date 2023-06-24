@@ -30,9 +30,9 @@ namespace MiniFPS {
         row[point.x] = color.argb;
     }
 
-    bool Renderer::ShouldShadePixel(float cellX, float cellY) {
-        const float hitX = cellX - floor(cellX + 0.5f); // Fractional part of cellX
-        const float hitY = cellY - floor(cellY + 0.5f); // Fractional part of cellY
+    bool Renderer::ShouldShadePixel(const FloatPoint point) {
+        const float hitX = point.x - floor(point.x + 0.5f); // Fractional part of cellX
+        const float hitY = point.y - floor(point.y + 0.5f); // Fractional part of cellY
 
         bool shouldShadePixel = false;
 
@@ -121,7 +121,7 @@ namespace MiniFPS {
 
         const int texX = GetTexX(cellX, cellY, texture.size);
 
-        const bool shadePixel = ShouldShadePixel(cellX, cellY);
+        const bool shadePixel = ShouldShadePixel({cellX, cellY});
 
         const int drawStart = ((camera.viewportHeight / 2) - (columnHeight / 2));
         const int drawEnd = drawStart + columnHeight;

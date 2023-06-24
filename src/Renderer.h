@@ -42,11 +42,10 @@ namespace MiniFPS {
 
         /**
          * Checks whether to darken a pixel when rendering.
-         * @param cellX The x-coordinate of the cell.
-         * @param cellY The y-coordinate of the cell.
+         * @param point The pixel's coordinates.
          * @return Whether to shade a pixel.
          */
-        static bool ShouldShadePixel(float cellX, float cellY);
+        static bool ShouldShadePixel(FloatPoint point);
 
         /**
          * Returns the texture buffer that corresponds to the provided texture ID.
