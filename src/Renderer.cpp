@@ -86,7 +86,7 @@ namespace MiniFPS {
         return texX;
     }
 
-    void Renderer::CopyTextureToFrameTexture(void* pixels, int pitch, const Texture& texture, int x, int y, int w, int h) {
+    void Renderer::CopyTextureToFrameTexture(void* pixels, int pitch, const Texture& texture, IntPoint point, int w, int h) {
         const float scaleX = static_cast<float>(texture.size) / w;
         const float scaleY = static_cast<float>(texture.size) / h;
 
@@ -99,7 +99,7 @@ namespace MiniFPS {
 
                 // Check if alpha value is 0 (transparent)
                 if ((pixel.argb & TRANSPARENCY_MASK) != 0) {
-                    SetPixel(pixels, pitch, pixel, {x + destinationX - (w/2), y + destinationY - (h/2)});
+                    SetPixel(pixels, pitch, pixel, {point.x + destinationX - (w/2), point.y + destinationY - (h/2)});
                 }
             }
         }
@@ -306,7 +306,7 @@ namespace MiniFPS {
         }
 
         const int weaponTextureSize = player.camera.viewportWidth / 4;
-        CopyTextureToFrameTexture(pixels, pitch, player.weaponTexture, player.camera.viewportWidth/2, player.camera.viewportHeight - (weaponTextureSize/2), weaponTextureSize, weaponTextureSize);
+        CopyTextureToFrameTexture(pixels, pitch, player.weaponTexture, {player.camera.viewportWidth/2, player.camera.viewportHeight - (weaponTextureSize/2)}, weaponTextureSize, weaponTextureSize);
 
         SDL_UnlockTexture(streamingFrameTexture);
 

@@ -67,12 +67,11 @@ namespace MiniFPS {
          * @param pixels The pixel buffer of the frame texture.
          * @param pitch The pitch of the frame texture.
          * @param texture The texture to copy to the frame texture.
-         * @param x The centered x-coordinate to copy the texture to.
-         * @param y The centered y-coordinate to copy the texture to.
+         * @param point The position to copy the texture to (centered).
          * @param w The width to copy it with.
          * @param h The height to copy it with.
          */
-        void CopyTextureToFrameTexture(void* pixels, int pitch, const Texture& texture, int x, int y, int w, int h);
+        void CopyTextureToFrameTexture(void* pixels, int pitch, const Texture& texture, IntPoint point, int w, int h);
 
         /**
          * Free the memory allocated to all textures.
