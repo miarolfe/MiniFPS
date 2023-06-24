@@ -25,9 +25,9 @@ namespace MiniFPS {
         textureMap = newTextureMap;
     }
 
-    void Renderer::SetPixel(void* pixels, int pitch, Color color, int x, int y) {
-        uint32_t* row = (uint32_t*) ((uint8_t*) pixels + y * pitch);
-        row[x] = color.argb;
+    void Renderer::SetPixel(void* pixels, int pitch, Color color, IntPoint point) {
+        uint32_t* row = (uint32_t*) ((uint8_t*) pixels + point.y * pitch);
+        row[point.x] = color.argb;
     }
 
     bool Renderer::ShouldShadePixel(float cellX, float cellY) {
@@ -99,7 +99,7 @@ namespace MiniFPS {
 
                 // Check if alpha value is 0 (transparent)
                 if ((pixel.argb & TRANSPARENCY_MASK) != 0) {
-                    SetPixel(pixels, pitch, pixel, x + destinationX - (w/2), y + destinationY - (h/2));
+                    SetPixel(pixels, pitch, pixel, {x + destinationX - (w/2), y + destinationY - (h/2)});
                 }
             }
         }
@@ -135,9 +135,9 @@ namespace MiniFPS {
 
             if (shadePixel) {
                 const Color shadedTexPixel = Color::ShadePixel(texture.buffer[texY][texX]);
-                SetPixel(pixels, pitch, shadedTexPixel, rayX, rayY);
+                SetPixel(pixels, pitch, shadedTexPixel, {rayX, rayY});
             } else {
-                SetPixel(pixels, pitch, texture.buffer[texY][texX], rayX, rayY);
+                SetPixel(pixels, pitch, texture.buffer[texY][texX], {rayX, rayY});
             }
         }
     }
@@ -145,7 +145,7 @@ namespace MiniFPS {
     void Renderer::DrawCeiling(Camera camera, void* pixels, int pitch) {
         for (int frameY = 0; frameY < camera.viewportHeight / 2; frameY++) {
             for (int frameX = 0; frameX < camera.viewportWidth; frameX++) {
-                SetPixel(pixels, pitch, CEILING, frameX, frameY);
+                SetPixel(pixels, pitch, CEILING, {frameX, frameY});
             }
         }
     }
@@ -153,7 +153,7 @@ namespace MiniFPS {
     void Renderer::DrawFloor(Camera camera, void* pixels, int pitch) {
         for (int frameY = static_cast<int>(camera.viewportHeight / 2); frameY < camera.viewportHeight; frameY++) {
             for (int frameX = 0; frameX < camera.viewportWidth; frameX++) {
-                SetPixel(pixels, pitch, FLOOR, frameX, frameY);
+                SetPixel(pixels, pitch, FLOOR, {frameX, frameY});
             }
         }
     }
@@ -178,7 +178,7 @@ namespace MiniFPS {
 
         for (int x = 0; x < button.width; x++) {
             for (int y = 0; y < button.height; y++) {
-                SetPixel(pixels, pitch, BUTTON, x, y);
+                SetPixel(pixels, pitch, BUTTON, {x, y});
             }
         }
 
@@ -237,7 +237,7 @@ namespace MiniFPS {
 
         for (int frameY = 0; frameY < static_cast<int>(mainMenu.player.camera.viewportHeight); frameY++) {
             for (int frameX = 0; frameX < static_cast<int>(mainMenu.player.camera.viewportWidth); frameX++) {
-                SetPixel(pixels, pitch, MAIN_MENU_BACKGROUND, frameX, frameY);
+                SetPixel(pixels, pitch, MAIN_MENU_BACKGROUND, {frameX, frameY});
             }
         }
 

@@ -36,10 +36,9 @@ namespace MiniFPS {
          * @param pixels The pixel buffer of the frame texture.
          * @param pitch The pitch of the frame texture.
          * @param color The color to set the pixel in the frame texture.
-         * @param x The x-coordinate of the frame texture to set.
-         * @param y The y-coordinate of the frame texture to set.
+         * @param point The pixel's coordinates in the frame texture.
          */
-        void SetPixel(void* pixels, int pitch, Color color, int x, int y);
+        void SetPixel(void* pixels, int pitch, Color color, IntPoint point);
 
         /**
          * Checks whether to darken a pixel when rendering.
