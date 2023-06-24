@@ -76,7 +76,7 @@ namespace MiniFPS {
         const float x3 = floorCellX + 1;
         const float y3 = floorCellY;
 
-        if (IsPointInRightAngledTriangle(point.x, point.y, x1, y1, x2, y2, x3, y3)) {
+        if (IsPointInRightAngledTriangle(point, {x1, y1}, {x2, y2}, {x3, y3})) {
             texX = textureSize - texX - 1;
         }
 
