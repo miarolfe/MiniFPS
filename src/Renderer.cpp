@@ -249,8 +249,8 @@ namespace MiniFPS {
         const int versionTextY = static_cast<int>(5 * (mainMenu.player.camera.viewportHeight / 16));
         const int versionTextWidth = static_cast<int>(mainMenu.player.camera.viewportWidth / 4);
 
-        const int startTextX = static_cast<int>(mainMenu.startButton.x - mainMenu.startButton.width/4);
-        const int startTextY = static_cast<int>(mainMenu.startButton.y - mainMenu.startButton.height/2);
+        const int startTextX = static_cast<int>(mainMenu.startButton.pos.x - mainMenu.startButton.width/4);
+        const int startTextY = static_cast<int>(mainMenu.startButton.pos.x - mainMenu.startButton.height/2);
 
         SDL_UnlockTexture(streamingFrameTexture);
         SDL_SetRenderTarget(sdlRenderer, renderFrameTexture);
