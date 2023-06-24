@@ -54,9 +54,9 @@ namespace MiniFPS {
         return texture;
     }
 
-    int Renderer::GetTexX(float cellX, float cellY, int textureSize) {
-        const float hitX = cellX - floor(cellX + 0.5f); // Fractional part of cellX
-        const float hitY = cellY - floor(cellY + 0.5f); // Fractional part of cellY
+    int Renderer::GetTexX(FloatPoint point, int textureSize) {
+        const float hitX = point.x - floor(point.x + 0.5f); // Fractional part of cellX
+        const float hitY = point.y - floor(point.y + 0.5f); // Fractional part of cellY
 
         int texX = -1;
 
@@ -66,8 +66,8 @@ namespace MiniFPS {
             texX = static_cast<int>(hitX * static_cast<float>(textureSize));
         }
 
-        const float floorCellX = floor(cellX);
-        const float floorCellY = floor(cellY);
+        const float floorCellX = floor(point.x);
+        const float floorCellY = floor(point.y);
 
         const float x1 = floorCellX;
         const float y1 = floorCellY;
@@ -76,7 +76,7 @@ namespace MiniFPS {
         const float x3 = floorCellX + 1;
         const float y3 = floorCellY;
 
-        if (IsPointInRightAngledTriangle(cellX, cellY, x1, y1, x2, y2, x3, y3)) {
+        if (IsPointInRightAngledTriangle(point.x, point.y, x1, y1, x2, y2, x3, y3)) {
             texX = textureSize - texX - 1;
         }
 
@@ -119,7 +119,7 @@ namespace MiniFPS {
                                       float cellX, float cellY, int rayX) {
         const int columnHeight = ((camera.viewportHeight) * camera.distanceToProjectionPlane) / distance;
 
-        const int texX = GetTexX(cellX, cellY, texture.size);
+        const int texX = GetTexX({cellX, cellY}, texture.size);
 
         const bool shadePixel = ShouldShadePixel({cellX, cellY});
 

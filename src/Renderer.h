@@ -56,12 +56,11 @@ namespace MiniFPS {
 
         /**
          * Gets the appropriate texture X coordinate.
-         * @param cellX The cell's X coordinate.
-         * @param cellY The cell's Y coordinate.
+         * @param point The cell's position.
          * @param textureSize The size of the texture.
          * @return The appropriate texture X coordinate.
          */
-        int GetTexX(float cellX, float cellY, int textureSize);
+        int GetTexX(FloatPoint point, int textureSize);
 
         /**
          * Copies a texture to the frame texture.
