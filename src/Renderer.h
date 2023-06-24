@@ -79,8 +79,18 @@ namespace MiniFPS {
          */
         void FreeTextures();
 
+        /**
+         * Draw a textured column to the frame texture.
+         * @param texture The texture to use for the column.
+         * @param camera The camera to render from.
+         * @param pixels The frame buffer of the frame texture.
+         * @param pitch The pitch of the frame texture.
+         * @param distance The distance from the camera to the cell.
+         * @param cell The cell position the raycaster hit.
+         * @param rayX The ray to draw.
+         */
         void DrawTexturedColumn(const Texture& texture, Camera camera, void* pixels, int pitch, float distance,
-                                float cellX, float cellY, int rayX);
+                                FloatPoint cell, int rayX);
 
         /**
          * Writes the ceiling to the frame texture.

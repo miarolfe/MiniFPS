@@ -116,12 +116,13 @@ namespace MiniFPS {
     }
 
     void Renderer::DrawTexturedColumn(const Texture &texture, Camera camera, void* pixels, int pitch, float distance,
-                                      float cellX, float cellY, int rayX) {
+                                      FloatPoint cell, int rayX) {
+
         const int columnHeight = ((camera.viewportHeight) * camera.distanceToProjectionPlane) / distance;
 
-        const int texX = GetTexX({cellX, cellY}, texture.size);
+        const int texX = GetTexX(cell, texture.size);
 
-        const bool shadePixel = ShouldShadePixel({cellX, cellY});
+        const bool shadePixel = ShouldShadePixel(cell);
 
         const int drawStart = ((camera.viewportHeight / 2) - (columnHeight / 2));
         const int drawEnd = drawStart + columnHeight;
@@ -294,7 +295,7 @@ namespace MiniFPS {
                         const Texture texture = GetTexBuffer(cellID);
                         const float distance = rayDistance * cos(rayAngle - player.camera.angle);
 
-                        DrawTexturedColumn(texture, player.camera, pixels, pitch, distance, cellX, cellY, ray);
+                        DrawTexturedColumn(texture, player.camera, pixels, pitch, distance, {cellX, cellY}, ray);
 
                         break;
                     }
