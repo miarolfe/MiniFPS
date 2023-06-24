@@ -30,6 +30,19 @@ namespace MiniFPS {
         row[x] = color.argb;
     }
 
+    bool Renderer::ShouldShadePixel(float cellX, float cellY) {
+        const float hitX = cellX - floor(cellX + 0.5f); // Fractional part of cellX
+        const float hitY = cellY - floor(cellY + 0.5f); // Fractional part of cellY
+
+        bool shouldShadePixel = false;
+
+        if (std::abs(hitY) > std::abs(hitX)) { // West-East
+            shouldShadePixel = true;
+        }
+
+        return shouldShadePixel;
+    }
+
     Texture Renderer::GetTexBuffer(short textureId) {
         Texture texture = textureMap[textureId];
 
@@ -39,6 +52,38 @@ namespace MiniFPS {
         }
 
         return texture;
+    }
+
+    int Renderer::GetTexX(float cellX, float cellY, int textureSize) {
+        const float hitX = cellX - floor(cellX + 0.5f); // Fractional part of cellX
+        const float hitY = cellY - floor(cellY + 0.5f); // Fractional part of cellY
+
+        int texX = -1;
+
+        if (std::abs(hitY) > std::abs(hitX)) { // West-East
+            texX = static_cast<int>(hitY * static_cast<float>(textureSize));
+        } else { // North-South
+            texX = static_cast<int>(hitX * static_cast<float>(textureSize));
+        }
+
+        const float floorCellX = floor(cellX);
+        const float floorCellY = floor(cellY);
+
+        const float x1 = floorCellX;
+        const float y1 = floorCellY;
+        const float x2 = floorCellX + 1;
+        const float y2 = floorCellY + 1;
+        const float x3 = floorCellX + 1;
+        const float y3 = floorCellY;
+
+        if (IsPointInRightAngledTriangle(cellX, cellY, x1, y1, x2, y2, x3, y3)) {
+            texX = textureSize - texX - 1;
+        }
+
+        if (texX < 0) texX += textureSize;
+        if (texX >= textureSize) texX -= textureSize;
+
+        return texX;
     }
 
     void Renderer::CopyTextureToFrameTexture(void* pixels, int pitch, const Texture& texture, int x, int y, int w, int h) {
@@ -60,11 +105,6 @@ namespace MiniFPS {
         }
     }
 
-//    size = tempTextureSurface->w;
-//    buffer = new Color* [size];
-//    for (int row = 0; row < size; row++)
-//        buffer[row] = new Color[size];
-
     void Renderer::FreeTextures() {
         for (const auto& idTexturePair : textureMap) {
             for (int row = 0; row < idTexturePair.second.size; row++) {
@@ -72,6 +112,33 @@ namespace MiniFPS {
             }
 
             delete[] idTexturePair.second.buffer;
+        }
+    }
+
+    void Renderer::DrawTexturedColumn(const Texture &texture, Camera camera, void* pixels, int pitch, float distance,
+                                      float cellX, float cellY, int rayX) {
+        const int columnHeight = ((camera.viewportHeight) * camera.distanceToProjectionPlane) / distance;
+
+        const int texX = GetTexX(cellX, cellY, texture.size);
+
+        const bool shadePixel = ShouldShadePixel(cellX, cellY);
+
+        const int drawStart = ((camera.viewportHeight / 2) - (columnHeight / 2));
+        const int drawEnd = drawStart + columnHeight;
+
+        for (int rayY = drawStart; rayY < drawEnd; rayY++) {
+            if (rayY < 0 || rayY >= camera.viewportHeight) {
+                continue;
+            }
+
+            const int texY = ((rayY - drawStart) * texture.size) / columnHeight;
+
+            if (shadePixel) {
+                const Color shadedTexPixel = Color::ShadePixel(texture.buffer[texY][texX]);
+                SetPixel(pixels, pitch, shadedTexPixel, rayX, rayY);
+            } else {
+                SetPixel(pixels, pitch, texture.buffer[texY][texX], rayX, rayY);
+            }
         }
     }
 
@@ -201,7 +268,7 @@ namespace MiniFPS {
         SDL_RenderPresent(sdlRenderer);
     }
 
-    void Renderer::Draw(Player player, const Font& font, const float frameDelta) {
+    void Renderer::Draw(const Player& player, const Font& font, const float frameDelta) {
         int pitch = -1;
         void* pixels = nullptr;
         SDL_LockTexture(streamingFrameTexture, nullptr, &pixels, &pitch);
@@ -216,59 +283,22 @@ namespace MiniFPS {
             const float cosRayAngle = cos(rayAngle); // X component
             const float sinRayAngle = sin(rayAngle); // Y component
 
-            // TODO: DDA?
             for (float rayDistance = 0; rayDistance < player.camera.maxRenderDistance; rayDistance += player.camera.rayIncrement) {
                 const float cellX = player.camera.x + rayDistance * cosRayAngle;
                 const float cellY = player.camera.y + rayDistance * sinRayAngle;
 
-                const short cellID = player.level->Get(static_cast<int>(cellX), static_cast<int>(cellY));
+                if (player.level->IsPositionValid(cellX, cellY)) {
+                    const short cellID = player.level->Get((int) cellX, ((int) cellY));
 
-                if (cellID != 0) {
-                    const Texture texture = GetTexBuffer(cellID);
-                    const float distance = rayDistance * cos(rayAngle - player.camera.angle);
-                    const int columnHeight = ((player.camera.viewportHeight) * player.camera.distanceToProjectionPlane) / distance;
+                    if (cellID != 0) {
+                        const Texture texture = GetTexBuffer(cellID);
+                        const float distance = rayDistance * cos(rayAngle - player.camera.angle);
 
-                    const float hitX = cellX - floor(cellX + 0.5f); // Fractional part of cellX
-                    const float hitY = cellY - floor(cellY + 0.5f); // Fractional part of cellY#
+                        DrawTexturedColumn(texture, player.camera, pixels, pitch, distance, cellX, cellY, ray);
 
-                    int texX;
-
-                    if (std::abs(hitY) > std::abs(hitX)) { // West-East
-                        texX = static_cast<int>(hitY * static_cast<float>(texture.size));
-                    } else { // North-South
-                        texX = static_cast<int>(hitX * static_cast<float>(texture.size));
+                        break;
                     }
-
-                    const float floorCellX = floor(cellX);
-                    const float floorCellY = floor(cellY);
-
-                    const float x1 = floorCellX;
-                    const float y1 = floorCellY;
-                    const float x2 = floorCellX + 1;
-                    const float y2 = floorCellY + 1;
-                    const float x3 = floorCellX + 1;
-                    const float y3 = floorCellY;
-
-                    if (IsPointInRightAngledTriangle(cellX, cellY, x1, y1, x2, y2, x3, y3)) {
-                        texX = texture.size - texX - 1;
-                    }
-
-                    if (texX < 0) texX += texture.size;
-                    if (texX >= texture.size) texX -= texture.size;
-
-                    const int drawStart = ((player.camera.viewportHeight / 2) - (columnHeight / 2));
-
-                    const int drawEnd = drawStart + columnHeight;
-
-                    for (int y = drawStart; y < drawEnd; y++) {
-                        if (y < 0 || y >= player.camera.viewportHeight) {
-                            continue;
-                        }
-
-                        const int texY = ((y - drawStart) * texture.size) / columnHeight;
-                        SetPixel(pixels, pitch, texture.buffer[texY][texX], ray, y);
-                    }
-
+                } else {
                     break;
                 }
             }
