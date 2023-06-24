@@ -5,11 +5,7 @@
 
 namespace MiniFPS {
     Button::Button() {}
-
-    Button::Button(float x, float y, float width, float height) : width(width), height(height) {
-        pos = {x, y};
-    }
-
+    
     Button::Button(FloatPoint pos, float width, float height) : pos(pos), width(width), height(height) {}
 
     bool Button::Pressed(int mouseX, int mouseY) {

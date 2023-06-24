@@ -10,7 +10,6 @@ namespace MiniFPS {
         float height;
 
         Button();
-        Button(float x, float y, float width, float height);
         Button(FloatPoint pos, float width, float height);
 
         bool Pressed(int mouseX, int mouseY);

@@ -12,8 +12,8 @@ namespace MiniFPS {
         this->player.inputState.inMainMenu = true;
         this->settings = settings;
         this->font = font;
-        startButton = Button {static_cast<float>(settings.screenWidth/2),
-                              static_cast<float>(3*settings.screenHeight/4),
+        startButton = Button {{static_cast<float>(settings.screenWidth/2),
+                              static_cast<float>(3*settings.screenHeight/4)},
                               static_cast<float>(settings.screenWidth/2),
                               static_cast<float>(settings.screenHeight/6)};
     }
