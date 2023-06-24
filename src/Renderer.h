@@ -119,27 +119,25 @@ namespace MiniFPS {
          * TODO: Figure out why.
          * @param text The string value of the text.
          * @param font The font to use to draw the text.
-         * @param x The x-coordinate to start drawing text from.
-         * @param y The y-coordinate to start drawing text from.
+         * @param point The top-left corner of the text on the screen.
          * @param width The required width for the drawn text.
          * @param r The red value for the text.
          * @param g The green value for the text.
          * @param b The blue value for the text.
          */
-        void DrawTextStr(const std::string &text, const Font& font, float x, float y, int width, int r, int g, int b);
+        void DrawTextStr(const std::string &text, const Font& font, FloatPoint point, int width, int r, int g, int b);
 
         /**
          * Renders text to a texture and copies that texture onto the frame texture.
          * @param text The string value of the text.
          * @param font The font to use to draw the text.
-         * @param x The x-coordinate to start drawing text from.
-         * @param y The y-coordinate to start drawing text from.
+         * @param point The top-left corner of the text on the screen.
          * @param height The required height for the drawn text.
          * @param r The red value for the text.
          * @param g The green value for the text.
          * @param b The blue value for the text.
          */
-        void DrawTextStrH(const std::string& text, const Font& font, float x, float y, int height, int r, int g, int b);
+        void DrawTextStrH(const std::string& text, const Font& font, FloatPoint point, int height, int r, int g, int b);
 
         /**
          * Draws the main menu and copies it to the frame texture.

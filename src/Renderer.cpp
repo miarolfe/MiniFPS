@@ -191,7 +191,7 @@ namespace MiniFPS {
         SDL_DestroyTexture(buttonTexture);
     }
 
-    void Renderer::DrawTextStr(const std::string& text, const Font& font, float x, float y, int width, int r=255, int g=255, int b=255) {
+    void Renderer::DrawTextStr(const std::string& text, const Font& font, FloatPoint point, int width, int r=255, int g=255, int b=255) {
         SDL_SetRenderTarget(sdlRenderer, renderFrameTexture);
 
         int requestedWidth;
@@ -201,7 +201,7 @@ namespace MiniFPS {
 
         const int height = static_cast<int>(static_cast<float>(width) / ratio);
 
-        const SDL_Rect destRect{static_cast<int>(x), static_cast<int>(y), width, height};
+        const SDL_Rect destRect{static_cast<int>(point.x), static_cast<int>(point.y), width, height};
 
         SDL_Texture* texture = RenderTextToTexture(sdlRenderer, font, text, r, g, b);
 
@@ -211,7 +211,7 @@ namespace MiniFPS {
         SDL_DestroyTexture(texture);
     }
 
-    void Renderer::DrawTextStrH(const std::string& text, const Font& font, float x, float y, int height, int r=255, int g=255, int b=255) {
+    void Renderer::DrawTextStrH(const std::string& text, const Font& font, FloatPoint point, int height, int r=255, int g=255, int b=255) {
         SDL_SetRenderTarget(sdlRenderer, renderFrameTexture);
 
         int requestedWidth;
@@ -221,7 +221,7 @@ namespace MiniFPS {
 
         const int width = static_cast<int>(static_cast<float>(height) / ratio);
 
-        const SDL_Rect destRect{static_cast<int>(x), static_cast<int>(y), width, height};
+        const SDL_Rect destRect{static_cast<int>(point.x), static_cast<int>(point.y), width, height};
 
         SDL_Texture* texture = RenderTextToTexture(sdlRenderer, font, text, r, g, b);
 
@@ -260,9 +260,9 @@ namespace MiniFPS {
         // UI draw calls
 
         DrawButton(mainMenu.startButton);
-        DrawTextStr("MiniFPS", mainMenu.font, titleTextX, titleTextY, titleTextWidth);
-        DrawTextStr(mainMenu.settings.version, mainMenu.font, versionTextX, versionTextY, versionTextWidth);
-        DrawTextStrH("Start", mainMenu.font, startTextX, startTextY, mainMenu.startButton.height);
+        DrawTextStr("MiniFPS", mainMenu.font, {static_cast<float>(titleTextX), static_cast<float>(titleTextY)}, titleTextWidth);
+        DrawTextStr(mainMenu.settings.version, mainMenu.font, {static_cast<float>(versionTextX), static_cast<float>(versionTextY)}, versionTextWidth);
+        DrawTextStrH("Start", mainMenu.font, {static_cast<float>(startTextX), static_cast<float>(startTextY)}, mainMenu.startButton.height);
 
         SDL_SetRenderTarget(sdlRenderer, nullptr);
         SDL_RenderCopy(sdlRenderer, renderFrameTexture, nullptr, nullptr);
@@ -315,9 +315,9 @@ namespace MiniFPS {
 
         // TODO: Scale this with frame
         // UI draw here
-        DrawTextStrH("MiniFPS", font, 25, 25, 100);
-        DrawTextStrH("peterrolfe.com", font, 25, 125, 50);
-        DrawTextStrH(GetFramesPerSecond(frameDelta), font, player.camera.viewportWidth - 100, 25, 50, 255, 0, 0);
+        DrawTextStrH("MiniFPS", font, {25, 25}, 100);
+        DrawTextStrH("peterrolfe.com", font, {25, 125}, 50);
+        DrawTextStrH(GetFramesPerSecond(frameDelta), font, {static_cast<float>(player.camera.viewportWidth - 100), 25}, 50, 255, 0, 0);
 
         SDL_SetRenderTarget(sdlRenderer, nullptr);
         SDL_RenderCopy(sdlRenderer, renderFrameTexture, nullptr, nullptr);
