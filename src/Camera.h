@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Point.h"
+
 namespace MiniFPS {
     struct Camera {
     public:
@@ -24,8 +26,8 @@ namespace MiniFPS {
          */
         static float CalculateVerticalFieldOfView(float aspectRatio, float horizontalFieldOfView);
 
-        // Position relative to level cells (where x=0, y=0 would be the top-left corner of the level
-        float x, y;
+        // Position relative to level cells (where x=0, y=0 would be the top-left corner of the level)
+        FloatPoint pos;
         // Angle & horizontal field of view in radians
         float angle, horizontalFieldOfView;
         // Size of viewport in pixels

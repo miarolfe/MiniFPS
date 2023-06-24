@@ -12,8 +12,7 @@ namespace MiniFPS {
 
     Camera::Camera(float _x, float _y, float _angle, float _horizontalFieldOfView, int _viewportWidth, int _viewportHeight,
                    float _rayIncrement, size_t _maxRendererDistance, float _distanceToProjectionPlane) {
-        x = _x;
-        y = _y;
+        pos = {_x, _y};
         angle = _angle;
         horizontalFieldOfView = _horizontalFieldOfView;
         viewportWidth = _viewportWidth;
@@ -26,8 +25,7 @@ namespace MiniFPS {
     }
 
     Camera::Camera() {
-        x = 0;
-        y = 0;
+        pos = {0, 0};
         angle = 0;
         horizontalFieldOfView = 0;
         viewportWidth = 0;

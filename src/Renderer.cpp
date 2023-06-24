@@ -285,8 +285,8 @@ namespace MiniFPS {
             const float sinRayAngle = sin(rayAngle); // Y component
 
             for (float rayDistance = 0; rayDistance < player.camera.maxRenderDistance; rayDistance += player.camera.rayIncrement) {
-                const float cellX = player.camera.x + rayDistance * cosRayAngle;
-                const float cellY = player.camera.y + rayDistance * sinRayAngle;
+                const float cellX = player.camera.pos.x + rayDistance * cosRayAngle;
+                const float cellY = player.camera.pos.y + rayDistance * sinRayAngle;
 
                 if (player.level->IsPositionValid({cellX, cellY})) {
                     const short cellID = player.level->Get({static_cast<int>(cellX), static_cast<int>(cellY)});
