@@ -285,13 +285,35 @@ namespace MiniFPS {
             const float cosRayAngle = cos(rayAngle); // X component
             const float sinRayAngle = sin(rayAngle); // Y component
 
-            Vector2 rayStart = {player.camera.pos};
-            Vector2 rayMax = {
+            FloatVector2 rayStart(player.camera.pos);
+            FloatVector2 rayMax = {
                     player.camera.pos.x + player.camera.maxRenderDistance * cosRayAngle,
                     player.camera.pos.y + player.camera.maxRenderDistance * sinRayAngle
             };
 
-            Vector2 rayDirection = rayMax - rayStart;
+            FloatVector2 rayDirection = rayMax - rayStart;
+            rayDirection.Normalize();
+
+            FloatVector2 rayUnitStepSize = {abs(1.0f / rayDirection.x), abs(1.0f / rayDirection.y)};
+            IntVector2 mapCheck(rayStart);
+            FloatVector2 rayLength1D;
+            FloatVector2 step;
+
+            if (rayDirection.x < 0) {
+                step.x = -1;
+                rayLength1D.x = ((rayStart.x - mapCheck.x) * rayUnitStepSize.x);
+            } else {
+                step.x = 1;
+                rayLength1D.y = ((mapCheck.x ))
+            }
+
+            if (rayDirection.y < 0) {
+                step.y = -1;
+                rayLength1D.y = ((rayStart.y - mapCheck.y) * rayUnitStepSize.y);
+            } else {
+                step.y = 1;
+            }
+
 
             for (float rayDistance = 0; rayDistance < player.camera.maxRenderDistance; rayDistance += player.camera.rayIncrement) {
                 const float cellX = player.camera.pos.x + rayDistance * cosRayAngle;
