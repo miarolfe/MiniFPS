@@ -55,18 +55,22 @@ namespace MiniFPS {
         return texture;
     }
 
-    bool WallIsWestOrEastFacing(FloatPoint point) {
+    bool Renderer::WallIsWestOrEastFacing(FloatPoint point) {
         return (std::abs(point.x - floor(point.x + 0.5f)) > std::abs(point.y - floor(point.y + 0.5f)));
     }
 
-    int AltGetTexX(FloatVector2 startPos, FloatVector2 intersectionPos, float perpWallDist, FloatVector2 rayDir, int textureSize) {
+    int Renderer::GetTexX(const FloatVector2& startPos, const FloatVector2& intersectionPos,
+                          const FloatVector2& rayLength1D, const FloatVector2& rayUnitStepSize,
+                          const FloatVector2& rayDir, const int textureSize) {
         float wallX;
 
         bool wallIsWestOrEastFacing = WallIsWestOrEastFacing({intersectionPos.x, intersectionPos.y});
 
         if (!wallIsWestOrEastFacing) {
+            float perpWallDist = (rayLength1D.x - rayUnitStepSize.x);
             wallX = startPos.y + perpWallDist * rayDir.y;
         } else {
+            float perpWallDist = (rayLength1D.y - rayUnitStepSize.y);
             wallX = startPos.x + perpWallDist * rayDir.x;
         }
 
@@ -75,35 +79,6 @@ namespace MiniFPS {
         int texX = int(wallX * float(textureSize));
         if (!wallIsWestOrEastFacing && rayDir.x > 0) texX = textureSize - texX - 1;
         if (wallIsWestOrEastFacing && rayDir.y < 0) texX = textureSize - texX - 1;
-
-        return texX;
-    }
-
-    int Renderer::GetTexX(FloatPoint point, int textureSize) {
-        const float hitX = point.x - floor(point.x + 0.5f); // Fractional part of cellX
-        const float hitY = point.y - floor(point.y + 0.5f); // Fractional part of cellY
-
-        int texX = -1;
-
-        if (std::abs(hitY) > std::abs(hitX)) { // West-East
-            texX = static_cast<int>(hitY * static_cast<float>(textureSize));
-        } else { // North-South
-            texX = static_cast<int>(hitX * static_cast<float>(textureSize));
-        }
-
-        const float floorCellX = floor(point.x);
-        const float floorCellY = floor(point.y);
-
-        const FloatPoint vertex1 {floorCellX, floorCellY};
-        const FloatPoint vertex2 {floorCellX + 1, floorCellY + 1};
-        const FloatPoint vertex3 {floorCellX + 1, floorCellY};
-
-        if (IsPointInRightAngledTriangle(point, vertex1, vertex2, vertex3)) {
-            texX = textureSize - texX - 1;
-        }
-
-        if (texX < 0) texX += textureSize;
-        if (texX >= textureSize) texX -= textureSize;
 
         return texX;
     }
@@ -141,8 +116,6 @@ namespace MiniFPS {
                                       FloatPoint cell, int rayX, int texX) {
 
         const int columnHeight = ((camera.viewportHeight) * camera.distanceToProjectionPlane) / distance;
-
-        // const int texX = GetTexX(cell, texture.size);
 
         const bool shadePixel = ShouldShadePixel(cell);
 
@@ -284,6 +257,8 @@ namespace MiniFPS {
         DrawButton(mainMenu.startButton);
         DrawTextStr("MiniFPS", mainMenu.font, {static_cast<float>(titleTextX), static_cast<float>(titleTextY)}, titleTextWidth);
         DrawTextStr(mainMenu.settings.version, mainMenu.font, {static_cast<float>(versionTextX), static_cast<float>(versionTextY)}, versionTextWidth);
+
+        // TODO: Scale this properly with resolution, it doesn't stay with button atm
         DrawTextStrH("Start", mainMenu.font, {static_cast<float>(startTextX), static_cast<float>(startTextY)}, mainMenu.startButton.height);
 
         SDL_SetRenderTarget(sdlRenderer, nullptr);
@@ -368,21 +343,7 @@ namespace MiniFPS {
             }
 
             const Texture texture = GetTexBuffer(cellID);
-
-            float perpWallDist;
-
-            // 0 == west/east
-            bool w = WallIsWestOrEastFacing({intersection.x, intersection.y});
-
-            if (w) {
-                perpWallDist = (rayLength1D.y - rayUnitStepSize.y);
-            } else {
-                perpWallDist = (rayLength1D.x - rayUnitStepSize.x);
-            }
-
-
-            int texX = AltGetTexX(rayStart, intersection, perpWallDist, rayDirection, texture.size);
-
+            int texX = GetTexX(rayStart, intersection, rayLength1D, rayUnitStepSize, rayDirection, texture.size);
             DrawTexturedColumn(texture, player.camera, pixels, pitch, distance * cos(rayAngle - player.camera.angle), {intersection.x, intersection.y}, ray, texX);
         }
 
