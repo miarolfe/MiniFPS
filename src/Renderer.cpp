@@ -70,14 +70,11 @@ namespace MiniFPS {
         const float floorCellX = floor(point.x);
         const float floorCellY = floor(point.y);
 
-        const float x1 = floorCellX;
-        const float y1 = floorCellY;
-        const float x2 = floorCellX + 1;
-        const float y2 = floorCellY + 1;
-        const float x3 = floorCellX + 1;
-        const float y3 = floorCellY;
+        const FloatPoint vertex1 {floorCellX, floorCellY};
+        const FloatPoint vertex2 {floorCellX + 1, floorCellY + 1};
+        const FloatPoint vertex3 {floorCellX + 1, floorCellY};
 
-        if (IsPointInRightAngledTriangle(point, {x1, y1}, {x2, y2}, {x3, y3})) {
+        if (IsPointInRightAngledTriangle(point, vertex1, vertex2, vertex3)) {
             texX = textureSize - texX - 1;
         }
 
@@ -295,6 +292,7 @@ namespace MiniFPS {
             rayDirection.Normalize();
 
             FloatVector2 rayUnitStepSize = {abs(1.0f / rayDirection.x), abs(1.0f / rayDirection.y)};
+            rayUnitStepSize = {sqrt(1 + (rayDirection.y / rayDirection.x) * (rayDirection.y / rayDirection.x)), sqrt(1 + (rayDirection.x / rayDirection.y) * (rayDirection.x / rayDirection.y))};
             IntVector2 mapCheck(rayStart);
             FloatVector2 rayLength1D;
             IntVector2 step;
