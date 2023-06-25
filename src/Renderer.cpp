@@ -297,43 +297,54 @@ namespace MiniFPS {
             FloatVector2 rayUnitStepSize = {abs(1.0f / rayDirection.x), abs(1.0f / rayDirection.y)};
             IntVector2 mapCheck(rayStart);
             FloatVector2 rayLength1D;
-            FloatVector2 step;
+            IntVector2 step;
 
             if (rayDirection.x < 0) {
                 step.x = -1;
-                rayLength1D.x = ((rayStart.x - mapCheck.x) * rayUnitStepSize.x);
+                rayLength1D.x = (rayStart.x - static_cast<float>(mapCheck.x)) * rayUnitStepSize.x;
             } else {
                 step.x = 1;
-                rayLength1D.y = ((mapCheck.x ))
+                rayLength1D.x = (static_cast<float>(mapCheck.x + 1) - rayStart.x) * rayUnitStepSize.x;
             }
 
             if (rayDirection.y < 0) {
                 step.y = -1;
-                rayLength1D.y = ((rayStart.y - mapCheck.y) * rayUnitStepSize.y);
+                rayLength1D.y = ((rayStart.y - static_cast<float>(mapCheck.y)) * rayUnitStepSize.y);
             } else {
                 step.y = 1;
+                rayLength1D.y = (static_cast<float>(mapCheck.y + 1) - rayStart.y) * rayUnitStepSize.y;
             }
 
+            bool tileFound = false;
+            float distance = 0.0f;
+            short cellID;
 
-            for (float rayDistance = 0; rayDistance < player.camera.maxRenderDistance; rayDistance += player.camera.rayIncrement) {
-                const float cellX = player.camera.pos.x + rayDistance * cosRayAngle;
-                const float cellY = player.camera.pos.y + rayDistance * sinRayAngle;
-
-                if (player.level->IsPositionValid({cellX, cellY})) {
-                    const short cellID = player.level->Get({static_cast<int>(cellX), static_cast<int>(cellY)});
-
-                    if (cellID != 0) {
-                        const Texture texture = GetTexBuffer(cellID);
-                        const float distance = rayDistance * cos(rayAngle - player.camera.angle);
-
-                        DrawTexturedColumn(texture, player.camera, pixels, pitch, distance, {cellX, cellY}, ray);
-
-                        break;
-                    }
+            while (!tileFound && distance < player.camera.maxRenderDistance) {
+                if (rayLength1D.x < rayLength1D.y) {
+                    mapCheck.x += step.x;
+                    distance = rayLength1D.x;
+                    rayLength1D.x += rayUnitStepSize.x;
                 } else {
-                    break;
+                    mapCheck.y += step.y;
+                    distance = rayLength1D.y;
+                    rayLength1D.y += rayUnitStepSize.y;
+                }
+
+                if (player.level->IsPositionValid({static_cast<float>(mapCheck.x), static_cast<float>(mapCheck.y)})) {
+                    cellID = player.level->Get({mapCheck.x, mapCheck.y});
+                    if (cellID != 0) {
+                        tileFound = true;
+                    }
                 }
             }
+
+            FloatVector2 intersection;
+            if (tileFound) {
+                intersection = rayStart + rayDirection * distance;
+            }
+
+            const Texture texture = GetTexBuffer(cellID);
+            DrawTexturedColumn(texture, player.camera, pixels, pitch, distance * cos(rayAngle - player.camera.angle), {intersection.x, intersection.y}, ray);
         }
 
         const int weaponTextureSize = player.camera.viewportWidth / 4;
