@@ -20,8 +20,8 @@ namespace MiniFPS {
 
         float Length();
         void Normalize();
-        const FloatVector2 operator+ (FloatVector2 const& otherVector);
-        const FloatVector2 operator- (FloatVector2 const& otherVector);
+        FloatVector2 operator+ (FloatVector2 const& otherVector);
+        FloatVector2 operator- (FloatVector2 const& otherVector);
     };
 
     class IntVector2 {
@@ -35,7 +35,7 @@ namespace MiniFPS {
         int x;
         int y;
 
-        const IntVector2 operator+ (IntVector2 const& otherVector);
-        const IntVector2 operator- (IntVector2 const& otherVector);
+        IntVector2 operator+ (IntVector2 const& otherVector);
+        IntVector2 operator- (IntVector2 const& otherVector);
     };
 }

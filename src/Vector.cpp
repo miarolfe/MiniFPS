@@ -23,11 +23,11 @@ namespace MiniFPS {
         y = y / length;
     }
 
-    const FloatVector2 FloatVector2::operator+(const FloatVector2 &otherVector) {
+    FloatVector2 FloatVector2::operator+(const FloatVector2 &otherVector) {
         return {x + otherVector.x, y + otherVector.y};
     }
 
-    const FloatVector2 FloatVector2::operator-(const FloatVector2 &otherVector) {
+    FloatVector2 FloatVector2::operator-(const FloatVector2 &otherVector) {
         return {x - otherVector.x, y - otherVector.y};
     }
 
@@ -41,11 +41,11 @@ namespace MiniFPS {
 
     IntVector2::IntVector2(const IntVector2 &vector) : x(vector.x), y(vector.y) {}
 
-    const IntVector2 IntVector2::operator+(const IntVector2 &otherVector) {
+    IntVector2 IntVector2::operator+(const IntVector2 &otherVector) {
         return IntVector2(x + otherVector.x, y + otherVector.y);
     }
 
-    const IntVector2 IntVector2::operator-(const IntVector2 &otherVector) {
+    IntVector2 IntVector2::operator-(const IntVector2 &otherVector) {
         return IntVector2(x - otherVector.x, y - otherVector.y);
     }
 }
