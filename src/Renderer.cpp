@@ -64,7 +64,7 @@ namespace MiniFPS {
                           const FloatVector2& rayDir, const int textureSize) {
         float wallX;
 
-        bool wallIsWestOrEastFacing = WallIsWestOrEastFacing({intersectionPos.x, intersectionPos.y});
+        const bool wallIsWestOrEastFacing = WallIsWestOrEastFacing({intersectionPos.x, intersectionPos.y});
 
         if (!wallIsWestOrEastFacing) {
             float perpWallDist = (rayLength1D.x - rayUnitStepSize.x);
@@ -278,23 +278,19 @@ namespace MiniFPS {
         for (int ray = 0; ray < player.camera.viewportWidth; ray++) {
             const float rayScreenPos = (2 * ray / float(player.camera.viewportWidth) - 1) * player.camera.aspectRatio;
             const float rayAngle = player.camera.angle + atan(rayScreenPos * tan(player.camera.horizontalFieldOfView / 2));
-            const float cosRayAngle = cos(rayAngle); // X component
-            const float sinRayAngle = sin(rayAngle); // Y component
 
             FloatVector2 rayStart(player.camera.pos);
             FloatVector2 rayMax = {
-                    player.camera.pos.x + player.camera.maxRenderDistance * cosRayAngle,
-                    player.camera.pos.y + player.camera.maxRenderDistance * sinRayAngle
+                    player.camera.pos.x + player.camera.maxRenderDistance * cos(rayAngle),
+                    player.camera.pos.y + player.camera.maxRenderDistance * sin(rayAngle)
             };
 
             FloatVector2 rayDirection = rayMax - rayStart;
             rayDirection.Normalize();
 
-            // deltaDist
-            FloatVector2 rayUnitStepSize = {abs(1.0f / rayDirection.x), abs(1.0f / rayDirection.y)};
+            const FloatVector2 rayUnitStepSize = {abs(1.0f / rayDirection.x), abs(1.0f / rayDirection.y)};
             IntVector2 mapCheck(rayStart);
 
-            // sideDist
             FloatVector2 rayLength1D;
             IntVector2 step;
 
