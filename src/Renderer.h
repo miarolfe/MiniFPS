@@ -87,9 +87,10 @@ namespace MiniFPS {
          * @param distance The distance from the camera to the cell.
          * @param cell The cell position the raycaster hit.
          * @param rayX The ray to draw.
+         * @param texX TODO
          */
         void DrawTexturedColumn(const Texture& texture, Camera camera, void* pixels, int pitch, float distance,
-                                FloatPoint cell, int rayX);
+                                FloatPoint cell, int rayX, int texX);
 
         /**
          * Writes the ceiling to the frame texture.

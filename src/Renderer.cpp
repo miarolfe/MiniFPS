@@ -55,6 +55,30 @@ namespace MiniFPS {
         return texture;
     }
 
+    bool WallIsWestOrEastFacing(FloatPoint point) {
+        return (std::abs(point.x - floor(point.x + 0.5f)) > std::abs(point.y - floor(point.y + 0.5f)));
+    }
+
+    int AltGetTexX(FloatVector2 startPos, FloatVector2 intersectionPos, float perpWallDist, FloatVector2 rayDir, int textureSize) {
+        float wallX;
+
+        bool wallIsWestOrEastFacing = WallIsWestOrEastFacing({intersectionPos.x, intersectionPos.y});
+
+        if (!wallIsWestOrEastFacing) {
+            wallX = startPos.y + perpWallDist * rayDir.y;
+        } else {
+            wallX = startPos.x + perpWallDist * rayDir.x;
+        }
+
+        wallX -= floor((wallX));
+
+        int texX = int(wallX * float(textureSize));
+        if (!wallIsWestOrEastFacing && rayDir.x > 0) texX = textureSize - texX - 1;
+        if (wallIsWestOrEastFacing && rayDir.y < 0) texX = textureSize - texX - 1;
+
+        return texX;
+    }
+
     int Renderer::GetTexX(FloatPoint point, int textureSize) {
         const float hitX = point.x - floor(point.x + 0.5f); // Fractional part of cellX
         const float hitY = point.y - floor(point.y + 0.5f); // Fractional part of cellY
@@ -114,11 +138,11 @@ namespace MiniFPS {
     }
 
     void Renderer::DrawTexturedColumn(const Texture &texture, Camera camera, void* pixels, int pitch, float distance,
-                                      FloatPoint cell, int rayX) {
+                                      FloatPoint cell, int rayX, int texX) {
 
         const int columnHeight = ((camera.viewportHeight) * camera.distanceToProjectionPlane) / distance;
 
-        const int texX = GetTexX(cell, texture.size);
+        // const int texX = GetTexX(cell, texture.size);
 
         const bool shadePixel = ShouldShadePixel(cell);
 
@@ -291,9 +315,11 @@ namespace MiniFPS {
             FloatVector2 rayDirection = rayMax - rayStart;
             rayDirection.Normalize();
 
+            // deltaDist
             FloatVector2 rayUnitStepSize = {abs(1.0f / rayDirection.x), abs(1.0f / rayDirection.y)};
-            rayUnitStepSize = {sqrt(1 + (rayDirection.y / rayDirection.x) * (rayDirection.y / rayDirection.x)), sqrt(1 + (rayDirection.x / rayDirection.y) * (rayDirection.x / rayDirection.y))};
             IntVector2 mapCheck(rayStart);
+
+            // sideDist
             FloatVector2 rayLength1D;
             IntVector2 step;
 
@@ -342,7 +368,22 @@ namespace MiniFPS {
             }
 
             const Texture texture = GetTexBuffer(cellID);
-            DrawTexturedColumn(texture, player.camera, pixels, pitch, distance * cos(rayAngle - player.camera.angle), {intersection.x, intersection.y}, ray);
+
+            float perpWallDist;
+
+            // 0 == west/east
+            bool w = WallIsWestOrEastFacing({intersection.x, intersection.y});
+
+            if (w) {
+                perpWallDist = (rayLength1D.y - rayUnitStepSize.y);
+            } else {
+                perpWallDist = (rayLength1D.x - rayUnitStepSize.x);
+            }
+
+
+            int texX = AltGetTexX(rayStart, intersection, perpWallDist, rayDirection, texture.size);
+
+            DrawTexturedColumn(texture, player.camera, pixels, pitch, distance * cos(rayAngle - player.camera.angle), {intersection.x, intersection.y}, ray, texX);
         }
 
         const int weaponTextureSize = player.camera.viewportWidth / 4;
