@@ -10,6 +10,7 @@
 #include "Renderer.h"
 #include "Texture.h"
 #include "Utilities.h"
+#include "Vector.h"
 
 namespace MiniFPS {
     Renderer::Renderer(SDL_Renderer* sdlRenderer, const Settings& settings) : sdlRenderer(sdlRenderer) {
@@ -283,7 +284,7 @@ namespace MiniFPS {
             const float rayAngle = player.camera.angle + atan(rayScreenPos * tan(player.camera.horizontalFieldOfView / 2));
             const float cosRayAngle = cos(rayAngle); // X component
             const float sinRayAngle = sin(rayAngle); // Y component
-
+            
             for (float rayDistance = 0; rayDistance < player.camera.maxRenderDistance; rayDistance += player.camera.rayIncrement) {
                 const float cellX = player.camera.pos.x + rayDistance * cosRayAngle;
                 const float cellY = player.camera.pos.y + rayDistance * sinRayAngle;

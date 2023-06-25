@@ -28,6 +28,7 @@ set(
         src/Settings.cpp
         src/Texture.cpp
         src/Utilities.cpp
+        src/Vector.cpp
 )
 
 set(
@@ -45,6 +46,7 @@ set(
         src/Settings.h
         src/Texture.h
         src/Utilities.h
+        src/Vector.h
 )
 
 if(WIN32)

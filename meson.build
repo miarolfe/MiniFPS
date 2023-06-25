@@ -14,6 +14,7 @@ sources = files(
   'src/Settings.cpp',
   'src/Texture.cpp',
   'src/Utilities.cpp',
+  'src/Vector.cpp'
 )
 
 headers = files(
@@ -30,6 +31,7 @@ headers = files(
   'src/Settings.h',
   'src/Texture.h',
   'src/Utilities.h',
+  'src/Vector.h'
 )
 
 if host_machine.system() == 'darwin'
