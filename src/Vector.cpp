@@ -16,4 +16,12 @@ namespace MiniFPS {
         x = x / length;
         y = y / length;
     }
+
+    Vector2 Vector2::operator+(const Vector2 &otherVector) {
+        return {x + otherVector.x, y + otherVector.y};
+    }
+
+    Vector2 Vector2::operator-(const Vector2 &otherVector) {
+        return {x - otherVector.x, y - otherVector.y};
+    }
 }

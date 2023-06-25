@@ -284,7 +284,15 @@ namespace MiniFPS {
             const float rayAngle = player.camera.angle + atan(rayScreenPos * tan(player.camera.horizontalFieldOfView / 2));
             const float cosRayAngle = cos(rayAngle); // X component
             const float sinRayAngle = sin(rayAngle); // Y component
-            
+
+            Vector2 rayStart = {player.camera.pos};
+            Vector2 rayMax = {
+                    player.camera.pos.x + player.camera.maxRenderDistance * cosRayAngle,
+                    player.camera.pos.y + player.camera.maxRenderDistance * sinRayAngle
+            };
+
+            Vector2 rayDirection = rayMax - rayStart;
+
             for (float rayDistance = 0; rayDistance < player.camera.maxRenderDistance; rayDistance += player.camera.rayIncrement) {
                 const float cellX = player.camera.pos.x + rayDistance * cosRayAngle;
                 const float cellY = player.camera.pos.y + rayDistance * sinRayAngle;
