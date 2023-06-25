@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.23)
 
-project(MiniFPS VERSION 0.1.4)
+project(MiniFPS VERSION 0.2.0)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
@@ -28,6 +28,7 @@ set(
         src/Settings.cpp
         src/Texture.cpp
         src/Utilities.cpp
+        src/Vector.cpp
 )
 
 set(
@@ -45,6 +46,7 @@ set(
         src/Settings.h
         src/Texture.h
         src/Utilities.h
+        src/Vector.h
 )
 
 if(WIN32)

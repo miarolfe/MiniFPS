@@ -1,4 +1,4 @@
-project('MiniFPS', 'cpp', version: '0.1.4', default_options: ['cpp_std=c++11'])
+project('MiniFPS', 'cpp', version: '0.2.0', default_options: ['cpp_std=c++11'])
 
 sources = files(
   'src/main.cpp',
@@ -14,6 +14,7 @@ sources = files(
   'src/Settings.cpp',
   'src/Texture.cpp',
   'src/Utilities.cpp',
+  'src/Vector.cpp'
 )
 
 headers = files(
@@ -30,6 +31,7 @@ headers = files(
   'src/Settings.h',
   'src/Texture.h',
   'src/Utilities.h',
+  'src/Vector.h'
 )
 
 if host_machine.system() == 'darwin'

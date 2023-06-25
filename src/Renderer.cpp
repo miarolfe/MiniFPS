@@ -10,6 +10,7 @@
 #include "Renderer.h"
 #include "Texture.h"
 #include "Utilities.h"
+#include "Vector.h"
 
 namespace MiniFPS {
     Renderer::Renderer(SDL_Renderer* sdlRenderer, const Settings& settings) : sdlRenderer(sdlRenderer) {
@@ -54,34 +55,30 @@ namespace MiniFPS {
         return texture;
     }
 
-    int Renderer::GetTexX(FloatPoint point, int textureSize) {
-        const float hitX = point.x - floor(point.x + 0.5f); // Fractional part of cellX
-        const float hitY = point.y - floor(point.y + 0.5f); // Fractional part of cellY
+    bool Renderer::WallIsWestOrEastFacing(FloatPoint point) {
+        return (std::abs(point.x - floor(point.x + 0.5f)) > std::abs(point.y - floor(point.y + 0.5f)));
+    }
 
-        int texX = -1;
+    int Renderer::GetTexX(const FloatVector2& startPos, const FloatVector2& intersectionPos,
+                          const FloatVector2& rayLength1D, const FloatVector2& rayUnitStepSize,
+                          const FloatVector2& rayDir, const int textureSize) {
+        float wallX;
 
-        if (std::abs(hitY) > std::abs(hitX)) { // West-East
-            texX = static_cast<int>(hitY * static_cast<float>(textureSize));
-        } else { // North-South
-            texX = static_cast<int>(hitX * static_cast<float>(textureSize));
+        bool wallIsWestOrEastFacing = WallIsWestOrEastFacing({intersectionPos.x, intersectionPos.y});
+
+        if (!wallIsWestOrEastFacing) {
+            float perpWallDist = (rayLength1D.x - rayUnitStepSize.x);
+            wallX = startPos.y + perpWallDist * rayDir.y;
+        } else {
+            float perpWallDist = (rayLength1D.y - rayUnitStepSize.y);
+            wallX = startPos.x + perpWallDist * rayDir.x;
         }
 
-        const float floorCellX = floor(point.x);
-        const float floorCellY = floor(point.y);
+        wallX -= floor((wallX));
 
-        const float x1 = floorCellX;
-        const float y1 = floorCellY;
-        const float x2 = floorCellX + 1;
-        const float y2 = floorCellY + 1;
-        const float x3 = floorCellX + 1;
-        const float y3 = floorCellY;
-
-        if (IsPointInRightAngledTriangle(point, {x1, y1}, {x2, y2}, {x3, y3})) {
-            texX = textureSize - texX - 1;
-        }
-
-        if (texX < 0) texX += textureSize;
-        if (texX >= textureSize) texX -= textureSize;
+        int texX = int(wallX * float(textureSize));
+        if (!wallIsWestOrEastFacing && rayDir.x > 0) texX = textureSize - texX - 1;
+        if (wallIsWestOrEastFacing && rayDir.y < 0) texX = textureSize - texX - 1;
 
         return texX;
     }
@@ -116,11 +113,9 @@ namespace MiniFPS {
     }
 
     void Renderer::DrawTexturedColumn(const Texture &texture, Camera camera, void* pixels, int pitch, float distance,
-                                      FloatPoint cell, int rayX) {
+                                      FloatPoint cell, int rayX, int texX) {
 
         const int columnHeight = ((camera.viewportHeight) * camera.distanceToProjectionPlane) / distance;
-
-        const int texX = GetTexX(cell, texture.size);
 
         const bool shadePixel = ShouldShadePixel(cell);
 
@@ -262,6 +257,8 @@ namespace MiniFPS {
         DrawButton(mainMenu.startButton);
         DrawTextStr("MiniFPS", mainMenu.font, {static_cast<float>(titleTextX), static_cast<float>(titleTextY)}, titleTextWidth);
         DrawTextStr(mainMenu.settings.version, mainMenu.font, {static_cast<float>(versionTextX), static_cast<float>(versionTextY)}, versionTextWidth);
+
+        // TODO: Scale this properly with resolution, it doesn't stay with button atm
         DrawTextStrH("Start", mainMenu.font, {static_cast<float>(startTextX), static_cast<float>(startTextY)}, mainMenu.startButton.height);
 
         SDL_SetRenderTarget(sdlRenderer, nullptr);
@@ -284,25 +281,70 @@ namespace MiniFPS {
             const float cosRayAngle = cos(rayAngle); // X component
             const float sinRayAngle = sin(rayAngle); // Y component
 
-            for (float rayDistance = 0; rayDistance < player.camera.maxRenderDistance; rayDistance += player.camera.rayIncrement) {
-                const float cellX = player.camera.pos.x + rayDistance * cosRayAngle;
-                const float cellY = player.camera.pos.y + rayDistance * sinRayAngle;
+            FloatVector2 rayStart(player.camera.pos);
+            FloatVector2 rayMax = {
+                    player.camera.pos.x + player.camera.maxRenderDistance * cosRayAngle,
+                    player.camera.pos.y + player.camera.maxRenderDistance * sinRayAngle
+            };
 
-                if (player.level->IsPositionValid({cellX, cellY})) {
-                    const short cellID = player.level->Get({static_cast<int>(cellX), static_cast<int>(cellY)});
+            FloatVector2 rayDirection = rayMax - rayStart;
+            rayDirection.Normalize();
 
-                    if (cellID != 0) {
-                        const Texture texture = GetTexBuffer(cellID);
-                        const float distance = rayDistance * cos(rayAngle - player.camera.angle);
+            // deltaDist
+            FloatVector2 rayUnitStepSize = {abs(1.0f / rayDirection.x), abs(1.0f / rayDirection.y)};
+            IntVector2 mapCheck(rayStart);
 
-                        DrawTexturedColumn(texture, player.camera, pixels, pitch, distance, {cellX, cellY}, ray);
+            // sideDist
+            FloatVector2 rayLength1D;
+            IntVector2 step;
 
-                        break;
-                    }
+            if (rayDirection.x < 0) {
+                step.x = -1;
+                rayLength1D.x = (rayStart.x - static_cast<float>(mapCheck.x)) * rayUnitStepSize.x;
+            } else {
+                step.x = 1;
+                rayLength1D.x = (static_cast<float>(mapCheck.x + 1) - rayStart.x) * rayUnitStepSize.x;
+            }
+
+            if (rayDirection.y < 0) {
+                step.y = -1;
+                rayLength1D.y = ((rayStart.y - static_cast<float>(mapCheck.y)) * rayUnitStepSize.y);
+            } else {
+                step.y = 1;
+                rayLength1D.y = (static_cast<float>(mapCheck.y + 1) - rayStart.y) * rayUnitStepSize.y;
+            }
+
+            bool tileFound = false;
+            float distance = 0.0f;
+            short cellID;
+
+            while (!tileFound && distance < player.camera.maxRenderDistance) {
+                if (rayLength1D.x < rayLength1D.y) {
+                    mapCheck.x += step.x;
+                    distance = rayLength1D.x;
+                    rayLength1D.x += rayUnitStepSize.x;
                 } else {
-                    break;
+                    mapCheck.y += step.y;
+                    distance = rayLength1D.y;
+                    rayLength1D.y += rayUnitStepSize.y;
+                }
+
+                if (player.level->IsPositionValid({static_cast<float>(mapCheck.x), static_cast<float>(mapCheck.y)})) {
+                    cellID = player.level->Get({mapCheck.x, mapCheck.y});
+                    if (cellID != 0) {
+                        tileFound = true;
+                    }
                 }
             }
+
+            FloatVector2 intersection;
+            if (tileFound) {
+                intersection = rayStart + rayDirection * distance;
+            }
+
+            const Texture texture = GetTexBuffer(cellID);
+            int texX = GetTexX(rayStart, intersection, rayLength1D, rayUnitStepSize, rayDirection, texture.size);
+            DrawTexturedColumn(texture, player.camera, pixels, pitch, distance * cos(rayAngle - player.camera.angle), {intersection.x, intersection.y}, ray, texX);
         }
 
         const int weaponTextureSize = player.camera.viewportWidth / 4;

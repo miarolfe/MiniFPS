@@ -7,6 +7,7 @@
 #include "Level.h"
 #include "Menu.h"
 #include "Texture.h"
+#include "Vector.h"
 
 namespace MiniFPS {
     const Color MAIN_MENU_BACKGROUND = Color(0xFF000000);
@@ -55,12 +56,25 @@ namespace MiniFPS {
         Texture GetTexBuffer(short textureId);
 
         /**
+         * Returns whether a wall is west or east facing (i.e, whether the wall is "vertical").
+         * @param point The point of intersection with the wall.
+         * @return Whether a wall is west or east facing.
+         */
+        bool WallIsWestOrEastFacing(FloatPoint point);
+
+        /**
          * Gets the appropriate texture X coordinate.
-         * @param point The cell's position.
-         * @param textureSize The size of the texture.
+         * @param startPos The start position of the ray.
+         * @param intersectionPos The position where the ray intersected a wall.
+         * @param rayLength1D The one-dimensional lengths of the ray in the X and Y axes.
+         * @param rayUnitStepSize The one-dimensional step sizes of the ray in the X and Y axes.
+         * @param rayDir The normalized direction vector of the ray.
+         * @param textureSize The length of a side of the texture in pixels (textures are always square).
          * @return The appropriate texture X coordinate.
          */
-        int GetTexX(FloatPoint point, int textureSize);
+        int GetTexX(const FloatVector2& startPos, const FloatVector2& intersectionPos,
+                    const FloatVector2& rayLength1D, const FloatVector2& rayUnitStepSize,
+                    const FloatVector2& rayDir, int textureSize);
 
         /**
          * Copies a texture to the frame texture.
@@ -87,9 +101,10 @@ namespace MiniFPS {
          * @param distance The distance from the camera to the cell.
          * @param cell The cell position the raycaster hit.
          * @param rayX The ray to draw.
+         * @param texX TODO
          */
         void DrawTexturedColumn(const Texture& texture, Camera camera, void* pixels, int pitch, float distance,
-                                FloatPoint cell, int rayX);
+                                FloatPoint cell, int rayX, int texX);
 
         /**
          * Writes the ceiling to the frame texture.
