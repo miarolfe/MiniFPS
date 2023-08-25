@@ -32,6 +32,8 @@
 
 # Output folders
 bin/
+bin-debug/
+bin-release/
 cmake-bin/
 cmake-bin-debug/
 cmake-bin-release/
