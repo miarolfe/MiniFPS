@@ -288,7 +288,7 @@ namespace MiniFPS {
             FloatVector2 rayDirection = rayMax - rayStart;
             rayDirection.Normalize();
 
-            const FloatVector2 rayUnitStepSize = {abs(1.0f / rayDirection.x), abs(1.0f / rayDirection.y)};
+            const FloatVector2 rayUnitStepSize = {std::abs(1.0f / rayDirection.x), std::abs(1.0f / rayDirection.y)};
             IntVector2 mapCheck(rayStart);
 
             FloatVector2 rayLength1D;
