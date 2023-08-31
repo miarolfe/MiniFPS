@@ -229,6 +229,7 @@ namespace MiniFPS {
     void Renderer::DrawMainMenu(const MainMenu& mainMenu) {
         int pitch;
         void* pixels;
+
         SDL_LockTexture(streamingFrameTexture, nullptr, &pixels, &pitch);
 
         for (int frameY = 0; frameY < static_cast<int>(mainMenu.player.camera.viewportHeight); frameY++) {
@@ -246,7 +247,7 @@ namespace MiniFPS {
         const int versionTextWidth = static_cast<int>(mainMenu.player.camera.viewportWidth / 4);
 
         const int startTextX = static_cast<int>(mainMenu.startButton.pos.x - mainMenu.startButton.width/4);
-        const int startTextY = static_cast<int>(mainMenu.startButton.pos.x - mainMenu.startButton.height/2);
+        const int startTextY = static_cast<int>(mainMenu.startButton.pos.y - mainMenu.startButton.height/2);
 
         SDL_UnlockTexture(streamingFrameTexture);
         SDL_SetRenderTarget(sdlRenderer, renderFrameTexture);
