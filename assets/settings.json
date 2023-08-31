@@ -34,7 +34,7 @@
   },
 
   "files": {
-    "levelPath": "levels/OldCastle1.lvl",
+    "levelPath": "levels/Demo1.lvl",
     "fontPaths": {
       "Inconsolata-Medium": "fonts/Inconsolata-Medium.ttf"
     }
