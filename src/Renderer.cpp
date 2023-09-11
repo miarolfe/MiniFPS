@@ -13,6 +13,10 @@
 #include "Vector.h"
 
 namespace MiniFPS {
+    Renderer::Renderer() {
+
+    }
+
     Renderer::Renderer(SDL_Renderer* sdlRenderer, const Settings& settings) : sdlRenderer(sdlRenderer) {
         streamingFrameTexture = SDL_CreateTexture(sdlRenderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING,
                                                   static_cast<int>(settings.screenWidth),

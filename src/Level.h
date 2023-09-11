@@ -19,6 +19,8 @@ namespace MiniFPS {
         // TODO: Abstract this out
         std::map<short, std::string> textureIdMap; // Map of texture IDs to their names
 
+        Level();
+
         /**
          * Constructs a Level object by loading a level from a file.
          * @param filePath The path to the level file, in .lvl format.

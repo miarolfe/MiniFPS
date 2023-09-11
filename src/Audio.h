@@ -28,6 +28,7 @@ namespace MiniFPS {
         float musicVolume;
 
     public:
+        Audio();
         explicit Audio(const std::string& audioFolderPath, const Settings& settings);
 
         /**

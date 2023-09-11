@@ -8,6 +8,10 @@
 #include "Level.h"
 
 namespace MiniFPS {
+    Level::Level() {
+
+    }
+
     Level::Level(const std::string& filePath) {
         matrix = nullptr;
         w = -1;

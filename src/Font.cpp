@@ -30,6 +30,10 @@ namespace MiniFPS {
         return TTF_OpenFont(fontPath.c_str(), pointSize);
     }
 
+    FontManager::FontManager() {
+
+    }
+
     FontManager::FontManager(const Settings& settings) {
         for (const auto & fontPath : settings.fontPaths) {
             fonts.emplace_back(fontPath.first, GetSDLAssetsFolderPath() + fontPath.second, 24);

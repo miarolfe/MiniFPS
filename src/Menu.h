@@ -11,6 +11,7 @@ using string = std::string;
 namespace MiniFPS {
     class MainMenu {
     public:
+        MainMenu();
         MainMenu(const Settings& settings, const Font& font);
 
         Font font;

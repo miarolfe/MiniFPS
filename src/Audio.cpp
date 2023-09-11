@@ -16,6 +16,10 @@ namespace MiniFPS {
 
     Track::Track(Mix_Music* music) : music(music) {}
 
+    Audio::Audio() {
+
+    }
+
     Audio::Audio(const std::string& audioFolderPath, const Settings& settings) {
         SetEffectVolume(settings.effectVolume);
         SetMusicVolume(settings.musicVolume);

@@ -7,6 +7,10 @@
 #include "Utilities.h"
 
 namespace MiniFPS {
+    MainMenu::MainMenu() {
+
+    }
+
     MainMenu::MainMenu(const Settings& settings, const Font& font) {
         this->player = Player(nullptr, settings);
         this->player.inputState.inMainMenu = true;

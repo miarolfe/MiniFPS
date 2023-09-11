@@ -24,6 +24,7 @@ namespace MiniFPS {
         std::unordered_map<short, Texture> textureMap;
 
     public:
+        Renderer();
         Renderer(SDL_Renderer* sdlRenderer, const Settings& settings);
 
         /**

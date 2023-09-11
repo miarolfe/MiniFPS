@@ -21,6 +21,7 @@ set(
         src/Camera.cpp
         src/Color.cpp
         src/Font.cpp
+        src/Game.cpp
         src/Level.cpp
         src/Menu.cpp
         src/Player.cpp
@@ -38,6 +39,7 @@ set(
         src/Camera.h
         src/Color.h
         src/Font.h
+        src/Game.h
         src/Level.h
         src/Menu.h
         src/Player.h

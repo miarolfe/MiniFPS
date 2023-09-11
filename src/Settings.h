@@ -38,4 +38,6 @@ namespace MiniFPS {
          */
         static Settings LoadSettings(const std::string& assetsFilePath, const std::string& settingsFilePath);
     };
+
+    void LoadTextures();
 }
