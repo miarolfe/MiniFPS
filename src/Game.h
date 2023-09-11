@@ -1,5 +1,6 @@
 #pragma once
 
+#include <unordered_map>
 #include "SDL.h"
 
 #include "Audio.h"
@@ -34,5 +35,6 @@ namespace MiniFPS {
         float oldTime = 0.0;
         float curTime = 0.0;
         float frameDelta = 0.0;
+        bool gameSetup = false;
     };
 }

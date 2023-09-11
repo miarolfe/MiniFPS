@@ -1,23 +1,17 @@
 #define SDL_MAIN_HANDLED
 
 #include <iostream>
-#include <vector>
-#include <unordered_map>
-#include <map>
 
-#include <SDL.h>
-
-#include "Audio.h"
-#include "Level.h"
-#include "Player.h"
-#include "Renderer.h"
-#include "Settings.h"
-#include "Utilities.h"
-#include "Menu.h"
+#include "Game.h"
 
 using namespace MiniFPS;
 
 int main() {
+    Game game;
+    while (game.IsRunning()) {
+        game.Update();
+    }
+    /*
     InitializeSDLSubsystems();
 
     SDL_Window* window = nullptr;
@@ -99,6 +93,7 @@ int main() {
     FreeResources(renderer, audio, fontManager);
     DeactivateSDLSubsystems();
     Quit(window, sdlRenderer);
+    */
 
     return 0;
 }

@@ -22,16 +22,59 @@ MiniFPS::Game::Game() {
 }
 
 void MiniFPS::Game::Update() {
+    if (mainMenu.player.InMainMenu() && !mainMenu.player.GameHasEnded()) {
+        renderer.DrawMainMenu(mainMenu);
+        mainMenu.Update();
+    } else if (!gamePlayer.GameHasEnded()) {
+        if (!gameSetup) {
+            level = Level(GetSDLAssetsFolderPath() + settings.levelPath);
 
+            for (const auto& pair : textureNameToTextureMap) {
+                for (const auto& x : level.textureIdMap) {
+                    if (x.second == pair.first) {
+                        textureMap[x.first] = pair.second;
+                    }
+                }
+            }
+
+            textureMap[-1] = textureNameToTextureMap["fallback"];
+
+            gamePlayer = Player(&level, settings);
+            gamePlayer.weaponTexture = textureNameToTextureMap["Player_Weapon"];
+
+            renderer.SetTextureMap(textureMap);
+
+            // Disable movement of cursor in game
+            SDL_SetRelativeMouseMode(SDL_TRUE);
+
+            audio.PlayTrack("DrumLoop1", -1);
+
+            gameSetup = true;
+        }
+
+        oldTime = curTime;
+        curTime = static_cast<float>(SDL_GetTicks64());
+
+        frameDelta = GetFrameTime(oldTime, curTime);
+
+        gamePlayer.Update(frameDelta, settings.speedModifier, settings.rotationModifier);
+
+        if (gamePlayer.inputState.leftMouseButtonPressed) {
+            audio.PlayEffect("GunShoot1");
+        }
+
+        renderer.Draw(gamePlayer, fontManager.fonts[0], frameDelta);
+    }
 }
 
 bool MiniFPS::Game::IsRunning() {
-    return false;
+    return !gamePlayer.GameHasEnded();
 }
 
-// TODO
 MiniFPS::Game::~Game() {
-
+    FreeResources(renderer, audio, fontManager);
+    DeactivateSDLSubsystems();
+    Quit(window, sdlRenderer);
 }
 
 void MiniFPS::Game::LoadTextures() {
