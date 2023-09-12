@@ -19,6 +19,7 @@ namespace MiniFPS {
 
     private:
         void LoadTextures();
+        void SetupGame();
 
     private:
         SDL_Window* window = nullptr;

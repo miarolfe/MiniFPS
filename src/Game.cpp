@@ -27,28 +27,7 @@ void MiniFPS::Game::Update() {
         mainMenu.Update();
     } else if (!gamePlayer.GameHasEnded()) {
         if (!gameSetup) {
-            level = Level(GetSDLAssetsFolderPath() + settings.levelPath);
-
-            for (const auto& pair : textureNameToTextureMap) {
-                for (const auto& x : level.textureIdMap) {
-                    if (x.second == pair.first) {
-                        textureMap[x.first] = pair.second;
-                    }
-                }
-            }
-
-            textureMap[-1] = textureNameToTextureMap["fallback"];
-
-            gamePlayer = Player(&level, settings);
-            gamePlayer.weaponTexture = textureNameToTextureMap["Player_Weapon"];
-
-            renderer.SetTextureMap(textureMap);
-
-            // Disable movement of cursor in game
-            SDL_SetRelativeMouseMode(SDL_TRUE);
-
-            audio.PlayTrack("DrumLoop1", -1);
-
+            SetupGame();
             gameSetup = true;
         }
 
@@ -83,7 +62,31 @@ void MiniFPS::Game::LoadTextures() {
     for (const auto& file : spriteFileNames) {
         const std::string name = file.substr(0, file.size()-4);
 
-        Texture newTexture(name, GetSDLAssetsFolderPath() + "sprites/" + file);
+        const Texture newTexture(name, GetSDLAssetsFolderPath() + "sprites/" + file);
         textureNameToTextureMap[name] = newTexture;
     }
+}
+
+void MiniFPS::Game::SetupGame() {
+    level = Level(GetSDLAssetsFolderPath() + settings.levelPath);
+
+    for (const auto& pair : textureNameToTextureMap) {
+        for (const auto& x : level.textureIdMap) {
+            if (x.second == pair.first) {
+                textureMap[x.first] = pair.second;
+            }
+        }
+    }
+
+    textureMap[-1] = textureNameToTextureMap["fallback"];
+
+    gamePlayer = Player(&level, settings);
+    gamePlayer.weaponTexture = textureNameToTextureMap["Player_Weapon"];
+
+    renderer.SetTextureMap(textureMap);
+
+    // Disable movement of cursor in game
+    SDL_SetRelativeMouseMode(SDL_TRUE);
+
+    audio.PlayTrack("DrumLoop1", -1);
 }
