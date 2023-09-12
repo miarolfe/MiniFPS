@@ -91,13 +91,17 @@ namespace MiniFPS {
 
             if (inputState.moveLeft != inputState.moveRight) {
                 if (inputState.moveLeft) {
-                    camera.pos.x += frameDelta * speedModifier * cos(camera.angle - M_PI / 2);
-                    camera.pos.y += frameDelta * speedModifier * sin(camera.angle - M_PI / 2);
+                    FloatVector2 moveDirection = {camera.direction.y, -camera.direction.x};
+                    moveDirection.Normalize();
+
+                    camera.pos += moveDirection * frameDelta * speedModifier;
                 }
 
                 if (inputState.moveRight) {
-                    camera.pos.x += frameDelta * speedModifier * cos(camera.angle + M_PI / 2);
-                    camera.pos.y += frameDelta * speedModifier * sin(camera.angle + M_PI / 2);
+                    FloatVector2 moveDirection = {-camera.direction.y, camera.direction.x};
+                    moveDirection.Normalize();
+
+                    camera.pos += moveDirection * frameDelta * speedModifier;
                 }
             }
 

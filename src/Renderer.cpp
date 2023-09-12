@@ -260,16 +260,7 @@ namespace MiniFPS {
     }
 
     void Renderer::DrawEnemy(const Player& player, const MiniFPS::Enemy &enemy, void* pixels, int pitch) {
-        float direction = atan2(enemy.pos.y - player.camera.pos.y, enemy.pos.x - player.camera.pos.x);
 
-        while (direction - player.camera.angle > M_PI) direction -= 2*M_PI;
-        while (direction - player.camera.angle < -M_PI) direction += 2*M_PI;
-
-        float distance = std::sqrt(pow(player.camera.pos.x - enemy.pos.x, 2) + pow(player.camera.pos.y - enemy.pos.y, 2));
-        int size = static_cast<int>(player.camera.viewportHeight / distance);
-
-        // std::cout << horizontalOffset << " " << verticalOffset << std::endl;
-        // CopyTextureToFrameTexture(pixels, pitch, textureMap[enemy.textureId], {horizontalOffset, verticalOffset}, size, size);
     }
 
     void Renderer::Draw(const Player& player, const std::vector<Enemy>& enemies, const Font& font, const float frameDelta) {
@@ -287,8 +278,8 @@ namespace MiniFPS {
 
             FloatVector2 rayStart(player.camera.pos);
             FloatVector2 rayMax = {
-                    player.camera.pos.x + player.camera.maxRenderDistance * cos(rayAngle),
-                    player.camera.pos.y + player.camera.maxRenderDistance * sin(rayAngle)
+                    static_cast<float>(player.camera.pos.x + player.camera.maxRenderDistance * cos(rayAngle)),
+                    static_cast<float>(player.camera.pos.y + player.camera.maxRenderDistance * sin(rayAngle))
             };
 
             FloatVector2 rayDirection = rayMax - rayStart;
