@@ -15,6 +15,10 @@ namespace MiniFPS {
         return sqrt((x*x) + (y*y));
     }
 
+    float FloatVector2::DotProduct(const FloatVector2& v1, const FloatVector2& v2) {
+        return (v1.x * v2.x) + (v1.y * v2.y);
+    }
+
     void FloatVector2::Normalize() {
         const float length = Length();
         x = x / length;
