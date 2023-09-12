@@ -124,9 +124,6 @@ namespace MiniFPS {
         camera.direction.x = rotationMatrix[0][0] * oldX + rotationMatrix[0][1] * oldY;
         camera.direction.y = rotationMatrix[1][0] * oldX + rotationMatrix[1][1] * oldY;
         camera.direction.Normalize();
-
-        // TODO: Remove
-        camera.angle += rotationAngle;
     }
 
     bool Player::GameHasEnded() const {

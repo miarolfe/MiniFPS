@@ -274,7 +274,8 @@ namespace MiniFPS {
         // Cast rays
         for (int ray = 0; ray < player.camera.viewportWidth; ray++) {
             const float rayScreenPos = (2 * ray / float(player.camera.viewportWidth) - 1) * player.camera.aspectRatio;
-            const float rayAngle = player.camera.angle + atan(rayScreenPos * tan(player.camera.horizontalFieldOfView / 2));
+            const float angle = atan2f(player.camera.direction.y, player.camera.direction.x);
+            const float rayAngle = angle + atanf(rayScreenPos * tanf(player.camera.horizontalFieldOfView / 2));
 
             FloatVector2 rayStart(player.camera.pos);
             FloatVector2 rayMax = {
@@ -340,7 +341,8 @@ namespace MiniFPS {
 
             const Texture texture = GetTexBuffer(cellID);
             int texX = GetTexX(rayStart, intersection, rayLength1D, rayUnitStepSize, rayDirection, texture.size);
-            DrawTexturedColumn(texture, player.camera, pixels, pitch, distance * cos(rayAngle - player.camera.angle), {intersection.x, intersection.y}, ray, texX);
+
+            DrawTexturedColumn(texture, player.camera, pixels, pitch, distance * cosf(rayAngle - angle), {intersection.x, intersection.y}, ray, texX);
         }
 
         for (const Enemy& enemy : enemies) {

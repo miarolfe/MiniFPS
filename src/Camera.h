@@ -30,8 +30,8 @@ namespace MiniFPS {
 
         // Position relative to level cells (where x=0, y=0 would be the top-left corner of the level)
         FloatVector2 pos;
-        // Angle & horizontal field of view in radians
-        float angle, horizontalFieldOfView;
+        // Horizontal field of view in radians
+        float horizontalFieldOfView;
 
         FloatVector2 direction;
         FloatVector2 plane;
