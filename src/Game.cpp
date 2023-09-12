@@ -16,6 +16,8 @@ MiniFPS::Game::Game() {
     renderer = Renderer(sdlRenderer, settings);
     SDL_SetRelativeMouseMode(SDL_FALSE);
     mainMenu = MainMenu(settings, fontManager.fonts[0]);
+
+    enemies.push_back(Enemy({2, 2}, -1));
 }
 
 void MiniFPS::Game::Update() {
@@ -39,7 +41,7 @@ void MiniFPS::Game::Update() {
             audio.PlayEffect("GunShoot1");
         }
 
-        renderer.Draw(gamePlayer, fontManager.fonts[0], frameDelta);
+        renderer.Draw(gamePlayer, enemies, fontManager.fonts[0], frameDelta);
     }
 }
 

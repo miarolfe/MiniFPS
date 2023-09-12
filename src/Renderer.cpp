@@ -11,6 +11,8 @@ namespace MiniFPS {
         renderFrameTexture = SDL_CreateTexture(sdlRenderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_TARGET,
                                                static_cast<int>(settings.screenWidth),
                                                static_cast<int>(settings.screenHeight));
+
+        zBuffer = static_cast<float*>(malloc(sizeof(float) * settings.screenWidth));
     }
 
     void Renderer::SetTextureMap(const std::unordered_map<short, Texture>& newTextureMap) {
@@ -257,7 +259,20 @@ namespace MiniFPS {
         SDL_RenderPresent(sdlRenderer);
     }
 
-    void Renderer::Draw(const Player& player, const Font& font, const float frameDelta) {
+    void Renderer::DrawEnemy(const Player& player, const MiniFPS::Enemy &enemy, void* pixels, int pitch) {
+        float direction = atan2(enemy.pos.y - player.camera.pos.y, enemy.pos.x - player.camera.pos.x);
+
+        while (direction - player.camera.angle > M_PI) direction -= 2*M_PI;
+        while (direction - player.camera.angle < -M_PI) direction += 2*M_PI;
+
+        float distance = std::sqrt(pow(player.camera.pos.x - enemy.pos.x, 2) + pow(player.camera.pos.y - enemy.pos.y, 2));
+        int size = static_cast<int>(player.camera.viewportHeight / distance);
+
+        // std::cout << horizontalOffset << " " << verticalOffset << std::endl;
+        // CopyTextureToFrameTexture(pixels, pitch, textureMap[enemy.textureId], {horizontalOffset, verticalOffset}, size, size);
+    }
+
+    void Renderer::Draw(const Player& player, const std::vector<Enemy>& enemies, const Font& font, const float frameDelta) {
         int pitch = -1;
         void* pixels = nullptr;
         SDL_LockTexture(streamingFrameTexture, nullptr, &pixels, &pitch);
@@ -327,11 +342,18 @@ namespace MiniFPS {
             FloatVector2 intersection;
             if (tileFound) {
                 intersection = rayStart + rayDirection * distance;
+                zBuffer[ray] = sqrtf(pow(rayStart.x - intersection.x, 2) + pow(rayStart.y - intersection.y, 2));
+            } else {
+                zBuffer[ray] = static_cast<float>(player.camera.maxRenderDistance);
             }
 
             const Texture texture = GetTexBuffer(cellID);
             int texX = GetTexX(rayStart, intersection, rayLength1D, rayUnitStepSize, rayDirection, texture.size);
             DrawTexturedColumn(texture, player.camera, pixels, pitch, distance * cos(rayAngle - player.camera.angle), {intersection.x, intersection.y}, ray, texX);
+        }
+
+        for (const Enemy& enemy : enemies) {
+            DrawEnemy(player, enemy, pixels, pitch);
         }
 
         const int weaponTextureSize = player.camera.viewportWidth / 4;

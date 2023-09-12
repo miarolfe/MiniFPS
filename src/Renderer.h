@@ -3,11 +3,13 @@
 #include "Camera.h"
 #include "Color.h"
 #include "Common.h"
+#include "Enemy.h"
 #include "Level.h"
 #include "Menu.h"
 #include "Vector.h"
 
 namespace MiniFPS {
+    const Color BLACK = Color(0xFF000000);
     const Color MAIN_MENU_BACKGROUND = Color(0xFF000000);
     const Color CEILING = Color(0xFFA5A5A5);
     const Color FLOOR = Color(0xFFBBBBDD);
@@ -20,6 +22,7 @@ namespace MiniFPS {
         SDL_Texture* streamingFrameTexture;
         SDL_Texture* renderFrameTexture;
         std::unordered_map<short, Texture> textureMap;
+        float* zBuffer = nullptr;
 
     public:
         Renderer();
@@ -162,11 +165,21 @@ namespace MiniFPS {
         void DrawMainMenu(const MainMenu& mainMenu);
 
         /**
+         * Draws an enemy and copies it to the frame texture.
+         * @param player TODO
+         * @param enemy The enemy to draw.
+         * @param pixels TODO
+         * @param pitch TODO
+         */
+        void DrawEnemy(const Player& player, const Enemy& enemy, void* pixels, int pitch);
+
+        /**
          * Draws the game world and copies it to the frame texture.
-         * @param player The player who's view is being drawn.
+         * @param player The player whose view is being drawn.
+         * @param enemies The enemies in the level.
          * @param font The font to use for UI.
          * @param frameDelta The time elapsed between frames in seconds.
          */
-        void Draw(const Player& player, const Font &font, float frameDelta);
+        void Draw(const Player& player, const std::vector<Enemy> &enemies, const Font &font, const float frameDelta);
     };
 }
