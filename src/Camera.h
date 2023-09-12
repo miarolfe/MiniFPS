@@ -2,6 +2,7 @@
 
 #include "Common.h"
 #include "Point.h"
+#include "Vector.h"
 
 namespace MiniFPS {
     struct Camera {
@@ -28,9 +29,13 @@ namespace MiniFPS {
         static float CalculateVerticalFieldOfView(float aspectRatio, float horizontalFieldOfView);
 
         // Position relative to level cells (where x=0, y=0 would be the top-left corner of the level)
-        FloatPoint pos;
+        FloatVector2 pos;
         // Angle & horizontal field of view in radians
         float angle, horizontalFieldOfView;
+
+        FloatVector2 direction;
+        FloatVector2 plane;
+
         // Size of viewport in pixels
         int viewportWidth, viewportHeight;
         // Amount to increase raycast length by each iteration
