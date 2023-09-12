@@ -1,16 +1,5 @@
-#include <iostream>
-#include <cmath>
-#include <unordered_map>
-
-#include <SDL.h>
-
-#include "Camera.h"
-#include "Color.h"
-#include "Menu.h"
 #include "Renderer.h"
-#include "Texture.h"
 #include "Utilities.h"
-#include "Vector.h"
 
 namespace MiniFPS {
     Renderer::Renderer() = default;

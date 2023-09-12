@@ -1,10 +1,3 @@
-#include <iostream>
-#include <fstream>
-#include <cassert>
-#include <cmath>
-#include <vector>
-#include <map>
-
 #include "Level.h"
 
 namespace MiniFPS {

@@ -1,7 +1,4 @@
-#include <iostream>
-
 #include "Game.h"
-#include "Utilities.h"
 
 MiniFPS::Game::Game() {
     InitializeSDLSubsystems();

@@ -1,10 +1,4 @@
-#include <iostream>
-
-#include <SDL_ttf.h>
-
-#include "Font.h"
 #include "Menu.h"
-#include "Utilities.h"
 
 namespace MiniFPS {
     MainMenu::MainMenu() = default;

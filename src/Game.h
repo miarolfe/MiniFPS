@@ -1,13 +1,13 @@
 #pragma once
 
-#include <unordered_map>
-#include "SDL.h"
-
 #include "Audio.h"
+#include "Common.h"
+#include "Enemy.h"
 #include "Font.h"
 #include "Settings.h"
 #include "Renderer.h"
 #include "Texture.h"
+#include "Utilities.h"
 
 namespace MiniFPS {
     class Game {
@@ -24,15 +24,16 @@ namespace MiniFPS {
     private:
         SDL_Window* window = nullptr;
         SDL_Renderer* sdlRenderer = nullptr;
-        Settings settings;
         Audio audio;
         FontManager fontManager;
-        std::map<std::string, Texture> textureNameToTextureMap;
-        Renderer renderer;
-        MainMenu mainMenu;
         Level level;
-        std::unordered_map<short, Texture> textureMap;
+        MainMenu mainMenu;
+        Renderer renderer;
+        Settings settings;
         Player gamePlayer;
+        std::map<std::string, Texture> textureNameToTextureMap;
+        std::unordered_map<short, Texture> textureMap;
+        std::vector<Enemy> enemies;
         float oldTime = 0.0;
         float curTime = 0.0;
         float frameDelta = 0.0;

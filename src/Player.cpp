@@ -1,11 +1,4 @@
-#include <iostream> // Won't compile without this (memset_pattern4)
-#include <cmath>
-
-#include <SDL.h>
-
-#include "Camera.h"
 #include "Player.h"
-#include "Settings.h"
 #include "Utilities.h"
 
 namespace MiniFPS {

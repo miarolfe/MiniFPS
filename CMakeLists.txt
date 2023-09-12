@@ -20,6 +20,7 @@ set(
         src/Button.cpp
         src/Camera.cpp
         src/Color.cpp
+        src/Enemy.cpp
         src/Font.cpp
         src/Game.cpp
         src/Level.cpp
@@ -38,6 +39,7 @@ set(
         src/Button.h
         src/Camera.h
         src/Color.h
+        src/Enemy.h
         src/Font.h
         src/Game.h
         src/Level.h

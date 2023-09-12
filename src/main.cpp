@@ -1,7 +1,5 @@
 #define SDL_MAIN_HANDLED
 
-#include <iostream>
-
 #include "Game.h"
 
 using namespace MiniFPS;

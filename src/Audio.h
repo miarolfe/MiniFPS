@@ -1,10 +1,6 @@
 #pragma once
 
-#include <string>
-#include <map>
-
-#include <SDL_mixer.h>
-
+#include "Common.h"
 #include "Settings.h"
 
 namespace MiniFPS {
@@ -22,14 +18,14 @@ namespace MiniFPS {
 
     class Audio {
     private:
-        std::map<std::string, Effect> effects;
-        std::map<std::string, Track> tracks;
+        std::map<string, Effect> effects;
+        std::map<string, Track> tracks;
         float effectVolume;
         float musicVolume;
 
     public:
         Audio();
-        explicit Audio(const std::string& audioFolderPath, const Settings& settings);
+        explicit Audio(const string& audioFolderPath, const Settings& settings);
 
         /**
          * Play an effect (sound file a few seconds in length at most).
@@ -37,7 +33,7 @@ namespace MiniFPS {
          * @param loops How many times to loop it (-1 for infinitely looping).
          * @return Whether the effect could be successfully played.
          */
-        bool PlayEffect(const std::string& name, int loops=0);
+        bool PlayEffect(const string& name, int loops=0);
 
         /**
          * Play a track (sound file longer than a few seconds).
@@ -45,7 +41,7 @@ namespace MiniFPS {
          * @param loops How many times to loop it (-1 for infinitely looping).
          * @return Whether the track could be successfully played.
          */
-        bool PlayTrack(const std::string& name, int loops=0);
+        bool PlayTrack(const string& name, int loops=0);
 
         /**
          * Sets the volume of all effects.

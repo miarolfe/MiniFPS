@@ -1,9 +1,3 @@
-#include <iostream>
-
-#include <SDL.h>
-#include <SDL_image.h>
-
-#include "Color.h"
 #include "Texture.h"
 
 namespace MiniFPS {

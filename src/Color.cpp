@@ -1,5 +1,3 @@
-#include <cstdint>
-
 #include "Color.h"
 
 namespace MiniFPS {

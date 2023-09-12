@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Camera.h"
+#include "Common.h"
 #include "Level.h"
 #include "Settings.h"
 #include "Texture.h"

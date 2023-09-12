@@ -1,12 +1,9 @@
 #pragma once
 
-#include <SDL_ttf.h>
-
 #include "Button.h"
+#include "Common.h"
 #include "Font.h"
 #include "Player.h"
-
-using string = std::string;
 
 namespace MiniFPS {
     class MainMenu {

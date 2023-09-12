@@ -1,18 +1,5 @@
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <vector>
-#include <map>
-#include <unordered_map>
-
-#include <SDL.h>
-#include <SDL_image.h>
-#include <SDL_mixer.h>
-#include <SDL_ttf.h>
-#include <dirent.h>
-
-#include "Audio.h"
 #include "Utilities.h"
+#include "Audio.h"
 
 namespace MiniFPS {
     bool InitializeSDLSubsystems() {

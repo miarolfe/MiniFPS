@@ -1,13 +1,7 @@
 #pragma once
 
-#include <string>
-#include <map>
-#include <unordered_map>
-
-#include <SDL.h>
-#include <SDL_ttf.h>
-
 #include "Audio.h"
+#include "Common.h"
 #include "Renderer.h"
 #include "Settings.h"
 

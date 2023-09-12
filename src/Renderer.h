@@ -1,12 +1,10 @@
 #pragma once
 
-#include <SDL.h>
-#include <SDL_image.h>
-
 #include "Camera.h"
+#include "Color.h"
+#include "Common.h"
 #include "Level.h"
 #include "Menu.h"
-#include "Texture.h"
 #include "Vector.h"
 
 namespace MiniFPS {

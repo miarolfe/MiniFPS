@@ -1,11 +1,5 @@
-#include <iostream>
-#include <map>
-#include <string>
-#include <vector>
-
 #include "Audio.h"
 #include "Utilities.h"
-#include "Settings.h"
 
 namespace MiniFPS {
     Effect::Effect() : chunk(nullptr) {}
@@ -18,7 +12,7 @@ namespace MiniFPS {
 
     Audio::Audio() = default;
 
-    Audio::Audio(const std::string& audioFolderPath, const Settings& settings) {
+    Audio::Audio(const string& audioFolderPath, const Settings& settings) {
         SetEffectVolume(settings.effectVolume);
         SetMusicVolume(settings.musicVolume);
 
@@ -26,10 +20,10 @@ namespace MiniFPS {
 
         for (const std::string& folder : folders) {
             if (folder == "effects") {
-                std::vector<std::string> const effectFiles = GetFilesInDirectory(audioFolderPath + folder);
+                std::vector<string> const effectFiles = GetFilesInDirectory(audioFolderPath + folder);
 
-                for (const std::string& file : effectFiles) {
-                    const std::string effectFilePath = audioFolderPath + folder + "/" + file;
+                for (const string& file : effectFiles) {
+                    const string effectFilePath = audioFolderPath + folder + "/" + file;
                     Mix_Chunk* effect = Mix_LoadWAV((effectFilePath).c_str());
                     if (effect) {
                         const std::string name = file.substr(0, file.size()-4);

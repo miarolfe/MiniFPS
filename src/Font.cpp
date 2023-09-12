@@ -1,10 +1,4 @@
-#include <iostream>
-#include <string>
-
-#include <SDL_ttf.h>
-
 #include "Font.h"
-#include "Settings.h"
 #include "Utilities.h"
 
 namespace MiniFPS {

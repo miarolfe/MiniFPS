@@ -1,9 +1,6 @@
 #pragma once
 
-#include <map>
-
-#include <SDL.h>
-
+#include "Common.h"
 #include "Point.h"
 
 namespace MiniFPS {

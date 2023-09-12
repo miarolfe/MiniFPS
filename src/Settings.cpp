@@ -1,10 +1,4 @@
-#include <fstream>
-#include <sstream>
-#include <json.hpp>
-
 #include "Settings.h"
-
-using json = nlohmann::json;
 
 namespace MiniFPS {
     Settings::Settings() {

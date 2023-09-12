@@ -1,7 +1,4 @@
-#include <iostream>
-
 #include "Button.h"
-#include "Point.h"
 
 namespace MiniFPS {
     Button::Button() {}

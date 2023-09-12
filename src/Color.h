@@ -1,6 +1,6 @@
 #pragma once
 
-#include <cstdint>
+#include "Common.h"
 
 namespace MiniFPS {
     const uint32_t RED_MASK = 0x00FF0000;

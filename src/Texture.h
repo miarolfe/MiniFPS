@@ -1,8 +1,7 @@
 #pragma once
 
-#include <string>
-
 #include "Color.h"
+#include "Common.h"
 
 namespace MiniFPS {
     struct Texture {

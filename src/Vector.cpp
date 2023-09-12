@@ -1,5 +1,3 @@
-#include <cmath>
-
 #include "Vector.h"
 
 namespace MiniFPS {

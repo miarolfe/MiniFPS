@@ -1,10 +1,6 @@
 #pragma once
 
-#include <string>
-#include <vector>
-
-#include <SDL_ttf.h>
-
+#include "Common.h"
 #include "Settings.h"
 
 namespace MiniFPS {
