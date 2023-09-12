@@ -13,9 +13,7 @@
 #include "Vector.h"
 
 namespace MiniFPS {
-    Renderer::Renderer() {
-
-    }
+    Renderer::Renderer() = default;
 
     Renderer::Renderer(SDL_Renderer* sdlRenderer, const Settings& settings) : sdlRenderer(sdlRenderer) {
         streamingFrameTexture = SDL_CreateTexture(sdlRenderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING,
@@ -118,7 +116,6 @@ namespace MiniFPS {
 
     void Renderer::DrawTexturedColumn(const Texture &texture, Camera camera, void* pixels, int pitch, float distance,
                                       FloatPoint cell, int rayX, int texX) {
-
         const int columnHeight = ((camera.viewportHeight) * camera.distanceToProjectionPlane) / distance;
 
         const bool shadePixel = ShouldShadePixel(cell);

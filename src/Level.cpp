@@ -8,9 +8,7 @@
 #include "Level.h"
 
 namespace MiniFPS {
-    Level::Level() {
-
-    }
+    Level::Level() = default;
 
     Level::Level(const std::string& filePath) {
         matrix = nullptr;

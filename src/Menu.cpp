@@ -7,9 +7,7 @@
 #include "Utilities.h"
 
 namespace MiniFPS {
-    MainMenu::MainMenu() {
-
-    }
+    MainMenu::MainMenu() = default;
 
     MainMenu::MainMenu(const Settings& settings, const Font& font) {
         this->player = Player(nullptr, settings);
