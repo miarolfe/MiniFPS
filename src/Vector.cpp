@@ -31,14 +31,14 @@ namespace MiniFPS {
         return *this;
     }
 
+    FloatVector2 FloatVector2::operator-(const FloatVector2& otherVector) {
+        return {x - otherVector.x, y - otherVector.y};
+    }
+
     FloatVector2& FloatVector2::operator-=(const FloatVector2& otherVector) {
         x -= otherVector.x;
         y -= otherVector.y;
         return *this;
-    }
-
-    FloatVector2 FloatVector2::operator-(const FloatVector2& otherVector) {
-        return {x - otherVector.x, y - otherVector.y};
     }
 
     FloatVector2 FloatVector2::operator* (const float value) {

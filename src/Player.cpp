@@ -2,8 +2,7 @@
 #include "Utilities.h"
 
 namespace MiniFPS {
-    Player::Player(Level* level, const Settings& settings) {
-        this->level = level;
+    Player::Player(Level* level, const Settings& settings) : level(level) {
         inputState = InputState();
         camera = Camera(settings.playerStartX, settings.playerStartY, settings.playerStartAngle,
                         settings.fieldOfView * PI_180, settings.screenWidth,
@@ -12,9 +11,7 @@ namespace MiniFPS {
                         settings.playerDistanceToProjectionPlane);
     }
 
-    Player::Player() {
-        this->level = nullptr;
-    }
+    Player::Player() : level(nullptr) {}
 
     void Player::UpdateInputState() {
         inputState.mouseMotionX = 0;
@@ -124,6 +121,7 @@ namespace MiniFPS {
         camera.direction.y = rotationMatrix[1][0] * oldX + rotationMatrix[1][1] * oldY;
         camera.direction.Normalize();
 
+        // TODO: Remove
         camera.angle += rotationAngle;
     }
 
