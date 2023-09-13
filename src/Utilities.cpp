@@ -41,6 +41,7 @@ namespace MiniFPS {
 
     void FreeResources(Renderer renderer, Audio audio, FontManager fontManager) {
         renderer.FreeTextures();
+        // TODO: Free zBuffer
         audio.FreeEffects();
         audio.FreeTracks();
         fontManager.FreeFonts();

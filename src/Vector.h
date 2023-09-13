@@ -21,9 +21,14 @@ namespace MiniFPS {
         float y;
 
         float Length();
+        float Distance(const FloatVector2& otherVector) const;
+        static float DotProduct(const FloatVector2& v1, const FloatVector2& v2);
         void Normalize();
+        FloatVector2& operator= (const FloatVector2& otherVector);
         FloatVector2 operator+ (FloatVector2 const& otherVector);
-        FloatVector2 operator- (FloatVector2 const& otherVector);
+        FloatVector2& operator+= (FloatVector2 const& otherVector);
+        FloatVector2 operator- (FloatVector2 const& otherVector);\
+        FloatVector2& operator-= (FloatVector2 const& otherVector);
         FloatVector2 operator* (const float value);
     };
 

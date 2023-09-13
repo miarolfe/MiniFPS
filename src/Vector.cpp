@@ -15,18 +15,47 @@ namespace MiniFPS {
         return sqrt((x*x) + (y*y));
     }
 
+    float FloatVector2::Distance(const FloatVector2& otherVector) const {
+        return sqrtf(powf(x - otherVector.x, 2) + powf(y - otherVector.y, 2));
+    }
+
+
+    float FloatVector2::DotProduct(const FloatVector2& v1, const FloatVector2& v2) {
+        return (v1.x * v2.x) + (v1.y * v2.y);
+    }
+
     void FloatVector2::Normalize() {
         const float length = Length();
         x = x / length;
         y = y / length;
     }
 
+    FloatVector2& FloatVector2::operator=(const FloatVector2& otherVector) {
+        if (this != &otherVector) {
+            x = otherVector.x;
+            y = otherVector.y;
+        }
+        return *this;
+    }
+
     FloatVector2 FloatVector2::operator+(const FloatVector2& otherVector) {
         return {x + otherVector.x, y + otherVector.y};
     }
 
+    FloatVector2& FloatVector2::operator+=(const FloatVector2& otherVector) {
+        x += otherVector.x;
+        y += otherVector.y;
+        return *this;
+    }
+
     FloatVector2 FloatVector2::operator-(const FloatVector2& otherVector) {
         return {x - otherVector.x, y - otherVector.y};
+    }
+
+    FloatVector2& FloatVector2::operator-=(const FloatVector2& otherVector) {
+        x -= otherVector.x;
+        y -= otherVector.y;
+        return *this;
     }
 
     FloatVector2 FloatVector2::operator* (const float value) {
