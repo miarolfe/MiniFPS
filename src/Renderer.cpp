@@ -274,53 +274,52 @@ namespace MiniFPS {
         // Cast rays
         for (int ray = 0; ray < player.camera.viewportWidth; ray++) {
             const float rayScreenPos = (2 * ray / float(player.camera.viewportWidth) - 1) * player.camera.aspectRatio;
-            const float angle = atan2f(player.camera.direction.y, player.camera.direction.x);
-            const float rayAngle = angle + atanf(rayScreenPos * tanf(player.camera.horizontalFieldOfView / 2));
+            // const float rayScreenPos = (2 * ray / float(player.camera.viewportWidth) - 1);
+            const float rayAngle = atan2f(player.camera.direction.y, player.camera.direction.x) + atanf(rayScreenPos * tanf(player.camera.horizontalFieldOfView / 2));
 
-            FloatVector2 rayStart(player.camera.pos);
-            FloatVector2 rayMax = {
-                    static_cast<float>(player.camera.pos.x + player.camera.maxRenderDistance * cos(rayAngle)),
-                    static_cast<float>(player.camera.pos.y + player.camera.maxRenderDistance * sin(rayAngle))
+            FloatVector2 rayDirection = {
+                    // Need to multiply by -1 to avoid flipped rendering
+                    player.camera.direction.x + player.camera.plane.x * rayScreenPos * -1,
+                    player.camera.direction.y + player.camera.plane.y * rayScreenPos * -1
             };
 
-            FloatVector2 rayDirection = rayMax - rayStart;
             rayDirection.Normalize();
 
-            const FloatVector2 rayUnitStepSize = {std::abs(1.0f / rayDirection.x), std::abs(1.0f / rayDirection.y)};
-            IntVector2 mapCheck(rayStart);
+            const FloatVector2 deltaDistance = {std::abs(1.0f / rayDirection.x), std::abs(1.0f / rayDirection.y)};
+            IntVector2 mapCheck(player.camera.pos);
 
-            FloatVector2 rayLength1D;
+            FloatVector2 sideDistance;
             IntVector2 step;
 
             if (rayDirection.x < 0) {
                 step.x = -1;
-                rayLength1D.x = (rayStart.x - static_cast<float>(mapCheck.x)) * rayUnitStepSize.x;
+                sideDistance.x = (player.camera.pos.x - static_cast<float>(mapCheck.x)) * deltaDistance.x;
             } else {
                 step.x = 1;
-                rayLength1D.x = (static_cast<float>(mapCheck.x + 1) - rayStart.x) * rayUnitStepSize.x;
+                sideDistance.x = (static_cast<float>(mapCheck.x + 1) - player.camera.pos.x) * deltaDistance.x;
             }
 
             if (rayDirection.y < 0) {
                 step.y = -1;
-                rayLength1D.y = ((rayStart.y - static_cast<float>(mapCheck.y)) * rayUnitStepSize.y);
+                sideDistance.y = ((player.camera.pos.y - static_cast<float>(mapCheck.y)) * deltaDistance.y);
             } else {
                 step.y = 1;
-                rayLength1D.y = (static_cast<float>(mapCheck.y + 1) - rayStart.y) * rayUnitStepSize.y;
+                sideDistance.y = (static_cast<float>(mapCheck.y + 1) - player.camera.pos.y) * deltaDistance.y;
             }
 
             bool tileFound = false;
             float distance = 0.0f;
-            short cellID;
+            short cellID = -1;
 
             while (!tileFound && distance < player.camera.maxRenderDistance) {
-                if (rayLength1D.x < rayLength1D.y) {
+                if (sideDistance.x < sideDistance.y) {
                     mapCheck.x += step.x;
-                    distance = rayLength1D.x;
-                    rayLength1D.x += rayUnitStepSize.x;
+                    distance = sideDistance.x;
+                    sideDistance.x += deltaDistance.x;
                 } else {
                     mapCheck.y += step.y;
-                    distance = rayLength1D.y;
-                    rayLength1D.y += rayUnitStepSize.y;
+                    distance = sideDistance.y;
+                    sideDistance.y += deltaDistance.y;
                 }
 
                 if (player.level->IsPositionValid({static_cast<float>(mapCheck.x), static_cast<float>(mapCheck.y)})) {
@@ -333,16 +332,19 @@ namespace MiniFPS {
 
             FloatVector2 intersection;
             if (tileFound) {
-                intersection = rayStart + rayDirection * distance;
-                zBuffer[ray] = sqrtf(pow(rayStart.x - intersection.x, 2) + pow(rayStart.y - intersection.y, 2));
+                intersection = player.camera.pos;
+                intersection += rayDirection * distance;
+
+                // TODO: Use FloatVector2 Distance
+                zBuffer[ray] = player.camera.pos.Distance(intersection);
             } else {
                 zBuffer[ray] = static_cast<float>(player.camera.maxRenderDistance);
             }
 
             const Texture texture = GetTexBuffer(cellID);
-            int texX = GetTexX(rayStart, intersection, rayLength1D, rayUnitStepSize, rayDirection, texture.size);
+            const int texX = GetTexX(player.camera.pos, intersection, sideDistance, deltaDistance, rayDirection, texture.size);
 
-            DrawTexturedColumn(texture, player.camera, pixels, pitch, distance * cosf(rayAngle - angle), {intersection.x, intersection.y}, ray, texX);
+            DrawTexturedColumn(texture, player.camera, pixels, pitch, zBuffer[ray] * cosf(rayAngle - atan2f(player.camera.direction.y, player.camera.direction.x)), {intersection.x, intersection.y}, ray, texX);
         }
 
         for (const Enemy& enemy : enemies) {
