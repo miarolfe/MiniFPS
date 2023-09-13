@@ -357,11 +357,21 @@ namespace MiniFPS {
         SDL_SetRenderTarget(sdlRenderer, renderFrameTexture);
         SDL_RenderCopy(sdlRenderer, streamingFrameTexture, nullptr, nullptr);
 
+        std::string planeInfo = std::to_string(player.camera.plane.x);
+        planeInfo += " ";
+        planeInfo += std::to_string(player.camera.plane.y);
+
+        std::string directionInfo = std::to_string(player.camera.direction.x);
+        directionInfo += " ";
+        directionInfo += std::to_string(player.camera.direction.y);
+
+        std::string dotProductInfo = std::to_string(FloatVector2::DotProduct(player.camera.plane, player.camera.direction));
+
         // TODO: Scale this with frame
         // UI draw here
-        DrawTextStrH("MiniFPS", font, {25, 25}, 100);
-        DrawTextStrH("peterrolfe.com", font, {25, 125}, 50);
-        DrawTextStrH(GetFramesPerSecond(frameDelta), font, {static_cast<float>(player.camera.viewportWidth - 100), 25}, 50, 255, 0, 0);
+        DrawTextStrH(planeInfo, font, {25, 25}, 25, 255, 0, 0);
+        DrawTextStrH(directionInfo, font, {25, 50}, 25, 255, 0, 0);
+        DrawTextStrH(dotProductInfo, font, {25, 75}, 25, 255, 0, 0);
 
         SDL_SetRenderTarget(sdlRenderer, nullptr);
         SDL_RenderCopy(sdlRenderer, renderFrameTexture, nullptr, nullptr);

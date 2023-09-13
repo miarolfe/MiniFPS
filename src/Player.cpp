@@ -118,12 +118,18 @@ namespace MiniFPS {
         float sinTheta = sin(rotationAngle);
         float rotationMatrix[2][2] = {{cosTheta, -sinTheta}, {sinTheta, cosTheta}};
 
-        float oldX = camera.direction.x;
-        float oldY = camera.direction.y;
+        float oldDirectionX = camera.direction.x;
+        float oldDirectionY = camera.direction.y;
 
-        camera.direction.x = rotationMatrix[0][0] * oldX + rotationMatrix[0][1] * oldY;
-        camera.direction.y = rotationMatrix[1][0] * oldX + rotationMatrix[1][1] * oldY;
+        camera.direction.x = rotationMatrix[0][0] * oldDirectionX + rotationMatrix[0][1] * oldDirectionY;
+        camera.direction.y = rotationMatrix[1][0] * oldDirectionX + rotationMatrix[1][1] * oldDirectionY;
         camera.direction.Normalize();
+
+        float oldPlaneX = camera.plane.x;
+        float oldPlaneY = camera.plane.y;
+
+        camera.plane.x = rotationMatrix[0][0] * oldPlaneX + rotationMatrix[0][1] * oldPlaneY;
+        camera.plane.y = rotationMatrix[1][0] * oldPlaneX + rotationMatrix[1][1] * oldPlaneY;
     }
 
     bool Player::GameHasEnded() const {
