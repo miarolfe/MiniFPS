@@ -114,22 +114,22 @@ namespace MiniFPS {
 
     void Player::Rotate(float frameDelta, float rotationModifier) {
         float rotationAngle = inputState.mouseMotionX * frameDelta * rotationModifier;
-        float cosTheta = cos(rotationAngle);
-        float sinTheta = sin(rotationAngle);
-        float rotationMatrix[2][2] = {{cosTheta, -sinTheta}, {sinTheta, cosTheta}};
 
         float oldDirectionX = camera.direction.x;
         float oldDirectionY = camera.direction.y;
 
-        camera.direction.x = rotationMatrix[0][0] * oldDirectionX + rotationMatrix[0][1] * oldDirectionY;
-        camera.direction.y = rotationMatrix[1][0] * oldDirectionX + rotationMatrix[1][1] * oldDirectionY;
+        camera.direction.x = oldDirectionX * cosf(rotationAngle) - oldDirectionY * sinf(rotationAngle);
+        camera.direction.y = oldDirectionX * sinf(rotationAngle) + oldDirectionY * cosf(rotationAngle);
+
         camera.direction.Normalize();
 
         float oldPlaneX = camera.plane.x;
         float oldPlaneY = camera.plane.y;
 
-        camera.plane.x = rotationMatrix[0][0] * oldPlaneX + rotationMatrix[0][1] * oldPlaneY;
-        camera.plane.y = rotationMatrix[1][0] * oldPlaneX + rotationMatrix[1][1] * oldPlaneY;
+        camera.plane.x = oldPlaneX * cosf(rotationAngle) - oldPlaneY * sinf(rotationAngle);
+        camera.plane.y = oldPlaneX * sinf(rotationAngle) + oldPlaneY * cosf(rotationAngle);
+
+        camera.plane.Normalize();
     }
 
     bool Player::GameHasEnded() const {

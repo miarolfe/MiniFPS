@@ -109,6 +109,8 @@ namespace MiniFPS {
                                       FloatPoint cell, int rayX, int texX) {
         const int columnHeight = ((camera.viewportHeight) * camera.distanceToProjectionPlane) / distance;
 
+
+
         const bool shadePixel = ShouldShadePixel(cell);
 
         const int drawStart = ((camera.viewportHeight / 2) - (columnHeight / 2));
@@ -259,7 +261,58 @@ namespace MiniFPS {
         SDL_RenderPresent(sdlRenderer);
     }
 
-    void Renderer::DrawEnemy(const Player& player, const MiniFPS::Enemy &enemy, void* pixels, int pitch) {
+    void Renderer::DrawEnemies(const Player& player, const std::vector<Enemy>& enemies, void* pixels, int pitch) {
+        std::vector<std::pair<float, Enemy>> enemyDistances;
+
+        const Camera& cam = player.camera;
+
+        for (const Enemy& enemy : enemies) {
+            enemyDistances.emplace_back(player.camera.pos.Distance(enemy.pos), enemy);
+        }
+
+        std::sort(enemyDistances.begin(), enemyDistances.end(), CompareEnemyDistancePair);
+
+        for (auto it = enemyDistances.begin(); it != enemyDistances.end(); ++it) {
+            FloatVector2 enemy = it->second.pos - cam.pos;
+
+            float invDet = 1.0f / (cam.plane.x * cam.direction.y - cam.direction.x * cam.plane.y);
+
+            FloatVector2 transform = {
+                    invDet * (cam.direction.y * enemy.x - cam.direction.x * enemy.y),
+                    invDet * (-cam.plane.y * enemy.x + cam.plane.x * enemy.y)
+            };
+
+            int enemyScreenX = static_cast<int>((cam.viewportWidth / 2) * (1 + transform.x / transform.y));
+
+            int enemyHeight = std::abs(static_cast<int>(cam.viewportHeight / (transform.y)));
+            int drawStartY = -enemyHeight / 2 + cam.viewportHeight / 2;
+            if (drawStartY < 0) drawStartY = 0;
+            int drawEndY = enemyHeight / 2 + cam.viewportHeight / 2;
+            if (drawEndY >= cam.viewportHeight) drawEndY = cam.viewportHeight - 1;
+
+            int enemyWidth = std::abs(static_cast<int>(cam.viewportHeight / (transform.y)));
+            int drawStartX = -enemyWidth / 2 + enemyScreenX;
+            if (drawStartX < 0) drawStartX = 0;
+            int drawEndX = enemyWidth / 2 + enemyScreenX;
+            if (drawEndX >= cam.viewportWidth) drawEndX = cam.viewportWidth - 1;
+
+            for (int stripe = drawStartX; stripe < drawEndX; stripe++) {
+                if (transform.y > 0 && transform.y < zBuffer[stripe]) {
+                    for (int y = drawStartY; y < drawEndY; y++) {
+                        SetPixel(pixels, pitch, BLACK, {stripe, y});
+                    }
+                } else if (transform.y > 0) {
+                    std::cout << transform.y << " " << zBuffer[stripe] << std::endl;
+                }
+
+//                if (transform.y > 0) {
+//                    for (int y = drawStartY; y < drawEndY; y++) {
+//                        SetPixel(pixels, pitch, BLACK, {stripe, y});
+//                    }
+//                }
+
+            }
+        }
 
     }
 
@@ -310,16 +363,20 @@ namespace MiniFPS {
             bool tileFound = false;
             float distance = 0.0f;
             short cellID = -1;
+            int side = 0;
 
             while (!tileFound && distance < player.camera.maxRenderDistance) {
                 if (sideDistance.x < sideDistance.y) {
-                    mapCheck.x += step.x;
                     distance = sideDistance.x;
                     sideDistance.x += deltaDistance.x;
+                    mapCheck.x += step.x;
+                    side = 0;
+
                 } else {
-                    mapCheck.y += step.y;
                     distance = sideDistance.y;
                     sideDistance.y += deltaDistance.y;
+                    mapCheck.y += step.y;
+                    side = 1;
                 }
 
                 if (player.level->IsPositionValid({static_cast<float>(mapCheck.x), static_cast<float>(mapCheck.y)})) {
@@ -330,26 +387,25 @@ namespace MiniFPS {
                 }
             }
 
+            if (side == 0) distance = sideDistance.x - deltaDistance.x;
+            else           distance = sideDistance.y - deltaDistance.y;
+
+            if (!tileFound) distance = 1000.0f;
+            zBuffer[ray] = distance;
+
             FloatVector2 intersection;
             if (tileFound) {
                 intersection = player.camera.pos;
                 intersection += rayDirection * distance;
-
-                // TODO: Use FloatVector2 Distance
-                zBuffer[ray] = player.camera.pos.Distance(intersection);
-            } else {
-                zBuffer[ray] = static_cast<float>(player.camera.maxRenderDistance);
             }
 
             const Texture texture = GetTexBuffer(cellID);
             const int texX = GetTexX(player.camera.pos, intersection, sideDistance, deltaDistance, rayDirection, texture.size);
 
-            DrawTexturedColumn(texture, player.camera, pixels, pitch, zBuffer[ray] * cosf(rayAngle - atan2f(player.camera.direction.y, player.camera.direction.x)), {intersection.x, intersection.y}, ray, texX);
+            DrawTexturedColumn(texture, player.camera, pixels, pitch, distance * cosf(rayAngle - atan2f(player.camera.direction.y, player.camera.direction.x)), {intersection.x, intersection.y}, ray, texX);
         }
 
-        for (const Enemy& enemy : enemies) {
-            DrawEnemy(player, enemy, pixels, pitch);
-        }
+        DrawEnemies(player, enemies, pixels, pitch);
 
         const int weaponTextureSize = player.camera.viewportWidth / 4;
         CopyTextureToFrameTexture(pixels, pitch, player.weaponTexture, {player.camera.viewportWidth/2, player.camera.viewportHeight - (weaponTextureSize/2)}, weaponTextureSize, weaponTextureSize);
@@ -378,5 +434,9 @@ namespace MiniFPS {
         SDL_SetRenderTarget(sdlRenderer, nullptr);
         SDL_RenderCopy(sdlRenderer, renderFrameTexture, nullptr, nullptr);
         SDL_RenderPresent(sdlRenderer);
+    }
+
+    bool Renderer::CompareEnemyDistancePair(const std::pair<float, Enemy>& pair1, const std::pair<float, Enemy>& pair2) {
+        return pair1.first > pair2.first;
     }
 }

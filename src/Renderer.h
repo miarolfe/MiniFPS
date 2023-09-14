@@ -142,7 +142,7 @@ namespace MiniFPS {
          * @param g The green value for the text.
          * @param b The blue value for the text.
          */
-        void DrawTextStr(const std::string &text, const Font& font, FloatPoint point, int width, int r, int g, int b);
+        void DrawTextStr(const string &text, const Font& font, FloatPoint point, int width, int r, int g, int b);
 
         /**
          * Renders text to a texture and copies that texture onto the frame texture.
@@ -165,13 +165,13 @@ namespace MiniFPS {
         void DrawMainMenu(const MainMenu& mainMenu);
 
         /**
-         * Draws an enemy and copies it to the frame texture.
+         * Draws enemies and copies them to the frame texture.
          * @param player TODO
-         * @param enemy The enemy to draw.
+         * @param enemies The enemies to draw
          * @param pixels TODO
          * @param pitch TODO
          */
-        void DrawEnemy(const Player& player, const Enemy& enemy, void* pixels, int pitch);
+        void DrawEnemies(const Player& player, const std::vector<Enemy>& enemies, void* pixels, int pitch);
 
         /**
          * Draws the game world and copies it to the frame texture.
@@ -181,5 +181,8 @@ namespace MiniFPS {
          * @param frameDelta The time elapsed between frames in seconds.
          */
         void Draw(const Player& player, const std::vector<Enemy> &enemies, const Font &font, const float frameDelta);
+
+    private:
+        static bool CompareEnemyDistancePair(const std::pair<float, Enemy>& pair1, const std::pair<float, Enemy>& pair2);
     };
 }
