@@ -6,7 +6,7 @@ namespace MiniFPS {
         inputState = InputState();
         camera = Camera(settings.playerStartX, settings.playerStartY, settings.playerStartAngle,
                         settings.fieldOfView * PI_180, settings.screenWidth,
-                        settings.screenHeight, settings.renderRayIncrement,
+                        settings.screenHeight,
                         settings.renderDistance,
                         settings.playerDistanceToProjectionPlane);
     }
