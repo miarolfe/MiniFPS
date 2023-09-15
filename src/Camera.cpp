@@ -23,7 +23,6 @@ namespace MiniFPS {
         viewportHeight = _viewportHeight;
         maxRenderDistance = _maxRendererDistance;
         distanceToProjectionPlane = _distanceToProjectionPlane;
-        verticalFieldOfView = CalculateVerticalFieldOfView(CalculateAspectRatio(viewportWidth, viewportHeight), horizontalFieldOfView);
         aspectRatio = CalculateAspectRatio(viewportWidth, viewportHeight);
     }
 
@@ -36,7 +35,6 @@ namespace MiniFPS {
         viewportHeight = 0;
         maxRenderDistance = 0;
         distanceToProjectionPlane = 0;
-        verticalFieldOfView = 0;
         aspectRatio = 0;
     }
 }

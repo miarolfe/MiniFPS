@@ -42,8 +42,6 @@ namespace MiniFPS {
         size_t maxRenderDistance;
         // Distance between viewport and projection plane
         float distanceToProjectionPlane;
-        // Vertical field of view in radians, derived from aspect ratio and horizontal field of view
-        float verticalFieldOfView;
         // Aspect ratio (width over height)
         float aspectRatio;
     };
