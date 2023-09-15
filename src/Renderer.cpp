@@ -293,9 +293,9 @@ namespace MiniFPS {
             if (drawEndY >= cam.viewportHeight) drawEndY = cam.viewportHeight - 1;
 
             int enemyWidth = std::min(2000, std::abs(static_cast<int>(cam.viewportHeight / (transform.y))));
-            int drawStartX = -enemyWidth / 2 + enemyScreenX;
+            int drawStartX = (-enemyWidth / 2) + enemyScreenX;
             if (drawStartX < 0) drawStartX = 0;
-            int drawEndX = enemyWidth / 2 + enemyScreenX;
+            int drawEndX = (enemyWidth / 2) + enemyScreenX;
             if (drawEndX >= cam.viewportWidth) drawEndX = cam.viewportWidth - 1;
 
             drawStartMirror = {static_cast<float>(drawStartX), static_cast<float>(drawStartY)};
