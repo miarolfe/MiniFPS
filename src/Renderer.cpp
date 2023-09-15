@@ -389,7 +389,10 @@ namespace MiniFPS {
             else           distance = sideDistance.y - deltaDistance.y;
 
             if (!tileFound) distance = 1000.0f;
+
             zBuffer[ray] = distance * cosf(rayAngle - atan2f(player.camera.direction.y, player.camera.direction.x));
+
+            if (ray == player.camera.viewportWidth / 2) zBufMirror = zBuffer[ray];
 
             FloatVector2 intersection;
             if (tileFound) {
@@ -449,8 +452,8 @@ namespace MiniFPS {
         enemySizeInfo += " ";
         enemySizeInfo += std::to_string(enemySizeMirror.y);
 
-        std::string invDetInfo = "Inv Det: ";
-        invDetInfo += std::to_string(invDetMirror);
+        std::string zBufInfo = "Z Buf: ";
+        zBufInfo += std::to_string(zBufMirror);
 
         // TODO: Scale this with frame
         // UI draw here
@@ -462,7 +465,7 @@ namespace MiniFPS {
         DrawTextStrH(drawStartInfo, font, {25, 90}, 15, 255, 0, 0);
         DrawTextStrH(drawEndInfo, font, {25, 105}, 15, 255, 0, 0);
         DrawTextStrH(enemySizeInfo, font, {25, 120}, 15, 255, 0, 0);
-        DrawTextStrH(invDetInfo, font, {25, 135}, 15, 255, 0, 0);
+        DrawTextStrH(zBufInfo, font, {25, 135}, 45, 255, 0, 0);
 
         SDL_SetRenderTarget(sdlRenderer, nullptr);
         SDL_RenderCopy(sdlRenderer, renderFrameTexture, nullptr, nullptr);

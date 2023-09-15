@@ -31,6 +31,7 @@ namespace MiniFPS {
         FloatVector2 drawEndMirror;
         FloatVector2 enemySizeMirror;
         float invDetMirror;
+        float zBufMirror;
 
     public:
         Renderer();
