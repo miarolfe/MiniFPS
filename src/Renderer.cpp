@@ -24,7 +24,7 @@ namespace MiniFPS {
         row[point.x] = color.argb;
     }
 
-    bool Renderer::ShouldShadePixel(const FloatPoint point) {
+    bool Renderer::ShouldShadePixel(const FloatVector2& point) {
         const float hitX = point.x - floor(point.x + 0.5f); // Fractional part of cellX
         const float hitY = point.y - floor(point.y + 0.5f); // Fractional part of cellY
 
@@ -106,7 +106,7 @@ namespace MiniFPS {
     }
 
     void Renderer::DrawTexturedColumn(const Texture &texture, const Camera& camera, void* pixels, int pitch, float distance,
-                                      FloatPoint cell, int rayX, int texX) {
+                                      const FloatVector2& cell, int rayX, int texX) {
         const int columnHeight = ((camera.viewportHeight)) / distance;
 
 
@@ -380,7 +380,8 @@ namespace MiniFPS {
 
             if (!tileFound) distance = 1000.0f;
 
-            zBuffer[ray] = distance * cosf(rayAngle - atan2f(player.camera.direction.y, player.camera.direction.x));
+            const float adjustedDistance = distance * cosf(rayAngle - atan2f(player.camera.direction.y, player.camera.direction.x));
+            zBuffer[ray] = adjustedDistance;
 
             FloatVector2 intersection;
             if (tileFound) {
@@ -391,7 +392,15 @@ namespace MiniFPS {
             const Texture texture = GetTexBuffer(cellID);
             const int texX = GetTexX(player.camera.pos, intersection, sideDistance, deltaDistance, rayDirection, texture.size);
 
-            DrawTexturedColumn(texture, player.camera, pixels, pitch, distance * cosf(rayAngle - atan2f(player.camera.direction.y, player.camera.direction.x)), {intersection.x, intersection.y}, ray, texX);
+            DrawTexturedColumn(
+                    texture,
+                    player.camera,
+                    pixels,
+                    pitch,
+                    adjustedDistance,
+                    intersection,
+                    ray,
+                    texX);
         }
 
         DrawEnemies(player, enemies, pixels, pitch);

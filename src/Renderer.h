@@ -49,7 +49,7 @@ namespace MiniFPS {
          * @param point The pixel's coordinates.
          * @return Whether to shade a pixel.
          */
-        static bool ShouldShadePixel(FloatPoint point);
+        static bool ShouldShadePixel(const FloatVector2& point);
 
         /**
          * Returns the texture buffer that corresponds to the provided texture ID.
@@ -107,7 +107,7 @@ namespace MiniFPS {
          * @param texX TODO
          */
         void DrawTexturedColumn(const Texture& texture, const Camera& camera, void* pixels, int pitch, float distance,
-                                FloatPoint cell, int rayX, int texX);
+                                const FloatVector2& cell, int rayX, int texX);
 
         /**
          * Writes the ceiling to the frame texture.
