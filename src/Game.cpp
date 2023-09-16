@@ -17,7 +17,7 @@ MiniFPS::Game::Game() {
     SDL_SetRelativeMouseMode(SDL_FALSE);
     mainMenu = MainMenu(settings, fontManager.fonts[0]);
 
-    enemies.push_back(Enemy({6.5, 1.5}, -1));
+    enemies.push_back(Enemy({6.5, 1.5}, 40));
 }
 
 void MiniFPS::Game::Update() {

@@ -273,6 +273,7 @@ namespace MiniFPS {
 
         for (auto it = enemyDistances.begin(); it != enemyDistances.end(); ++it) {
             FloatVector2 enemyPos = it->second.pos - cam.pos;
+            const Texture& texture = textureMap[it->second.textureId];
 
             float invDet = 1.0f / (cam.plane.x * cam.direction.y - cam.direction.x * cam.plane.y);
 
@@ -296,9 +297,15 @@ namespace MiniFPS {
             if (drawEndX >= cam.viewportWidth) drawEndX = cam.viewportWidth - 1;
 
             for (int stripe = drawStartX; stripe < drawEndX; stripe++) {
+                int texX = static_cast<int>(256 * (stripe - (-enemyWidth / 2 + enemyScreenX)) * texture.size / enemyWidth) / 256;
                 if (transform.y > 0 && transform.y < zBuffer[stripe]) {
                     for (int y = drawStartY; y < drawEndY; y++) {
-                        SetPixel(pixels, pitch, BLACK, {stripe, y});
+                        int d = (y) * 256 - cam.viewportHeight * 128 + enemyHeight * 128;
+                        int texY = ((d * texture.size) / enemyHeight) / 256;
+                        Color pixel = texture.buffer[texY][texX];
+                        if ((pixel.argb & TRANSPARENCY_MASK) != 0) {
+                            SetPixel(pixels, pitch, pixel, {stripe, y});
+                        }
                     }
                 }
             }
