@@ -32,8 +32,6 @@ namespace MiniFPS {
         int viewportWidth, viewportHeight;
         // Max distance for raycasts
         size_t maxRenderDistance;
-        // Aspect ratio (width over height)
-        float aspectRatio;
     };
 }
 

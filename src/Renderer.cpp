@@ -332,8 +332,7 @@ namespace MiniFPS {
 
         // Cast rays
         for (int ray = 0; ray < player.camera.viewportWidth; ray++) {
-            // const float rayScreenPos = (2 * ray / float(player.camera.viewportWidth) - 1) * player.camera.aspectRatio;
-            const float rayScreenPos = (2.0f * ray / float(player.camera.viewportWidth) - 1.0f);
+            const float rayScreenPos = (2.0f * static_cast<float>(ray) / static_cast<float>((player.camera.viewportWidth)) - 1.0f);
             const float rayAngle = atan2f(player.camera.direction.y, player.camera.direction.x) + atanf(rayScreenPos * tanf(player.camera.horizontalFieldOfView / 2));
 
             FloatVector2 rayDirection = {

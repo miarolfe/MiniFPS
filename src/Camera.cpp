@@ -18,7 +18,6 @@ namespace MiniFPS {
         viewportWidth = _viewportWidth;
         viewportHeight = _viewportHeight;
         maxRenderDistance = _maxRendererDistance;
-        aspectRatio = CalculateAspectRatio(viewportWidth, viewportHeight);
     }
 
     Camera::Camera() {
@@ -29,7 +28,6 @@ namespace MiniFPS {
         viewportWidth = 0;
         viewportHeight = 0;
         maxRenderDistance = 0;
-        aspectRatio = 0;
     }
 }
 
