@@ -6,9 +6,8 @@ namespace MiniFPS {
         inputState = InputState();
         camera = Camera(settings.playerStartX, settings.playerStartY, settings.playerStartAngle,
                         settings.fieldOfView * PI_180, settings.screenWidth,
-                        settings.screenHeight, settings.renderRayIncrement,
-                        settings.renderDistance,
-                        settings.playerDistanceToProjectionPlane);
+                        settings.screenHeight,
+                        settings.renderDistance);
     }
 
     Player::Player() : level(nullptr) {}
@@ -114,22 +113,22 @@ namespace MiniFPS {
 
     void Player::Rotate(float frameDelta, float rotationModifier) {
         float rotationAngle = inputState.mouseMotionX * frameDelta * rotationModifier;
-        float cosTheta = cos(rotationAngle);
-        float sinTheta = sin(rotationAngle);
-        float rotationMatrix[2][2] = {{cosTheta, -sinTheta}, {sinTheta, cosTheta}};
 
         float oldDirectionX = camera.direction.x;
         float oldDirectionY = camera.direction.y;
 
-        camera.direction.x = rotationMatrix[0][0] * oldDirectionX + rotationMatrix[0][1] * oldDirectionY;
-        camera.direction.y = rotationMatrix[1][0] * oldDirectionX + rotationMatrix[1][1] * oldDirectionY;
+        camera.direction.x = oldDirectionX * cosf(rotationAngle) - oldDirectionY * sinf(rotationAngle);
+        camera.direction.y = oldDirectionX * sinf(rotationAngle) + oldDirectionY * cosf(rotationAngle);
+
         camera.direction.Normalize();
 
         float oldPlaneX = camera.plane.x;
         float oldPlaneY = camera.plane.y;
 
-        camera.plane.x = rotationMatrix[0][0] * oldPlaneX + rotationMatrix[0][1] * oldPlaneY;
-        camera.plane.y = rotationMatrix[1][0] * oldPlaneX + rotationMatrix[1][1] * oldPlaneY;
+        camera.plane.x = oldPlaneX * cosf(rotationAngle) - oldPlaneY * sinf(rotationAngle);
+        camera.plane.y = oldPlaneX * sinf(rotationAngle) + oldPlaneY * cosf(rotationAngle);
+
+        camera.plane.Normalize();
     }
 
     bool Player::GameHasEnded() const {
@@ -144,6 +143,19 @@ namespace MiniFPS {
         UpdateInputState();
         Move(frameDelta, speedModifier);
         Rotate(frameDelta, rotationModifier);
+    }
+
+    void Player::Shoot(const std::vector<Enemy>& enemies) {
+        for (const Enemy& enemy : enemies) {
+            FloatVector2 tmp = enemy.pos;
+            tmp -= camera.pos;
+
+            float dp = FloatVector2::DotProduct(tmp, camera.direction);
+            if (dp >= 0 && dp <= (camera.direction.x * camera.direction.x + camera.direction.y * camera.direction.y)) {
+                std::cout << "Hit enemy at (" << enemy.pos.x << ", " << enemy.pos.y << ")" << std::endl;
+                return;
+            }
+        }
     }
 
     InputState::InputState() {

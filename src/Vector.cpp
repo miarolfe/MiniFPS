@@ -62,6 +62,10 @@ namespace MiniFPS {
         return {x * value, y * value};
     }
 
+    float FloatVector2::operator*(const FloatVector2& otherVector) {
+        return (x * otherVector.y - y * otherVector.x);
+    }
+
     DoubleVector2::DoubleVector2() : x(0), y(0) {}
 
     DoubleVector2::DoubleVector2(const double x, const double y) : x(x), y(y) {}

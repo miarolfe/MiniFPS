@@ -6,7 +6,6 @@
 namespace MiniFPS {
     class Enemy {
     public:
-        Enemy();
         explicit Enemy(const FloatVector2& pos, short textureID = -1);
         void Update();
 

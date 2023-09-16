@@ -4,7 +4,6 @@ namespace MiniFPS {
     Settings::Settings() {
         screenWidth = 0;
         screenHeight = 0;
-        renderRayIncrement = 0;
         renderDistance = 0;
         vSync = false;
         fieldOfView = 0;
@@ -13,21 +12,19 @@ namespace MiniFPS {
         playerStartX = 0;
         playerStartY = 0;
         playerStartAngle = 0;
-        playerDistanceToProjectionPlane = 0;
         effectVolume = 0;
         musicVolume = 0;
     }
 
-    Settings::Settings(const std::string& version, int screenWidth, int screenHeight, float renderRayIncrement,
+    Settings::Settings(const std::string& version, int screenWidth, int screenHeight,
                        int renderDistance, bool vSync,
                        float fieldOfView, float speedModifier, float rotationModifier, float playerStartX,
-                       float playerStartY, float playerStartAngle, float playerDistanceToProjectionPlane,
+                       float playerStartY, float playerStartAngle,
                        float effectVolume, float musicVolume,
                        const std::string& levelPath, const std::map<std::string, std::string> &fontPaths) {
         this->version = version;
         this->screenWidth = screenWidth;
         this->screenHeight = screenHeight;
-        this->renderRayIncrement = renderRayIncrement;
         this->renderDistance = renderDistance;
         this->fieldOfView = fieldOfView;
         this->speedModifier = speedModifier;
@@ -35,7 +32,6 @@ namespace MiniFPS {
         this->playerStartX = playerStartX;
         this->playerStartY = playerStartY;
         this->playerStartAngle = playerStartAngle;
-        this->playerDistanceToProjectionPlane = playerDistanceToProjectionPlane;
         this->effectVolume = effectVolume;
         this->musicVolume = musicVolume;
         this->levelPath = levelPath;
@@ -57,7 +53,7 @@ namespace MiniFPS {
         int major, minor, patch;
         std::string version;
         int screenWidth, screenHeight, renderDistance;
-        float renderRayIncrement, fieldOfView, speedModifier, rotationModifier, playerStartX, playerStartY,
+        float fieldOfView, speedModifier, rotationModifier, playerStartX, playerStartY,
                 playerStartAngle, playerDistanceToProjectionPlane, effectVolume, musicVolume;
         std::string levelPath;
         std::map<std::string, std::string> texturePaths;
@@ -75,7 +71,6 @@ namespace MiniFPS {
         screenWidth = settingsAsJson["graphics"]["screenWidth"];
         screenHeight = settingsAsJson["graphics"]["screenHeight"];
         renderDistance = settingsAsJson["rendering"]["renderDistance"];
-        renderRayIncrement = settingsAsJson["rendering"]["renderRayIncrement"];
         fieldOfView = settingsAsJson["graphics"]["horizontalFieldOfView"];
         vSync = settingsAsJson["graphics"]["vSync"];
         speedModifier = settingsAsJson["player"]["speedModifier"];
@@ -83,16 +78,15 @@ namespace MiniFPS {
         playerStartX = settingsAsJson["player"]["startX"];
         playerStartY = settingsAsJson["player"]["startY"];
         playerStartAngle = settingsAsJson["player"]["startAngle"];
-        playerDistanceToProjectionPlane = settingsAsJson["rendering"]["distanceToProjectionPlane"];
         effectVolume = settingsAsJson["audio"]["effectVolume"];
         musicVolume = settingsAsJson["audio"]["musicVolume"];
         levelPath = settingsAsJson["files"]["levelPath"];
         fontPaths = settingsAsJson["files"]["fontPaths"];
 
-        Settings settings(version, screenWidth, screenHeight, renderRayIncrement, renderDistance, vSync, fieldOfView,
+        Settings settings(version, screenWidth, screenHeight, renderDistance, vSync, fieldOfView,
                           speedModifier,
                           rotationModifier, playerStartX, playerStartY, playerStartAngle,
-                          playerDistanceToProjectionPlane, effectVolume, musicVolume, levelPath, fontPaths);
+                          effectVolume, musicVolume, levelPath, fontPaths);
 
         return settings;
     }

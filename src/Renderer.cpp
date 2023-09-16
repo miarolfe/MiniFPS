@@ -24,7 +24,7 @@ namespace MiniFPS {
         row[point.x] = color.argb;
     }
 
-    bool Renderer::ShouldShadePixel(const FloatPoint point) {
+    bool Renderer::ShouldShadePixel(const FloatVector2& point) {
         const float hitX = point.x - floor(point.x + 0.5f); // Fractional part of cellX
         const float hitY = point.y - floor(point.y + 0.5f); // Fractional part of cellY
 
@@ -105,9 +105,10 @@ namespace MiniFPS {
         }
     }
 
-    void Renderer::DrawTexturedColumn(const Texture &texture, Camera camera, void* pixels, int pitch, float distance,
-                                      FloatPoint cell, int rayX, int texX) {
-        const int columnHeight = ((camera.viewportHeight) * camera.distanceToProjectionPlane) / distance;
+    void Renderer::DrawTexturedColumn(const Texture &texture, const Camera& camera, void* pixels, int pitch, float distance,
+                                      const FloatVector2& cell, int rayX, int texX) {
+        const int columnHeight = ((camera.viewportHeight)) / distance;
+
 
         const bool shadePixel = ShouldShadePixel(cell);
 
@@ -130,7 +131,7 @@ namespace MiniFPS {
         }
     }
 
-    void Renderer::DrawCeiling(Camera camera, void* pixels, int pitch) {
+    void Renderer::DrawCeiling(const Camera& camera, void* pixels, int pitch) {
         for (int frameY = 0; frameY < camera.viewportHeight / 2; frameY++) {
             for (int frameX = 0; frameX < camera.viewportWidth; frameX++) {
                 SetPixel(pixels, pitch, CEILING, {frameX, frameY});
@@ -138,7 +139,7 @@ namespace MiniFPS {
         }
     }
 
-    void Renderer::DrawFloor(Camera camera, void* pixels, int pitch) {
+    void Renderer::DrawFloor(const Camera& camera, void* pixels, int pitch) {
         for (int frameY = static_cast<int>(camera.viewportHeight / 2); frameY < camera.viewportHeight; frameY++) {
             for (int frameX = 0; frameX < camera.viewportWidth; frameX++) {
                 SetPixel(pixels, pitch, FLOOR, {frameX, frameY});
@@ -259,8 +260,56 @@ namespace MiniFPS {
         SDL_RenderPresent(sdlRenderer);
     }
 
-    void Renderer::DrawEnemy(const Player& player, const MiniFPS::Enemy &enemy, void* pixels, int pitch) {
+    void Renderer::DrawEnemies(const Player& player, const std::vector<Enemy>& enemies, void* pixels, int pitch) {
+        std::vector<std::pair<float, Enemy>> enemyDistances;
 
+        const Camera& cam = player.camera;
+
+        for (const Enemy& enemy : enemies) {
+            enemyDistances.emplace_back(player.camera.pos.Distance(enemy.pos), enemy);
+        }
+
+        std::sort(enemyDistances.begin(), enemyDistances.end(), CompareEnemyDistancePair);
+
+        for (auto it = enemyDistances.begin(); it != enemyDistances.end(); ++it) {
+            FloatVector2 enemyPos = it->second.pos - cam.pos;
+            const Texture& texture = textureMap[it->second.textureId];
+
+            float invDet = 1.0f / (cam.plane.x * cam.direction.y - cam.direction.x * cam.plane.y);
+
+            FloatVector2 transform = {
+                    invDet * ((cam.direction.y * enemyPos.x) - (cam.direction.x * enemyPos.y)) * -1.0f,
+                    invDet * ((-cam.plane.y * enemyPos.x) + (cam.plane.x * enemyPos.y))
+            };
+
+            int enemyScreenX = static_cast<int>((cam.viewportWidth / 2) * (1 + transform.x / transform.y));
+
+            int enemyHeight = std::min(2000, std::abs(static_cast<int>(cam.viewportHeight / (transform.y))));
+            int drawStartY = -enemyHeight / 2 + cam.viewportHeight / 2;
+            if (drawStartY < 0) drawStartY = 0;
+            int drawEndY = enemyHeight / 2 + cam.viewportHeight / 2;
+            if (drawEndY >= cam.viewportHeight) drawEndY = cam.viewportHeight - 1;
+
+            int enemyWidth = std::min(2000, std::abs(static_cast<int>(cam.viewportHeight / (transform.y))));
+            int drawStartX = (-enemyWidth / 2) + enemyScreenX;
+            if (drawStartX < 0) drawStartX = 0;
+            int drawEndX = (enemyWidth / 2) + enemyScreenX;
+            if (drawEndX >= cam.viewportWidth) drawEndX = cam.viewportWidth - 1;
+
+            for (int stripe = drawStartX; stripe < drawEndX; stripe++) {
+                int texX = static_cast<int>(256 * (stripe - (-enemyWidth / 2 + enemyScreenX)) * texture.size / enemyWidth) / 256;
+                if (transform.y > 0 && transform.y < zBuffer[stripe]) {
+                    for (int y = drawStartY; y < drawEndY; y++) {
+                        int d = (y) * 256 - cam.viewportHeight * 128 + enemyHeight * 128;
+                        int texY = ((d * texture.size) / enemyHeight) / 256;
+                        Color pixel = texture.buffer[texY][texX];
+                        if ((pixel.argb & TRANSPARENCY_MASK) != 0) {
+                            SetPixel(pixels, pitch, pixel, {stripe, y});
+                        }
+                    }
+                }
+            }
+        }
     }
 
     void Renderer::Draw(const Player& player, const std::vector<Enemy>& enemies, const Font& font, const float frameDelta) {
@@ -273,14 +322,13 @@ namespace MiniFPS {
 
         // Cast rays
         for (int ray = 0; ray < player.camera.viewportWidth; ray++) {
-            const float rayScreenPos = (2 * ray / float(player.camera.viewportWidth) - 1) * player.camera.aspectRatio;
-            // const float rayScreenPos = (2 * ray / float(player.camera.viewportWidth) - 1);
+            const float rayScreenPos = (2.0f * static_cast<float>(ray) / static_cast<float>((player.camera.viewportWidth)) - 1.0f);
             const float rayAngle = atan2f(player.camera.direction.y, player.camera.direction.x) + atanf(rayScreenPos * tanf(player.camera.horizontalFieldOfView / 2));
 
             FloatVector2 rayDirection = {
                     // Need to multiply by -1 to avoid flipped rendering
-                    player.camera.direction.x + player.camera.plane.x * rayScreenPos * -1,
-                    player.camera.direction.y + player.camera.plane.y * rayScreenPos * -1
+                    player.camera.direction.x + player.camera.plane.x * rayScreenPos * -1.0f,
+                    player.camera.direction.y + player.camera.plane.y * rayScreenPos * -1.0f
             };
 
             rayDirection.Normalize();
@@ -310,16 +358,20 @@ namespace MiniFPS {
             bool tileFound = false;
             float distance = 0.0f;
             short cellID = -1;
+            int side = 0;
 
             while (!tileFound && distance < player.camera.maxRenderDistance) {
                 if (sideDistance.x < sideDistance.y) {
-                    mapCheck.x += step.x;
                     distance = sideDistance.x;
                     sideDistance.x += deltaDistance.x;
+                    mapCheck.x += step.x;
+                    side = 0;
+
                 } else {
-                    mapCheck.y += step.y;
                     distance = sideDistance.y;
                     sideDistance.y += deltaDistance.y;
+                    mapCheck.y += step.y;
+                    side = 1;
                 }
 
                 if (player.level->IsPositionValid({static_cast<float>(mapCheck.x), static_cast<float>(mapCheck.y)})) {
@@ -330,26 +382,35 @@ namespace MiniFPS {
                 }
             }
 
+            if (side == 0) distance = sideDistance.x - deltaDistance.x;
+            else           distance = sideDistance.y - deltaDistance.y;
+
+            if (!tileFound) distance = 1000.0f;
+
+            const float adjustedDistance = distance * cosf(rayAngle - atan2f(player.camera.direction.y, player.camera.direction.x));
+            zBuffer[ray] = adjustedDistance;
+
             FloatVector2 intersection;
             if (tileFound) {
                 intersection = player.camera.pos;
                 intersection += rayDirection * distance;
-
-                // TODO: Use FloatVector2 Distance
-                zBuffer[ray] = player.camera.pos.Distance(intersection);
-            } else {
-                zBuffer[ray] = static_cast<float>(player.camera.maxRenderDistance);
             }
 
             const Texture texture = GetTexBuffer(cellID);
             const int texX = GetTexX(player.camera.pos, intersection, sideDistance, deltaDistance, rayDirection, texture.size);
 
-            DrawTexturedColumn(texture, player.camera, pixels, pitch, zBuffer[ray] * cosf(rayAngle - atan2f(player.camera.direction.y, player.camera.direction.x)), {intersection.x, intersection.y}, ray, texX);
+            DrawTexturedColumn(
+                    texture,
+                    player.camera,
+                    pixels,
+                    pitch,
+                    adjustedDistance,
+                    intersection,
+                    ray,
+                    texX);
         }
 
-        for (const Enemy& enemy : enemies) {
-            DrawEnemy(player, enemy, pixels, pitch);
-        }
+        DrawEnemies(player, enemies, pixels, pitch);
 
         const int weaponTextureSize = player.camera.viewportWidth / 4;
         CopyTextureToFrameTexture(pixels, pitch, player.weaponTexture, {player.camera.viewportWidth/2, player.camera.viewportHeight - (weaponTextureSize/2)}, weaponTextureSize, weaponTextureSize);
@@ -359,24 +420,15 @@ namespace MiniFPS {
         SDL_SetRenderTarget(sdlRenderer, renderFrameTexture);
         SDL_RenderCopy(sdlRenderer, streamingFrameTexture, nullptr, nullptr);
 
-        std::string planeInfo = std::to_string(player.camera.plane.x);
-        planeInfo += " ";
-        planeInfo += std::to_string(player.camera.plane.y);
-
-        std::string directionInfo = std::to_string(player.camera.direction.x);
-        directionInfo += " ";
-        directionInfo += std::to_string(player.camera.direction.y);
-
-        std::string dotProductInfo = std::to_string(FloatVector2::DotProduct(player.camera.plane, player.camera.direction));
-
         // TODO: Scale this with frame
         // UI draw here
-        DrawTextStrH(planeInfo, font, {25, 25}, 25, 255, 0, 0);
-        DrawTextStrH(directionInfo, font, {25, 50}, 25, 255, 0, 0);
-        DrawTextStrH(dotProductInfo, font, {25, 75}, 25, 255, 0, 0);
 
         SDL_SetRenderTarget(sdlRenderer, nullptr);
         SDL_RenderCopy(sdlRenderer, renderFrameTexture, nullptr, nullptr);
         SDL_RenderPresent(sdlRenderer);
+    }
+
+    bool Renderer::CompareEnemyDistancePair(const std::pair<float, Enemy>& pair1, const std::pair<float, Enemy>& pair2) {
+        return pair1.first > pair2.first;
     }
 }

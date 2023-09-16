@@ -9,6 +9,7 @@
 #include "Vector.h"
 
 namespace MiniFPS {
+    const Color RED = Color(0xFFFF0000);
     const Color BLACK = Color(0xFF000000);
     const Color MAIN_MENU_BACKGROUND = Color(0xFF000000);
     const Color CEILING = Color(0xFFA5A5A5);
@@ -48,7 +49,7 @@ namespace MiniFPS {
          * @param point The pixel's coordinates.
          * @return Whether to shade a pixel.
          */
-        static bool ShouldShadePixel(FloatPoint point);
+        static bool ShouldShadePixel(const FloatVector2& point);
 
         /**
          * Returns the texture buffer that corresponds to the provided texture ID.
@@ -105,8 +106,8 @@ namespace MiniFPS {
          * @param rayX The ray to draw.
          * @param texX TODO
          */
-        void DrawTexturedColumn(const Texture& texture, Camera camera, void* pixels, int pitch, float distance,
-                                FloatPoint cell, int rayX, int texX);
+        void DrawTexturedColumn(const Texture& texture, const Camera& camera, void* pixels, int pitch, float distance,
+                                const FloatVector2& cell, int rayX, int texX);
 
         /**
          * Writes the ceiling to the frame texture.
@@ -114,7 +115,7 @@ namespace MiniFPS {
          * @param pixels The pixel buffer of the frame texture.
          * @param pitch The pitch of the frame texture.
          */
-        void DrawCeiling(Camera camera, void* pixels, int pitch);
+        void DrawCeiling(const Camera& camera, void* pixels, int pitch);
 
         /**
          * Writes the floor to the frame texture.
@@ -122,7 +123,7 @@ namespace MiniFPS {
          * @param pixels The pixel buffer of the frame texture.
          * @param pitch The pitch of the frame texture.
          */
-        void DrawFloor(Camera camera, void* pixels, int pitch);
+        void DrawFloor(const Camera& camera, void* pixels, int pitch);
 
         /**
          * Draws a button to the frame texture.
@@ -142,7 +143,7 @@ namespace MiniFPS {
          * @param g The green value for the text.
          * @param b The blue value for the text.
          */
-        void DrawTextStr(const std::string &text, const Font& font, FloatPoint point, int width, int r, int g, int b);
+        void DrawTextStr(const string &text, const Font& font, FloatPoint point, int width, int r, int g, int b);
 
         /**
          * Renders text to a texture and copies that texture onto the frame texture.
@@ -165,13 +166,13 @@ namespace MiniFPS {
         void DrawMainMenu(const MainMenu& mainMenu);
 
         /**
-         * Draws an enemy and copies it to the frame texture.
+         * Draws enemies and copies them to the frame texture.
          * @param player TODO
-         * @param enemy The enemy to draw.
+         * @param enemies The enemies to draw
          * @param pixels TODO
          * @param pitch TODO
          */
-        void DrawEnemy(const Player& player, const Enemy& enemy, void* pixels, int pitch);
+        void DrawEnemies(const Player& player, const std::vector<Enemy>& enemies, void* pixels, int pitch);
 
         /**
          * Draws the game world and copies it to the frame texture.
@@ -181,5 +182,8 @@ namespace MiniFPS {
          * @param frameDelta The time elapsed between frames in seconds.
          */
         void Draw(const Player& player, const std::vector<Enemy> &enemies, const Font &font, const float frameDelta);
+
+    private:
+        static bool CompareEnemyDistancePair(const std::pair<float, Enemy>& pair1, const std::pair<float, Enemy>& pair2);
     };
 }
