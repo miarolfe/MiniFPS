@@ -114,7 +114,7 @@ namespace MiniFPS {
          * @param rayX The ray to draw.
          * @param texX TODO
          */
-        void DrawTexturedColumn(const Texture& texture, Camera camera, void* pixels, int pitch, float distance,
+        void DrawTexturedColumn(const Texture& texture, const Camera& camera, void* pixels, int pitch, float distance,
                                 FloatPoint cell, int rayX, int texX);
 
         /**
@@ -123,7 +123,7 @@ namespace MiniFPS {
          * @param pixels The pixel buffer of the frame texture.
          * @param pitch The pitch of the frame texture.
          */
-        void DrawCeiling(Camera camera, void* pixels, int pitch);
+        void DrawCeiling(const Camera& camera, void* pixels, int pitch);
 
         /**
          * Writes the floor to the frame texture.
@@ -131,7 +131,7 @@ namespace MiniFPS {
          * @param pixels The pixel buffer of the frame texture.
          * @param pitch The pitch of the frame texture.
          */
-        void DrawFloor(Camera camera, void* pixels, int pitch);
+        void DrawFloor(const Camera& camera, void* pixels, int pitch);
 
         /**
          * Draws a button to the frame texture.

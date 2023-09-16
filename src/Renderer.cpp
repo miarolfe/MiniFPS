@@ -105,7 +105,7 @@ namespace MiniFPS {
         }
     }
 
-    void Renderer::DrawTexturedColumn(const Texture &texture, Camera camera, void* pixels, int pitch, float distance,
+    void Renderer::DrawTexturedColumn(const Texture &texture, const Camera& camera, void* pixels, int pitch, float distance,
                                       FloatPoint cell, int rayX, int texX) {
         const int columnHeight = ((camera.viewportHeight) * camera.distanceToProjectionPlane) / distance;
 
@@ -132,7 +132,7 @@ namespace MiniFPS {
         }
     }
 
-    void Renderer::DrawCeiling(Camera camera, void* pixels, int pitch) {
+    void Renderer::DrawCeiling(const Camera& camera, void* pixels, int pitch) {
         for (int frameY = 0; frameY < camera.viewportHeight / 2; frameY++) {
             for (int frameX = 0; frameX < camera.viewportWidth; frameX++) {
                 SetPixel(pixels, pitch, CEILING, {frameX, frameY});
@@ -140,7 +140,7 @@ namespace MiniFPS {
         }
     }
 
-    void Renderer::DrawFloor(Camera camera, void* pixels, int pitch) {
+    void Renderer::DrawFloor(const Camera& camera, void* pixels, int pitch) {
         for (int frameY = static_cast<int>(camera.viewportHeight / 2); frameY < camera.viewportHeight; frameY++) {
             for (int frameX = 0; frameX < camera.viewportWidth; frameX++) {
                 SetPixel(pixels, pitch, FLOOR, {frameX, frameY});
