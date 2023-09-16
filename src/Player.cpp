@@ -145,6 +145,19 @@ namespace MiniFPS {
         Rotate(frameDelta, rotationModifier);
     }
 
+    void Player::Shoot(const std::vector<Enemy>& enemies) {
+        for (const Enemy& enemy : enemies) {
+            FloatVector2 tmp = enemy.pos;
+            tmp -= camera.pos;
+
+            float dp = FloatVector2::DotProduct(tmp, camera.direction);
+            if (dp >= 0 && dp <= (camera.direction.x * camera.direction.x + camera.direction.y * camera.direction.y)) {
+                std::cout << "Hit enemy at (" << enemy.pos.x << ", " << enemy.pos.y << ")" << std::endl;
+                return;
+            }
+        }
+    }
+
     InputState::InputState() {
         moveLeft = false;
         moveRight = false;

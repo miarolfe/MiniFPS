@@ -38,6 +38,7 @@ void MiniFPS::Game::Update() {
         gamePlayer.Update(frameDelta, settings.speedModifier, settings.rotationModifier);
 
         if (gamePlayer.inputState.leftMouseButtonPressed) {
+            gamePlayer.Shoot(enemies);
             audio.PlayEffect("GunShoot1");
         }
 

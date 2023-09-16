@@ -27,9 +27,10 @@ namespace MiniFPS {
         FloatVector2& operator= (const FloatVector2& otherVector);
         FloatVector2 operator+ (FloatVector2 const& otherVector);
         FloatVector2& operator+= (FloatVector2 const& otherVector);
-        FloatVector2 operator- (FloatVector2 const& otherVector);\
+        FloatVector2 operator- (FloatVector2 const& otherVector);
         FloatVector2& operator-= (FloatVector2 const& otherVector);
-        FloatVector2 operator* (const float value);
+        FloatVector2 operator* (float value);
+        float operator* (const FloatVector2& otherVector);
     };
 
     class DoubleVector2 {

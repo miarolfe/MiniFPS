@@ -2,6 +2,7 @@
 
 #include "Camera.h"
 #include "Common.h"
+#include "Enemy.h"
 #include "Level.h"
 #include "Settings.h"
 #include "Texture.h"
@@ -63,5 +64,7 @@ namespace MiniFPS {
          * @return Whether the game is on the main menu.
          */
         bool InMainMenu() const;
+
+        void Shoot(const std::vector<Enemy>& enemies);
     };
 }
