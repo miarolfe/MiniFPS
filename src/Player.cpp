@@ -7,8 +7,7 @@ namespace MiniFPS {
         camera = Camera(settings.playerStartX, settings.playerStartY, settings.playerStartAngle,
                         settings.fieldOfView * PI_180, settings.screenWidth,
                         settings.screenHeight,
-                        settings.renderDistance,
-                        settings.playerDistanceToProjectionPlane);
+                        settings.renderDistance);
     }
 
     Player::Player() : level(nullptr) {}

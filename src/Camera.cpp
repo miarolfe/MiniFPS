@@ -6,7 +6,7 @@ namespace MiniFPS {
     }
 
     Camera::Camera(float _x, float _y, float _angle, float _horizontalFieldOfView, int _viewportWidth, int _viewportHeight,
-                   size_t _maxRendererDistance, float _distanceToProjectionPlane) {
+                   size_t _maxRendererDistance) {
         pos = {_x, _y};
 
         // direction = {cosf(_angle), sinf(_angle)}
@@ -18,7 +18,6 @@ namespace MiniFPS {
         viewportWidth = _viewportWidth;
         viewportHeight = _viewportHeight;
         maxRenderDistance = _maxRendererDistance;
-        distanceToProjectionPlane = _distanceToProjectionPlane;
         aspectRatio = CalculateAspectRatio(viewportWidth, viewportHeight);
     }
 
@@ -30,7 +29,6 @@ namespace MiniFPS {
         viewportWidth = 0;
         viewportHeight = 0;
         maxRenderDistance = 0;
-        distanceToProjectionPlane = 0;
         aspectRatio = 0;
     }
 }

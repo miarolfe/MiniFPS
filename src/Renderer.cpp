@@ -107,8 +107,7 @@ namespace MiniFPS {
 
     void Renderer::DrawTexturedColumn(const Texture &texture, const Camera& camera, void* pixels, int pitch, float distance,
                                       FloatPoint cell, int rayX, int texX) {
-        const int columnHeight = ((camera.viewportHeight) * camera.distanceToProjectionPlane) / distance;
-
+        const int columnHeight = ((camera.viewportHeight)) / distance;
 
 
         const bool shadePixel = ShouldShadePixel(cell);

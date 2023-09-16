@@ -10,7 +10,7 @@ namespace MiniFPS {
         Camera();
 
         Camera(float _x, float _y, float _angle, float _horizontalFieldOfView, int viewportWidth, int viewportHeight,
-               size_t maxRenderDistance, float distanceToProjectionPlane);
+               size_t maxRenderDistance);
 
         /**
          * Calculates the aspect ratio of a viewport.
@@ -32,8 +32,6 @@ namespace MiniFPS {
         int viewportWidth, viewportHeight;
         // Max distance for raycasts
         size_t maxRenderDistance;
-        // Distance between viewport and projection plane
-        float distanceToProjectionPlane;
         // Aspect ratio (width over height)
         float aspectRatio;
     };
