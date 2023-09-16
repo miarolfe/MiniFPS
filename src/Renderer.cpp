@@ -262,6 +262,8 @@ namespace MiniFPS {
     }
 
     void Renderer::DrawEnemies(const Player& player, const std::vector<Enemy>& enemies, void* pixels, int pitch) {
+        posMirror = player.camera.pos;
+
         std::vector<std::pair<float, Enemy>> enemyDistances;
 
         const Camera& cam = player.camera;
@@ -273,14 +275,13 @@ namespace MiniFPS {
         std::sort(enemyDistances.begin(), enemyDistances.end(), CompareEnemyDistancePair);
 
         for (auto it = enemyDistances.begin(); it != enemyDistances.end(); ++it) {
-            FloatVector2 enemy = it->second.pos - cam.pos;
+            FloatVector2 enemyPos = it->second.pos - cam.pos;
 
             float invDet = 1.0f / (cam.plane.x * cam.direction.y - cam.direction.x * cam.plane.y);
-            invDetMirror = invDet;
 
             FloatVector2 transform = {
-                    invDet * ((cam.direction.y * enemy.x) - (cam.direction.x * enemy.y)) * -1.0f,
-                    invDet * ((-cam.plane.y * enemy.x) + (cam.plane.x * enemy.y))
+                    invDet * ((cam.direction.y * enemyPos.x) - (cam.direction.x * enemyPos.y)) * -1.0f,
+                    invDet * ((-cam.plane.y * enemyPos.x) + (cam.plane.x * enemyPos.y))
             };
 
             int enemyScreenX = static_cast<int>((cam.viewportWidth / 2) * (1 + transform.x / transform.y));
@@ -302,10 +303,18 @@ namespace MiniFPS {
             drawEndMirror = {static_cast<float>(drawEndX), static_cast<float>(drawEndY)};
             enemySizeMirror = {static_cast<float>(enemyWidth), static_cast<float>(enemyHeight)};
 
+            int i = 0;
+            int j = drawEndX - drawStartX;
+
             for (int stripe = drawStartX; stripe < drawEndX; stripe++) {
+                i++;
                 if (transform.y > 0 && transform.y < zBuffer[stripe]) {
                     for (int y = drawStartY; y < drawEndY; y++) {
-                        SetPixel(pixels, pitch, BLACK, {stripe, y});
+                        if (i < (j/2)) {
+                            SetPixel(pixels, pitch, RED, {stripe, y});
+                        } else {
+                            SetPixel(pixels, pitch, BLACK, {stripe, y});
+                        }
                     }
                 }
             }
@@ -330,8 +339,8 @@ namespace MiniFPS {
 
             FloatVector2 rayDirection = {
                     // Need to multiply by -1 to avoid flipped rendering
-                    player.camera.direction.x + player.camera.plane.x * rayScreenPos * -1,
-                    player.camera.direction.y + player.camera.plane.y * rayScreenPos * -1
+                    player.camera.direction.x + player.camera.plane.x * rayScreenPos * -1.0f,
+                    player.camera.direction.y + player.camera.plane.y * rayScreenPos * -1.0f
             };
 
             rayDirection.Normalize();
@@ -455,6 +464,11 @@ namespace MiniFPS {
         std::string zBufInfo = "Z Buf: ";
         zBufInfo += std::to_string(zBufMirror);
 
+        std::string posInfo = "Pos: ";
+        posInfo += std::to_string(posMirror.x);
+        posInfo += " ";
+        posInfo += std::to_string(posMirror.y);
+
         // TODO: Scale this with frame
         // UI draw here
         DrawTextStrH(planeInfo, font, {25, 15}, 15, 255, 0, 0);
@@ -466,6 +480,8 @@ namespace MiniFPS {
         DrawTextStrH(drawEndInfo, font, {25, 105}, 15, 255, 0, 0);
         DrawTextStrH(enemySizeInfo, font, {25, 120}, 15, 255, 0, 0);
         DrawTextStrH(zBufInfo, font, {25, 135}, 45, 255, 0, 0);
+        DrawTextStrH(posInfo, font, {25, 180}, 45, 0, 255, 0);
+
 
         SDL_SetRenderTarget(sdlRenderer, nullptr);
         SDL_RenderCopy(sdlRenderer, renderFrameTexture, nullptr, nullptr);

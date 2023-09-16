@@ -16,7 +16,7 @@
 
   "rendering": {
     "renderRayIncrement": 0.005,
-    "renderDistance": 128,
+    "renderDistance": 32,
     "distanceToProjectionPlane": 0.5
   },
 
