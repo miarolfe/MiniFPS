@@ -2,7 +2,7 @@
   "game": {
     "version": {
       "major": 0,
-      "minor": 2,
+      "minor": 3,
       "patch": 0
     }
   },
@@ -16,8 +16,7 @@
 
   "rendering": {
     "renderRayIncrement": 0.005,
-    "renderDistance": 32,
-    "distanceToProjectionPlane": 0.5
+    "renderDistance": 32
   },
 
   "audio": {
@@ -27,7 +26,7 @@
 
   "player": {
     "speedModifier": 3,
-    "rotationModifier": 0.5,
+    "rotationModifier": 0.75,
     "startX": 1.5,
     "startY": 1.5,
     "startAngle": 1.523
