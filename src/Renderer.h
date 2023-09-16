@@ -25,15 +25,6 @@ namespace MiniFPS {
         std::unordered_map<short, Texture> textureMap;
         float* zBuffer = nullptr;
 
-        // TODO: delete;
-        FloatVector2 transformMirror;
-        float enemyScreenXMirror;
-        FloatVector2 drawStartMirror;
-        FloatVector2 drawEndMirror;
-        FloatVector2 enemySizeMirror;
-        float zBufMirror;
-        FloatVector2 posMirror;
-
     public:
         Renderer();
         Renderer(SDL_Renderer* sdlRenderer, const Settings& settings);

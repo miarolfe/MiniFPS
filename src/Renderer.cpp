@@ -261,8 +261,6 @@ namespace MiniFPS {
     }
 
     void Renderer::DrawEnemies(const Player& player, const std::vector<Enemy>& enemies, void* pixels, int pitch) {
-        posMirror = player.camera.pos;
-
         std::vector<std::pair<float, Enemy>> enemyDistances;
 
         const Camera& cam = player.camera;
@@ -284,7 +282,6 @@ namespace MiniFPS {
             };
 
             int enemyScreenX = static_cast<int>((cam.viewportWidth / 2) * (1 + transform.x / transform.y));
-            enemyScreenXMirror = enemyScreenX;
 
             int enemyHeight = std::min(2000, std::abs(static_cast<int>(cam.viewportHeight / (transform.y))));
             int drawStartY = -enemyHeight / 2 + cam.viewportHeight / 2;
@@ -298,27 +295,13 @@ namespace MiniFPS {
             int drawEndX = (enemyWidth / 2) + enemyScreenX;
             if (drawEndX >= cam.viewportWidth) drawEndX = cam.viewportWidth - 1;
 
-            drawStartMirror = {static_cast<float>(drawStartX), static_cast<float>(drawStartY)};
-            drawEndMirror = {static_cast<float>(drawEndX), static_cast<float>(drawEndY)};
-            enemySizeMirror = {static_cast<float>(enemyWidth), static_cast<float>(enemyHeight)};
-
-            int i = 0;
-            int j = drawEndX - drawStartX;
-
             for (int stripe = drawStartX; stripe < drawEndX; stripe++) {
-                i++;
                 if (transform.y > 0 && transform.y < zBuffer[stripe]) {
                     for (int y = drawStartY; y < drawEndY; y++) {
-                        if (i < (j/2)) {
-                            SetPixel(pixels, pitch, RED, {stripe, y});
-                        } else {
-                            SetPixel(pixels, pitch, BLACK, {stripe, y});
-                        }
+                        SetPixel(pixels, pitch, BLACK, {stripe, y});
                     }
                 }
             }
-
-            transformMirror = transform;
         }
     }
 
@@ -399,8 +382,6 @@ namespace MiniFPS {
 
             zBuffer[ray] = distance * cosf(rayAngle - atan2f(player.camera.direction.y, player.camera.direction.x));
 
-            if (ray == player.camera.viewportWidth / 2) zBufMirror = zBuffer[ray];
-
             FloatVector2 intersection;
             if (tileFound) {
                 intersection = player.camera.pos;
@@ -423,63 +404,8 @@ namespace MiniFPS {
         SDL_SetRenderTarget(sdlRenderer, renderFrameTexture);
         SDL_RenderCopy(sdlRenderer, streamingFrameTexture, nullptr, nullptr);
 
-        std::string planeInfo = "Plane: ";
-        planeInfo += std::to_string(player.camera.plane.x);
-        planeInfo += " ";
-        planeInfo += std::to_string(player.camera.plane.y);
-
-        std::string directionInfo = "Direction: ";
-        directionInfo += std::to_string(player.camera.direction.x);
-        directionInfo += " ";
-        directionInfo += std::to_string(player.camera.direction.y);
-
-        std::string dotProductInfo = "Dot Product: ";
-        dotProductInfo += std::to_string(FloatVector2::DotProduct(player.camera.plane, player.camera.direction));
-
-        std::string transformInfo = "Transform: ";
-        transformInfo += std::to_string(transformMirror.x);
-        transformInfo += " ";
-        transformInfo += std::to_string(transformMirror.y);
-
-        std::string xInfo = "X: ";
-        xInfo += std::to_string(enemyScreenXMirror);
-
-        std::string drawStartInfo = "Draw Start: ";
-        drawStartInfo += std::to_string(drawStartMirror.x);
-        drawStartInfo += " ";
-        drawStartInfo += std::to_string(drawStartMirror.y);
-
-        std::string drawEndInfo = "Draw End: ";
-        drawEndInfo += std::to_string(drawEndMirror.x);
-        drawEndInfo += " ";
-        drawEndInfo += std::to_string(drawEndMirror.y);
-
-        std::string enemySizeInfo = "Enemy Size: ";
-        enemySizeInfo += std::to_string(enemySizeMirror.x);
-        enemySizeInfo += " ";
-        enemySizeInfo += std::to_string(enemySizeMirror.y);
-
-        std::string zBufInfo = "Z Buf: ";
-        zBufInfo += std::to_string(zBufMirror);
-
-        std::string posInfo = "Pos: ";
-        posInfo += std::to_string(posMirror.x);
-        posInfo += " ";
-        posInfo += std::to_string(posMirror.y);
-
         // TODO: Scale this with frame
         // UI draw here
-        DrawTextStrH(planeInfo, font, {25, 15}, 15, 255, 0, 0);
-        DrawTextStrH(directionInfo, font, {25, 30}, 15, 255, 0, 0);
-        DrawTextStrH(dotProductInfo, font, {25, 45}, 15, 255, 0, 0);
-        DrawTextStrH(transformInfo, font, {25, 60}, 15, 255, 0, 0);
-        DrawTextStrH(xInfo, font, {25, 75}, 15, 255, 0, 0);
-        DrawTextStrH(drawStartInfo, font, {25, 90}, 15, 255, 0, 0);
-        DrawTextStrH(drawEndInfo, font, {25, 105}, 15, 255, 0, 0);
-        DrawTextStrH(enemySizeInfo, font, {25, 120}, 15, 255, 0, 0);
-        DrawTextStrH(zBufInfo, font, {25, 135}, 45, 255, 0, 0);
-        DrawTextStrH(posInfo, font, {25, 180}, 45, 0, 255, 0);
-
 
         SDL_SetRenderTarget(sdlRenderer, nullptr);
         SDL_RenderCopy(sdlRenderer, renderFrameTexture, nullptr, nullptr);
