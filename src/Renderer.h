@@ -17,6 +17,11 @@ namespace MiniFPS {
     const Color BUTTON = Color(0xFFD0D0D0);
     const uint32_t TRANSPARENCY_MASK = 0xFF000000;
 
+    struct SDLTextureBuffer {
+        int pitch = -1;
+        void* pixels = nullptr;
+    };
+
     class Renderer {
     private:
         SDL_Renderer* sdlRenderer;
@@ -37,12 +42,11 @@ namespace MiniFPS {
 
         /**
          * Sets a single pixel in the frame texture's pixel buffer.
-         * @param pixels The pixel buffer of the frame texture.
-         * @param pitch The pitch of the frame texture.
+         * @param buffer The frame texture buffer.
          * @param color The color to set the pixel in the frame texture.
          * @param point The pixel's coordinates in the frame texture.
          */
-        void SetPixel(void* pixels, int pitch, Color color, IntPoint point);
+        void SetPixel(SDLTextureBuffer buffer, Color color, IntPoint point);
 
         /**
          * Checks whether to darken a pixel when rendering.
@@ -81,14 +85,13 @@ namespace MiniFPS {
 
         /**
          * Copies a texture to the frame texture.
-         * @param pixels The pixel buffer of the frame texture.
-         * @param pitch The pitch of the frame texture.
+         * @param buffer The frame texture buffer.
          * @param texture The texture to copy to the frame texture.
          * @param point The position to copy the texture to (centered).
          * @param w The width to copy it with.
          * @param h The height to copy it with.
          */
-        void CopyTextureToFrameTexture(void* pixels, int pitch, const Texture& texture, IntPoint point, int w, int h);
+        void CopyTextureToFrameTexture(SDLTextureBuffer buffer, const Texture& texture, IntPoint point, int w, int h);
 
         /**
          * Free the memory allocated to all textures.
@@ -99,31 +102,28 @@ namespace MiniFPS {
          * Draw a textured column to the frame texture.
          * @param texture The texture to use for the column.
          * @param camera The camera to render from.
-         * @param pixels The frame buffer of the frame texture.
-         * @param pitch The pitch of the frame texture.
+         * @param buffer The frame texture buffer.
          * @param distance The distance from the camera to the cell.
          * @param cell The cell position the raycaster hit.
          * @param rayX The ray to draw.
          * @param texX TODO
          */
-        void DrawTexturedColumn(const Texture& texture, const Camera& camera, void* pixels, int pitch, float distance,
+        void DrawTexturedColumn(const Texture& texture, const Camera& camera, SDLTextureBuffer buffer, float distance,
                                 const FloatVector2& cell, int rayX, int texX);
 
         /**
          * Writes the ceiling to the frame texture.
          * @param camera The camera object.
-         * @param pixels The pixel buffer of the frame texture.
-         * @param pitch The pitch of the frame texture.
+         * @param buffer The frame texture buffer.
          */
-        void DrawCeiling(const Camera& camera, void* pixels, int pitch);
+        void DrawCeiling(const Camera& camera, SDLTextureBuffer buffer);
 
         /**
          * Writes the floor to the frame texture.
          * @param camera The camera object.
-         * @param pixels The pixel buffer of the frame texture.
-         * @param pitch The pitch of the frame texture.
+         * @param buffer The frame texture buffer.
          */
-        void DrawFloor(const Camera& camera, void* pixels, int pitch);
+        void DrawFloor(const Camera& camera, SDLTextureBuffer buffer);
 
         /**
          * Draws a button to the frame texture.
@@ -134,7 +134,6 @@ namespace MiniFPS {
         /**
          * Renders text to a texture and copies that texture onto the frame texture.
          * NOTE: This *can't* be called DrawText because of a conflict with a Windows API function.
-         * TODO: Figure out why.
          * @param text The string value of the text.
          * @param font The font to use to draw the text.
          * @param point The top-left corner of the text on the screen.
@@ -167,21 +166,19 @@ namespace MiniFPS {
 
         /**
          * Draws enemies and copies them to the frame texture.
-         * @param player TODO
+         * @param player The player.
          * @param enemies The enemies to draw
-         * @param pixels TODO
-         * @param pitch TODO
+         * @param buffer The frame texture buffer.
          */
-        void DrawEnemies(const Player& player, const std::vector<Enemy>& enemies, void* pixels, int pitch);
+        void DrawEnemies(const Player& player, const std::vector<Enemy>& enemies, SDLTextureBuffer buffer);
 
         /**
          * Draws the game world and copies it to the frame texture.
          * @param player The player whose view is being drawn.
          * @param enemies The enemies in the level.
          * @param font The font to use for UI.
-         * @param frameDelta The time elapsed between frames in seconds.
          */
-        void Draw(const Player& player, const std::vector<Enemy> &enemies, const Font &font, const float frameDelta);
+        void Draw(const Player& player, const std::vector<Enemy> &enemies, const Font& font);
 
     private:
         static bool CompareEnemyDistancePair(const std::pair<float, Enemy>& pair1, const std::pair<float, Enemy>& pair2);

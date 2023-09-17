@@ -32,7 +32,6 @@ void MiniFPS::Game::Update() {
 
         oldTime = curTime;
         curTime = static_cast<float>(SDL_GetTicks64());
-
         frameDelta = GetFrameTime(oldTime, curTime);
 
         gamePlayer.Update(frameDelta, settings.speedModifier, settings.rotationModifier);
@@ -42,7 +41,7 @@ void MiniFPS::Game::Update() {
             audio.PlayEffect("GunShoot1");
         }
 
-        renderer.Draw(gamePlayer, enemies, fontManager.fonts[0], frameDelta);
+        renderer.Draw(gamePlayer, enemies, fontManager.fonts[0]);
     }
 }
 

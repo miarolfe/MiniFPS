@@ -19,8 +19,8 @@ namespace MiniFPS {
         textureMap = newTextureMap;
     }
 
-    void Renderer::SetPixel(void* pixels, int pitch, Color color, IntPoint point) {
-        uint32_t* row = (uint32_t*) ((uint8_t*) pixels + point.y * pitch);
+    void Renderer::SetPixel(SDLTextureBuffer buffer, Color color, IntPoint point) {
+        uint32_t* row = (uint32_t*) ((uint8_t*) buffer.pixels + point.y * buffer.pitch);
         row[point.x] = color.argb;
     }
 
@@ -76,7 +76,7 @@ namespace MiniFPS {
         return texX;
     }
 
-    void Renderer::CopyTextureToFrameTexture(void* pixels, int pitch, const Texture& texture, IntPoint point, int w, int h) {
+    void Renderer::CopyTextureToFrameTexture(SDLTextureBuffer buffer, const Texture& texture, IntPoint point, int w, int h) {
         const float scaleX = static_cast<float>(texture.size) / w;
         const float scaleY = static_cast<float>(texture.size) / h;
 
@@ -89,7 +89,7 @@ namespace MiniFPS {
 
                 // Check if alpha value is 0 (transparent)
                 if ((pixel.argb & TRANSPARENCY_MASK) != 0) {
-                    SetPixel(pixels, pitch, pixel, {point.x + destinationX - (w/2), point.y + destinationY - (h/2)});
+                    SetPixel(buffer, pixel, {point.x + destinationX - (w/2), point.y + destinationY - (h/2)});
                 }
             }
         }
@@ -105,10 +105,9 @@ namespace MiniFPS {
         }
     }
 
-    void Renderer::DrawTexturedColumn(const Texture &texture, const Camera& camera, void* pixels, int pitch, float distance,
+    void Renderer::DrawTexturedColumn(const Texture &texture, const Camera& camera, SDLTextureBuffer buffer, float distance,
                                       const FloatVector2& cell, int rayX, int texX) {
         const int columnHeight = ((camera.viewportHeight)) / distance;
-
 
         const bool shadePixel = ShouldShadePixel(cell);
 
@@ -124,25 +123,25 @@ namespace MiniFPS {
 
             if (shadePixel) {
                 const Color shadedTexPixel = Color::ShadePixel(texture.buffer[texY][texX]);
-                SetPixel(pixels, pitch, shadedTexPixel, {rayX, rayY});
+                SetPixel(buffer, shadedTexPixel, {rayX, rayY});
             } else {
-                SetPixel(pixels, pitch, texture.buffer[texY][texX], {rayX, rayY});
+                SetPixel(buffer, texture.buffer[texY][texX], {rayX, rayY});
             }
         }
     }
 
-    void Renderer::DrawCeiling(const Camera& camera, void* pixels, int pitch) {
+    void Renderer::DrawCeiling(const Camera& camera, SDLTextureBuffer buffer) {
         for (int frameY = 0; frameY < camera.viewportHeight / 2; frameY++) {
             for (int frameX = 0; frameX < camera.viewportWidth; frameX++) {
-                SetPixel(pixels, pitch, CEILING, {frameX, frameY});
+                SetPixel(buffer, CEILING, {frameX, frameY});
             }
         }
     }
 
-    void Renderer::DrawFloor(const Camera& camera, void* pixels, int pitch) {
+    void Renderer::DrawFloor(const Camera& camera, SDLTextureBuffer buffer) {
         for (int frameY = static_cast<int>(camera.viewportHeight / 2); frameY < camera.viewportHeight; frameY++) {
             for (int frameX = 0; frameX < camera.viewportWidth; frameX++) {
-                SetPixel(pixels, pitch, FLOOR, {frameX, frameY});
+                SetPixel(buffer, FLOOR, {frameX, frameY});
             }
         }
     }
@@ -160,14 +159,13 @@ namespace MiniFPS {
             static_cast<int>(button.height)
         };
 
-        void* pixels = nullptr;
-        int pitch = -1;
+        SDLTextureBuffer buffer;
 
-        SDL_LockTexture(buttonTexture, nullptr, &pixels, &pitch);
+        SDL_LockTexture(buttonTexture, nullptr, &buffer.pixels, &buffer.pitch);
 
         for (int x = 0; x < button.width; x++) {
             for (int y = 0; y < button.height; y++) {
-                SetPixel(pixels, pitch, BUTTON, {x, y});
+                SetPixel(buffer, BUTTON, {x, y});
             }
         }
 
@@ -220,14 +218,13 @@ namespace MiniFPS {
     }
 
     void Renderer::DrawMainMenu(const MainMenu& mainMenu) {
-        int pitch;
-        void* pixels;
+        SDLTextureBuffer buffer;
 
-        SDL_LockTexture(streamingFrameTexture, nullptr, &pixels, &pitch);
+        SDL_LockTexture(streamingFrameTexture, nullptr, &buffer.pixels, &buffer.pitch);
 
         for (int frameY = 0; frameY < static_cast<int>(mainMenu.player.camera.viewportHeight); frameY++) {
             for (int frameX = 0; frameX < static_cast<int>(mainMenu.player.camera.viewportWidth); frameX++) {
-                SetPixel(pixels, pitch, MAIN_MENU_BACKGROUND, {frameX, frameY});
+                SetPixel(buffer, MAIN_MENU_BACKGROUND, {frameX, frameY});
             }
         }
 
@@ -260,7 +257,7 @@ namespace MiniFPS {
         SDL_RenderPresent(sdlRenderer);
     }
 
-    void Renderer::DrawEnemies(const Player& player, const std::vector<Enemy>& enemies, void* pixels, int pitch) {
+    void Renderer::DrawEnemies(const Player& player, const std::vector<Enemy>& enemies, SDLTextureBuffer buffer) {
         std::vector<std::pair<float, Enemy>> enemyDistances;
 
         const Camera& cam = player.camera;
@@ -304,7 +301,7 @@ namespace MiniFPS {
                         int texY = ((d * texture.size) / enemyHeight) / 256;
                         Color pixel = texture.buffer[texY][texX];
                         if ((pixel.argb & TRANSPARENCY_MASK) != 0) {
-                            SetPixel(pixels, pitch, pixel, {stripe, y});
+                            SetPixel(buffer, pixel, {stripe, y});
                         }
                     }
                 }
@@ -312,18 +309,19 @@ namespace MiniFPS {
         }
     }
 
-    void Renderer::Draw(const Player& player, const std::vector<Enemy>& enemies, const Font& font, const float frameDelta) {
-        int pitch = -1;
-        void* pixels = nullptr;
-        SDL_LockTexture(streamingFrameTexture, nullptr, &pixels, &pitch);
+    void Renderer::Draw(const Player& player, const std::vector<Enemy>& enemies, const Font& font) {
+        SDLTextureBuffer buffer;
+        SDL_LockTexture(streamingFrameTexture, nullptr, &buffer.pixels, &buffer.pitch);
 
-        DrawCeiling(player.camera, pixels, pitch);
-        DrawFloor(player.camera, pixels, pitch);
+        DrawCeiling(player.camera, buffer);
+        DrawFloor(player.camera, buffer);
 
         // Cast rays
         for (int ray = 0; ray < player.camera.viewportWidth; ray++) {
-            const float rayScreenPos = (2.0f * static_cast<float>(ray) / static_cast<float>((player.camera.viewportWidth)) - 1.0f);
-            const float rayAngle = atan2f(player.camera.direction.y, player.camera.direction.x) + atanf(rayScreenPos * tanf(player.camera.horizontalFieldOfView / 2));
+            const float rayScreenPos = (2.0f * static_cast<float>(ray) / static_cast<float>((player.camera.viewportWidth)) -
+                                        1.0f);
+            const float rayAngle = atan2f(player.camera.direction.y, player.camera.direction.x) +
+                                   atanf(rayScreenPos * tanf(player.camera.horizontalFieldOfView / 2));
 
             FloatVector2 rayDirection = {
                     // Need to multiply by -1 to avoid flipped rendering
@@ -360,7 +358,7 @@ namespace MiniFPS {
             short cellID = -1;
             int side = 0;
 
-            while (!tileFound && distance < player.camera.maxRenderDistance) {
+            while (!tileFound && distance < static_cast<float>(player.camera.maxRenderDistance)) {
                 if (sideDistance.x < sideDistance.y) {
                     distance = sideDistance.x;
                     sideDistance.x += deltaDistance.x;
@@ -383,11 +381,12 @@ namespace MiniFPS {
             }
 
             if (side == 0) distance = sideDistance.x - deltaDistance.x;
-            else           distance = sideDistance.y - deltaDistance.y;
+            else distance = sideDistance.y - deltaDistance.y;
 
             if (!tileFound) distance = 1000.0f;
 
-            const float adjustedDistance = distance * cosf(rayAngle - atan2f(player.camera.direction.y, player.camera.direction.x));
+            const float adjustedDistance =
+                    distance * cosf(rayAngle - atan2f(player.camera.direction.y, player.camera.direction.x));
             zBuffer[ray] = adjustedDistance;
 
             FloatVector2 intersection;
@@ -397,23 +396,25 @@ namespace MiniFPS {
             }
 
             const Texture texture = GetTexBuffer(cellID);
-            const int texX = GetTexX(player.camera.pos, intersection, sideDistance, deltaDistance, rayDirection, texture.size);
+            const int texX = GetTexX(player.camera.pos, intersection, sideDistance, deltaDistance, rayDirection,
+                                     texture.size);
 
             DrawTexturedColumn(
                     texture,
                     player.camera,
-                    pixels,
-                    pitch,
+                    buffer,
                     adjustedDistance,
                     intersection,
                     ray,
                     texX);
         }
 
-        DrawEnemies(player, enemies, pixels, pitch);
+        DrawEnemies(player, enemies, buffer);
 
         const int weaponTextureSize = player.camera.viewportWidth / 4;
-        CopyTextureToFrameTexture(pixels, pitch, player.weaponTexture, {player.camera.viewportWidth/2, player.camera.viewportHeight - (weaponTextureSize/2)}, weaponTextureSize, weaponTextureSize);
+        CopyTextureToFrameTexture(buffer, player.weaponTexture,
+                                  {player.camera.viewportWidth / 2, player.camera.viewportHeight - (weaponTextureSize / 2)},
+                                  weaponTextureSize, weaponTextureSize);
 
         SDL_UnlockTexture(streamingFrameTexture);
 
