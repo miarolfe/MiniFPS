@@ -182,8 +182,8 @@ namespace MiniFPS {
     void Renderer::DrawTextStr(const std::string& text, const Font& font, FloatPoint point, int width, int r=255, int g=255, int b=255) {
         SDL_SetRenderTarget(sdlRenderer, renderFrameTexture);
 
-        int requestedWidth;
-        int requestedHeight;
+        int requestedWidth = 0;
+        int requestedHeight = 0;
         TTF_SizeUTF8(font.ttf, text.c_str(), &requestedWidth, &requestedHeight);
         const float ratio = static_cast<float>(requestedWidth) / static_cast<float>(requestedHeight);
 
@@ -202,8 +202,8 @@ namespace MiniFPS {
     void Renderer::DrawTextStrH(const std::string& text, const Font& font, FloatPoint point, int height, int r=255, int g=255, int b=255) {
         SDL_SetRenderTarget(sdlRenderer, renderFrameTexture);
 
-        int requestedWidth;
-        int requestedHeight;
+        int requestedWidth = 0;
+        int requestedHeight = 0;
         TTF_SizeUTF8(font.ttf, text.c_str(), &requestedWidth, &requestedHeight);
         const float ratio = static_cast<float>(requestedHeight) / static_cast<float>(requestedWidth);
 
@@ -271,38 +271,38 @@ namespace MiniFPS {
 
         std::sort(enemyDistances.begin(), enemyDistances.end(), CompareEnemyDistancePair);
 
-        for (auto it = enemyDistances.begin(); it != enemyDistances.end(); ++it) {
-            FloatVector2 enemyPos = it->second.pos - cam.pos;
-            const Texture& texture = textureMap[it->second.textureId];
+        for (auto& enemyDistance : enemyDistances) {
+            const FloatVector2 enemyPos = enemyDistance.second.pos - cam.pos;
+            const Texture& texture = textureMap[enemyDistance.second.textureId];
 
-            float invDet = 1.0f / (cam.plane.x * cam.direction.y - cam.direction.x * cam.plane.y);
+            const float invDet = 1.0f / (cam.plane.x * cam.direction.y - cam.direction.x * cam.plane.y);
 
-            FloatVector2 transform = {
+            const FloatVector2 transform = {
                     invDet * ((cam.direction.y * enemyPos.x) - (cam.direction.x * enemyPos.y)) * -1.0f,
                     invDet * ((-cam.plane.y * enemyPos.x) + (cam.plane.x * enemyPos.y))
             };
 
-            int enemyScreenX = static_cast<int>((cam.viewportWidth / 2) * (1 + transform.x / transform.y));
+            const int enemyScreenX = static_cast<int>((cam.viewportWidth / 2) * (1 + transform.x / transform.y));
 
-            int enemyHeight = std::min(2000, std::abs(static_cast<int>(cam.viewportHeight / (transform.y))));
+            const int enemyHeight = std::min(2000, std::abs(static_cast<int>(cam.viewportHeight / (transform.y))));
             int drawStartY = -enemyHeight / 2 + cam.viewportHeight / 2;
             if (drawStartY < 0) drawStartY = 0;
             int drawEndY = enemyHeight / 2 + cam.viewportHeight / 2;
             if (drawEndY >= cam.viewportHeight) drawEndY = cam.viewportHeight - 1;
 
-            int enemyWidth = std::min(2000, std::abs(static_cast<int>(cam.viewportHeight / (transform.y))));
+            const int enemyWidth = std::min(2000, std::abs(static_cast<int>(cam.viewportHeight / (transform.y))));
             int drawStartX = (-enemyWidth / 2) + enemyScreenX;
             if (drawStartX < 0) drawStartX = 0;
             int drawEndX = (enemyWidth / 2) + enemyScreenX;
             if (drawEndX >= cam.viewportWidth) drawEndX = cam.viewportWidth - 1;
 
             for (int stripe = drawStartX; stripe < drawEndX; stripe++) {
-                int texX = static_cast<int>(256 * (stripe - (-enemyWidth / 2 + enemyScreenX)) * texture.size / enemyWidth) / 256;
+                const int texX = static_cast<int>(256 * (stripe - (-enemyWidth / 2 + enemyScreenX)) * texture.size / enemyWidth) / 256;
                 if (transform.y > 0 && transform.y < zBuffer[stripe]) {
                     for (int y = drawStartY; y < drawEndY; y++) {
-                        int d = (y) * 256 - cam.viewportHeight * 128 + enemyHeight * 128;
-                        int texY = ((d * texture.size) / enemyHeight) / 256;
-                        Color pixel = texture.buffer[texY][texX];
+                        const int d = (y) * 256 - cam.viewportHeight * 128 + enemyHeight * 128;
+                        const int texY = ((d * texture.size) / enemyHeight) / 256;
+                        const Color pixel = texture.buffer[texY][texX];
                         if ((pixel.argb & TRANSPARENCY_MASK) != 0) {
                             SetPixel(pixels, pitch, pixel, {stripe, y});
                         }
@@ -323,8 +323,7 @@ namespace MiniFPS {
         // Cast rays
         for (int ray = 0; ray < player.camera.viewportWidth; ray++) {
             RaycastResult result = CastRay(ray, player);
-            zBuffer[ray] = result.distance;
-            // adjustedDistance?
+            zBuffer[ray] = result.adjustedDistance;
 
             FloatVector2 intersection;
             if (result.collided) {
