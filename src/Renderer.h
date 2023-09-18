@@ -17,6 +17,16 @@ namespace MiniFPS {
     const Color BUTTON = Color(0xFFD0D0D0);
     const uint32_t TRANSPARENCY_MASK = 0xFF000000;
 
+    struct RaycastResult {
+        bool collided = false;
+        float distance = 0.0f;
+        float adjustedDistance = 0.0f;
+        short id = -1;
+        FloatVector2 direction {0.0f, 0.0f};
+        FloatVector2 sideDistance {0.0f, 0.0f};
+        FloatVector2 deltaDistance {0.0f, 0.0f};
+    };
+
     class Renderer {
     private:
         SDL_Renderer* sdlRenderer;
@@ -182,6 +192,8 @@ namespace MiniFPS {
          * @param frameDelta The time elapsed between frames in seconds.
          */
         void Draw(const Player& player, const std::vector<Enemy> &enemies, const Font &font, const float frameDelta);
+
+        RaycastResult CastRay(int column, const Player& player);
 
     private:
         static bool CompareEnemyDistancePair(const std::pair<float, Enemy>& pair1, const std::pair<float, Enemy>& pair2);
