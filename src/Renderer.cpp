@@ -307,7 +307,7 @@ namespace MiniFPS {
         }
     }
 
-    void Renderer::Draw(const Player& player, const std::vector<Enemy>& enemies, const Font& font, const float frameDelta) {
+    void Renderer::Draw(const Player& player, const std::vector<Enemy>& enemies, const Font& font) {
         SDLTextureBuffer buffer;
         SDL_LockTexture(streamingFrameTexture, nullptr, &buffer.pixels, &buffer.pitch);
 
@@ -325,8 +325,8 @@ namespace MiniFPS {
                 intersection += result.direction * result.distance;
             }
 
-            const Texture texture = GetTexBuffer(cellID);
-            const int texX = GetTexX(player.camera.pos, intersection, sideDistance, deltaDistance, rayDirection,
+            const Texture texture = GetTexBuffer(result.id);
+            const int texX = GetTexX(player.camera.pos, intersection, result.sideDistance, result.deltaDistance, result.direction,
                                      texture.size);
 
             DrawTexturedColumn(
