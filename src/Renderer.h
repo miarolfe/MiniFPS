@@ -18,8 +18,18 @@ namespace MiniFPS {
     const uint32_t TRANSPARENCY_MASK = 0xFF000000;
 
     struct SDLTextureBuffer {
-        int pitch = -1;
         void* pixels = nullptr;
+        int pitch = -1;
+    };
+
+    struct RaycastResult {
+        bool collided = false;
+        float distance = 0.0f;
+        float adjustedDistance = 0.0f;
+        short id = -1;
+        FloatVector2 direction {0.0f, 0.0f};
+        FloatVector2 sideDistance {0.0f, 0.0f};
+        FloatVector2 deltaDistance {0.0f, 0.0f};
     };
 
     class Renderer {
@@ -108,8 +118,9 @@ namespace MiniFPS {
          * @param rayX The ray to draw.
          * @param texX TODO
          */
-        void DrawTexturedColumn(const Texture& texture, const Camera& camera, SDLTextureBuffer buffer, float distance,
-                                const FloatVector2& cell, int rayX, int texX);
+        // void DrawTexturedColumn(const Texture& texture, const Camera& camera, void* pixels, int pitch, float distance,
+        //                        const FloatVector2& cell, int rayX, int texX);
+        void DrawTexturedColumn(const Texture& texture, const Camera& camera, SDLTextureBuffer buffer, float distance, const FloatVector2& cell, int rayX, int texX);
 
         /**
          * Writes the ceiling to the frame texture.
@@ -170,6 +181,7 @@ namespace MiniFPS {
          * @param enemies The enemies to draw
          * @param buffer The frame texture buffer.
          */
+        // void DrawEnemies(const Player& player, const std::vector<Enemy>& enemies, void* pixels, int pitch);
         void DrawEnemies(const Player& player, const std::vector<Enemy>& enemies, SDLTextureBuffer buffer);
 
         /**

@@ -105,8 +105,7 @@ namespace MiniFPS {
         }
     }
 
-    void Renderer::DrawTexturedColumn(const Texture &texture, const Camera& camera, SDLTextureBuffer buffer, float distance,
-                                      const FloatVector2& cell, int rayX, int texX) {
+    void Renderer::DrawTexturedColumn(const Texture &texture, const Camera& camera, SDLTextureBuffer buffer, float distance, const FloatVector2& cell, int rayX, int texX) {
         const int columnHeight = ((camera.viewportHeight)) / distance;
 
         const bool shadePixel = ShouldShadePixel(cell);
@@ -160,7 +159,6 @@ namespace MiniFPS {
         };
 
         SDLTextureBuffer buffer;
-
         SDL_LockTexture(buttonTexture, nullptr, &buffer.pixels, &buffer.pitch);
 
         for (int x = 0; x < button.width; x++) {
@@ -309,7 +307,7 @@ namespace MiniFPS {
         }
     }
 
-    void Renderer::Draw(const Player& player, const std::vector<Enemy>& enemies, const Font& font) {
+    void Renderer::Draw(const Player& player, const std::vector<Enemy>& enemies, const Font& font, const float frameDelta) {
         SDLTextureBuffer buffer;
         SDL_LockTexture(streamingFrameTexture, nullptr, &buffer.pixels, &buffer.pitch);
 
@@ -403,7 +401,7 @@ namespace MiniFPS {
                     texture,
                     player.camera,
                     buffer,
-                    adjustedDistance,
+                    result.adjustedDistance,
                     intersection,
                     ray,
                     texX);
@@ -412,9 +410,7 @@ namespace MiniFPS {
         DrawEnemies(player, enemies, buffer);
 
         const int weaponTextureSize = player.camera.viewportWidth / 4;
-        CopyTextureToFrameTexture(buffer, player.weaponTexture,
-                                  {player.camera.viewportWidth / 2, player.camera.viewportHeight - (weaponTextureSize / 2)},
-                                  weaponTextureSize, weaponTextureSize);
+        CopyTextureToFrameTexture(buffer, player.weaponTexture, {player.camera.viewportWidth/2, player.camera.viewportHeight - (weaponTextureSize/2)}, weaponTextureSize, weaponTextureSize);
 
         SDL_UnlockTexture(streamingFrameTexture);
 
