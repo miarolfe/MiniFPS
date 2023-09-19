@@ -192,6 +192,8 @@ namespace MiniFPS {
          */
         void Draw(const Player& player, const std::vector<Enemy> &enemies, const Font& font);
 
+        RaycastResult CastRay(int column, const Player& player);
+
     private:
         static bool CompareEnemyDistancePair(const std::pair<float, Enemy>& pair1, const std::pair<float, Enemy>& pair2);
     };
