@@ -90,14 +90,14 @@ namespace MiniFPS {
 
             if (inputState.moveLeft != inputState.moveRight) {
                 if (inputState.moveLeft) {
-                    FloatVector2 moveDirection = {camera.direction.y, -camera.direction.x};
+                    Vec2 moveDirection = {camera.direction.y, -camera.direction.x};
                     moveDirection.Normalize();
 
                     camera.pos += moveDirection * frameDelta * speedModifier;
                 }
 
                 if (inputState.moveRight) {
-                    FloatVector2 moveDirection = {-camera.direction.y, camera.direction.x};
+                    Vec2 moveDirection = {-camera.direction.y, camera.direction.x};
                     moveDirection.Normalize();
 
                     camera.pos += moveDirection * frameDelta * speedModifier;
@@ -145,17 +145,24 @@ namespace MiniFPS {
         Rotate(frameDelta, rotationModifier);
     }
 
-    void Player::Shoot(const std::vector<Enemy>& enemies) {
-        for (const Enemy& enemy : enemies) {
-            FloatVector2 tmp = enemy.pos;
-            tmp -= camera.pos;
+    bool Player::Shoot(std::vector<Enemy>& enemies) {
+        for (Enemy& enemy : enemies) {
+            if (enemy.IsVisible()) {
+                Vec2 tmp = enemy.pos;
+                tmp -= camera.pos;
+                tmp.Normalize();
 
-            float dp = FloatVector2::DotProduct(tmp, camera.direction);
-            if (dp >= 0 && dp <= (camera.direction.x * camera.direction.x + camera.direction.y * camera.direction.y)) {
-                std::cout << "Hit enemy at (" << enemy.pos.x << ", " << enemy.pos.y << ")" << std::endl;
-                return;
+                float dotProduct = Vec2::DotProduct(tmp, camera.direction);
+                std::cout << "DP: " << dotProduct << std::endl;
+                if (dotProduct >= 0.996) {
+                    std::cout << "Hit enemy at (" << enemy.pos.x << ", " << enemy.pos.y << ")" << std::endl;
+                    enemy.SetVisible(false);
+                    return true;
+                }
             }
         }
+
+        return false;
     }
 
     InputState::InputState() {

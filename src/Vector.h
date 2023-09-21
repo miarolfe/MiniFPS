@@ -5,65 +5,45 @@
 
 namespace MiniFPS {
     // Forward declarations so conversion constructors can exist
-    class FloatVector2;
-    class DoubleVector2;
-    class IntVector2;
+    class Vec2;
+    class Vec2Int;
 
-    class FloatVector2 {
+    class Vec2 {
     public:
-        FloatVector2();
-        FloatVector2(float x, float y);
-        explicit FloatVector2(FloatPoint point);
-        explicit FloatVector2(const IntVector2 &intVector);
-        FloatVector2(const FloatVector2& floatVector);
+        Vec2();
+        Vec2(float x, float y);
+        explicit Vec2(FloatPoint point);
+        explicit Vec2(const Vec2Int &intVector);
+        Vec2(const Vec2& floatVector);
 
         float x;
         float y;
 
         float Length();
-        float Distance(const FloatVector2& otherVector) const;
-        static float DotProduct(const FloatVector2& v1, const FloatVector2& v2);
+        float Distance(const Vec2& otherVector) const;
+        static float DotProduct(const Vec2& v1, const Vec2& v2);
         void Normalize();
-        FloatVector2& operator= (const FloatVector2& otherVector);
-        FloatVector2 operator+ (FloatVector2 const& otherVector);
-        FloatVector2& operator+= (FloatVector2 const& otherVector);
-        FloatVector2 operator- (FloatVector2 const& otherVector);
-        FloatVector2& operator-= (FloatVector2 const& otherVector);
-        FloatVector2 operator* (float value);
-        float operator* (const FloatVector2& otherVector);
+        Vec2& operator= (const Vec2& otherVector);
+        Vec2 operator+ (Vec2 const& otherVector);
+        Vec2& operator+= (Vec2 const& otherVector);
+        Vec2 operator- (Vec2 const& otherVector);
+        Vec2& operator-= (Vec2 const& otherVector);
+        Vec2 operator* (float value);
+        float operator* (const Vec2& otherVector);
     };
 
-    class DoubleVector2 {
+    class Vec2Int {
     public:
-        DoubleVector2();
-        DoubleVector2(double x, double y);
-        explicit DoubleVector2(FloatPoint point);
-        explicit DoubleVector2(const IntVector2 &intVector);
-        DoubleVector2(const DoubleVector2& floatVector);
-
-        double x;
-        double y;
-
-        double Length();
-        void Normalize();
-        DoubleVector2 operator+ (DoubleVector2 const& otherVector);
-        DoubleVector2 operator- (DoubleVector2 const& otherVector);
-        DoubleVector2 operator* (const double value);
-    };
-
-    class IntVector2 {
-    public:
-        IntVector2();
-        IntVector2(int x, int y);
-        explicit IntVector2(IntPoint point);
-        explicit IntVector2(const FloatVector2& floatVector);
-        explicit IntVector2(const DoubleVector2& doubleVector);
-        IntVector2(const IntVector2& vector);
+        Vec2Int();
+        Vec2Int(int x, int y);
+        explicit Vec2Int(IntPoint point);
+        explicit Vec2Int(const Vec2& floatVector);
+        Vec2Int(const Vec2Int& vector);
 
         int x;
         int y;
 
-        IntVector2 operator+ (IntVector2 const& otherVector);
-        IntVector2 operator- (IntVector2 const& otherVector);
+        Vec2Int operator+ (Vec2Int const& otherVector);
+        Vec2Int operator- (Vec2Int const& otherVector);
     };
 }

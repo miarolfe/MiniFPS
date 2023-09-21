@@ -27,12 +27,6 @@ namespace MiniFPS {
                  float playerStartAngle, float effectVolume, float musicVolume,
                  const std::string& levelPath, const std::map<std::string, std::string> &fontPaths);
 
-        /**
-         * Load game settings from a file.
-         * @param assetsFilePath The path to the assets folder.
-         * @param settingsFilePath The path to the settings file within the assets folder.
-         * @return A Settings object loaded with the settings from the file.
-         */
         static Settings LoadSettings(const std::string& assetsFilePath, const std::string& settingsFilePath);
     };
 

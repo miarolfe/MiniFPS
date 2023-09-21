@@ -12,12 +12,6 @@ namespace MiniFPS {
         TTF_Font* ttf;
         int pointSize;
 
-        /**
-         * Loads a font from a file.
-         * @param fontPath The path to the font file.
-         * @param pointSize The point size to load the font at.
-         * @return The loaded font.
-         */
         static TTF_Font* LoadFont(const std::string &fontPath, int pointSize);
     };
 

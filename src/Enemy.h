@@ -6,11 +6,16 @@
 namespace MiniFPS {
     class Enemy {
     public:
-        explicit Enemy(const FloatVector2& pos, short textureID = -1);
+        explicit Enemy(const Vec2& pos, short textureID = -1);
         void Update();
+        bool IsVisible();
+        void SetVisible(bool status);
 
-        FloatVector2 pos;
+        Vec2 pos;
         short textureId = -1;
+
+    private:
+        bool visible = true;
     };
 }
 

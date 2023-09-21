@@ -18,6 +18,9 @@ MiniFPS::Game::Game() {
     mainMenu = MainMenu(settings, fontManager.fonts[0]);
 
     enemies.push_back(Enemy({6.5, 1.5}, 40));
+    enemies.push_back(Enemy({6.5, 3.5}, 40));
+    enemies.push_back(Enemy({1.5, 6.5}, 40));
+    enemies.push_back(Enemy({5.5, 6.5}, 40));
 }
 
 void MiniFPS::Game::Update() {
@@ -37,11 +40,13 @@ void MiniFPS::Game::Update() {
         gamePlayer.Update(frameDelta, settings.speedModifier, settings.rotationModifier);
 
         if (gamePlayer.inputState.leftMouseButtonPressed) {
-            gamePlayer.Shoot(enemies);
-            audio.PlayEffect("GunShoot1");
+            audio.PlayEffect("GunShoot4");
+            if (gamePlayer.Shoot(enemies)) {
+                audio.PlayEffect("testEffect");
+            }
         }
 
-        renderer.Draw(gamePlayer, enemies, fontManager.fonts[0]);
+        renderer.DrawGame(gamePlayer, enemies, fontManager.fonts[0]);
     }
 }
 

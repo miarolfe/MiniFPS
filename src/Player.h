@@ -26,45 +26,12 @@ namespace MiniFPS {
         InputState inputState;
         Texture weaponTexture;
 
-        /**
-         * Gets input from the player.
-         */
         void UpdateInputState();
-
-        /**
-         * Applies input from the frame to the player and moves them.
-         * @param frameDelta The time between frames in seconds.
-         * @param speedModifier How fast the player moves.
-         */
         void Move(float frameDelta, float speedModifier);
-
-        /**
-         * Applies input from the frame to the player and turns them.
-         * @param frameDelta The time between frames in seconds.
-         * @param rotationModifier How fast the player turns.
-         */
         void Rotate(float frameDelta, float rotationModifier);
-
-        /**
-         * Updates the player proportionally to the frame delta.
-         * @param frameDelta The time between frames in seconds.
-         * @param speedModifier How fast the player moves.
-         * @param rotationModifier How fast the player turns.
-         */
         void Update(float frameDelta, float speedModifier, float rotationModifier);
-
-        /**
-         * Checks whether the game has ended.
-         * @return Whether the game has ended.
-         */
         bool GameHasEnded() const;
-
-        /**
-         * Checks if the game is on the main menu.
-         * @return Whether the game is on the main menu.
-         */
         bool InMainMenu() const;
-
-        void Shoot(const std::vector<Enemy>& enemies);
+        bool Shoot(std::vector<Enemy>& enemies);
     };
 }

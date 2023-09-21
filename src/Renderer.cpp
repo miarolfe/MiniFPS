@@ -24,7 +24,7 @@ namespace MiniFPS {
         row[point.x] = color.argb;
     }
 
-    bool Renderer::ShouldShadePixel(const FloatVector2& point) {
+    bool Renderer::ShouldShadePixel(const Vec2& point) {
         const float hitX = point.x - floor(point.x + 0.5f); // Fractional part of cellX
         const float hitY = point.y - floor(point.y + 0.5f); // Fractional part of cellY
 
@@ -52,9 +52,9 @@ namespace MiniFPS {
         return (std::abs(point.x - floor(point.x + 0.5f)) > std::abs(point.y - floor(point.y + 0.5f)));
     }
 
-    int Renderer::GetTexX(const FloatVector2& startPos, const FloatVector2& intersectionPos,
-                          const FloatVector2& rayLength1D, const FloatVector2& rayUnitStepSize,
-                          const FloatVector2& rayDir, const int textureSize) {
+    int Renderer::GetTexX(const Vec2& startPos, const Vec2& intersectionPos,
+                          const Vec2& rayLength1D, const Vec2& rayUnitStepSize,
+                          const Vec2& rayDir, const int textureSize) {
         float wallX;
 
         const bool wallIsWestOrEastFacing = WallIsWestOrEastFacing({intersectionPos.x, intersectionPos.y});
@@ -105,7 +105,7 @@ namespace MiniFPS {
         }
     }
 
-    void Renderer::DrawTexturedColumn(const Texture &texture, const Camera& camera, SDLTextureBuffer buffer, float distance, const FloatVector2& cell, int rayX, int texX) {
+    void Renderer::DrawTexturedColumn(const Texture &texture, const Camera& camera, SDLTextureBuffer buffer, float distance, const Vec2& cell, int rayX, int texX) {
         const int columnHeight = ((camera.viewportHeight)) / distance;
 
         const bool shadePixel = ShouldShadePixel(cell);
@@ -255,24 +255,26 @@ namespace MiniFPS {
         SDL_RenderPresent(sdlRenderer);
     }
 
-    void Renderer::DrawEnemies(const Player& player, const std::vector<Enemy>& enemies, SDLTextureBuffer buffer) {
+    void Renderer::DrawEnemies(const Player& player, std::vector<Enemy>& enemies, SDLTextureBuffer buffer) {
         std::vector<std::pair<float, Enemy>> enemyDistances;
 
         const Camera& cam = player.camera;
 
-        for (const Enemy& enemy : enemies) {
-            enemyDistances.emplace_back(player.camera.pos.Distance(enemy.pos), enemy);
+        for (Enemy& enemy : enemies) {
+            if (enemy.IsVisible()) {
+                enemyDistances.emplace_back(player.camera.pos.Distance(enemy.pos), enemy);
+            }
         }
 
         std::sort(enemyDistances.begin(), enemyDistances.end(), CompareEnemyDistancePair);
 
         for (auto& enemyDistance : enemyDistances) {
-            const FloatVector2 enemyPos = enemyDistance.second.pos - cam.pos;
+            const Vec2 enemyPos = enemyDistance.second.pos - cam.pos;
             const Texture& texture = textureMap[enemyDistance.second.textureId];
 
             const float invDet = 1.0f / (cam.plane.x * cam.direction.y - cam.direction.x * cam.plane.y);
 
-            const FloatVector2 transform = {
+            const Vec2 transform = {
                     invDet * ((cam.direction.y * enemyPos.x) - (cam.direction.x * enemyPos.y)) * -1.0f,
                     invDet * ((-cam.plane.y * enemyPos.x) + (cam.plane.x * enemyPos.y))
             };
@@ -307,7 +309,7 @@ namespace MiniFPS {
         }
     }
 
-    void Renderer::Draw(const Player& player, const std::vector<Enemy>& enemies, const Font& font) {
+    void Renderer::DrawGame(const Player& player, std::vector<Enemy>& enemies, const Font& font) {
         SDLTextureBuffer buffer;
         SDL_LockTexture(streamingFrameTexture, nullptr, &buffer.pixels, &buffer.pitch);
 
@@ -319,7 +321,7 @@ namespace MiniFPS {
             RaycastResult result = CastRay(ray, player);
             zBuffer[ray] = result.adjustedDistance;
 
-            FloatVector2 intersection;
+            Vec2 intersection;
             if (result.collided) {
                 intersection = player.camera.pos;
                 intersection += result.direction * result.distance;
@@ -375,11 +377,11 @@ namespace MiniFPS {
 
         result.direction.Normalize();
 
-        const FloatVector2 deltaDistance = {std::abs(1.0f / result.direction.x), std::abs(1.0f / result.direction.y)};
-        IntVector2 mapCheck(player.camera.pos);
+        const Vec2 deltaDistance = {std::abs(1.0f / result.direction.x), std::abs(1.0f / result.direction.y)};
+        Vec2Int mapCheck(player.camera.pos);
 
-        FloatVector2 sideDistance;
-        IntVector2 step;
+        Vec2 sideDistance;
+        Vec2Int step;
 
         if (result.direction.x < 0) {
             step.x = -1;
