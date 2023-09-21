@@ -141,20 +141,31 @@ namespace MiniFPS {
 
     bool Player::Shoot(std::vector<Enemy>& enemies, float wallDistance) {
         for (Enemy& enemy : enemies) {
-            if (enemy.IsVisible() && enemy.pos.Distance(camera.pos) < wallDistance) {
-                Vec2 enemyOffsetPos = enemy.pos - camera.pos;
-                enemyOffsetPos.Normalize();
+            Vec2 wallIntersectionPoint = camera.pos;
+            wallIntersectionPoint += (camera.direction * wallDistance);
 
-                Vec2 camDirection = camera.direction;
-                camDirection.Normalize();
+            Vec2 delta = enemy.pos - camera.pos;
+            float projection = (delta.x * (wallIntersectionPoint.x - camera.pos.x) + delta.y * (wallIntersectionPoint.y - camera.pos.y)) / (wallDistance*wallDistance);
 
-                const float scaledThreshold = DOT_PRODUCT_THRESHOLD * (1.0f - (enemy.pos.Distance(camera.pos) / wallDistance));
+            float distanceToShot;
 
-                if (Vec2::DotProduct(enemyOffsetPos, camera.direction) >= scaledThreshold) {
-                    std::cout << "Hit enemy at (" << enemy.pos.x << ", " << enemy.pos.y << ")" << std::endl;
-                    enemy.SetVisible(false);
-                    return true;
-                }
+            if (projection < 0.0) {
+                distanceToShot = delta.Length();
+            } else if (projection > 1.0) {
+                distanceToShot = wallIntersectionPoint.Distance(enemy.pos);
+            } else {
+                const Vec2 closestPointOnLine {
+                        camera.pos.x + projection * (wallIntersectionPoint.x - camera.pos.x),
+                        camera.pos.y + projection * (wallIntersectionPoint.y - camera.pos.y)
+                };
+
+                distanceToShot = closestPointOnLine.Distance(enemy.pos);
+            }
+
+            if (enemy.IsVisible() && distanceToShot < MAX_SHOT_DISTANCE) {
+                std::cout << "Hit enemy at (" << enemy.pos.x << ", " << enemy.pos.y << ")" << std::endl;
+                enemy.SetVisible(false);
+                return true;
             }
         }
 
