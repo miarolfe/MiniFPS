@@ -42,7 +42,7 @@ void MiniFPS::Game::Update() {
         if (gamePlayer.inputState.leftMouseButtonPressed) {
             audio.PlayEffect("GunShoot4");
             if (gamePlayer.Shoot(enemies, renderer.zBuffer[gamePlayer.camera.viewportWidth / 2])) {
-                audio.PlayEffect("testEffect");
+                // audio.PlayEffect("testEffect");
             }
         }
 
