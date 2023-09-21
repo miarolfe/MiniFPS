@@ -4,9 +4,6 @@ namespace MiniFPS {
     Level::Level() = default;
 
     Level::Level(const std::string& filePath) {
-        matrix = nullptr;
-        w = -1;
-        h = -1;
         Load(filePath);
     }
 
