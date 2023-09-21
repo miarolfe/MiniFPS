@@ -118,8 +118,6 @@ namespace MiniFPS {
          * @param rayX The ray to draw.
          * @param texX TODO
          */
-        // void DrawTexturedColumn(const Texture& texture, const Camera& camera, void* pixels, int pitch, float distance,
-        //                        const FloatVector2& cell, int rayX, int texX);
         void DrawTexturedColumn(const Texture& texture, const Camera& camera, SDLTextureBuffer buffer, float distance, const FloatVector2& cell, int rayX, int texX);
 
         /**
@@ -181,7 +179,6 @@ namespace MiniFPS {
          * @param enemies The enemies to draw
          * @param buffer The frame texture buffer.
          */
-        // void DrawEnemies(const Player& player, const std::vector<Enemy>& enemies, void* pixels, int pitch);
         void DrawEnemies(const Player& player, const std::vector<Enemy>& enemies, SDLTextureBuffer buffer);
 
         /**
