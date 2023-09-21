@@ -8,7 +8,7 @@
 #include "Texture.h"
 
 namespace MiniFPS {
-    const float DOT_PRODUCT_THRESHOLD = 0.99f;
+    const float MAX_SHOT_DISTANCE = 0.4f;
 
     struct InputState {
         InputState();
