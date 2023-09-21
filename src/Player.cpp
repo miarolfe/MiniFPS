@@ -114,20 +114,14 @@ namespace MiniFPS {
     void Player::Rotate(float frameDelta, float rotationModifier) {
         float rotationAngle = inputState.mouseMotionX * frameDelta * rotationModifier;
 
-        float oldDirectionX = camera.direction.x;
-        float oldDirectionY = camera.direction.y;
-
-        camera.direction.x = oldDirectionX * cosf(rotationAngle) - oldDirectionY * sinf(rotationAngle);
-        camera.direction.y = oldDirectionX * sinf(rotationAngle) + oldDirectionY * cosf(rotationAngle);
-
+        Vec2 oldDirection = camera.direction;
+        camera.direction.x = oldDirection.x * cosf(rotationAngle) - oldDirection.y * sinf(rotationAngle);
+        camera.direction.y = oldDirection.x * sinf(rotationAngle) + oldDirection.y * cosf(rotationAngle);
         camera.direction.Normalize();
 
-        float oldPlaneX = camera.plane.x;
-        float oldPlaneY = camera.plane.y;
-
-        camera.plane.x = oldPlaneX * cosf(rotationAngle) - oldPlaneY * sinf(rotationAngle);
-        camera.plane.y = oldPlaneX * sinf(rotationAngle) + oldPlaneY * cosf(rotationAngle);
-
+        Vec2 oldPlane = camera.plane;
+        camera.plane.x = oldPlane.x * cosf(rotationAngle) - oldPlane.y * sinf(rotationAngle);
+        camera.plane.y = oldPlane.x * sinf(rotationAngle) + oldPlane.y * cosf(rotationAngle);
         camera.plane.Normalize();
     }
 
@@ -145,16 +139,24 @@ namespace MiniFPS {
         Rotate(frameDelta, rotationModifier);
     }
 
-    bool Player::Shoot(std::vector<Enemy>& enemies) {
-        for (Enemy& enemy : enemies) {
-            if (enemy.IsVisible()) {
-                Vec2 tmp = enemy.pos;
-                tmp -= camera.pos;
-                tmp.Normalize();
+    bool Player::Shoot(std::vector<Enemy>& enemies, float wallDistance) {
+        float dotProductThreshold = 0.99f;
 
-                float dotProduct = Vec2::DotProduct(tmp, camera.direction);
+        for (Enemy& enemy : enemies) {
+            if (enemy.IsVisible() && enemy.pos.Distance(camera.pos) < wallDistance) {
+                Vec2 enemyOffsetPos = enemy.pos - camera.pos;
+                enemyOffsetPos.Normalize();
+
+                Vec2 camDirection = camera.direction;
+                camDirection.Normalize();
+
+                float dotProduct = Vec2::DotProduct(enemyOffsetPos, camera.direction);
                 std::cout << "DP: " << dotProduct << std::endl;
-                if (dotProduct >= 0.996) {
+
+                float distanceFactor = 1.0f - (enemy.pos.Distance(camera.pos) / wallDistance);
+                float scaledThreshold = dotProductThreshold * distanceFactor;
+
+                if (dotProduct >= scaledThreshold) {
                     std::cout << "Hit enemy at (" << enemy.pos.x << ", " << enemy.pos.y << ")" << std::endl;
                     enemy.SetVisible(false);
                     return true;

@@ -38,6 +38,7 @@ namespace MiniFPS {
         SDL_Texture* streamingFrameTexture;
         SDL_Texture* renderFrameTexture;
         std::unordered_map<short, Texture> textureMap;
+    public:
         float* zBuffer = nullptr;
 
     public:

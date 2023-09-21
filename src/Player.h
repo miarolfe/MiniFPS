@@ -32,6 +32,6 @@ namespace MiniFPS {
         void Update(float frameDelta, float speedModifier, float rotationModifier);
         bool GameHasEnded() const;
         bool InMainMenu() const;
-        bool Shoot(std::vector<Enemy>& enemies);
+        bool Shoot(std::vector<Enemy>& enemies, float wallDistance);
     };
 }
