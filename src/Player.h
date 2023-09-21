@@ -8,6 +8,8 @@
 #include "Texture.h"
 
 namespace MiniFPS {
+    const float DOT_PRODUCT_THRESHOLD = 0.99f;
+
     struct InputState {
         InputState();
 

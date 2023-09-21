@@ -140,8 +140,6 @@ namespace MiniFPS {
     }
 
     bool Player::Shoot(std::vector<Enemy>& enemies, float wallDistance) {
-        float dotProductThreshold = 0.99f;
-
         for (Enemy& enemy : enemies) {
             if (enemy.IsVisible() && enemy.pos.Distance(camera.pos) < wallDistance) {
                 Vec2 enemyOffsetPos = enemy.pos - camera.pos;
@@ -150,13 +148,9 @@ namespace MiniFPS {
                 Vec2 camDirection = camera.direction;
                 camDirection.Normalize();
 
-                float dotProduct = Vec2::DotProduct(enemyOffsetPos, camera.direction);
-                std::cout << "DP: " << dotProduct << std::endl;
+                const float scaledThreshold = DOT_PRODUCT_THRESHOLD * (1.0f - (enemy.pos.Distance(camera.pos) / wallDistance));
 
-                float distanceFactor = 1.0f - (enemy.pos.Distance(camera.pos) / wallDistance);
-                float scaledThreshold = dotProductThreshold * distanceFactor;
-
-                if (dotProduct >= scaledThreshold) {
+                if (Vec2::DotProduct(enemyOffsetPos, camera.direction) >= scaledThreshold) {
                     std::cout << "Hit enemy at (" << enemy.pos.x << ", " << enemy.pos.y << ")" << std::endl;
                     enemy.SetVisible(false);
                     return true;
