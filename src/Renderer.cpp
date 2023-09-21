@@ -38,9 +38,11 @@ namespace MiniFPS {
     }
 
     Texture Renderer::GetTexBuffer(short textureId) {
-        Texture texture = textureMap[textureId];
+        Texture texture;
 
-        if (texture.name.empty()) {
+        if (textureMap.count(textureId) == 1) {
+            texture = textureMap[textureId];
+        } else {
             std::cerr << "Invalid texture: no texture mapped to id " << textureId << std::endl;
             texture = textureMap[-1]; // Fallback texture
         }
