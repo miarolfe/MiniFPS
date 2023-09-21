@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Common.h"
+#include "Vector.h"
 #include "Point.h"
 
 namespace MiniFPS {
@@ -15,6 +16,7 @@ namespace MiniFPS {
     public:
         // TODO: Abstract this out
         std::map<short, std::string> textureIdMap; // Map of texture IDs to their names
+        std::vector<std::pair<short, Vec2>> enemySpawnLocations;
 
         Level();
 

@@ -89,6 +89,17 @@ namespace MiniFPS {
             }
         }
 
+        int numEnemies;
+        infile >> numEnemies;
+
+        for (int i = 0; i < numEnemies; i++) {
+            short id;
+            infile >> id;
+            float x, y;
+            infile >> x >> y;
+            enemySpawnLocations.push_back({id, {x, y}});
+        }
+
         while (infile.peek() != EOF) {
             short id;
             infile >> id;
