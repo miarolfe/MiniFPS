@@ -4,9 +4,6 @@ namespace MiniFPS {
     Level::Level() = default;
 
     Level::Level(const std::string& filePath) {
-        matrix = nullptr;
-        w = -1;
-        h = -1;
         Load(filePath);
     }
 
@@ -90,6 +87,17 @@ namespace MiniFPS {
             for (int j = 0; j < w; j++) {
                 infile >> matrix[i][j];
             }
+        }
+
+        int numEnemies;
+        infile >> numEnemies;
+
+        for (int i = 0; i < numEnemies; i++) {
+            short id;
+            infile >> id;
+            float x, y;
+            infile >> x >> y;
+            enemySpawnLocations.push_back({id, {x, y}});
         }
 
         while (infile.peek() != EOF) {

@@ -16,11 +16,6 @@ MiniFPS::Game::Game() {
     renderer = Renderer(sdlRenderer, settings);
     SDL_SetRelativeMouseMode(SDL_FALSE);
     mainMenu = MainMenu(settings, fontManager.fonts[0]);
-
-    enemies.push_back(Enemy({6.5, 1.5}, 101));
-    enemies.push_back(Enemy({6.5, 3.5}, 102));
-    enemies.push_back(Enemy({1.5, 6.5}, 101));
-    enemies.push_back(Enemy({5.5, 6.5}, 102));
 }
 
 void MiniFPS::Game::Update() {
@@ -83,6 +78,10 @@ void MiniFPS::Game::SetupGame() {
     }
 
     textureMap[-1] = textureNameToTextureMap["fallback"];
+
+    for (const auto& pair : level.enemySpawnLocations) {
+        enemies.push_back(Enemy(pair.second, pair.first));
+    }
 
     gamePlayer = Player(&level, settings);
     gamePlayer.weaponTexture = textureNameToTextureMap["Player_Weapon"];
