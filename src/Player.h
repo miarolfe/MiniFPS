@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Audio.h"
 #include "Camera.h"
 #include "Common.h"
 #include "Enemy.h"
@@ -28,12 +29,25 @@ namespace MiniFPS {
         InputState inputState;
         Texture weaponTexture;
 
+        int currentHealth = MAX_HEALTH;
+        int currentAmmo = MAG_SIZE;
+
+        bool reloading = false;
+        float reloadTimer;
+
         void UpdateInputState();
         void Move(float frameDelta, float speedModifier);
         void Rotate(float frameDelta, float rotationModifier);
         void Update(float frameDelta, float speedModifier, float rotationModifier);
         bool GameHasEnded() const;
         bool InMainMenu() const;
-        bool Shoot(std::vector<Enemy>& enemies, float wallDistance);
+        bool CanShoot();
+        bool Shoot(std::vector<Enemy>& enemies, float wallDistance, Audio& audio);
+        void Reload();
+
+    public:
+        static const int MAX_HEALTH = 5;
+        static const int MAG_SIZE = 12;
+        constexpr static const float RELOAD_TIME = 5.0f;
     };
 }

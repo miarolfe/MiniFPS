@@ -137,39 +137,72 @@ namespace MiniFPS {
         UpdateInputState();
         Move(frameDelta, speedModifier);
         Rotate(frameDelta, rotationModifier);
+
+        if (reloading) {
+            reloadTimer += frameDelta;
+        }
+
+        if (reloadTimer > RELOAD_TIME) {
+            currentAmmo = MAG_SIZE;
+            reloadTimer = 0.0f;
+            reloading = false;
+        }
     }
 
-    bool Player::Shoot(std::vector<Enemy>& enemies, float wallDistance) {
-        for (Enemy& enemy : enemies) {
-            Vec2 wallIntersectionPoint = camera.pos;
-            wallIntersectionPoint += (camera.direction * wallDistance);
+    bool Player::CanShoot() {
+        if (currentAmmo > 0 && !reloading) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-            Vec2 delta = enemy.pos - camera.pos;
-            float projection = (delta.x * (wallIntersectionPoint.x - camera.pos.x) + delta.y * (wallIntersectionPoint.y - camera.pos.y)) / (wallDistance*wallDistance);
+    // TODO: Make audio a singleton
+    bool Player::Shoot(std::vector<Enemy>& enemies, float wallDistance, Audio& audio) {
+        if (CanShoot()) {
+            audio.PlayEffect("GunShoot4");
+            currentAmmo--;
 
-            float distanceToShot;
+            for (Enemy& enemy : enemies) {
+                Vec2 wallIntersectionPoint = camera.pos;
+                wallIntersectionPoint += (camera.direction * wallDistance);
 
-            if (projection < 0.0) {
-                distanceToShot = delta.Length();
-            } else if (projection > 1.0) {
-                distanceToShot = wallIntersectionPoint.Distance(enemy.pos);
-            } else {
-                const Vec2 closestPointOnLine {
-                        camera.pos.x + projection * (wallIntersectionPoint.x - camera.pos.x),
-                        camera.pos.y + projection * (wallIntersectionPoint.y - camera.pos.y)
-                };
+                Vec2 delta = enemy.pos - camera.pos;
+                float projection = (delta.x * (wallIntersectionPoint.x - camera.pos.x) + delta.y * (wallIntersectionPoint.y - camera.pos.y)) / (wallDistance*wallDistance);
 
-                distanceToShot = closestPointOnLine.Distance(enemy.pos);
-            }
+                float distanceToShot;
 
-            if (enemy.IsVisible() && distanceToShot < MAX_SHOT_DISTANCE) {
-                std::cout << "Hit enemy at (" << enemy.pos.x << ", " << enemy.pos.y << ")" << std::endl;
-                enemy.SetVisible(false);
-                return true;
+                if (projection < 0.0) {
+                    distanceToShot = delta.Length();
+                } else if (projection > 1.0) {
+                    distanceToShot = wallIntersectionPoint.Distance(enemy.pos);
+                } else {
+                    const Vec2 closestPointOnLine {
+                            camera.pos.x + projection * (wallIntersectionPoint.x - camera.pos.x),
+                            camera.pos.y + projection * (wallIntersectionPoint.y - camera.pos.y)
+                    };
+
+                    distanceToShot = closestPointOnLine.Distance(enemy.pos);
+                }
+
+                if (enemy.IsVisible() && distanceToShot < MAX_SHOT_DISTANCE) {
+                    std::cout << "Hit enemy at (" << enemy.pos.x << ", " << enemy.pos.y << ")" << std::endl;
+                    enemy.SetVisible(false);
+                    return true;
+                }
             }
         }
 
+
+
         return false;
+    }
+
+    void Player::Reload() {
+        if (!reloading) {
+            reloadTimer = 0;
+            reloading = true;
+        }
     }
 
     InputState::InputState() {

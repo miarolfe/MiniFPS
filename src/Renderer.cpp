@@ -356,6 +356,17 @@ namespace MiniFPS {
         // TODO: Scale this with frame
         // UI draw here
 
+        std::string healthDisplay = "HP:" + std::to_string(player.currentHealth) + "/" + std::to_string(Player::MAX_HEALTH);
+        DrawTextStrH(healthDisplay, font, {25, 25}, 25, 255, 255, 255);
+
+        std::string ammoDisplay;
+        if (player.reloading) {
+            ammoDisplay = "AMMO:RELOADING...";
+        } else {
+            ammoDisplay = "AMMO:" + std::to_string(player.currentAmmo) + "/" + std::to_string(Player::MAG_SIZE);
+        }
+        DrawTextStrH(ammoDisplay, font, {25, 50}, 25, 255, 255, 255);
+
         SDL_SetRenderTarget(sdlRenderer, nullptr);
         SDL_RenderCopy(sdlRenderer, renderFrameTexture, nullptr, nullptr);
         SDL_RenderPresent(sdlRenderer);

@@ -35,10 +35,13 @@ void MiniFPS::Game::Update() {
         gamePlayer.Update(frameDelta, settings.speedModifier, settings.rotationModifier);
 
         if (gamePlayer.inputState.leftMouseButtonPressed) {
-            audio.PlayEffect("GunShoot4");
-            if (gamePlayer.Shoot(enemies, renderer.zBuffer[gamePlayer.camera.viewportWidth / 2])) {
+            if (gamePlayer.Shoot(enemies, renderer.zBuffer[gamePlayer.camera.viewportWidth / 2], audio)) {
                 // audio.PlayEffect("testEffect");
             }
+        }
+
+        if (gamePlayer.inputState.rightMouseButtonPressed) {
+            gamePlayer.Reload();
         }
 
         renderer.DrawGame(gamePlayer, enemies, fontManager.fonts[0]);
