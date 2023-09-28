@@ -41,7 +41,7 @@ void MiniFPS::Game::Update() {
         }
 
         if (gamePlayer.inputState.rightMouseButtonPressed) {
-            gamePlayer.Reload();
+            gamePlayer.Reload(audio);
         }
 
         renderer.DrawGame(gamePlayer, enemies, fontManager.fonts[0]);

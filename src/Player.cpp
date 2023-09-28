@@ -191,6 +191,8 @@ namespace MiniFPS {
                     return true;
                 }
             }
+        } else {
+            audio.PlayEffect("GunNoAmmo1");
         }
 
 
@@ -198,10 +200,13 @@ namespace MiniFPS {
         return false;
     }
 
-    void Player::Reload() {
+    void Player::Reload(Audio& audio) {
         if (!reloading) {
+            audio.PlayEffect("GunReload1");
             reloadTimer = 0;
             reloading = true;
+        } else {
+            audio.PlayEffect("GunNoAmmo1");
         }
     }
 

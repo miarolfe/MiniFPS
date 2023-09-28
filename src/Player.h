@@ -43,11 +43,11 @@ namespace MiniFPS {
         bool InMainMenu() const;
         bool CanShoot();
         bool Shoot(std::vector<Enemy>& enemies, float wallDistance, Audio& audio);
-        void Reload();
+        void Reload(Audio& audio);
 
     public:
         static const int MAX_HEALTH = 5;
         static const int MAG_SIZE = 12;
-        constexpr static const float RELOAD_TIME = 5.0f;
+        constexpr static const float RELOAD_TIME = 2.0f;
     };
 }
