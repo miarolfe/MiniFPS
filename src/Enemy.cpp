@@ -1,17 +1,22 @@
 #include "Enemy.h"
 
-namespace MiniFPS {
-    Enemy::Enemy(const MiniFPS::Vec2 &pos, short textureId) : pos(pos), textureId(textureId) {}
+namespace MiniFPS
+{
+    Enemy::Enemy(const MiniFPS::Vec2 &pos, short textureId) : pos(pos), textureId(textureId)
+    {}
 
-    void Enemy::Update() {
+    void Enemy::Update()
+    {
 
     }
 
-    bool Enemy::IsVisible() {
+    bool Enemy::IsVisible()
+    {
         return visible;
     }
 
-    void Enemy::SetVisible(bool status) {
+    void Enemy::SetVisible(bool status)
+    {
         visible = status;
     }
 }

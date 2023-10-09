@@ -8,21 +8,25 @@
 #include "Settings.h"
 #include "Texture.h"
 
-namespace MiniFPS {
+namespace MiniFPS
+{
     const float MAX_SHOT_DISTANCE = 0.4f;
 
-    struct InputState {
+    struct InputState
+    {
         InputState();
 
         bool moveLeft, moveRight, moveForward, moveBack, endGame, inMainMenu, leftMouseButtonPressed,
-        rightMouseButtonPressed;
+                rightMouseButtonPressed;
         int mousePosX, mousePosY, mouseMotionX, mouseMotionY;
     };
 
-    class Player {
+    class Player
+    {
     public:
         Player();
-        Player(Level* level, const Settings& settings);
+
+        Player(Level* level, const Settings &settings);
 
         Level* level;
         Camera camera;
@@ -36,14 +40,22 @@ namespace MiniFPS {
         float reloadTimer;
 
         void UpdateInputState();
+
         void Move(float frameDelta, float speedModifier);
+
         void Rotate(float frameDelta, float rotationModifier);
+
         void Update(float frameDelta, float speedModifier, float rotationModifier);
+
         bool GameHasEnded() const;
+
         bool InMainMenu() const;
+
         bool CanShoot();
-        bool Shoot(std::vector<Enemy>& enemies, float wallDistance, Audio& audio);
-        void Reload(Audio& audio);
+
+        bool Shoot(std::vector<Enemy> &enemies, float wallDistance, Audio &audio);
+
+        void Reload(Audio &audio);
 
     public:
         static const int MAX_HEALTH = 5;

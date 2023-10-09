@@ -1,7 +1,9 @@
 #include "Settings.h"
 
-namespace MiniFPS {
-    Settings::Settings() {
+namespace MiniFPS
+{
+    Settings::Settings()
+    {
         screenWidth = 0;
         screenHeight = 0;
         renderDistance = 0;
@@ -16,12 +18,13 @@ namespace MiniFPS {
         musicVolume = 0;
     }
 
-    Settings::Settings(const std::string& version, int screenWidth, int screenHeight,
+    Settings::Settings(const std::string &version, int screenWidth, int screenHeight,
                        int renderDistance, bool vSync,
                        float fieldOfView, float speedModifier, float rotationModifier, float playerStartX,
                        float playerStartY, float playerStartAngle,
                        float effectVolume, float musicVolume,
-                       const std::string& levelPath, const std::map<std::string, std::string> &fontPaths) {
+                       const std::string &levelPath, const std::map<std::string, std::string> &fontPaths)
+    {
         this->version = version;
         this->screenWidth = screenWidth;
         this->screenHeight = screenHeight;
@@ -37,15 +40,18 @@ namespace MiniFPS {
         this->levelPath = levelPath;
         this->vSync = vSync;
 
-        for (const auto &font: fontPaths) {
+        for (const auto &font: fontPaths)
+        {
             this->fontPaths.emplace_back(font);
         }
     }
 
-    Settings Settings::LoadSettings(const std::string& assetsFilePath, const std::string& settingsFilePath) {
+    Settings Settings::LoadSettings(const std::string &assetsFilePath, const std::string &settingsFilePath)
+    {
         std::ifstream f(assetsFilePath + settingsFilePath);
 
-        if (!f.is_open()) {
+        if (!f.is_open())
+        {
             // TODO
         }
 

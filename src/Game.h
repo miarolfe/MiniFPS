@@ -9,16 +9,22 @@
 #include "Texture.h"
 #include "Utilities.h"
 
-namespace MiniFPS {
-    class Game {
+namespace MiniFPS
+{
+    class Game
+    {
     public:
         Game();
+
         void Update();
+
         bool IsRunning();
+
         ~Game();
 
     private:
         void LoadTextures();
+
         void SetupGame();
 
     private:

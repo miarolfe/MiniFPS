@@ -1,6 +1,7 @@
 #include "Game.h"
 
-MiniFPS::Game::Game() {
+MiniFPS::Game::Game()
+{
     InitializeSDLSubsystems();
 
     settings = Settings::LoadSettings(GetSDLAssetsFolderPath(), "settings.json");
@@ -9,7 +10,9 @@ MiniFPS::Game::Game() {
 
     LoadTextures();
 
-    if (!InitializeWindowAndRenderer(&window, &sdlRenderer, settings.screenWidth, settings.screenHeight, settings.vSync)) {
+    if (!InitializeWindowAndRenderer(&window, &sdlRenderer, settings.screenWidth, settings.screenHeight,
+                                     settings.vSync))
+    {
         std::cerr << "Window and/or renderer could not be initialized" << std::endl;
     }
 
@@ -18,12 +21,17 @@ MiniFPS::Game::Game() {
     mainMenu = MainMenu(settings, fontManager.fonts[0]);
 }
 
-void MiniFPS::Game::Update() {
-    if (mainMenu.player.InMainMenu() && !mainMenu.player.GameHasEnded()) {
+void MiniFPS::Game::Update()
+{
+    if (mainMenu.player.InMainMenu() && !mainMenu.player.GameHasEnded())
+    {
         renderer.DrawMainMenu(mainMenu);
         mainMenu.Update();
-    } else if (!gamePlayer.GameHasEnded()) {
-        if (!gameSetup) {
+    }
+    else if (!gamePlayer.GameHasEnded())
+    {
+        if (!gameSetup)
+        {
             SetupGame();
             gameSetup = true;
         }
@@ -34,13 +42,16 @@ void MiniFPS::Game::Update() {
 
         gamePlayer.Update(frameDelta, settings.speedModifier, settings.rotationModifier);
 
-        if (gamePlayer.inputState.leftMouseButtonPressed) {
-            if (gamePlayer.Shoot(enemies, renderer.zBuffer[gamePlayer.camera.viewportWidth / 2], audio)) {
+        if (gamePlayer.inputState.leftMouseButtonPressed)
+        {
+            if (gamePlayer.Shoot(enemies, renderer.zBuffer[gamePlayer.camera.viewportWidth / 2], audio))
+            {
                 // audio.PlayEffect("testEffect");
             }
         }
 
-        if (gamePlayer.inputState.rightMouseButtonPressed) {
+        if (gamePlayer.inputState.rightMouseButtonPressed)
+        {
             gamePlayer.Reload(audio);
         }
 
@@ -48,33 +59,41 @@ void MiniFPS::Game::Update() {
     }
 }
 
-bool MiniFPS::Game::IsRunning() {
+bool MiniFPS::Game::IsRunning()
+{
     return !gamePlayer.GameHasEnded();
 }
 
-MiniFPS::Game::~Game() {
+MiniFPS::Game::~Game()
+{
     FreeResources(renderer, audio, fontManager);
     DeactivateSDLSubsystems();
     Quit(window, sdlRenderer);
 }
 
-void MiniFPS::Game::LoadTextures() {
+void MiniFPS::Game::LoadTextures()
+{
     const std::vector<std::string> spriteFileNames = GetFilesInDirectory(GetSDLAssetsFolderPath() + "sprites/");
 
-    for (const auto& file : spriteFileNames) {
-        const std::string name = file.substr(0, file.size()-4);
+    for (const auto &file: spriteFileNames)
+    {
+        const std::string name = file.substr(0, file.size() - 4);
 
         const Texture newTexture(name, GetSDLAssetsFolderPath() + "sprites/" + file);
         textureNameToTextureMap[name] = newTexture;
     }
 }
 
-void MiniFPS::Game::SetupGame() {
+void MiniFPS::Game::SetupGame()
+{
     level = Level(GetSDLAssetsFolderPath() + settings.levelPath);
 
-    for (const auto& pair : textureNameToTextureMap) {
-        for (const auto& x : level.textureIdMap) {
-            if (x.second == pair.first) {
+    for (const auto &pair: textureNameToTextureMap)
+    {
+        for (const auto &x: level.textureIdMap)
+        {
+            if (x.second == pair.first)
+            {
                 textureMap[x.first] = pair.second;
             }
         }
@@ -82,7 +101,8 @@ void MiniFPS::Game::SetupGame() {
 
     textureMap[-1] = textureNameToTextureMap["fallback"];
 
-    for (const auto& pair : level.enemySpawnLocations) {
+    for (const auto &pair: level.enemySpawnLocations)
+    {
         enemies.push_back(Enemy(pair.second, pair.first));
     }
 

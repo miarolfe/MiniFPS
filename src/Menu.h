@@ -5,11 +5,14 @@
 #include "Font.h"
 #include "Player.h"
 
-namespace MiniFPS {
-    class MainMenu {
+namespace MiniFPS
+{
+    class MainMenu
+    {
     public:
         MainMenu();
-        MainMenu(const Settings& settings, const Font& font);
+
+        MainMenu(const Settings &settings, const Font &font);
 
         Font font;
         Player player;
@@ -19,5 +22,6 @@ namespace MiniFPS {
         void Update();
     };
 
-    SDL_Texture* RenderTextToTexture(SDL_Renderer* sdlRenderer, const Font& font, const std::string &text, int r, int g, int b);
+    SDL_Texture*
+    RenderTextToTexture(SDL_Renderer* sdlRenderer, const Font &font, const std::string &text, int r, int g, int b);
 }
