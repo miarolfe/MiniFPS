@@ -201,11 +201,13 @@ namespace MiniFPS
     }
 
     // TODO: Make audio a singleton
-    bool Player::Shoot(std::vector<Enemy>& enemies, float wallDistance, AudioHandler& audio)
+    bool Player::Shoot(std::vector<Enemy>& enemies, float wallDistance)
     {
+        AudioHandler& audioHandler = AudioHandler::GetInstance();
+
         if (CanShoot())
         {
-            audio.PlayEffect("GunShoot4");
+            audioHandler.PlayEffect("GunShoot4");
             m_currentAmmo--;
 
             for (Enemy& enemy: enemies)
@@ -248,24 +250,26 @@ namespace MiniFPS
         }
         else
         {
-            audio.PlayEffect("GunNoAmmo1");
+            audioHandler.PlayEffect("GunNoAmmo1");
         }
 
 
         return false;
     }
 
-    void Player::Reload(AudioHandler& audio)
+    void Player::Reload()
     {
+        AudioHandler& audioHandler = AudioHandler::GetInstance();
+
         if (!m_reloading)
         {
-            audio.PlayEffect("GunReload1");
+            audioHandler.PlayEffect("GunReload1");
             m_reloadTimer = 0;
             m_reloading = true;
         }
         else
         {
-            audio.PlayEffect("GunNoAmmo1");
+            audioHandler.PlayEffect("GunNoAmmo1");
         }
     }
 

@@ -74,6 +74,22 @@ namespace MiniFPS
         }
     }
 
+    AudioHandler& AudioHandler::GetInstance(const string& audioFolderPath, const Settings& settings)
+    {
+        if (s_instance == nullptr)
+        {
+            if (!s_initialized) {
+                s_instance = new AudioHandler(audioFolderPath, settings);
+                s_initialized = true;
+            }
+            else {
+                std::cerr << "Attempting to reinitialize AudioHandler" << std::endl;
+            }
+        }
+
+        return *s_instance;
+    }
+
     bool AudioHandler::PlayEffect(const std::string& name, int loops)
     {
         if (m_effects.count(name) > 0)
@@ -163,4 +179,7 @@ namespace MiniFPS
             Mix_FreeMusic(iter->second.music);
         }
     }
+
+    AudioHandler* AudioHandler::s_instance = nullptr;
+    bool AudioHandler::s_initialized = false;
 }

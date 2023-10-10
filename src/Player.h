@@ -53,9 +53,9 @@ namespace MiniFPS
 
         bool CanShoot();
 
-        bool Shoot(std::vector<Enemy>& enemies, float wallDistance, AudioHandler& audio);
+        bool Shoot(std::vector<Enemy>& enemies, float wallDistance);
 
-        void Reload(AudioHandler& audio);
+        void Reload();
 
     public:
         static const int MAX_HEALTH = 5;

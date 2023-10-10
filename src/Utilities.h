@@ -29,7 +29,7 @@ namespace MiniFPS
 
     void ShutdownSDLTTF();
 
-    void FreeResources(Renderer renderer, AudioHandler audio, FontManager fontManager);
+    void FreeResources(Renderer renderer, AudioHandler& audio, FontManager fontManager);
 
     void Quit(SDL_Window* window, SDL_Renderer* renderer);
 
