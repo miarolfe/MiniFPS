@@ -59,8 +59,14 @@ namespace MiniFPS
         int x;
         int y;
 
-        Vec2Int operator+(Vec2Int const& otherVector) const;
+        Vec2Int& operator=(const Vec2Int& otherVector);
 
-        Vec2Int operator-(Vec2Int const& otherVector) const;
+        Vec2Int operator+(const Vec2Int& otherVector) const;
+
+        Vec2Int& operator+=(const Vec2Int& otherVector);
+
+        Vec2Int operator-(const Vec2Int& otherVector) const;
+
+        Vec2Int& operator-=(const Vec2Int& otherVector);
     };
 }

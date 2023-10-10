@@ -91,13 +91,37 @@ namespace MiniFPS
 
     Vec2Int::Vec2Int(const Vec2Int& vector) = default;
 
+    Vec2Int& Vec2Int::operator=(const MiniFPS::Vec2Int& otherVector)
+    {
+        if (this != &otherVector)
+        {
+            x = otherVector.x;
+            y = otherVector.y;
+        }
+        return *this;
+    }
+
     Vec2Int Vec2Int::operator+(const Vec2Int& otherVector) const
     {
         return {x + otherVector.x, y + otherVector.y};
     }
 
+    Vec2Int& Vec2Int::operator+=(const Vec2Int& otherVector)
+    {
+        x += otherVector.x;
+        y += otherVector.y;
+        return *this;
+    }
+
     Vec2Int Vec2Int::operator-(const Vec2Int& otherVector) const
     {
         return {x - otherVector.x, y - otherVector.y};
+    }
+
+    Vec2Int& Vec2Int::operator-=(const Vec2Int& otherVector)
+    {
+        x -= otherVector.x;
+        y -= otherVector.y;
+        return *this;
     }
 }
