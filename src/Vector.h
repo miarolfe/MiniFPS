@@ -6,11 +6,10 @@
 namespace MiniFPS
 {
     // Forward declarations so conversion constructors can exist
-    class Vec2;
+    struct Vec2;
+    struct Vec2Int;
 
-    class Vec2Int;
-
-    class Vec2
+    struct Vec2
     {
     public:
         Vec2();
@@ -49,7 +48,7 @@ namespace MiniFPS
         float operator*(const Vec2 &otherVector);
     };
 
-    class Vec2Int
+    struct Vec2Int
     {
     public:
         Vec2Int();
