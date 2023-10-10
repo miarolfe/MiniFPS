@@ -34,11 +34,11 @@ namespace MiniFPS
     public:
         AudioHandler();
 
-        explicit AudioHandler(const string &audioFolderPath, const Settings &settings);
+        explicit AudioHandler(const string& audioFolderPath, const Settings& settings);
 
-        bool PlayEffect(const string &name, int loops = 0);
+        bool PlayEffect(const string& name, int loops = 0);
 
-        bool PlayTrack(const string &name, int loops = 0);
+        bool PlayTrack(const string& name, int loops = 0);
 
         void SetEffectVolume(float volume);
 

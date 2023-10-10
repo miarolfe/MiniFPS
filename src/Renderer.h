@@ -48,51 +48,51 @@ namespace MiniFPS
     public:
         Renderer();
 
-        Renderer(SDL_Renderer* sdlRenderer, const Settings &settings);
+        Renderer(SDL_Renderer* sdlRenderer, const Settings& settings);
 
     private:
         void SetPixel(SDLTextureBuffer buffer, Color color, IntPoint point);
 
-        static bool ShouldShadePixel(const Vec2 &point);
+        static bool ShouldShadePixel(const Vec2& point);
 
         Texture GetTexBuffer(short textureId);
 
         bool WallIsWestOrEastFacing(FloatPoint point);
 
         int
-        GetTexX(const Vec2 &startPos, const Vec2 &intersectionPos, const Vec2 &rayLength1D, const Vec2 &rayUnitStepSize,
-                const Vec2 &rayDir, int textureSize);
+        GetTexX(const Vec2& startPos, const Vec2& intersectionPos, const Vec2& rayLength1D, const Vec2& rayUnitStepSize,
+                const Vec2& rayDir, int textureSize);
 
-        void CopyTextureToFrameTexture(SDLTextureBuffer buffer, const Texture &texture, IntPoint point, int w, int h);
+        void CopyTextureToFrameTexture(SDLTextureBuffer buffer, const Texture& texture, IntPoint point, int w, int h);
 
-        void DrawTexturedColumn(const Texture &texture, const Camera &camera, SDLTextureBuffer buffer, float distance,
-                                const Vec2 &cell, int rayX, int texX);
+        void DrawTexturedColumn(const Texture& texture, const Camera& camera, SDLTextureBuffer buffer, float distance,
+                                const Vec2& cell, int rayX, int texX);
 
-        void DrawCeiling(const Camera &camera, SDLTextureBuffer buffer);
+        void DrawCeiling(const Camera& camera, SDLTextureBuffer buffer);
 
-        void DrawFloor(const Camera &camera, SDLTextureBuffer buffer);
+        void DrawFloor(const Camera& camera, SDLTextureBuffer buffer);
 
         void DrawButton(Button button);
 
-        void DrawTextStr(const string &text, const Font &font, FloatPoint point, int width, int r, int g, int b);
+        void DrawTextStr(const string& text, const Font& font, FloatPoint point, int width, int r, int g, int b);
 
-        void DrawTextStrH(const std::string &text, const Font &font, FloatPoint point, int height, int r, int g, int b);
+        void DrawTextStrH(const std::string& text, const Font& font, FloatPoint point, int height, int r, int g, int b);
 
     public:
-        RaycastResult CastRay(int column, const Player &player);
+        RaycastResult CastRay(int column, const Player& player);
 
         void FreeTextures();
 
-        void DrawMainMenu(const MainMenu &mainMenu);
+        void DrawMainMenu(const MainMenu& mainMenu);
 
-        void DrawEnemies(const Player &player, std::vector<Enemy> &enemies, SDLTextureBuffer buffer);
+        void DrawEnemies(const Player& player, std::vector<Enemy>& enemies, SDLTextureBuffer buffer);
 
-        void DrawGame(const Player &player, std::vector<Enemy> &enemies, const Font &font);
+        void DrawGame(const Player& player, std::vector<Enemy>& enemies, const Font& font);
 
-        void SetTextureMap(const std::unordered_map<short, Texture> &newTextureMap);
+        void SetTextureMap(const std::unordered_map<short, Texture>& newTextureMap);
 
     private:
         static bool
-        CompareEnemyDistancePair(const std::pair<float, Enemy> &pair1, const std::pair<float, Enemy> &pair2);
+        CompareEnemyDistancePair(const std::pair<float, Enemy>& pair1, const std::pair<float, Enemy>& pair2);
     };
 }

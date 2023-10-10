@@ -8,7 +8,7 @@ namespace MiniFPS
         size = -1;
     }
 
-    Texture::Texture(const std::string &name, const std::string &filePath)
+    Texture::Texture(const std::string& name, const std::string& filePath)
     {
         this->name = name;
 

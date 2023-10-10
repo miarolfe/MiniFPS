@@ -5,7 +5,7 @@ namespace MiniFPS
 {
     Renderer::Renderer() = default;
 
-    Renderer::Renderer(SDL_Renderer* sdlRenderer, const Settings &settings) : m_sdlRenderer(sdlRenderer)
+    Renderer::Renderer(SDL_Renderer* sdlRenderer, const Settings& settings) : m_sdlRenderer(sdlRenderer)
     {
         m_streamingFrameTexture = SDL_CreateTexture(sdlRenderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING,
                                                     static_cast<int>(settings.screenWidth),
@@ -17,7 +17,7 @@ namespace MiniFPS
         m_zBuffer = static_cast<float*>(malloc(sizeof(float) * settings.screenWidth));
     }
 
-    void Renderer::SetTextureMap(const std::unordered_map<short, Texture> &newTextureMap)
+    void Renderer::SetTextureMap(const std::unordered_map<short, Texture>& newTextureMap)
     {
         m_textureMap = newTextureMap;
     }
@@ -28,7 +28,7 @@ namespace MiniFPS
         row[point.x] = color.argb;
     }
 
-    bool Renderer::ShouldShadePixel(const Vec2 &point)
+    bool Renderer::ShouldShadePixel(const Vec2& point)
     {
         const float hitX = point.x - floor(point.x + 0.5f); // Fractional part of cellX
         const float hitY = point.y - floor(point.y + 0.5f); // Fractional part of cellY
@@ -65,9 +65,9 @@ namespace MiniFPS
         return (std::abs(point.x - floor(point.x + 0.5f)) > std::abs(point.y - floor(point.y + 0.5f)));
     }
 
-    int Renderer::GetTexX(const Vec2 &startPos, const Vec2 &intersectionPos,
-                          const Vec2 &rayLength1D, const Vec2 &rayUnitStepSize,
-                          const Vec2 &rayDir, const int textureSize)
+    int Renderer::GetTexX(const Vec2& startPos, const Vec2& intersectionPos,
+                          const Vec2& rayLength1D, const Vec2& rayUnitStepSize,
+                          const Vec2& rayDir, const int textureSize)
     {
         float wallX;
 
@@ -87,14 +87,16 @@ namespace MiniFPS
         wallX -= floor((wallX));
 
         int texX = int(wallX * float(textureSize));
-        if (!wallIsWestOrEastFacing && rayDir.x > 0) texX = textureSize - texX - 1;
-        if (wallIsWestOrEastFacing && rayDir.y < 0) texX = textureSize - texX - 1;
+        if (!wallIsWestOrEastFacing && rayDir.x > 0)
+        { texX = textureSize - texX - 1; }
+        if (wallIsWestOrEastFacing && rayDir.y < 0)
+        { texX = textureSize - texX - 1; }
 
         return texX;
     }
 
     void
-    Renderer::CopyTextureToFrameTexture(SDLTextureBuffer buffer, const Texture &texture, IntPoint point, int w, int h)
+    Renderer::CopyTextureToFrameTexture(SDLTextureBuffer buffer, const Texture& texture, IntPoint point, int w, int h)
     {
         const float scaleX = static_cast<float>(texture.size) / w;
         const float scaleY = static_cast<float>(texture.size) / h;
@@ -119,7 +121,7 @@ namespace MiniFPS
 
     void Renderer::FreeTextures()
     {
-        for (const auto &idTexturePair: m_textureMap)
+        for (const auto& idTexturePair: m_textureMap)
         {
             for (int row = 0; row < idTexturePair.second.size; row++)
             {
@@ -131,8 +133,8 @@ namespace MiniFPS
     }
 
     void
-    Renderer::DrawTexturedColumn(const Texture &texture, const Camera &camera, SDLTextureBuffer buffer, float distance,
-                                 const Vec2 &cell, int rayX, int texX)
+    Renderer::DrawTexturedColumn(const Texture& texture, const Camera& camera, SDLTextureBuffer buffer, float distance,
+                                 const Vec2& cell, int rayX, int texX)
     {
         const int columnHeight = ((camera.viewportHeight)) / distance;
 
@@ -162,7 +164,7 @@ namespace MiniFPS
         }
     }
 
-    void Renderer::DrawCeiling(const Camera &camera, SDLTextureBuffer buffer)
+    void Renderer::DrawCeiling(const Camera& camera, SDLTextureBuffer buffer)
     {
         for (int frameY = 0; frameY < camera.viewportHeight / 2; frameY++)
         {
@@ -173,7 +175,7 @@ namespace MiniFPS
         }
     }
 
-    void Renderer::DrawFloor(const Camera &camera, SDLTextureBuffer buffer)
+    void Renderer::DrawFloor(const Camera& camera, SDLTextureBuffer buffer)
     {
         for (int frameY = static_cast<int>(camera.viewportHeight / 2); frameY < camera.viewportHeight; frameY++)
         {
@@ -193,10 +195,10 @@ namespace MiniFPS
                                                        SDL_TEXTUREACCESS_STREAMING, button.m_width, button.m_height);
 
         const SDL_Rect sdlRect{
-                static_cast<int>(button.GetLeftBound()),
-                static_cast<int>(button.GetTopBound()),
-                static_cast<int>(button.m_width),
-                static_cast<int>(button.m_height)
+            static_cast<int>(button.GetLeftBound()),
+            static_cast<int>(button.GetTopBound()),
+            static_cast<int>(button.m_width),
+            static_cast<int>(button.m_height)
         };
 
         SDLTextureBuffer buffer;
@@ -218,7 +220,7 @@ namespace MiniFPS
         SDL_DestroyTexture(buttonTexture);
     }
 
-    void Renderer::DrawTextStr(const std::string &text, const Font &font, FloatPoint point, int width, int r = 255,
+    void Renderer::DrawTextStr(const std::string& text, const Font& font, FloatPoint point, int width, int r = 255,
                                int g = 255, int b = 255)
     {
         SDL_SetRenderTarget(m_sdlRenderer, m_renderFrameTexture);
@@ -240,7 +242,7 @@ namespace MiniFPS
         SDL_DestroyTexture(texture);
     }
 
-    void Renderer::DrawTextStrH(const std::string &text, const Font &font, FloatPoint point, int height, int r = 255,
+    void Renderer::DrawTextStrH(const std::string& text, const Font& font, FloatPoint point, int height, int r = 255,
                                 int g = 255, int b = 255)
     {
         SDL_SetRenderTarget(m_sdlRenderer, m_renderFrameTexture);
@@ -262,7 +264,7 @@ namespace MiniFPS
         SDL_DestroyTexture(texture);
     }
 
-    void Renderer::DrawMainMenu(const MainMenu &mainMenu)
+    void Renderer::DrawMainMenu(const MainMenu& mainMenu)
     {
         SDLTextureBuffer buffer;
 
@@ -308,13 +310,13 @@ namespace MiniFPS
         SDL_RenderPresent(m_sdlRenderer);
     }
 
-    void Renderer::DrawEnemies(const Player &player, std::vector<Enemy> &enemies, SDLTextureBuffer buffer)
+    void Renderer::DrawEnemies(const Player& player, std::vector<Enemy>& enemies, SDLTextureBuffer buffer)
     {
         std::vector<std::pair<float, Enemy>> enemyDistances;
 
-        const Camera &cam = player.m_camera;
+        const Camera& cam = player.m_camera;
 
-        for (Enemy &enemy: enemies)
+        for (Enemy& enemy: enemies)
         {
             if (enemy.IsVisible())
             {
@@ -324,31 +326,35 @@ namespace MiniFPS
 
         std::sort(enemyDistances.begin(), enemyDistances.end(), CompareEnemyDistancePair);
 
-        for (auto &enemyDistance: enemyDistances)
+        for (auto& enemyDistance: enemyDistances)
         {
             const Vec2 enemyPos = enemyDistance.second.m_pos - cam.pos;
-            const Texture &texture = GetTexBuffer(enemyDistance.second.m_textureId);
+            const Texture& texture = GetTexBuffer(enemyDistance.second.m_textureId);
 
             const float invDet = 1.0f / (cam.plane.x * cam.direction.y - cam.direction.x * cam.plane.y);
 
             const Vec2 transform = {
-                    invDet * ((cam.direction.y * enemyPos.x) - (cam.direction.x * enemyPos.y)) * -1.0f,
-                    invDet * ((-cam.plane.y * enemyPos.x) + (cam.plane.x * enemyPos.y))
+                invDet * ((cam.direction.y * enemyPos.x) - (cam.direction.x * enemyPos.y)) * -1.0f,
+                invDet * ((-cam.plane.y * enemyPos.x) + (cam.plane.x * enemyPos.y))
             };
 
             const int enemyScreenX = static_cast<int>((cam.viewportWidth / 2) * (1 + transform.x / transform.y));
 
             const int enemyHeight = std::min(2000, std::abs(static_cast<int>(cam.viewportHeight / (transform.y))));
             int drawStartY = -enemyHeight / 2 + cam.viewportHeight / 2;
-            if (drawStartY < 0) drawStartY = 0;
+            if (drawStartY < 0)
+            { drawStartY = 0; }
             int drawEndY = enemyHeight / 2 + cam.viewportHeight / 2;
-            if (drawEndY >= cam.viewportHeight) drawEndY = cam.viewportHeight - 1;
+            if (drawEndY >= cam.viewportHeight)
+            { drawEndY = cam.viewportHeight - 1; }
 
             const int enemyWidth = std::min(2000, std::abs(static_cast<int>(cam.viewportHeight / (transform.y))));
             int drawStartX = (-enemyWidth / 2) + enemyScreenX;
-            if (drawStartX < 0) drawStartX = 0;
+            if (drawStartX < 0)
+            { drawStartX = 0; }
             int drawEndX = (enemyWidth / 2) + enemyScreenX;
-            if (drawEndX >= cam.viewportWidth) drawEndX = cam.viewportWidth - 1;
+            if (drawEndX >= cam.viewportWidth)
+            { drawEndX = cam.viewportWidth - 1; }
 
             for (int stripe = drawStartX; stripe < drawEndX; stripe++)
             {
@@ -371,7 +377,7 @@ namespace MiniFPS
         }
     }
 
-    void Renderer::DrawGame(const Player &player, std::vector<Enemy> &enemies, const Font &font)
+    void Renderer::DrawGame(const Player& player, std::vector<Enemy>& enemies, const Font& font)
     {
         SDLTextureBuffer buffer;
         SDL_LockTexture(m_streamingFrameTexture, nullptr, &buffer.pixels, &buffer.pitch);
@@ -398,21 +404,21 @@ namespace MiniFPS
                                      texture.size);
 
             DrawTexturedColumn(
-                    texture,
-                    player.m_camera,
-                    buffer,
-                    result.adjustedDistance,
-                    intersection,
-                    ray,
-                    texX);
+                texture,
+                player.m_camera,
+                buffer,
+                result.adjustedDistance,
+                intersection,
+                ray,
+                texX);
         }
 
         DrawEnemies(player, enemies, buffer);
 
         const int weaponTextureSize = player.m_camera.viewportWidth / 4;
         CopyTextureToFrameTexture(buffer, player.m_weaponTexture, {player.m_camera.viewportWidth / 2,
-                                                                 player.m_camera.viewportHeight -
-                                                                 (weaponTextureSize / 2)}, weaponTextureSize,
+                                                                   player.m_camera.viewportHeight -
+                                                                   (weaponTextureSize / 2)}, weaponTextureSize,
                                   weaponTextureSize);
 
         SDL_UnlockTexture(m_streamingFrameTexture);
@@ -443,24 +449,24 @@ namespace MiniFPS
         SDL_RenderPresent(m_sdlRenderer);
     }
 
-    bool Renderer::CompareEnemyDistancePair(const std::pair<float, Enemy> &pair1, const std::pair<float, Enemy> &pair2)
+    bool Renderer::CompareEnemyDistancePair(const std::pair<float, Enemy>& pair1, const std::pair<float, Enemy>& pair2)
     {
         return pair1.first > pair2.first;
     }
 
-    RaycastResult Renderer::CastRay(int column, const Player &player)
+    RaycastResult Renderer::CastRay(int column, const Player& player)
     {
         RaycastResult result;
 
         const float rayScreenPos = (
-                2.0f * static_cast<float>(column) / static_cast<float>((player.m_camera.viewportWidth)) - 1.0f);
+            2.0f * static_cast<float>(column) / static_cast<float>((player.m_camera.viewportWidth)) - 1.0f);
         const float rayAngle = atan2f(player.m_camera.direction.y, player.m_camera.direction.x) +
                                atanf(rayScreenPos * tanf(player.m_camera.horizontalFieldOfView / 2));
 
         result.direction = {
-                // Need to multiply by -1 to avoid flipped rendering
-                player.m_camera.direction.x + player.m_camera.plane.x * rayScreenPos * -1.0f,
-                player.m_camera.direction.y + player.m_camera.plane.y * rayScreenPos * -1.0f
+            // Need to multiply by -1 to avoid flipped rendering
+            player.m_camera.direction.x + player.m_camera.plane.x * rayScreenPos * -1.0f,
+            player.m_camera.direction.y + player.m_camera.plane.y * rayScreenPos * -1.0f
         };
 
         result.direction.Normalize();
@@ -523,13 +529,16 @@ namespace MiniFPS
             }
         }
 
-        if (side == 0) result.distance = sideDistance.x - deltaDistance.x;
-        else result.distance = sideDistance.y - deltaDistance.y;
+        if (side == 0)
+        { result.distance = sideDistance.x - deltaDistance.x; }
+        else
+        { result.distance = sideDistance.y - deltaDistance.y; }
 
-        if (!result.collided) result.distance = 1000.0f;
+        if (!result.collided)
+        { result.distance = 1000.0f; }
 
         const float adjustedDistance =
-                result.distance * cosf(rayAngle - atan2f(player.m_camera.direction.y, player.m_camera.direction.x));
+            result.distance * cosf(rayAngle - atan2f(player.m_camera.direction.y, player.m_camera.direction.x));
         result.adjustedDistance = adjustedDistance;
 
         result.deltaDistance = deltaDistance;

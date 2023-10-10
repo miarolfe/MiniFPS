@@ -39,8 +39,9 @@ MiniFPS::Game::Game()
     }
 
     m_renderer = Renderer(m_sdlRenderer, m_settings);
-    SDL_SetRelativeMouseMode(SDL_FALSE);
     m_mainMenu = MainMenu(m_settings, m_fontManager.m_fonts[0]);
+
+    SDL_SetRelativeMouseMode(SDL_FALSE);
 }
 
 void MiniFPS::Game::Update()
@@ -100,7 +101,7 @@ void MiniFPS::Game::LoadTextures()
 {
     const std::vector<std::string> spriteFileNames = GetFilesInDirectory(GetSDLAssetsFolderPath() + "sprites/");
 
-    for (const auto &file: spriteFileNames)
+    for (const auto& file: spriteFileNames)
     {
         const std::string name = file.substr(0, file.size() - 4);
 
@@ -113,9 +114,9 @@ void MiniFPS::Game::SetupGame()
 {
     m_level = Level(GetSDLAssetsFolderPath() + m_settings.levelPath);
 
-    for (const auto &pair: m_textureNameToTextureMap)
+    for (const auto& pair: m_textureNameToTextureMap)
     {
-        for (const auto &x: m_level.m_textureIdMap)
+        for (const auto& x: m_level.m_textureIdMap)
         {
             if (x.second == pair.first)
             {
@@ -126,7 +127,7 @@ void MiniFPS::Game::SetupGame()
 
     m_textureMap[-1] = m_textureNameToTextureMap["fallback"];
 
-    for (const auto &pair: m_level.m_enemySpawnLocations)
+    for (const auto& pair: m_level.m_enemySpawnLocations)
     {
         m_enemies.emplace_back(pair.second, pair.first);
     }

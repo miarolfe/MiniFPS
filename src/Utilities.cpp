@@ -165,20 +165,20 @@ namespace MiniFPS
         return filePath;
     }
 
-    void ClearFile(const std::string &fileName)
+    void ClearFile(const std::string& fileName)
     {
         std::ofstream outFile(fileName, std::ofstream::out | std::ofstream::trunc);
         outFile.close();
     }
 
-    void WriteLineToFile(const std::string &fileName, const std::string &line)
+    void WriteLineToFile(const std::string& fileName, const std::string& line)
     {
         std::ofstream outFile(fileName, std::ios::app);
         outFile << line << std::endl;
         outFile.close();
     }
 
-    std::vector<std::string> GetFilesInDirectory(const std::string &directoryPath)
+    std::vector<std::string> GetFilesInDirectory(const std::string& directoryPath)
     {
         std::vector<std::string> files;
         DIR* dir;
@@ -203,7 +203,7 @@ namespace MiniFPS
         return files;
     }
 
-    std::vector<std::string> GetFoldersInDirectory(const std::string &directoryPath)
+    std::vector<std::string> GetFoldersInDirectory(const std::string& directoryPath)
     {
         std::vector<std::string> folders;
         DIR* dir;
@@ -250,6 +250,7 @@ namespace MiniFPS
         const float dotProduct3 = CalculateDotProduct(v3, v1);
 
         // If all cross products have the same sign, the point is inside the triangle
-        return ((dotProduct1 >= 0 && dotProduct2 >= 0 && dotProduct3 >= 0) || (dotProduct1 <= 0 && dotProduct2 <= 0 && dotProduct3 <= 0));
+        return ((dotProduct1 >= 0 && dotProduct2 >= 0 && dotProduct3 >= 0) ||
+                (dotProduct1 <= 0 && dotProduct2 <= 0 && dotProduct3 <= 0));
     }
 }

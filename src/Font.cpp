@@ -9,7 +9,7 @@ namespace MiniFPS
         pointSize = -1;
     }
 
-    Font::Font(const std::string &name, const std::string &fontPath, int pointSize)
+    Font::Font(const std::string& name, const std::string& fontPath, int pointSize)
     {
         this->name = name;
 
@@ -26,7 +26,7 @@ namespace MiniFPS
         this->pointSize = pointSize;
     }
 
-    TTF_Font* Font::LoadFont(const std::string &fontPath, int pointSize)
+    TTF_Font* Font::LoadFont(const std::string& fontPath, int pointSize)
     {
         return TTF_OpenFont(fontPath.c_str(), pointSize);
     }
@@ -36,9 +36,9 @@ namespace MiniFPS
 
     }
 
-    FontManager::FontManager(const Settings &settings)
+    FontManager::FontManager(const Settings& settings)
     {
-        for (const auto &fontPath: settings.fontPaths)
+        for (const auto& fontPath: settings.fontPaths)
         {
             m_fonts.emplace_back(fontPath.first, GetSDLAssetsFolderPath() + fontPath.second, 24);
         }
@@ -46,7 +46,7 @@ namespace MiniFPS
 
     void FontManager::FreeFonts()
     {
-        for (const Font &font: m_fonts)
+        for (const Font& font: m_fonts)
         {
             TTF_CloseFont(font.ttf);
         }

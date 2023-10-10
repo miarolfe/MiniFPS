@@ -13,6 +13,6 @@ namespace MiniFPS
 
         Texture();
 
-        Texture(const std::string &name, const std::string &filePath);
+        Texture(const std::string& name, const std::string& filePath);
     };
 }

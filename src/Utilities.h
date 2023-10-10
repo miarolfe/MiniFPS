@@ -39,13 +39,13 @@ namespace MiniFPS
 
     std::string GetSDLAssetsFolderPath();
 
-    void ClearFile(const std::string &fileName);
+    void ClearFile(const std::string& fileName);
 
-    void WriteLineToFile(const std::string &fileName, const std::string &line);
+    void WriteLineToFile(const std::string& fileName, const std::string& line);
 
-    std::vector<std::string> GetFilesInDirectory(const std::string &directoryPath);
+    std::vector<std::string> GetFilesInDirectory(const std::string& directoryPath);
 
-    std::vector<std::string> GetFoldersInDirectory(const std::string &directoryPath);
+    std::vector<std::string> GetFoldersInDirectory(const std::string& directoryPath);
 
-    bool IsPointInRightAngledTriangle(FloatPoint point, FloatPoint vertex1, FloatPoint vertex2, FloatPoint vertex3);
+    // bool IsPointInRightAngledTriangle(FloatPoint point, FloatPoint vertex1, FloatPoint vertex2, FloatPoint vertex3);
 }

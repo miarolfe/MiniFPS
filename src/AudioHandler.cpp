@@ -17,20 +17,20 @@ namespace MiniFPS
 
     AudioHandler::AudioHandler() = default;
 
-    AudioHandler::AudioHandler(const string &audioFolderPath, const Settings &settings)
+    AudioHandler::AudioHandler(const string& audioFolderPath, const Settings& settings)
     {
         SetEffectVolume(settings.effectVolume);
         SetMusicVolume(settings.musicVolume);
 
         const std::vector<std::string> folders = GetFoldersInDirectory(audioFolderPath);
 
-        for (const std::string &folder: folders)
+        for (const std::string& folder: folders)
         {
             if (folder == "effects")
             {
                 std::vector<string> const effectFiles = GetFilesInDirectory(audioFolderPath + folder);
 
-                for (const string &file: effectFiles)
+                for (const string& file: effectFiles)
                 {
                     const string effectFilePath = audioFolderPath + folder + "/" + file;
                     Mix_Chunk* effect = Mix_LoadWAV((effectFilePath).c_str());
@@ -49,7 +49,7 @@ namespace MiniFPS
             {
                 std::vector<std::string> const trackFiles = GetFilesInDirectory(audioFolderPath + folder);
 
-                for (const std::string &file: trackFiles)
+                for (const std::string& file: trackFiles)
                 {
                     const std::string trackFilePath = audioFolderPath + folder + "/" + file;
                     Mix_Music* track = Mix_LoadMUS((trackFilePath).c_str());
@@ -74,7 +74,7 @@ namespace MiniFPS
         }
     }
 
-    bool AudioHandler::PlayEffect(const std::string &name, int loops)
+    bool AudioHandler::PlayEffect(const std::string& name, int loops)
     {
         if (m_effects.count(name) > 0)
         {
@@ -88,7 +88,7 @@ namespace MiniFPS
         return false;
     }
 
-    bool AudioHandler::PlayTrack(const std::string &name, int loops)
+    bool AudioHandler::PlayTrack(const std::string& name, int loops)
     {
         if (m_tracks.count(name) > 0)
         {
@@ -104,8 +104,10 @@ namespace MiniFPS
 
     void AudioHandler::SetEffectVolume(float volume)
     {
-        if (volume < 0) volume = 0;
-        if (volume > 1) volume = 1;
+        if (volume < 0)
+        { volume = 0; }
+        if (volume > 1)
+        { volume = 1; }
 
         this->m_effectVolume = volume;
 
@@ -114,8 +116,10 @@ namespace MiniFPS
 
     void AudioHandler::SetMusicVolume(float volume)
     {
-        if (volume < 0) volume = 0;
-        if (volume > 1) volume = 1;
+        if (volume < 0)
+        { volume = 0; }
+        if (volume > 1)
+        { volume = 1; }
 
         this->m_musicVolume = volume;
 

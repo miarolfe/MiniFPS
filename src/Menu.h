@@ -12,7 +12,7 @@ namespace MiniFPS
     public:
         MainMenu();
 
-        MainMenu(const Settings &settings, const Font &font);
+        MainMenu(const Settings& settings, const Font& font);
 
         Font m_font;
         Player m_player;
@@ -23,5 +23,5 @@ namespace MiniFPS
     };
 
     SDL_Texture*
-    RenderTextToTexture(SDL_Renderer* sdlRenderer, const Font &font, const std::string &text, int r, int g, int b);
+    RenderTextToTexture(SDL_Renderer* sdlRenderer, const Font& font, const std::string& text, int r, int g, int b);
 }

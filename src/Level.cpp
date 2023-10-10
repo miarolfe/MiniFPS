@@ -4,7 +4,7 @@ namespace MiniFPS
 {
     Level::Level() = default;
 
-    Level::Level(const std::string &filePath)
+    Level::Level(const std::string& filePath)
     {
         Load(filePath);
     }
@@ -25,7 +25,9 @@ namespace MiniFPS
         // Check if out-of-bounds
         if (point.x < collisionThreshold || point.x > m_width - collisionThreshold || point.y < collisionThreshold ||
             point.y > m_height - collisionThreshold)
+        {
             return true;
+        }
 
         const int roundedX = static_cast<int>(roundf(point.x));
         const int roundedY = static_cast<int>(roundf(point.y));
@@ -87,7 +89,7 @@ namespace MiniFPS
         }
     }
 
-    void Level::Load(const std::string &filePath)
+    void Level::Load(const std::string& filePath)
     {
         std::ifstream infile(filePath);
         if (!infile)

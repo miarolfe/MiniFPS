@@ -22,7 +22,7 @@ namespace MiniFPS
 
         Level();
 
-        explicit Level(const std::string &filePath);
+        explicit Level(const std::string& filePath);
 
         short Get(IntPoint point);
 
@@ -32,6 +32,6 @@ namespace MiniFPS
 
         void Print();
 
-        void Load(const std::string &filePath);
+        void Load(const std::string& filePath);
     };
 }

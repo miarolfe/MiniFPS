@@ -18,12 +18,12 @@ namespace MiniFPS
         musicVolume = 0;
     }
 
-    Settings::Settings(const std::string &version, int screenWidth, int screenHeight,
+    Settings::Settings(const std::string& version, int screenWidth, int screenHeight,
                        int renderDistance, bool vSync,
                        float fieldOfView, float speedModifier, float rotationModifier, float playerStartX,
                        float playerStartY, float playerStartAngle,
                        float effectVolume, float musicVolume,
-                       const std::string &levelPath, const std::map<std::string, std::string> &fontPaths)
+                       const std::string& levelPath, const std::map<std::string, std::string>& fontPaths)
     {
         this->version = version;
         this->screenWidth = screenWidth;
@@ -40,13 +40,13 @@ namespace MiniFPS
         this->levelPath = levelPath;
         this->vSync = vSync;
 
-        for (const auto &font: fontPaths)
+        for (const auto& font: fontPaths)
         {
             this->fontPaths.emplace_back(font);
         }
     }
 
-    Settings Settings::LoadSettings(const std::string &assetsFilePath, const std::string &settingsFilePath)
+    Settings Settings::LoadSettings(const std::string& assetsFilePath, const std::string& settingsFilePath)
     {
         std::ifstream f(assetsFilePath + settingsFilePath);
 
@@ -60,7 +60,7 @@ namespace MiniFPS
         std::string version;
         int screenWidth, screenHeight, renderDistance;
         float fieldOfView, speedModifier, rotationModifier, playerStartX, playerStartY,
-                playerStartAngle, playerDistanceToProjectionPlane, effectVolume, musicVolume;
+            playerStartAngle, playerDistanceToProjectionPlane, effectVolume, musicVolume;
         std::string levelPath;
         std::map<std::string, std::string> texturePaths;
         std::map<std::string, std::string> fontPaths;

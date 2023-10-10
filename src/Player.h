@@ -17,7 +17,7 @@ namespace MiniFPS
         InputState();
 
         bool moveLeft, moveRight, moveForward, moveBack, endGame, inMainMenu, leftMouseButtonPressed,
-                rightMouseButtonPressed;
+            rightMouseButtonPressed;
         int mousePosX, mousePosY, mouseMotionX, mouseMotionY;
     };
 
@@ -26,7 +26,7 @@ namespace MiniFPS
     public:
         Player();
 
-        Player(Level* level, const Settings &settings);
+        Player(Level* level, const Settings& settings);
 
         Level* m_level;
         Camera m_camera;
@@ -53,9 +53,9 @@ namespace MiniFPS
 
         bool CanShoot();
 
-        bool Shoot(std::vector<Enemy> &enemies, float wallDistance, AudioHandler &audio);
+        bool Shoot(std::vector<Enemy>& enemies, float wallDistance, AudioHandler& audio);
 
-        void Reload(AudioHandler &audio);
+        void Reload(AudioHandler& audio);
 
     public:
         static const int MAX_HEALTH = 5;

@@ -9,13 +9,13 @@ namespace MiniFPS
     {
         Font();
 
-        Font(const std::string &name, const std::string &fontPath, int pointSize);
+        Font(const std::string& name, const std::string& fontPath, int pointSize);
 
         std::string name;
         TTF_Font* ttf;
         int pointSize;
 
-        static TTF_Font* LoadFont(const std::string &fontPath, int pointSize);
+        static TTF_Font* LoadFont(const std::string& fontPath, int pointSize);
     };
 
     class FontManager
@@ -23,7 +23,7 @@ namespace MiniFPS
     public:
         FontManager();
 
-        explicit FontManager(const Settings &settings);
+        explicit FontManager(const Settings& settings);
 
         std::vector<Font> m_fonts;
 
