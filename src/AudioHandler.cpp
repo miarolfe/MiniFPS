@@ -1,4 +1,4 @@
-#include "Audio.h"
+#include "AudioHandler.h"
 #include "Utilities.h"
 
 namespace MiniFPS
@@ -15,9 +15,9 @@ namespace MiniFPS
     Track::Track(Mix_Music* music) : music(music)
     {}
 
-    Audio::Audio() = default;
+    AudioHandler::AudioHandler() = default;
 
-    Audio::Audio(const string &audioFolderPath, const Settings &settings)
+    AudioHandler::AudioHandler(const string &audioFolderPath, const Settings &settings)
     {
         SetEffectVolume(settings.effectVolume);
         SetMusicVolume(settings.musicVolume);
@@ -74,7 +74,7 @@ namespace MiniFPS
         }
     }
 
-    bool Audio::PlayEffect(const std::string &name, int loops)
+    bool AudioHandler::PlayEffect(const std::string &name, int loops)
     {
         if (m_effects.count(name) > 0)
         {
@@ -88,7 +88,7 @@ namespace MiniFPS
         return false;
     }
 
-    bool Audio::PlayTrack(const std::string &name, int loops)
+    bool AudioHandler::PlayTrack(const std::string &name, int loops)
     {
         if (m_tracks.count(name) > 0)
         {
@@ -102,7 +102,7 @@ namespace MiniFPS
         return false;
     }
 
-    void Audio::SetEffectVolume(float volume)
+    void AudioHandler::SetEffectVolume(float volume)
     {
         if (volume < 0) volume = 0;
         if (volume > 1) volume = 1;
@@ -112,7 +112,7 @@ namespace MiniFPS
         Mix_MasterVolume(static_cast<int>(static_cast<float>(SDL_MIX_MAXVOLUME) * this->m_effectVolume));
     }
 
-    void Audio::SetMusicVolume(float volume)
+    void AudioHandler::SetMusicVolume(float volume)
     {
         if (volume < 0) volume = 0;
         if (volume > 1) volume = 1;
@@ -122,7 +122,7 @@ namespace MiniFPS
         Mix_VolumeMusic(static_cast<int>(static_cast<float>(SDL_MIX_MAXVOLUME) * this->m_musicVolume));
     }
 
-    void Audio::Pause()
+    void AudioHandler::Pause()
     {
         for (int i = 0; i < Mix_AllocateChannels(-1); i++)
         {
@@ -133,7 +133,7 @@ namespace MiniFPS
         }
     }
 
-    void Audio::Resume()
+    void AudioHandler::Resume()
     {
         for (int i = 0; i < Mix_AllocateChannels(-1); i++)
         {
@@ -144,7 +144,7 @@ namespace MiniFPS
         }
     }
 
-    void Audio::FreeEffects()
+    void AudioHandler::FreeEffects()
     {
         for (auto iter = m_effects.begin(); iter != m_effects.end(); iter++)
         {
@@ -152,7 +152,7 @@ namespace MiniFPS
         }
     }
 
-    void Audio::FreeTracks()
+    void AudioHandler::FreeTracks()
     {
         for (auto iter = m_tracks.begin(); iter != m_tracks.end(); iter++)
         {

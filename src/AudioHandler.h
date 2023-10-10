@@ -23,7 +23,7 @@ namespace MiniFPS
         Mix_Music* music;
     };
 
-    class Audio
+    class AudioHandler
     {
     private:
         std::map<string, Effect> m_effects;
@@ -32,9 +32,9 @@ namespace MiniFPS
         float m_musicVolume;
 
     public:
-        Audio();
+        AudioHandler();
 
-        explicit Audio(const string &audioFolderPath, const Settings &settings);
+        explicit AudioHandler(const string &audioFolderPath, const Settings &settings);
 
         bool PlayEffect(const string &name, int loops = 0);
 

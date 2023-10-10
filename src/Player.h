@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Audio.h"
+#include "AudioHandler.h"
 #include "Camera.h"
 #include "Common.h"
 #include "Enemy.h"
@@ -53,9 +53,9 @@ namespace MiniFPS
 
         bool CanShoot();
 
-        bool Shoot(std::vector<Enemy> &enemies, float wallDistance, Audio &audio);
+        bool Shoot(std::vector<Enemy> &enemies, float wallDistance, AudioHandler &audio);
 
-        void Reload(Audio &audio);
+        void Reload(AudioHandler &audio);
 
     public:
         static const int MAX_HEALTH = 5;

@@ -16,7 +16,7 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 set(
         SOURCES
         src/main.cpp
-        src/Audio.cpp
+        src/AudioHandler.cpp
         src/Button.cpp
         src/Camera.cpp
         src/Color.cpp
@@ -35,7 +35,7 @@ set(
 
 set(
         HEADERS
-        src/Audio.h
+        src/AudioHandler.h
         src/Button.h
         src/Camera.h
         src/Color.h

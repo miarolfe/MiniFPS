@@ -201,7 +201,7 @@ namespace MiniFPS
     }
 
     // TODO: Make audio a singleton
-    bool Player::Shoot(std::vector<Enemy> &enemies, float wallDistance, Audio &audio)
+    bool Player::Shoot(std::vector<Enemy> &enemies, float wallDistance, AudioHandler &audio)
     {
         if (CanShoot())
         {
@@ -254,7 +254,7 @@ namespace MiniFPS
         return false;
     }
 
-    void Player::Reload(Audio &audio)
+    void Player::Reload(AudioHandler &audio)
     {
         if (!m_reloading)
         {

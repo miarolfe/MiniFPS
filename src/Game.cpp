@@ -2,18 +2,22 @@
 
 MiniFPS::Game::Game()
 {
-    InitializeSDLSubsystems();
+    InitSDLSubsystems();
 
     m_settings = Settings::LoadSettings(GetSDLAssetsFolderPath(), "settings.json");
-    m_audio = Audio(GetSDLAssetsFolderPath() + "audio/", m_settings);
+    m_audio = AudioHandler(GetSDLAssetsFolderPath() + "audio/", m_settings);
     m_fontManager = FontManager(m_settings);
 
     LoadTextures();
 
-    if (!InitializeWindowAndRenderer(&m_window, &m_sdlRenderer, m_settings.screenWidth, m_settings.screenHeight,
-                                     m_settings.vSync))
+    if (!InitWindow(&m_window, m_settings.screenWidth, m_settings.screenHeight))
     {
-        std::cerr << "Window and/or renderer could not be initialized" << std::endl;
+        std::cerr << "Window could not be initialized" << std::endl;
+    }
+
+    if (!InitRenderer(m_window, &m_sdlRenderer, m_settings.vSync))
+    {
+        std::cerr << "Renderer could not be initialized" << std::endl;
     }
 
     m_renderer = Renderer(m_sdlRenderer, m_settings);
@@ -67,7 +71,7 @@ bool MiniFPS::Game::IsRunning()
 MiniFPS::Game::~Game()
 {
     FreeResources(m_renderer, m_audio, m_fontManager);
-    DeactivateSDLSubsystems();
+    ShutdownSDLSubsystems();
     Quit(m_window, m_sdlRenderer);
 }
 
@@ -103,7 +107,7 @@ void MiniFPS::Game::SetupGame()
 
     for (const auto &pair: m_level.m_enemySpawnLocations)
     {
-        m_enemies.push_back(Enemy(pair.second, pair.first));
+        m_enemies.emplace_back(pair.second, pair.first);
     }
 
     m_gamePlayer = Player(&m_level, m_settings);

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Audio.h"
+#include "AudioHandler.h"
 #include "Common.h"
 #include "Renderer.h"
 #include "Settings.h"
@@ -9,16 +9,17 @@ namespace MiniFPS
 {
     const float PI_180 = (1.0 / 180.0) * M_PI;
 
-    bool InitializeSDLSubsystems();
+    bool InitSDLSubsystems();
 
-    void DeactivateSDLSubsystems();
+    void ShutdownSDLSubsystems();
 
-    void FreeResources(Renderer renderer, Audio audio, FontManager fontManager);
+    void FreeResources(Renderer renderer, AudioHandler audio, FontManager fontManager);
+
+    bool InitWindow(SDL_Window** window, int screenWidth, int screenHeight);
+
+    bool InitRenderer(SDL_Window* window, SDL_Renderer** renderer, bool vSync);
 
     bool InitializeSDL();
-
-    bool InitializeWindowAndRenderer(SDL_Window** window, SDL_Renderer** renderer, int screenWidth,
-                                     int screenHeight, bool vSync);
 
     bool InitializeSDLImage();
 

@@ -1,9 +1,9 @@
 #include "Utilities.h"
-#include "Audio.h"
+#include "AudioHandler.h"
 
 namespace MiniFPS
 {
-    bool InitializeSDLSubsystems()
+    bool InitSDLSubsystems()
     {
         bool successfulInitialization = true;
 
@@ -34,7 +34,7 @@ namespace MiniFPS
         return successfulInitialization;
     }
 
-    void DeactivateSDLSubsystems()
+    void ShutdownSDLSubsystems()
     {
         SDL_Quit();
         IMG_Quit();
@@ -46,7 +46,7 @@ namespace MiniFPS
         TTF_Quit();
     }
 
-    void FreeResources(Renderer renderer, Audio audio, FontManager fontManager)
+    void FreeResources(Renderer renderer, AudioHandler audio, FontManager fontManager)
     {
         renderer.FreeTextures();
         // TODO: Free zBuffer
@@ -55,20 +55,7 @@ namespace MiniFPS
         fontManager.FreeFonts();
     }
 
-    bool InitializeSDL()
-    {
-        bool successfulInitialization = true;
-
-        if (SDL_Init((SDL_INIT_VIDEO | SDL_INIT_AUDIO)) < 0)
-        {
-            successfulInitialization = false;
-        }
-
-        return successfulInitialization;
-    }
-
-    bool InitializeWindowAndRenderer(SDL_Window** window, SDL_Renderer** renderer, int screenWidth,
-                                     int screenHeight, bool vSync)
+    bool InitWindow(SDL_Window** window, int screenWidth, int screenHeight)
     {
         bool successfulInitialization = true;
 
@@ -79,27 +66,46 @@ namespace MiniFPS
                                    screenHeight,
                                    SDL_WINDOW_SHOWN);
 
+        // Capture mouse cursor and enable relative mouse mode
+        SDL_SetWindowGrab(*window, SDL_TRUE);
+
         if (*window == nullptr)
         {
             successfulInitialization = false;
         }
 
+        return successfulInitialization;
+    }
+
+    bool InitRenderer(SDL_Window* window, SDL_Renderer** renderer, bool vSync)
+    {
+        bool successfulInit = true;
+
         if (vSync)
         {
-            *renderer = SDL_CreateRenderer(*window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+            *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
         }
         else
         {
-            *renderer = SDL_CreateRenderer(*window, -1, SDL_RENDERER_ACCELERATED);
+            *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
         }
 
         if (*renderer == nullptr)
         {
-            successfulInitialization = false;
+            successfulInit = false;
         }
 
-        // Capture mouse cursor and enable relative mouse mode
-        SDL_SetWindowGrab(*window, SDL_TRUE);
+        return successfulInit;
+    }
+
+    bool InitializeSDL()
+    {
+        bool successfulInitialization = true;
+
+        if (SDL_Init((SDL_INIT_VIDEO | SDL_INIT_AUDIO)) < 0)
+        {
+            successfulInitialization = false;
+        }
 
         return successfulInitialization;
     }
