@@ -3,11 +3,11 @@
 
 namespace MiniFPS
 {
-    Player::Player(Level* level, const Settings &settings) : m_level(level)
+    Player::Player(Level* level, const Settings& settings) : m_level(level)
     {
         m_inputState = InputState();
         m_camera = Camera(settings.playerStartX, settings.playerStartY, settings.playerStartAngle,
-                        settings.fieldOfView * PI_180, settings.screenWidth,
+                          settings.fieldOfView * PI_180, settings.screenWidth,
                           settings.screenHeight,
                           settings.renderDistance);
     }
@@ -201,21 +201,22 @@ namespace MiniFPS
     }
 
     // TODO: Make audio a singleton
-    bool Player::Shoot(std::vector<Enemy> &enemies, float wallDistance, AudioHandler &audio)
+    bool Player::Shoot(std::vector<Enemy>& enemies, float wallDistance, AudioHandler& audio)
     {
         if (CanShoot())
         {
             audio.PlayEffect("GunShoot4");
             m_currentAmmo--;
 
-            for (Enemy &enemy: enemies)
+            for (Enemy& enemy: enemies)
             {
                 Vec2 wallIntersectionPoint = m_camera.pos;
                 wallIntersectionPoint += (m_camera.direction * wallDistance);
 
                 Vec2 delta = enemy.m_pos - m_camera.pos;
                 float projection = (delta.x * (wallIntersectionPoint.x - m_camera.pos.x) +
-                                    delta.y * (wallIntersectionPoint.y - m_camera.pos.y)) / (wallDistance * wallDistance);
+                                    delta.y * (wallIntersectionPoint.y - m_camera.pos.y)) /
+                                   (wallDistance * wallDistance);
 
                 float distanceToShot;
 
@@ -254,7 +255,7 @@ namespace MiniFPS
         return false;
     }
 
-    void Player::Reload(AudioHandler &audio)
+    void Player::Reload(AudioHandler& audio)
     {
         if (!m_reloading)
         {
