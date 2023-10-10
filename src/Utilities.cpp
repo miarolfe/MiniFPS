@@ -247,7 +247,7 @@ namespace MiniFPS
         return folders;
     }
 
-    float CalculateCrossProduct(const FloatPoint v1, const FloatPoint v2)
+    float CalculateDotProduct(const FloatPoint v1, const FloatPoint v2)
     {
         return ((v1.x * v2.y) - (v2.x * v1.y));
     }
@@ -259,12 +259,12 @@ namespace MiniFPS
         const FloatPoint v2 = {point.x - vertex2.x, point.y - vertex2.y};
         const FloatPoint v3 = {point.x - vertex3.x, point.y - vertex3.y};
 
-        // Calculate the cross products of these vectors
-        const float cp1 = CalculateCrossProduct(v1, v2);
-        const float cp2 = CalculateCrossProduct(v2, v3);
-        const float cp3 = CalculateCrossProduct(v3, v1);
+        // Calculate the dot products of these vectors
+        const float dotProduct1 = CalculateDotProduct(v1, v2);
+        const float dotProduct2 = CalculateDotProduct(v2, v3);
+        const float dotProduct3 = CalculateDotProduct(v3, v1);
 
         // If all cross products have the same sign, the point is inside the triangle
-        return ((cp1 >= 0 && cp2 >= 0 && cp3 >= 0) || (cp1 <= 0 && cp2 <= 0 && cp3 <= 0));
+        return ((dotProduct1 >= 0 && dotProduct2 >= 0 && dotProduct3 >= 0) || (dotProduct1 <= 0 && dotProduct2 <= 0 && dotProduct3 <= 0));
     }
 }
