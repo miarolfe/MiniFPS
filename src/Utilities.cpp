@@ -3,58 +3,6 @@
 
 namespace MiniFPS
 {
-    bool InitSDLSubsystems()
-    {
-        bool successfulInitialization = true;
-
-        if (!InitializeSDL())
-        {
-            std::cerr << "SDL could not be initialized:" << SDL_GetError();
-            successfulInitialization = false;
-        }
-
-        if (!InitializeSDLImage())
-        {
-            std::cerr << "SDL_image could not be initialized" << std::endl;
-            successfulInitialization = false;
-        }
-
-        if (!InitializeSDLMixer())
-        {
-            std::cerr << "SDL_mixer could not be initialized" << std::endl;
-            successfulInitialization = false;
-        }
-
-        if (!InitializeSDLTTF())
-        {
-            std::cerr << "SDL_ttf could not be initialized" << std::endl;
-            successfulInitialization = false;
-        }
-
-        return successfulInitialization;
-    }
-
-    void ShutdownSDLSubsystems()
-    {
-        SDL_Quit();
-        IMG_Quit();
-
-        Mix_CloseAudio();
-        Mix_Quit();
-
-        // TODO: Free fonts
-        TTF_Quit();
-    }
-
-    void FreeResources(Renderer renderer, AudioHandler audio, FontManager fontManager)
-    {
-        renderer.FreeTextures();
-        // TODO: Free zBuffer
-        audio.FreeEffects();
-        audio.FreeTracks();
-        fontManager.FreeFonts();
-    }
-
     bool InitWindow(SDL_Window** window, int screenWidth, int screenHeight)
     {
         bool successfulInitialization = true;
@@ -98,7 +46,7 @@ namespace MiniFPS
         return successfulInit;
     }
 
-    bool InitializeSDL()
+    bool InitSDL()
     {
         bool successfulInitialization = true;
 
@@ -110,7 +58,13 @@ namespace MiniFPS
         return successfulInitialization;
     }
 
-    bool InitializeSDLImage()
+    void ShutdownSDL()
+    {
+        SDL_QuitSubSystem(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
+        SDL_Quit();
+    }
+
+    bool InitSDLImage()
     {
         bool successful_initialization = true;
 
@@ -122,7 +76,12 @@ namespace MiniFPS
         return successful_initialization;
     }
 
-    bool InitializeSDLMixer()
+    void ShutdownSDLImage()
+    {
+        IMG_Quit();
+    }
+
+    bool InitSDLMixer()
     {
         bool successfulInitialization = true;
 
@@ -134,7 +93,13 @@ namespace MiniFPS
         return successfulInitialization;
     }
 
-    bool InitializeSDLTTF()
+    void ShutdownSDLMixer()
+    {
+        Mix_CloseAudio();
+        Mix_Quit();
+    }
+
+    bool InitSDLTTF()
     {
         bool successfulInitialization = true;
 
@@ -144,6 +109,20 @@ namespace MiniFPS
         }
 
         return successfulInitialization;
+    }
+
+    void ShutdownSDLTTF()
+    {
+        TTF_Quit();
+    }
+
+    void FreeResources(Renderer renderer, AudioHandler audio, FontManager fontManager)
+    {
+        renderer.FreeTextures();
+        free(renderer.m_zBuffer);
+        audio.FreeEffects();
+        audio.FreeTracks();
+        fontManager.FreeFonts();
     }
 
     void Quit(SDL_Window* window, SDL_Renderer* renderer)

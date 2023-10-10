@@ -2,7 +2,25 @@
 
 MiniFPS::Game::Game()
 {
-    InitSDLSubsystems();
+    if (!InitSDL())
+    {
+        std::cerr << "SDL could not be initialized:" << SDL_GetError();
+    }
+
+    if (!InitSDLImage())
+    {
+        std::cerr << "SDL_image could not be initialized" << std::endl;
+    }
+
+    if (!InitSDLMixer())
+    {
+        std::cerr << "SDL_mixer could not be initialized" << std::endl;
+    }
+
+    if (!InitSDLTTF())
+    {
+        std::cerr << "SDL_ttf could not be initialized" << std::endl;
+    }
 
     m_settings = Settings::LoadSettings(GetSDLAssetsFolderPath(), "settings.json");
     m_audio = AudioHandler(GetSDLAssetsFolderPath() + "audio/", m_settings);
@@ -71,7 +89,10 @@ bool MiniFPS::Game::IsRunning()
 MiniFPS::Game::~Game()
 {
     FreeResources(m_renderer, m_audio, m_fontManager);
-    ShutdownSDLSubsystems();
+    ShutdownSDL();
+    ShutdownSDLImage();
+    ShutdownSDLMixer();
+    ShutdownSDLTTF();
     Quit(m_window, m_sdlRenderer);
 }
 

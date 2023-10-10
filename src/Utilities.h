@@ -9,23 +9,27 @@ namespace MiniFPS
 {
     const float PI_180 = (1.0 / 180.0) * M_PI;
 
-    bool InitSDLSubsystems();
-
-    void ShutdownSDLSubsystems();
-
-    void FreeResources(Renderer renderer, AudioHandler audio, FontManager fontManager);
-
     bool InitWindow(SDL_Window** window, int screenWidth, int screenHeight);
 
     bool InitRenderer(SDL_Window* window, SDL_Renderer** renderer, bool vSync);
 
-    bool InitializeSDL();
+    bool InitSDL();
 
-    bool InitializeSDLImage();
+    void ShutdownSDL();
 
-    bool InitializeSDLMixer();
+    bool InitSDLImage();
 
-    bool InitializeSDLTTF();
+    void ShutdownSDLImage();
+
+    bool InitSDLMixer();
+
+    void ShutdownSDLMixer();
+
+    bool InitSDLTTF();
+
+    void ShutdownSDLTTF();
+
+    void FreeResources(Renderer renderer, AudioHandler audio, FontManager fontManager);
 
     void Quit(SDL_Window* window, SDL_Renderer* renderer);
 
