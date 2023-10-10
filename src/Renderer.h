@@ -51,19 +51,19 @@ namespace MiniFPS
         Renderer(SDL_Renderer* sdlRenderer, const Settings& settings);
 
     private:
-        void SetPixel(SDLTextureBuffer buffer, Color color, IntPoint point);
+        void SetPixel(SDLTextureBuffer buffer, Color color, const Vec2Int& point);
 
         static bool ShouldShadePixel(const Vec2& point);
 
         Texture GetTexBuffer(short textureId);
 
-        bool WallIsWestOrEastFacing(FloatPoint point);
+        bool WallIsWestOrEastFacing(const Vec2& point);
 
         int
         GetTexX(const Vec2& startPos, const Vec2& intersectionPos, const Vec2& rayLength1D, const Vec2& rayUnitStepSize,
                 const Vec2& rayDir, int textureSize);
 
-        void CopyTextureToFrameTexture(SDLTextureBuffer buffer, const Texture& texture, IntPoint point, int w, int h);
+        void CopyTextureToFrameTexture(SDLTextureBuffer buffer, const Texture& texture, const Vec2Int& point, int w, int h);
 
         void DrawTexturedColumn(const Texture& texture, const Camera& camera, SDLTextureBuffer buffer, float distance,
                                 const Vec2& cell, int rayX, int texX);
@@ -74,9 +74,9 @@ namespace MiniFPS
 
         void DrawButton(Button button);
 
-        void DrawTextStr(const string& text, const Font& font, FloatPoint point, int width, int r, int g, int b);
+        void DrawTextStr(const string& text, const Font& font, const Vec2& point, int width, int r, int g, int b);
 
-        void DrawTextStrH(const std::string& text, const Font& font, FloatPoint point, int height, int r, int g, int b);
+        void DrawTextStrH(const std::string& text, const Font& font, const Vec2& point, int height, int r, int g, int b);
 
     public:
         RaycastResult CastRay(int column, const Player& player);

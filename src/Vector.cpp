@@ -8,9 +8,6 @@ namespace MiniFPS
     Vec2::Vec2(const float x, const float y) : x(x), y(y)
     {}
 
-    Vec2::Vec2(const FloatPoint point) : x(point.x), y(point.y)
-    {}
-
     Vec2::Vec2(const Vec2Int& intVector) : x(static_cast<float>(intVector.x)), y(static_cast<float>(intVector.y))
     {}
 
@@ -89,21 +86,42 @@ namespace MiniFPS
     Vec2Int::Vec2Int(int x, int y) : x(x), y(y)
     {}
 
-    Vec2Int::Vec2Int(IntPoint point) : x(point.x), y(point.y)
-    {}
-
     Vec2Int::Vec2Int(const Vec2& floatVector) : x(static_cast<int>(floatVector.x)), y(static_cast<int>(floatVector.y))
     {}
 
     Vec2Int::Vec2Int(const Vec2Int& vector) = default;
+
+    Vec2Int& Vec2Int::operator=(const MiniFPS::Vec2Int& otherVector)
+    {
+        if (this != &otherVector)
+        {
+            x = otherVector.x;
+            y = otherVector.y;
+        }
+        return *this;
+    }
 
     Vec2Int Vec2Int::operator+(const Vec2Int& otherVector) const
     {
         return {x + otherVector.x, y + otherVector.y};
     }
 
+    Vec2Int& Vec2Int::operator+=(const Vec2Int& otherVector)
+    {
+        x += otherVector.x;
+        y += otherVector.y;
+        return *this;
+    }
+
     Vec2Int Vec2Int::operator-(const Vec2Int& otherVector) const
     {
         return {x - otherVector.x, y - otherVector.y};
+    }
+
+    Vec2Int& Vec2Int::operator-=(const Vec2Int& otherVector)
+    {
+        x -= otherVector.x;
+        y -= otherVector.y;
+        return *this;
     }
 }

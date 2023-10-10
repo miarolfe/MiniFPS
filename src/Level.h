@@ -2,7 +2,6 @@
 
 #include "Common.h"
 #include "Vector.h"
-#include "Point.h"
 
 namespace MiniFPS
 {
@@ -24,11 +23,11 @@ namespace MiniFPS
 
         explicit Level(const std::string& filePath);
 
-        short Get(IntPoint point);
+        short Get(const Vec2Int& point);
 
-        bool HasCollided(FloatPoint point);
+        bool HasCollided(const Vec2& point);
 
-        bool IsPositionValid(FloatPoint point);
+        bool IsPositionValid(const Vec2& point);
 
         void Print();
 

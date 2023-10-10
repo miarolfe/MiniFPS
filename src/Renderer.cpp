@@ -22,7 +22,7 @@ namespace MiniFPS
         m_textureMap = newTextureMap;
     }
 
-    void Renderer::SetPixel(SDLTextureBuffer buffer, Color color, IntPoint point)
+    void Renderer::SetPixel(SDLTextureBuffer buffer, Color color, const Vec2Int& point)
     {
         uint32_t* row = (uint32_t*) ((uint8_t*) buffer.pixels + point.y * buffer.pitch);
         row[point.x] = color.argb;
@@ -60,7 +60,7 @@ namespace MiniFPS
         return texture;
     }
 
-    bool Renderer::WallIsWestOrEastFacing(FloatPoint point)
+    bool Renderer::WallIsWestOrEastFacing(const Vec2& point)
     {
         return (std::abs(point.x - floor(point.x + 0.5f)) > std::abs(point.y - floor(point.y + 0.5f)));
     }
@@ -96,7 +96,7 @@ namespace MiniFPS
     }
 
     void
-    Renderer::CopyTextureToFrameTexture(SDLTextureBuffer buffer, const Texture& texture, IntPoint point, int w, int h)
+    Renderer::CopyTextureToFrameTexture(SDLTextureBuffer buffer, const Texture& texture, const Vec2Int& point, int w, int h)
     {
         const float scaleX = static_cast<float>(texture.size) / w;
         const float scaleY = static_cast<float>(texture.size) / h;
@@ -220,7 +220,7 @@ namespace MiniFPS
         SDL_DestroyTexture(buttonTexture);
     }
 
-    void Renderer::DrawTextStr(const std::string& text, const Font& font, FloatPoint point, int width, int r = 255,
+    void Renderer::DrawTextStr(const std::string& text, const Font& font, const Vec2& point, int width, int r = 255,
                                int g = 255, int b = 255)
     {
         SDL_SetRenderTarget(m_sdlRenderer, m_renderFrameTexture);
@@ -242,7 +242,7 @@ namespace MiniFPS
         SDL_DestroyTexture(texture);
     }
 
-    void Renderer::DrawTextStrH(const std::string& text, const Font& font, FloatPoint point, int height, int r = 255,
+    void Renderer::DrawTextStrH(const std::string& text, const Font& font, const Vec2& point, int height, int r = 255,
                                 int g = 255, int b = 255)
     {
         SDL_SetRenderTarget(m_sdlRenderer, m_renderFrameTexture);
