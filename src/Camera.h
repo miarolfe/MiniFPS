@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Common.h"
-#include "Point.h"
 #include "Vector.h"
 
 namespace MiniFPS

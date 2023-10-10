@@ -46,6 +46,4 @@ namespace MiniFPS
     std::vector<std::string> GetFilesInDirectory(const std::string& directoryPath);
 
     std::vector<std::string> GetFoldersInDirectory(const std::string& directoryPath);
-
-    // bool IsPointInRightAngledTriangle(FloatPoint point, FloatPoint vertex1, FloatPoint vertex2, FloatPoint vertex3);
 }

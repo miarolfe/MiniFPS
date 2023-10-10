@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Common.h"
-#include "Point.h"
 
 namespace MiniFPS
 {
@@ -15,8 +14,6 @@ namespace MiniFPS
         Vec2();
 
         Vec2(float x, float y);
-
-        explicit Vec2(FloatPoint point);
 
         explicit Vec2(const Vec2Int& intVector);
 
@@ -54,8 +51,6 @@ namespace MiniFPS
         Vec2Int();
 
         Vec2Int(int x, int y);
-
-        explicit Vec2Int(IntPoint point);
 
         explicit Vec2Int(const Vec2& floatVector);
 

@@ -231,26 +231,4 @@ namespace MiniFPS
 
         return folders;
     }
-
-    float CalculateDotProduct(const FloatPoint v1, const FloatPoint v2)
-    {
-        return ((v1.x * v2.y) - (v2.x * v1.y));
-    }
-
-    bool IsPointInRightAngledTriangle(const FloatPoint point, const FloatPoint vertex1, const FloatPoint vertex2,
-                                      const FloatPoint vertex3)
-    {
-        const FloatPoint v1 = {point.x - vertex1.x, point.y - vertex1.y};
-        const FloatPoint v2 = {point.x - vertex2.x, point.y - vertex2.y};
-        const FloatPoint v3 = {point.x - vertex3.x, point.y - vertex3.y};
-
-        // Calculate the dot products of these vectors
-        const float dotProduct1 = CalculateDotProduct(v1, v2);
-        const float dotProduct2 = CalculateDotProduct(v2, v3);
-        const float dotProduct3 = CalculateDotProduct(v3, v1);
-
-        // If all cross products have the same sign, the point is inside the triangle
-        return ((dotProduct1 >= 0 && dotProduct2 >= 0 && dotProduct3 >= 0) ||
-                (dotProduct1 <= 0 && dotProduct2 <= 0 && dotProduct3 <= 0));
-    }
 }

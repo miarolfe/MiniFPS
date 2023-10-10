@@ -9,7 +9,7 @@ namespace MiniFPS
         Load(filePath);
     }
 
-    short Level::Get(IntPoint point)
+    short Level::Get(const Vec2Int& point)
     {
         assert(point.x >= 0);
         assert(point.x < m_width);
@@ -18,7 +18,7 @@ namespace MiniFPS
         return m_matrix[point.y][point.x];
     }
 
-    bool Level::HasCollided(const FloatPoint point)
+    bool Level::HasCollided(const Vec2& point)
     {
         bool collided = false;
 
@@ -65,7 +65,7 @@ namespace MiniFPS
         return collided;
     }
 
-    bool Level::IsPositionValid(const FloatPoint point)
+    bool Level::IsPositionValid(const Vec2& point)
     {
         return (point.x >= 0 && point.x < m_width && point.y >= 0 && point.y < m_height);
     }

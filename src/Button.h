@@ -1,20 +1,20 @@
 #pragma once
 
 #include "Common.h"
-#include "Point.h"
+#include "Vector.h"
 
 namespace MiniFPS
 {
     class Button
     {
     public:
-        FloatPoint m_pos;
+        Vec2 m_pos;
         float m_width;
         float m_height;
 
         Button();
 
-        Button(FloatPoint pos, float width, float height);
+        Button(const Vec2& pos, float width, float height);
 
         bool Pressed(int mouseX, int mouseY);
 
