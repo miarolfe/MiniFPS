@@ -2,7 +2,7 @@ project('MiniFPS', 'cpp', version: '0.3.1', default_options: ['cpp_std=c++11'])
 
 sources = files(
   'src/main.cpp',
-  'src/Audio.cpp',
+  'src/AudioHandler.cpp',
   'src/Button.cpp',
   'src/Camera.cpp',
   'src/Color.cpp',
@@ -20,7 +20,7 @@ sources = files(
 )
 
 headers = files(
-  'src/Audio.h',
+  'src/AudioHandler.h',
   'src/Button.h',
   'src/Camera.h',
   'src/Color.h',

@@ -1,12 +1,15 @@
 #pragma once
 
-namespace MiniFPS {
-    struct FloatPoint {
+namespace MiniFPS
+{
+    struct FloatPoint
+    {
         float x;
         float y;
     };
 
-    struct IntPoint {
+    struct IntPoint
+    {
         int x;
         int y;
     };

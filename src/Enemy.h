@@ -3,19 +3,24 @@
 #include "Common.h"
 #include "Vector.h"
 
-namespace MiniFPS {
-    class Enemy {
+namespace MiniFPS
+{
+    class Enemy
+    {
     public:
         explicit Enemy(const Vec2& pos, short textureID = -1);
+
         void Update();
+
         bool IsVisible();
+
         void SetVisible(bool status);
 
-        Vec2 pos;
-        short textureId = -1;
+        Vec2 m_pos;
+        short m_textureId = -1;
 
     private:
-        bool visible = true;
+        bool m_visible = true;
     };
 }
 

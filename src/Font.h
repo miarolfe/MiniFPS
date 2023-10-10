@@ -3,24 +3,29 @@
 #include "Common.h"
 #include "Settings.h"
 
-namespace MiniFPS {
-    struct Font {
+namespace MiniFPS
+{
+    struct Font
+    {
         Font();
-        Font(const std::string &name, const std::string &fontPath, int pointSize);
+
+        Font(const std::string& name, const std::string& fontPath, int pointSize);
 
         std::string name;
         TTF_Font* ttf;
         int pointSize;
 
-        static TTF_Font* LoadFont(const std::string &fontPath, int pointSize);
+        static TTF_Font* LoadFont(const std::string& fontPath, int pointSize);
     };
 
-    class FontManager {
+    class FontManager
+    {
     public:
         FontManager();
+
         explicit FontManager(const Settings& settings);
 
-        std::vector<Font> fonts;
+        std::vector<Font> m_fonts;
 
         void FreeFonts();
     };

@@ -4,9 +4,11 @@
 
 using namespace MiniFPS;
 
-int main() {
+int main()
+{
     Game game;
-    while (game.IsRunning()) {
+    while (game.IsRunning())
+    {
         game.Update();
     }
 
