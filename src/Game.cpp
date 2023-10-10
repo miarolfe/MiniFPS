@@ -23,7 +23,11 @@ MiniFPS::Game::Game()
     }
 
     m_settings = Settings::LoadSettings(GetSDLAssetsFolderPath(), "settings.json");
-    m_audio = AudioHandler(GetSDLAssetsFolderPath() + "audio/", m_settings);
+
+    // Load in audio files
+    AudioHandler& instance = AudioHandler::GetInstance(GetSDLAssetsFolderPath() + "audio/", m_settings);
+
+    // Load in font files
     m_fontManager = FontManager(m_settings);
 
     LoadTextures();
@@ -67,7 +71,7 @@ void MiniFPS::Game::Update()
 
         if (m_gamePlayer.m_inputState.leftMouseButtonPressed)
         {
-            if (m_gamePlayer.Shoot(m_enemies, m_renderer.m_zBuffer[m_gamePlayer.m_camera.viewportWidth / 2], m_audio))
+            if (m_gamePlayer.Shoot(m_enemies, m_renderer.m_zBuffer[m_gamePlayer.m_camera.viewportWidth / 2]))
             {
                 // audio.PlayEffect("testEffect");
             }
@@ -75,7 +79,7 @@ void MiniFPS::Game::Update()
 
         if (m_gamePlayer.m_inputState.rightMouseButtonPressed)
         {
-            m_gamePlayer.Reload(m_audio);
+            m_gamePlayer.Reload();
         }
 
         m_renderer.DrawGame(m_gamePlayer, m_enemies, m_fontManager.m_fonts[0]);
@@ -89,7 +93,7 @@ bool MiniFPS::Game::IsRunning()
 
 MiniFPS::Game::~Game()
 {
-    FreeResources(m_renderer, m_audio, m_fontManager);
+    FreeResources(m_renderer, AudioHandler::GetInstance(), m_fontManager);
     ShutdownSDL();
     ShutdownSDLImage();
     ShutdownSDLMixer();
@@ -112,6 +116,8 @@ void MiniFPS::Game::LoadTextures()
 
 void MiniFPS::Game::SetupGame()
 {
+    AudioHandler& audioHandler = AudioHandler::GetInstance();
+
     m_level = Level(GetSDLAssetsFolderPath() + m_settings.levelPath);
 
     for (const auto& pair: m_textureNameToTextureMap)
@@ -140,5 +146,5 @@ void MiniFPS::Game::SetupGame()
     // Disable movement of cursor in game
     SDL_SetRelativeMouseMode(SDL_TRUE);
 
-    m_audio.PlayTrack("DrumLoop1", -1);
+    audioHandler.PlayTrack("DrumLoop1", -1);
 }

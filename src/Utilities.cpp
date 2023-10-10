@@ -116,7 +116,7 @@ namespace MiniFPS
         TTF_Quit();
     }
 
-    void FreeResources(Renderer renderer, AudioHandler audio, FontManager fontManager)
+    void FreeResources(Renderer renderer, AudioHandler& audio, FontManager fontManager)
     {
         renderer.FreeTextures();
         free(renderer.m_zBuffer);

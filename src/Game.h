@@ -30,7 +30,6 @@ namespace MiniFPS
     private:
         SDL_Window* m_window = nullptr;
         SDL_Renderer* m_sdlRenderer = nullptr;
-        AudioHandler m_audio;
         FontManager m_fontManager;
         Level m_level;
         MainMenu m_mainMenu;
