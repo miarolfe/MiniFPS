@@ -38,12 +38,12 @@ namespace MiniFPS
     class Renderer
     {
     private:
-        SDL_Renderer* sdlRenderer;
-        SDL_Texture* streamingFrameTexture;
-        SDL_Texture* renderFrameTexture;
-        std::unordered_map<short, Texture> textureMap;
+        SDL_Renderer* m_sdlRenderer;
+        SDL_Texture* m_streamingFrameTexture;
+        SDL_Texture* m_renderFrameTexture;
+        std::unordered_map<short, Texture> m_textureMap;
     public:
-        float* zBuffer = nullptr;
+        float* m_zBuffer = nullptr;
 
     public:
         Renderer();

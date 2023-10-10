@@ -16,11 +16,11 @@ namespace MiniFPS
 
         void SetVisible(bool status);
 
-        Vec2 pos;
-        short textureId = -1;
+        Vec2 m_pos;
+        short m_textureId = -1;
 
     private:
-        bool visible = true;
+        bool m_visible = true;
     };
 }
 

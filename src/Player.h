@@ -28,16 +28,16 @@ namespace MiniFPS
 
         Player(Level* level, const Settings &settings);
 
-        Level* level;
-        Camera camera;
-        InputState inputState;
-        Texture weaponTexture;
+        Level* m_level;
+        Camera m_camera;
+        InputState m_inputState;
+        Texture m_weaponTexture;
 
-        int currentHealth = MAX_HEALTH;
-        int currentAmmo = MAG_SIZE;
+        int m_currentHealth = MAX_HEALTH;
+        int m_currentAmmo = MAG_SIZE;
 
-        bool reloading = false;
-        float reloadTimer;
+        bool m_reloading = false;
+        float m_reloadTimer;
 
         void UpdateInputState();
 

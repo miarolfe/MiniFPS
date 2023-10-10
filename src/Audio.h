@@ -26,10 +26,10 @@ namespace MiniFPS
     class Audio
     {
     private:
-        std::map<string, Effect> effects;
-        std::map<string, Track> tracks;
-        float effectVolume;
-        float musicVolume;
+        std::map<string, Effect> m_effects;
+        std::map<string, Track> m_tracks;
+        float m_effectVolume;
+        float m_musicVolume;
 
     public:
         Audio();

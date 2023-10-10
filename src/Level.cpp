@@ -12,10 +12,10 @@ namespace MiniFPS
     short Level::Get(IntPoint point)
     {
         assert(point.x >= 0);
-        assert(point.x < w);
+        assert(point.x < m_width);
         assert(point.y >= 0);
-        assert(point.y < h);
-        return matrix[point.y][point.x];
+        assert(point.y < m_height);
+        return m_matrix[point.y][point.x];
     }
 
     bool Level::HasCollided(const FloatPoint point)
@@ -23,8 +23,8 @@ namespace MiniFPS
         bool collided = false;
 
         // Check if out-of-bounds
-        if (point.x < collisionThreshold || point.x > w - collisionThreshold || point.y < collisionThreshold ||
-            point.y > h - collisionThreshold)
+        if (point.x < collisionThreshold || point.x > m_width - collisionThreshold || point.y < collisionThreshold ||
+            point.y > m_height - collisionThreshold)
             return true;
 
         const int roundedX = static_cast<int>(roundf(point.x));
@@ -34,7 +34,7 @@ namespace MiniFPS
         {
             for (int cellY = roundedY - 1; cellY <= roundedY + 1; cellY++)
             {
-                if (!(cellX < 0 || cellX >= w || cellY < 0 || cellY >= h))
+                if (!(cellX < 0 || cellX >= m_width || cellY < 0 || cellY >= m_height))
                 {
                     if (Get({cellX, cellY}) != 0)
                     {
@@ -65,14 +65,14 @@ namespace MiniFPS
 
     bool Level::IsPositionValid(const FloatPoint point)
     {
-        return (point.x >= 0 && point.x < w && point.y >= 0 && point.y < h);
+        return (point.x >= 0 && point.x < m_width && point.y >= 0 && point.y < m_height);
     }
 
     void Level::Print()
     {
-        for (int i = 0; i < w; i++)
+        for (int i = 0; i < m_width; i++)
         {
-            for (int j = 0; j < h; j++)
+            for (int j = 0; j < m_height; j++)
             {
                 if (Get({j, i}) == 0)
                 {
@@ -95,20 +95,20 @@ namespace MiniFPS
             std::cerr << "Error opening level file for reading: " << filePath << std::endl;
         }
 
-        infile >> w >> h;
+        infile >> m_width >> m_height;
 
-        matrix = new short* [h];
+        m_matrix = new short* [m_height];
 
-        for (int i = 0; i < h; i++)
+        for (int i = 0; i < m_height; i++)
         {
-            matrix[i] = new short[w];
+            m_matrix[i] = new short[m_width];
         }
 
-        for (int i = 0; i < h; i++)
+        for (int i = 0; i < m_height; i++)
         {
-            for (int j = 0; j < w; j++)
+            for (int j = 0; j < m_width; j++)
             {
-                infile >> matrix[i][j];
+                infile >> m_matrix[i][j];
             }
         }
 
@@ -121,7 +121,7 @@ namespace MiniFPS
             infile >> id;
             float x, y;
             infile >> x >> y;
-            enemySpawnLocations.push_back({id, {x, y}});
+            m_enemySpawnLocations.push_back({id, {x, y}});
         }
 
         while (infile.peek() != EOF)
@@ -130,7 +130,7 @@ namespace MiniFPS
             infile >> id;
             std::string textureName;
             infile >> textureName;
-            textureIdMap[id] = textureName;
+            m_textureIdMap[id] = textureName;
         }
 
         infile.close();

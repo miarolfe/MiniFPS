@@ -40,13 +40,13 @@ namespace MiniFPS
     {
         for (const auto &fontPath: settings.fontPaths)
         {
-            fonts.emplace_back(fontPath.first, GetSDLAssetsFolderPath() + fontPath.second, 24);
+            m_fonts.emplace_back(fontPath.first, GetSDLAssetsFolderPath() + fontPath.second, 24);
         }
     }
 
     void FontManager::FreeFonts()
     {
-        for (const Font &font: fonts)
+        for (const Font &font: m_fonts)
         {
             TTF_CloseFont(font.ttf);
         }

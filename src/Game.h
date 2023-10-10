@@ -28,21 +28,21 @@ namespace MiniFPS
         void SetupGame();
 
     private:
-        SDL_Window* window = nullptr;
-        SDL_Renderer* sdlRenderer = nullptr;
-        Audio audio;
-        FontManager fontManager;
-        Level level;
-        MainMenu mainMenu;
-        Renderer renderer;
-        Settings settings;
-        Player gamePlayer;
-        std::map<std::string, Texture> textureNameToTextureMap;
-        std::unordered_map<short, Texture> textureMap;
-        std::vector<Enemy> enemies;
-        float oldTime = 0.0;
-        float curTime = 0.0;
-        float frameDelta = 0.0;
-        bool gameSetup = false;
+        SDL_Window* m_window = nullptr;
+        SDL_Renderer* m_sdlRenderer = nullptr;
+        Audio m_audio;
+        FontManager m_fontManager;
+        Level m_level;
+        MainMenu m_mainMenu;
+        Renderer m_renderer;
+        Settings m_settings;
+        Player m_gamePlayer;
+        std::map<std::string, Texture> m_textureNameToTextureMap;
+        std::unordered_map<short, Texture> m_textureMap;
+        std::vector<Enemy> m_enemies;
+        float m_oldTime = 0.0;
+        float m_curTime = 0.0;
+        float m_frameDelta = 0.0;
+        bool m_gameSetup = false;
     };
 }

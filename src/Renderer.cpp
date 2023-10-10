@@ -5,21 +5,21 @@ namespace MiniFPS
 {
     Renderer::Renderer() = default;
 
-    Renderer::Renderer(SDL_Renderer* sdlRenderer, const Settings &settings) : sdlRenderer(sdlRenderer)
+    Renderer::Renderer(SDL_Renderer* sdlRenderer, const Settings &settings) : m_sdlRenderer(sdlRenderer)
     {
-        streamingFrameTexture = SDL_CreateTexture(sdlRenderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING,
-                                                  static_cast<int>(settings.screenWidth),
-                                                  static_cast<int>(settings.screenHeight));
-        renderFrameTexture = SDL_CreateTexture(sdlRenderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_TARGET,
-                                               static_cast<int>(settings.screenWidth),
-                                               static_cast<int>(settings.screenHeight));
+        m_streamingFrameTexture = SDL_CreateTexture(sdlRenderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING,
+                                                    static_cast<int>(settings.screenWidth),
+                                                    static_cast<int>(settings.screenHeight));
+        m_renderFrameTexture = SDL_CreateTexture(sdlRenderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_TARGET,
+                                                 static_cast<int>(settings.screenWidth),
+                                                 static_cast<int>(settings.screenHeight));
 
-        zBuffer = static_cast<float*>(malloc(sizeof(float) * settings.screenWidth));
+        m_zBuffer = static_cast<float*>(malloc(sizeof(float) * settings.screenWidth));
     }
 
     void Renderer::SetTextureMap(const std::unordered_map<short, Texture> &newTextureMap)
     {
-        textureMap = newTextureMap;
+        m_textureMap = newTextureMap;
     }
 
     void Renderer::SetPixel(SDLTextureBuffer buffer, Color color, IntPoint point)
@@ -47,14 +47,14 @@ namespace MiniFPS
     {
         Texture texture;
 
-        if (textureMap.count(textureId) == 1)
+        if (m_textureMap.count(textureId) == 1)
         {
-            texture = textureMap[textureId];
+            texture = m_textureMap[textureId];
         }
         else
         {
             std::cerr << "Invalid texture: no texture mapped to id " << textureId << std::endl;
-            texture = textureMap[-1]; // Fallback texture
+            texture = m_textureMap[-1]; // Fallback texture
         }
 
         return texture;
@@ -119,7 +119,7 @@ namespace MiniFPS
 
     void Renderer::FreeTextures()
     {
-        for (const auto &idTexturePair: textureMap)
+        for (const auto &idTexturePair: m_textureMap)
         {
             for (int row = 0; row < idTexturePair.second.size; row++)
             {
@@ -186,25 +186,25 @@ namespace MiniFPS
 
     void Renderer::DrawButton(Button button)
     {
-        SDL_SetRenderTarget(sdlRenderer, renderFrameTexture);
+        SDL_SetRenderTarget(m_sdlRenderer, m_renderFrameTexture);
 
         // TODO: Make this more efficient
-        SDL_Texture* buttonTexture = SDL_CreateTexture(sdlRenderer, SDL_PIXELFORMAT_ARGB8888,
-                                                       SDL_TEXTUREACCESS_STREAMING, button.width, button.height);
+        SDL_Texture* buttonTexture = SDL_CreateTexture(m_sdlRenderer, SDL_PIXELFORMAT_ARGB8888,
+                                                       SDL_TEXTUREACCESS_STREAMING, button.m_width, button.m_height);
 
         const SDL_Rect sdlRect{
                 static_cast<int>(button.GetLeftBound()),
                 static_cast<int>(button.GetTopBound()),
-                static_cast<int>(button.width),
-                static_cast<int>(button.height)
+                static_cast<int>(button.m_width),
+                static_cast<int>(button.m_height)
         };
 
         SDLTextureBuffer buffer;
         SDL_LockTexture(buttonTexture, nullptr, &buffer.pixels, &buffer.pitch);
 
-        for (int x = 0; x < button.width; x++)
+        for (int x = 0; x < button.m_width; x++)
         {
-            for (int y = 0; y < button.height; y++)
+            for (int y = 0; y < button.m_height; y++)
             {
                 SetPixel(buffer, BUTTON, {x, y});
             }
@@ -212,8 +212,8 @@ namespace MiniFPS
 
         SDL_UnlockTexture(buttonTexture);
 
-        SDL_RenderCopy(sdlRenderer, buttonTexture, nullptr, &sdlRect);
-        SDL_SetRenderTarget(sdlRenderer, nullptr);
+        SDL_RenderCopy(m_sdlRenderer, buttonTexture, nullptr, &sdlRect);
+        SDL_SetRenderTarget(m_sdlRenderer, nullptr);
 
         SDL_DestroyTexture(buttonTexture);
     }
@@ -221,7 +221,7 @@ namespace MiniFPS
     void Renderer::DrawTextStr(const std::string &text, const Font &font, FloatPoint point, int width, int r = 255,
                                int g = 255, int b = 255)
     {
-        SDL_SetRenderTarget(sdlRenderer, renderFrameTexture);
+        SDL_SetRenderTarget(m_sdlRenderer, m_renderFrameTexture);
 
         int requestedWidth = 0;
         int requestedHeight = 0;
@@ -232,10 +232,10 @@ namespace MiniFPS
 
         const SDL_Rect destRect{static_cast<int>(point.x), static_cast<int>(point.y), width, height};
 
-        SDL_Texture* texture = RenderTextToTexture(sdlRenderer, font, text, r, g, b);
+        SDL_Texture* texture = RenderTextToTexture(m_sdlRenderer, font, text, r, g, b);
 
-        SDL_RenderCopy(sdlRenderer, texture, nullptr, &destRect);
-        SDL_SetRenderTarget(sdlRenderer, nullptr);
+        SDL_RenderCopy(m_sdlRenderer, texture, nullptr, &destRect);
+        SDL_SetRenderTarget(m_sdlRenderer, nullptr);
 
         SDL_DestroyTexture(texture);
     }
@@ -243,7 +243,7 @@ namespace MiniFPS
     void Renderer::DrawTextStrH(const std::string &text, const Font &font, FloatPoint point, int height, int r = 255,
                                 int g = 255, int b = 255)
     {
-        SDL_SetRenderTarget(sdlRenderer, renderFrameTexture);
+        SDL_SetRenderTarget(m_sdlRenderer, m_renderFrameTexture);
 
         int requestedWidth = 0;
         int requestedHeight = 0;
@@ -254,10 +254,10 @@ namespace MiniFPS
 
         const SDL_Rect destRect{static_cast<int>(point.x), static_cast<int>(point.y), width, height};
 
-        SDL_Texture* texture = RenderTextToTexture(sdlRenderer, font, text, r, g, b);
+        SDL_Texture* texture = RenderTextToTexture(m_sdlRenderer, font, text, r, g, b);
 
-        SDL_RenderCopy(sdlRenderer, texture, nullptr, &destRect);
-        SDL_SetRenderTarget(sdlRenderer, nullptr);
+        SDL_RenderCopy(m_sdlRenderer, texture, nullptr, &destRect);
+        SDL_SetRenderTarget(m_sdlRenderer, nullptr);
 
         SDL_DestroyTexture(texture);
     }
@@ -266,59 +266,59 @@ namespace MiniFPS
     {
         SDLTextureBuffer buffer;
 
-        SDL_LockTexture(streamingFrameTexture, nullptr, &buffer.pixels, &buffer.pitch);
+        SDL_LockTexture(m_streamingFrameTexture, nullptr, &buffer.pixels, &buffer.pitch);
 
-        for (int frameY = 0; frameY < static_cast<int>(mainMenu.player.camera.viewportHeight); frameY++)
+        for (int frameY = 0; frameY < static_cast<int>(mainMenu.m_player.m_camera.viewportHeight); frameY++)
         {
-            for (int frameX = 0; frameX < static_cast<int>(mainMenu.player.camera.viewportWidth); frameX++)
+            for (int frameX = 0; frameX < static_cast<int>(mainMenu.m_player.m_camera.viewportWidth); frameX++)
             {
                 SetPixel(buffer, MAIN_MENU_BACKGROUND, {frameX, frameY});
             }
         }
 
-        const int titleTextX = static_cast<int>(mainMenu.player.camera.viewportWidth / 4);
-        const int titleTextY = static_cast<int>(mainMenu.player.camera.viewportHeight / 16);
-        const int titleTextWidth = static_cast<int>(mainMenu.player.camera.viewportWidth / 2);
+        const int titleTextX = static_cast<int>(mainMenu.m_player.m_camera.viewportWidth / 4);
+        const int titleTextY = static_cast<int>(mainMenu.m_player.m_camera.viewportHeight / 16);
+        const int titleTextWidth = static_cast<int>(mainMenu.m_player.m_camera.viewportWidth / 2);
 
-        const int versionTextX = static_cast<int>(3 * (mainMenu.player.camera.viewportWidth / 8));
-        const int versionTextY = static_cast<int>(5 * (mainMenu.player.camera.viewportHeight / 16));
-        const int versionTextWidth = static_cast<int>(mainMenu.player.camera.viewportWidth / 4);
+        const int versionTextX = static_cast<int>(3 * (mainMenu.m_player.m_camera.viewportWidth / 8));
+        const int versionTextY = static_cast<int>(5 * (mainMenu.m_player.m_camera.viewportHeight / 16));
+        const int versionTextWidth = static_cast<int>(mainMenu.m_player.m_camera.viewportWidth / 4);
 
-        const int startTextX = static_cast<int>(mainMenu.startButton.pos.x - mainMenu.startButton.width / 4);
-        const int startTextY = static_cast<int>(mainMenu.startButton.pos.y - mainMenu.startButton.height / 2);
+        const int startTextX = static_cast<int>(mainMenu.m_startButton.m_pos.x - mainMenu.m_startButton.m_width / 4);
+        const int startTextY = static_cast<int>(mainMenu.m_startButton.m_pos.y - mainMenu.m_startButton.m_height / 2);
 
-        SDL_UnlockTexture(streamingFrameTexture);
-        SDL_SetRenderTarget(sdlRenderer, renderFrameTexture);
-        SDL_RenderCopy(sdlRenderer, streamingFrameTexture, nullptr, nullptr);
+        SDL_UnlockTexture(m_streamingFrameTexture);
+        SDL_SetRenderTarget(m_sdlRenderer, m_renderFrameTexture);
+        SDL_RenderCopy(m_sdlRenderer, m_streamingFrameTexture, nullptr, nullptr);
 
         // UI draw calls
 
-        DrawButton(mainMenu.startButton);
-        DrawTextStr("MiniFPS", mainMenu.font, {static_cast<float>(titleTextX), static_cast<float>(titleTextY)},
+        DrawButton(mainMenu.m_startButton);
+        DrawTextStr("MiniFPS", mainMenu.m_font, {static_cast<float>(titleTextX), static_cast<float>(titleTextY)},
                     titleTextWidth);
-        DrawTextStr(mainMenu.settings.version, mainMenu.font,
+        DrawTextStr(mainMenu.m_settings.version, mainMenu.m_font,
                     {static_cast<float>(versionTextX), static_cast<float>(versionTextY)}, versionTextWidth);
 
         // TODO: Scale this properly with resolution, it doesn't stay with button atm
-        DrawTextStrH("Start", mainMenu.font, {static_cast<float>(startTextX), static_cast<float>(startTextY)},
-                     mainMenu.startButton.height);
+        DrawTextStrH("Start", mainMenu.m_font, {static_cast<float>(startTextX), static_cast<float>(startTextY)},
+                     mainMenu.m_startButton.m_height);
 
-        SDL_SetRenderTarget(sdlRenderer, nullptr);
-        SDL_RenderCopy(sdlRenderer, renderFrameTexture, nullptr, nullptr);
-        SDL_RenderPresent(sdlRenderer);
+        SDL_SetRenderTarget(m_sdlRenderer, nullptr);
+        SDL_RenderCopy(m_sdlRenderer, m_renderFrameTexture, nullptr, nullptr);
+        SDL_RenderPresent(m_sdlRenderer);
     }
 
     void Renderer::DrawEnemies(const Player &player, std::vector<Enemy> &enemies, SDLTextureBuffer buffer)
     {
         std::vector<std::pair<float, Enemy>> enemyDistances;
 
-        const Camera &cam = player.camera;
+        const Camera &cam = player.m_camera;
 
         for (Enemy &enemy: enemies)
         {
             if (enemy.IsVisible())
             {
-                enemyDistances.emplace_back(player.camera.pos.Distance(enemy.pos), enemy);
+                enemyDistances.emplace_back(player.m_camera.pos.Distance(enemy.m_pos), enemy);
             }
         }
 
@@ -326,8 +326,8 @@ namespace MiniFPS
 
         for (auto &enemyDistance: enemyDistances)
         {
-            const Vec2 enemyPos = enemyDistance.second.pos - cam.pos;
-            const Texture &texture = GetTexBuffer(enemyDistance.second.textureId);
+            const Vec2 enemyPos = enemyDistance.second.m_pos - cam.pos;
+            const Texture &texture = GetTexBuffer(enemyDistance.second.m_textureId);
 
             const float invDet = 1.0f / (cam.plane.x * cam.direction.y - cam.direction.x * cam.plane.y);
 
@@ -354,7 +354,7 @@ namespace MiniFPS
             {
                 const int texX = static_cast<int>(256 * (stripe - (-enemyWidth / 2 + enemyScreenX)) * texture.size /
                                                   enemyWidth) / 256;
-                if (transform.y > 0 && transform.y < zBuffer[stripe])
+                if (transform.y > 0 && transform.y < m_zBuffer[stripe])
                 {
                     for (int y = drawStartY; y < drawEndY; y++)
                     {
@@ -374,32 +374,32 @@ namespace MiniFPS
     void Renderer::DrawGame(const Player &player, std::vector<Enemy> &enemies, const Font &font)
     {
         SDLTextureBuffer buffer;
-        SDL_LockTexture(streamingFrameTexture, nullptr, &buffer.pixels, &buffer.pitch);
+        SDL_LockTexture(m_streamingFrameTexture, nullptr, &buffer.pixels, &buffer.pitch);
 
-        DrawCeiling(player.camera, buffer);
-        DrawFloor(player.camera, buffer);
+        DrawCeiling(player.m_camera, buffer);
+        DrawFloor(player.m_camera, buffer);
 
         // Cast rays
-        for (int ray = 0; ray < player.camera.viewportWidth; ray++)
+        for (int ray = 0; ray < player.m_camera.viewportWidth; ray++)
         {
             RaycastResult result = CastRay(ray, player);
-            zBuffer[ray] = result.adjustedDistance;
+            m_zBuffer[ray] = result.adjustedDistance;
 
             Vec2 intersection;
             if (result.collided)
             {
-                intersection = player.camera.pos;
+                intersection = player.m_camera.pos;
                 intersection += result.direction * result.distance;
             }
 
             const Texture texture = GetTexBuffer(result.id);
-            const int texX = GetTexX(player.camera.pos, intersection, result.sideDistance, result.deltaDistance,
+            const int texX = GetTexX(player.m_camera.pos, intersection, result.sideDistance, result.deltaDistance,
                                      result.direction,
                                      texture.size);
 
             DrawTexturedColumn(
                     texture,
-                    player.camera,
+                    player.m_camera,
                     buffer,
                     result.adjustedDistance,
                     intersection,
@@ -409,38 +409,38 @@ namespace MiniFPS
 
         DrawEnemies(player, enemies, buffer);
 
-        const int weaponTextureSize = player.camera.viewportWidth / 4;
-        CopyTextureToFrameTexture(buffer, player.weaponTexture, {player.camera.viewportWidth / 2,
-                                                                 player.camera.viewportHeight -
+        const int weaponTextureSize = player.m_camera.viewportWidth / 4;
+        CopyTextureToFrameTexture(buffer, player.m_weaponTexture, {player.m_camera.viewportWidth / 2,
+                                                                 player.m_camera.viewportHeight -
                                                                  (weaponTextureSize / 2)}, weaponTextureSize,
                                   weaponTextureSize);
 
-        SDL_UnlockTexture(streamingFrameTexture);
+        SDL_UnlockTexture(m_streamingFrameTexture);
 
-        SDL_SetRenderTarget(sdlRenderer, renderFrameTexture);
-        SDL_RenderCopy(sdlRenderer, streamingFrameTexture, nullptr, nullptr);
+        SDL_SetRenderTarget(m_sdlRenderer, m_renderFrameTexture);
+        SDL_RenderCopy(m_sdlRenderer, m_streamingFrameTexture, nullptr, nullptr);
 
         // TODO: Scale this with frame
         // UI draw here
 
         std::string healthDisplay =
-                "HP:" + std::to_string(player.currentHealth) + "/" + std::to_string(Player::MAX_HEALTH);
+            "HP:" + std::to_string(player.m_currentHealth) + "/" + std::to_string(Player::MAX_HEALTH);
         DrawTextStrH(healthDisplay, font, {25, 25}, 25, 255, 255, 255);
 
         std::string ammoDisplay;
-        if (player.reloading)
+        if (player.m_reloading)
         {
             ammoDisplay = "AMMO:RELOADING...";
         }
         else
         {
-            ammoDisplay = "AMMO:" + std::to_string(player.currentAmmo) + "/" + std::to_string(Player::MAG_SIZE);
+            ammoDisplay = "AMMO:" + std::to_string(player.m_currentAmmo) + "/" + std::to_string(Player::MAG_SIZE);
         }
         DrawTextStrH(ammoDisplay, font, {25, 50}, 25, 255, 255, 255);
 
-        SDL_SetRenderTarget(sdlRenderer, nullptr);
-        SDL_RenderCopy(sdlRenderer, renderFrameTexture, nullptr, nullptr);
-        SDL_RenderPresent(sdlRenderer);
+        SDL_SetRenderTarget(m_sdlRenderer, nullptr);
+        SDL_RenderCopy(m_sdlRenderer, m_renderFrameTexture, nullptr, nullptr);
+        SDL_RenderPresent(m_sdlRenderer);
     }
 
     bool Renderer::CompareEnemyDistancePair(const std::pair<float, Enemy> &pair1, const std::pair<float, Enemy> &pair2)
@@ -453,20 +453,20 @@ namespace MiniFPS
         RaycastResult result;
 
         const float rayScreenPos = (
-                2.0f * static_cast<float>(column) / static_cast<float>((player.camera.viewportWidth)) - 1.0f);
-        const float rayAngle = atan2f(player.camera.direction.y, player.camera.direction.x) +
-                               atanf(rayScreenPos * tanf(player.camera.horizontalFieldOfView / 2));
+                2.0f * static_cast<float>(column) / static_cast<float>((player.m_camera.viewportWidth)) - 1.0f);
+        const float rayAngle = atan2f(player.m_camera.direction.y, player.m_camera.direction.x) +
+                               atanf(rayScreenPos * tanf(player.m_camera.horizontalFieldOfView / 2));
 
         result.direction = {
                 // Need to multiply by -1 to avoid flipped rendering
-                player.camera.direction.x + player.camera.plane.x * rayScreenPos * -1.0f,
-                player.camera.direction.y + player.camera.plane.y * rayScreenPos * -1.0f
+                player.m_camera.direction.x + player.m_camera.plane.x * rayScreenPos * -1.0f,
+                player.m_camera.direction.y + player.m_camera.plane.y * rayScreenPos * -1.0f
         };
 
         result.direction.Normalize();
 
         const Vec2 deltaDistance = {std::abs(1.0f / result.direction.x), std::abs(1.0f / result.direction.y)};
-        Vec2Int mapCheck(player.camera.pos);
+        Vec2Int mapCheck(player.m_camera.pos);
 
         Vec2 sideDistance;
         Vec2Int step;
@@ -474,28 +474,28 @@ namespace MiniFPS
         if (result.direction.x < 0)
         {
             step.x = -1;
-            sideDistance.x = (player.camera.pos.x - static_cast<float>(mapCheck.x)) * deltaDistance.x;
+            sideDistance.x = (player.m_camera.pos.x - static_cast<float>(mapCheck.x)) * deltaDistance.x;
         }
         else
         {
             step.x = 1;
-            sideDistance.x = (static_cast<float>(mapCheck.x + 1) - player.camera.pos.x) * deltaDistance.x;
+            sideDistance.x = (static_cast<float>(mapCheck.x + 1) - player.m_camera.pos.x) * deltaDistance.x;
         }
 
         if (result.direction.y < 0)
         {
             step.y = -1;
-            sideDistance.y = ((player.camera.pos.y - static_cast<float>(mapCheck.y)) * deltaDistance.y);
+            sideDistance.y = ((player.m_camera.pos.y - static_cast<float>(mapCheck.y)) * deltaDistance.y);
         }
         else
         {
             step.y = 1;
-            sideDistance.y = (static_cast<float>(mapCheck.y + 1) - player.camera.pos.y) * deltaDistance.y;
+            sideDistance.y = (static_cast<float>(mapCheck.y + 1) - player.m_camera.pos.y) * deltaDistance.y;
         }
 
         int side = 0;
 
-        while (!result.collided && result.distance < player.camera.maxRenderDistance)
+        while (!result.collided && result.distance < player.m_camera.maxRenderDistance)
         {
             if (sideDistance.x < sideDistance.y)
             {
@@ -513,9 +513,9 @@ namespace MiniFPS
                 side = 1;
             }
 
-            if (player.level->IsPositionValid({static_cast<float>(mapCheck.x), static_cast<float>(mapCheck.y)}))
+            if (player.m_level->IsPositionValid({static_cast<float>(mapCheck.x), static_cast<float>(mapCheck.y)}))
             {
-                result.id = player.level->Get({mapCheck.x, mapCheck.y});
+                result.id = player.m_level->Get({mapCheck.x, mapCheck.y});
                 if (result.id != 0)
                 {
                     result.collided = true;
@@ -529,7 +529,7 @@ namespace MiniFPS
         if (!result.collided) result.distance = 1000.0f;
 
         const float adjustedDistance =
-                result.distance * cosf(rayAngle - atan2f(player.camera.direction.y, player.camera.direction.x));
+                result.distance * cosf(rayAngle - atan2f(player.m_camera.direction.y, player.m_camera.direction.x));
         result.adjustedDistance = adjustedDistance;
 
         result.deltaDistance = deltaDistance;

@@ -6,23 +6,23 @@ namespace MiniFPS
 
     MainMenu::MainMenu(const Settings &settings, const Font &font)
     {
-        this->player = Player(nullptr, settings);
-        this->player.inputState.inMainMenu = true;
-        this->settings = settings;
-        this->font = font;
-        startButton = Button{{static_cast<float>(settings.screenWidth / 2),
-                              static_cast<float>(3 * settings.screenHeight / 4)},
-                             static_cast<float>(settings.screenWidth / 2),
-                             static_cast<float>(settings.screenHeight / 6)};
+        this->m_player = Player(nullptr, settings);
+        this->m_player.m_inputState.inMainMenu = true;
+        this->m_settings = settings;
+        this->m_font = font;
+        m_startButton = Button{{static_cast<float>(settings.screenWidth / 2),
+                                static_cast<float>(3 * settings.screenHeight / 4)},
+                               static_cast<float>(settings.screenWidth / 2),
+                               static_cast<float>(settings.screenHeight / 6)};
     }
 
     void MainMenu::Update()
     {
-        player.Update(0, 0, 0);
-        if (startButton.Pressed(player.inputState.mousePosX, player.inputState.mousePosY) &&
-            player.inputState.leftMouseButtonPressed)
+        m_player.Update(0, 0, 0);
+        if (m_startButton.Pressed(m_player.m_inputState.mousePosX, m_player.m_inputState.mousePosY) &&
+            m_player.m_inputState.leftMouseButtonPressed)
         {
-            player.inputState.inMainMenu = false;
+            m_player.m_inputState.inMainMenu = false;
         }
     }
 

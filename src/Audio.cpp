@@ -37,7 +37,7 @@ namespace MiniFPS
                     if (effect)
                     {
                         const std::string name = file.substr(0, file.size() - 4);
-                        effects[name] = Effect(effect);
+                        m_effects[name] = Effect(effect);
                     }
                     else
                     {
@@ -56,7 +56,7 @@ namespace MiniFPS
                     if (track)
                     {
                         const std::string name = file.substr(0, file.size() - 4);
-                        tracks[name] = Track(track);
+                        m_tracks[name] = Track(track);
                     }
                     else
                     {
@@ -76,9 +76,9 @@ namespace MiniFPS
 
     bool Audio::PlayEffect(const std::string &name, int loops)
     {
-        if (effects.count(name) > 0)
+        if (m_effects.count(name) > 0)
         {
-            const int rc = Mix_PlayChannel(-1, effects[name].chunk, loops);
+            const int rc = Mix_PlayChannel(-1, m_effects[name].chunk, loops);
             if (rc != -1)
             {
                 return true;
@@ -90,9 +90,9 @@ namespace MiniFPS
 
     bool Audio::PlayTrack(const std::string &name, int loops)
     {
-        if (tracks.count(name) > 0)
+        if (m_tracks.count(name) > 0)
         {
-            const int rc = Mix_PlayMusic(tracks[name].music, loops);
+            const int rc = Mix_PlayMusic(m_tracks[name].music, loops);
             if (rc != -1)
             {
                 return true;
@@ -107,9 +107,9 @@ namespace MiniFPS
         if (volume < 0) volume = 0;
         if (volume > 1) volume = 1;
 
-        this->effectVolume = volume;
+        this->m_effectVolume = volume;
 
-        Mix_MasterVolume(static_cast<int>(static_cast<float>(SDL_MIX_MAXVOLUME) * this->effectVolume));
+        Mix_MasterVolume(static_cast<int>(static_cast<float>(SDL_MIX_MAXVOLUME) * this->m_effectVolume));
     }
 
     void Audio::SetMusicVolume(float volume)
@@ -117,9 +117,9 @@ namespace MiniFPS
         if (volume < 0) volume = 0;
         if (volume > 1) volume = 1;
 
-        this->musicVolume = volume;
+        this->m_musicVolume = volume;
 
-        Mix_VolumeMusic(static_cast<int>(static_cast<float>(SDL_MIX_MAXVOLUME) * this->musicVolume));
+        Mix_VolumeMusic(static_cast<int>(static_cast<float>(SDL_MIX_MAXVOLUME) * this->m_musicVolume));
     }
 
     void Audio::Pause()
@@ -146,7 +146,7 @@ namespace MiniFPS
 
     void Audio::FreeEffects()
     {
-        for (auto iter = effects.begin(); iter != effects.end(); iter++)
+        for (auto iter = m_effects.begin(); iter != m_effects.end(); iter++)
         {
             Mix_FreeChunk(iter->second.chunk);
         }
@@ -154,7 +154,7 @@ namespace MiniFPS
 
     void Audio::FreeTracks()
     {
-        for (auto iter = tracks.begin(); iter != tracks.end(); iter++)
+        for (auto iter = m_tracks.begin(); iter != m_tracks.end(); iter++)
         {
             Mix_FreeMusic(iter->second.music);
         }

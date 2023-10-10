@@ -25,7 +25,7 @@ namespace MiniFPS
         float x;
         float y;
 
-        float Length();
+        float Length() const;
 
         float Distance(const Vec2 &otherVector) const;
 
@@ -35,17 +35,17 @@ namespace MiniFPS
 
         Vec2 &operator=(const Vec2 &otherVector);
 
-        Vec2 operator+(Vec2 const &otherVector);
+        Vec2 operator+(Vec2 const &otherVector) const;
 
         Vec2 &operator+=(Vec2 const &otherVector);
 
-        Vec2 operator-(Vec2 const &otherVector);
+        Vec2 operator-(Vec2 const &otherVector) const;
 
         Vec2 &operator-=(Vec2 const &otherVector);
 
-        Vec2 operator*(float value);
+        Vec2 operator*(float value) const;
 
-        float operator*(const Vec2 &otherVector);
+        float operator*(const Vec2 &otherVector) const;
     };
 
     struct Vec2Int
@@ -64,8 +64,8 @@ namespace MiniFPS
         int x;
         int y;
 
-        Vec2Int operator+(Vec2Int const &otherVector);
+        Vec2Int operator+(Vec2Int const &otherVector) const;
 
-        Vec2Int operator-(Vec2Int const &otherVector);
+        Vec2Int operator-(Vec2Int const &otherVector) const;
     };
 }

@@ -3,25 +3,25 @@
 
 namespace MiniFPS
 {
-    Player::Player(Level* level, const Settings &settings) : level(level)
+    Player::Player(Level* level, const Settings &settings) : m_level(level)
     {
-        inputState = InputState();
-        camera = Camera(settings.playerStartX, settings.playerStartY, settings.playerStartAngle,
+        m_inputState = InputState();
+        m_camera = Camera(settings.playerStartX, settings.playerStartY, settings.playerStartAngle,
                         settings.fieldOfView * PI_180, settings.screenWidth,
-                        settings.screenHeight,
-                        settings.renderDistance);
+                          settings.screenHeight,
+                          settings.renderDistance);
     }
 
-    Player::Player() : level(nullptr)
+    Player::Player() : m_level(nullptr)
     {}
 
     void Player::UpdateInputState()
     {
-        inputState.mouseMotionX = 0;
-        inputState.mouseMotionY = 0;
-        inputState.endGame = false;
-        inputState.leftMouseButtonPressed = false;
-        inputState.rightMouseButtonPressed = false;
+        m_inputState.mouseMotionX = 0;
+        m_inputState.mouseMotionY = 0;
+        m_inputState.endGame = false;
+        m_inputState.leftMouseButtonPressed = false;
+        m_inputState.rightMouseButtonPressed = false;
 
         SDL_Event event;
 
@@ -29,26 +29,26 @@ namespace MiniFPS
         {
             if (event.type == SDL_QUIT)
             {
-                inputState.endGame = true;
+                m_inputState.endGame = true;
             }
 
             if (event.type == SDL_MOUSEMOTION)
             {
-                inputState.mouseMotionX = event.motion.xrel;
-                inputState.mouseMotionY = event.motion.yrel;
-                inputState.mousePosX = event.button.x;
-                inputState.mousePosY = event.button.y;
+                m_inputState.mouseMotionX = event.motion.xrel;
+                m_inputState.mouseMotionY = event.motion.yrel;
+                m_inputState.mousePosX = event.button.x;
+                m_inputState.mousePosY = event.button.y;
             }
 
             if (event.type == SDL_MOUSEBUTTONDOWN)
             {
                 if (event.button.button == SDL_BUTTON_LEFT)
                 {
-                    inputState.leftMouseButtonPressed = true;
+                    m_inputState.leftMouseButtonPressed = true;
                 }
                 else if (event.button.button == SDL_BUTTON_RIGHT)
                 {
-                    inputState.rightMouseButtonPressed = true;
+                    m_inputState.rightMouseButtonPressed = true;
                 }
             }
         }
@@ -57,43 +57,43 @@ namespace MiniFPS
 
         if (currentKeyStates[SDL_SCANCODE_ESCAPE])
         {
-            inputState.endGame = true;
+            m_inputState.endGame = true;
         }
 
         if (currentKeyStates[SDL_SCANCODE_W])
         {
-            inputState.moveForward = true;
+            m_inputState.moveForward = true;
         }
         else
         {
-            inputState.moveForward = false;
+            m_inputState.moveForward = false;
         }
 
         if (currentKeyStates[SDL_SCANCODE_S])
         {
-            inputState.moveBack = true;
+            m_inputState.moveBack = true;
         }
         else
         {
-            inputState.moveBack = false;
+            m_inputState.moveBack = false;
         }
 
         if (currentKeyStates[SDL_SCANCODE_A])
         {
-            inputState.moveLeft = true;
+            m_inputState.moveLeft = true;
         }
         else
         {
-            inputState.moveLeft = false;
+            m_inputState.moveLeft = false;
         }
 
         if (currentKeyStates[SDL_SCANCODE_D])
         {
-            inputState.moveRight = true;
+            m_inputState.moveRight = true;
         }
         else
         {
-            inputState.moveRight = false;
+            m_inputState.moveRight = false;
         }
     }
 
@@ -101,72 +101,72 @@ namespace MiniFPS
     {
         if (frameDelta != 0 && speedModifier != 0)
         {
-            const float prevX = camera.pos.x;
-            const float prevY = camera.pos.y;
+            const float prevX = m_camera.pos.x;
+            const float prevY = m_camera.pos.y;
 
-            if (inputState.moveForward != inputState.moveBack)
+            if (m_inputState.moveForward != m_inputState.moveBack)
             {
-                if (inputState.moveForward)
+                if (m_inputState.moveForward)
                 {
-                    camera.pos += camera.direction * frameDelta * speedModifier;
+                    m_camera.pos += m_camera.direction * frameDelta * speedModifier;
                 }
 
-                if (inputState.moveBack)
+                if (m_inputState.moveBack)
                 {
-                    camera.pos -= camera.direction * frameDelta * speedModifier;
+                    m_camera.pos -= m_camera.direction * frameDelta * speedModifier;
                 }
             }
 
-            if (inputState.moveLeft != inputState.moveRight)
+            if (m_inputState.moveLeft != m_inputState.moveRight)
             {
-                if (inputState.moveLeft)
+                if (m_inputState.moveLeft)
                 {
-                    Vec2 moveDirection = {camera.direction.y, -camera.direction.x};
+                    Vec2 moveDirection = {m_camera.direction.y, -m_camera.direction.x};
                     moveDirection.Normalize();
 
-                    camera.pos += moveDirection * frameDelta * speedModifier;
+                    m_camera.pos += moveDirection * frameDelta * speedModifier;
                 }
 
-                if (inputState.moveRight)
+                if (m_inputState.moveRight)
                 {
-                    Vec2 moveDirection = {-camera.direction.y, camera.direction.x};
+                    Vec2 moveDirection = {-m_camera.direction.y, m_camera.direction.x};
                     moveDirection.Normalize();
 
-                    camera.pos += moveDirection * frameDelta * speedModifier;
+                    m_camera.pos += moveDirection * frameDelta * speedModifier;
                 }
             }
 
-            if (level->HasCollided({camera.pos.x, camera.pos.y}))
+            if (m_level->HasCollided({m_camera.pos.x, m_camera.pos.y}))
             {
-                camera.pos.x = prevX;
-                camera.pos.y = prevY;
+                m_camera.pos.x = prevX;
+                m_camera.pos.y = prevY;
             }
         }
     }
 
     void Player::Rotate(float frameDelta, float rotationModifier)
     {
-        float rotationAngle = inputState.mouseMotionX * frameDelta * rotationModifier;
+        float rotationAngle = m_inputState.mouseMotionX * frameDelta * rotationModifier;
 
-        Vec2 oldDirection = camera.direction;
-        camera.direction.x = oldDirection.x * cosf(rotationAngle) - oldDirection.y * sinf(rotationAngle);
-        camera.direction.y = oldDirection.x * sinf(rotationAngle) + oldDirection.y * cosf(rotationAngle);
-        camera.direction.Normalize();
+        Vec2 oldDirection = m_camera.direction;
+        m_camera.direction.x = oldDirection.x * cosf(rotationAngle) - oldDirection.y * sinf(rotationAngle);
+        m_camera.direction.y = oldDirection.x * sinf(rotationAngle) + oldDirection.y * cosf(rotationAngle);
+        m_camera.direction.Normalize();
 
-        Vec2 oldPlane = camera.plane;
-        camera.plane.x = oldPlane.x * cosf(rotationAngle) - oldPlane.y * sinf(rotationAngle);
-        camera.plane.y = oldPlane.x * sinf(rotationAngle) + oldPlane.y * cosf(rotationAngle);
-        camera.plane.Normalize();
+        Vec2 oldPlane = m_camera.plane;
+        m_camera.plane.x = oldPlane.x * cosf(rotationAngle) - oldPlane.y * sinf(rotationAngle);
+        m_camera.plane.y = oldPlane.x * sinf(rotationAngle) + oldPlane.y * cosf(rotationAngle);
+        m_camera.plane.Normalize();
     }
 
     bool Player::GameHasEnded() const
     {
-        return inputState.endGame;
+        return m_inputState.endGame;
     }
 
     bool Player::InMainMenu() const
     {
-        return inputState.inMainMenu;
+        return m_inputState.inMainMenu;
     }
 
     void Player::Update(float frameDelta, float speedModifier, float rotationModifier)
@@ -175,22 +175,22 @@ namespace MiniFPS
         Move(frameDelta, speedModifier);
         Rotate(frameDelta, rotationModifier);
 
-        if (reloading)
+        if (m_reloading)
         {
-            reloadTimer += frameDelta;
+            m_reloadTimer += frameDelta;
         }
 
-        if (reloadTimer > RELOAD_TIME)
+        if (m_reloadTimer > RELOAD_TIME)
         {
-            currentAmmo = MAG_SIZE;
-            reloadTimer = 0.0f;
-            reloading = false;
+            m_currentAmmo = MAG_SIZE;
+            m_reloadTimer = 0.0f;
+            m_reloading = false;
         }
     }
 
     bool Player::CanShoot()
     {
-        if (currentAmmo > 0 && !reloading)
+        if (m_currentAmmo > 0 && !m_reloading)
         {
             return true;
         }
@@ -206,16 +206,16 @@ namespace MiniFPS
         if (CanShoot())
         {
             audio.PlayEffect("GunShoot4");
-            currentAmmo--;
+            m_currentAmmo--;
 
             for (Enemy &enemy: enemies)
             {
-                Vec2 wallIntersectionPoint = camera.pos;
-                wallIntersectionPoint += (camera.direction * wallDistance);
+                Vec2 wallIntersectionPoint = m_camera.pos;
+                wallIntersectionPoint += (m_camera.direction * wallDistance);
 
-                Vec2 delta = enemy.pos - camera.pos;
-                float projection = (delta.x * (wallIntersectionPoint.x - camera.pos.x) +
-                                    delta.y * (wallIntersectionPoint.y - camera.pos.y)) / (wallDistance * wallDistance);
+                Vec2 delta = enemy.m_pos - m_camera.pos;
+                float projection = (delta.x * (wallIntersectionPoint.x - m_camera.pos.x) +
+                                    delta.y * (wallIntersectionPoint.y - m_camera.pos.y)) / (wallDistance * wallDistance);
 
                 float distanceToShot;
 
@@ -225,21 +225,21 @@ namespace MiniFPS
                 }
                 else if (projection > 1.0)
                 {
-                    distanceToShot = wallIntersectionPoint.Distance(enemy.pos);
+                    distanceToShot = wallIntersectionPoint.Distance(enemy.m_pos);
                 }
                 else
                 {
                     const Vec2 closestPointOnLine{
-                            camera.pos.x + projection * (wallIntersectionPoint.x - camera.pos.x),
-                            camera.pos.y + projection * (wallIntersectionPoint.y - camera.pos.y)
+                        m_camera.pos.x + projection * (wallIntersectionPoint.x - m_camera.pos.x),
+                        m_camera.pos.y + projection * (wallIntersectionPoint.y - m_camera.pos.y)
                     };
 
-                    distanceToShot = closestPointOnLine.Distance(enemy.pos);
+                    distanceToShot = closestPointOnLine.Distance(enemy.m_pos);
                 }
 
                 if (enemy.IsVisible() && distanceToShot < MAX_SHOT_DISTANCE)
                 {
-                    std::cout << "Hit enemy at (" << enemy.pos.x << ", " << enemy.pos.y << ")" << std::endl;
+                    std::cout << "Hit enemy at (" << enemy.m_pos.x << ", " << enemy.m_pos.y << ")" << std::endl;
                     enemy.SetVisible(false);
                     return true;
                 }
@@ -256,11 +256,11 @@ namespace MiniFPS
 
     void Player::Reload(Audio &audio)
     {
-        if (!reloading)
+        if (!m_reloading)
         {
             audio.PlayEffect("GunReload1");
-            reloadTimer = 0;
-            reloading = true;
+            m_reloadTimer = 0;
+            m_reloading = true;
         }
         else
         {

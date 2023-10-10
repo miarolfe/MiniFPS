@@ -14,10 +14,10 @@ namespace MiniFPS
 
         MainMenu(const Settings &settings, const Font &font);
 
-        Font font;
-        Player player;
-        Settings settings;
-        Button startButton;
+        Font m_font;
+        Player m_player;
+        Settings m_settings;
+        Button m_startButton;
 
         void Update();
     };

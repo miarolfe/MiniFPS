@@ -2,24 +2,19 @@
 
 namespace MiniFPS
 {
-    Vec2::Vec2() : x(0), y(0)
-    {}
+    Vec2::Vec2() : x(0), y(0) {}
 
-    Vec2::Vec2(const float x, const float y) : x(x), y(y)
-    {}
+    Vec2::Vec2(const float x, const float y) : x(x), y(y) {}
 
-    Vec2::Vec2(const FloatPoint point) : x(point.x), y(point.y)
-    {}
+    Vec2::Vec2(const FloatPoint point) : x(point.x), y(point.y) {}
 
-    Vec2::Vec2(const Vec2Int &intVector) : x(static_cast<float>(intVector.x)), y(static_cast<float>(intVector.y))
-    {}
+    Vec2::Vec2(const Vec2Int &intVector) : x(static_cast<float>(intVector.x)), y(static_cast<float>(intVector.y)) {}
 
-    Vec2::Vec2(const Vec2 &floatVector) : x(floatVector.x), y(floatVector.y)
-    {}
+    Vec2::Vec2(const Vec2 &floatVector) = default;
 
-    float Vec2::Length()
+    float Vec2::Length() const
     {
-        return sqrt((x * x) + (y * y));
+        return sqrtf((x * x) + (y * y));
     }
 
     float Vec2::Distance(const Vec2 &otherVector) const
@@ -50,7 +45,7 @@ namespace MiniFPS
         return *this;
     }
 
-    Vec2 Vec2::operator+(const Vec2 &otherVector)
+    Vec2 Vec2::operator+(const Vec2 &otherVector) const
     {
         return {x + otherVector.x, y + otherVector.y};
     }
@@ -62,7 +57,7 @@ namespace MiniFPS
         return *this;
     }
 
-    Vec2 Vec2::operator-(const Vec2 &otherVector)
+    Vec2 Vec2::operator-(const Vec2 &otherVector) const
     {
         return {x - otherVector.x, y - otherVector.y};
     }
@@ -74,12 +69,12 @@ namespace MiniFPS
         return *this;
     }
 
-    Vec2 Vec2::operator*(const float value)
+    Vec2 Vec2::operator*(const float value) const
     {
         return {x * value, y * value};
     }
 
-    float Vec2::operator*(const Vec2 &otherVector)
+    float Vec2::operator*(const Vec2 &otherVector) const
     {
         return (x * otherVector.y - y * otherVector.x);
     }
@@ -93,19 +88,18 @@ namespace MiniFPS
     Vec2Int::Vec2Int(IntPoint point) : x(point.x), y(point.y)
     {}
 
-    Vec2Int::Vec2Int(const Vec2 &floatVector) : x(static_cast<int>(floatVector.x)), y(static_cast<float>(floatVector.y))
+    Vec2Int::Vec2Int(const Vec2 &floatVector) : x(static_cast<int>(floatVector.x)), y(static_cast<int>(floatVector.y))
     {}
 
-    Vec2Int::Vec2Int(const Vec2Int &vector) : x(vector.x), y(vector.y)
-    {}
+    Vec2Int::Vec2Int(const Vec2Int &vector) = default;
 
-    Vec2Int Vec2Int::operator+(const Vec2Int &otherVector)
+    Vec2Int Vec2Int::operator+(const Vec2Int &otherVector) const
     {
-        return Vec2Int(x + otherVector.x, y + otherVector.y);
+        return {x + otherVector.x, y + otherVector.y};
     }
 
-    Vec2Int Vec2Int::operator-(const Vec2Int &otherVector)
+    Vec2Int Vec2Int::operator-(const Vec2Int &otherVector) const
     {
-        return Vec2Int(x - otherVector.x, y - otherVector.y);
+        return {x - otherVector.x, y - otherVector.y};
     }
 }

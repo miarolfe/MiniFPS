@@ -8,9 +8,9 @@ namespace MiniFPS
     class Button
     {
     public:
-        FloatPoint pos;
-        float width;
-        float height;
+        FloatPoint m_pos;
+        float m_width;
+        float m_height;
 
         Button();
 

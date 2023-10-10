@@ -25,7 +25,7 @@ namespace MiniFPS
 
         explicit FontManager(const Settings &settings);
 
-        std::vector<Font> fonts;
+        std::vector<Font> m_fonts;
 
         void FreeFonts();
     };

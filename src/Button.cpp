@@ -5,7 +5,7 @@ namespace MiniFPS
     Button::Button()
     {}
 
-    Button::Button(FloatPoint pos, float width, float height) : pos(pos), width(width), height(height)
+    Button::Button(FloatPoint pos, float width, float height) : m_pos(pos), m_width(width), m_height(height)
     {}
 
     bool Button::Pressed(int mouseX, int mouseY)
@@ -23,21 +23,21 @@ namespace MiniFPS
 
     float Button::GetLeftBound()
     {
-        return pos.x - (width / 2);
+        return m_pos.x - (m_width / 2);
     }
 
     float Button::GetRightBound()
     {
-        return pos.x + (width / 2);
+        return m_pos.x + (m_width / 2);
     }
 
     float Button::GetBottomBound()
     {
-        return pos.y + (height / 2);
+        return m_pos.y + (m_height / 2);
     }
 
     float Button::GetTopBound()
     {
-        return pos.y - (height / 2);
+        return m_pos.y - (m_height / 2);
     }
 }
