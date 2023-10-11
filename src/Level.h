@@ -30,8 +30,6 @@ namespace MiniFPS
 
         bool IsPositionValid(const Vec2& point);
 
-        void Print();
-
         void Load(const string& filePath);
     };
 }

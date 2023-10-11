@@ -242,7 +242,14 @@ namespace MiniFPS
 
                 if (enemy.IsVisible() && distanceToShot < MAX_SHOT_DISTANCE)
                 {
-                    std::cout << "Hit enemy at (" << enemy.m_pos.x << ", " << enemy.m_pos.y << ")" << std::endl;
+                    string info;
+                    info += "Hit enemy at (";
+                    info += std::to_string(enemy.m_pos.x);
+                    info += ", ";
+                    info += std::to_string(enemy.m_pos.y);
+                    info += ")";
+                    LogHandler::GetInstance().Log(info.c_str());
+
                     enemy.SetVisible(false);
                     return true;
                 }
