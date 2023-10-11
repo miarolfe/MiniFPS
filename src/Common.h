@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <string>
+#include <queue>
 #include <vector>
 #include <cassert>
 #include <cstdint>

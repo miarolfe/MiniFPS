@@ -4,6 +4,7 @@
 #include "Common.h"
 #include "Enemy.h"
 #include "Font.h"
+#include "LogHandler.h"
 #include "Settings.h"
 #include "Renderer.h"
 #include "Texture.h"

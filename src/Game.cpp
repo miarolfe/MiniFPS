@@ -35,11 +35,19 @@ MiniFPS::Game::Game()
     if (!InitWindow(&m_window, m_settings.screenWidth, m_settings.screenHeight))
     {
         std::cerr << "Window could not be initialized" << std::endl;
+        LogHandler::GetInstance().LogError("Window could not be initialized");
+    }
+    else {
+        LogHandler::GetInstance().Log("Window initialized");
     }
 
     if (!InitRenderer(m_window, &m_sdlRenderer, m_settings.vSync))
     {
         std::cerr << "Renderer could not be initialized" << std::endl;
+        LogHandler::GetInstance().LogError("Renderer could not be initialized");
+    }
+    else {
+        LogHandler::GetInstance().Log("Renderer initialized");
     }
 
     m_renderer = Renderer(m_sdlRenderer, m_settings);
@@ -50,6 +58,8 @@ MiniFPS::Game::Game()
 
 void MiniFPS::Game::Update()
 {
+    LogHandler::GetInstance().Update();
+
     if (m_mainMenu.m_player.InMainMenu() && !m_mainMenu.m_player.GameHasEnded())
     {
         m_renderer.DrawMainMenu(m_mainMenu);
