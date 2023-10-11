@@ -53,7 +53,11 @@ namespace MiniFPS
         }
         else
         {
-            std::cerr << "Invalid texture: no texture mapped to id " << textureId << std::endl;
+            string warning;
+            warning += "Invalid texture: no texture mapped to id ";
+            warning += textureId;
+            LogHandler::GetInstance().LogWarning(warning.c_str());
+
             texture = m_textureMap[-1]; // Fallback texture
         }
 

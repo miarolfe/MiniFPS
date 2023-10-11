@@ -27,7 +27,7 @@ namespace MiniFPS
             }
             else
             {
-                std::cerr << "Attempting to reinitialize LogHandler" << std::endl;
+                // This should never happen
             }
         }
 

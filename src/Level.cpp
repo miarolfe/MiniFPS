@@ -94,7 +94,10 @@ namespace MiniFPS
         std::ifstream infile(filePath);
         if (!infile)
         {
-            std::cerr << "Error opening level file for reading: " << filePath << std::endl;
+            string err;
+            err += "Failed to open level file: ";
+            err += filePath;
+            LogHandler::GetInstance().LogError(err.c_str());
         }
 
         infile >> m_width >> m_height;

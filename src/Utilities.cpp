@@ -200,7 +200,10 @@ namespace MiniFPS
         }
         else
         {
-            std::cerr << "Error opening directory: " << directoryPath << std::endl;
+            string err;
+            err += "Failed to open dictionary: ";
+            err += directoryPath;
+            LogHandler::GetInstance().LogError(err.c_str());
         }
 
         return files;
@@ -229,7 +232,10 @@ namespace MiniFPS
         }
         else
         {
-            std::cerr << "Error opening directory: " << directoryPath << std::endl;
+            string err;
+            err += "Failed to open dictionary: ";
+            err += directoryPath;
+            LogHandler::GetInstance().LogError(err.c_str());
         }
 
         return folders;

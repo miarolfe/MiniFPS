@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Common.h"
+#include "LogHandler.h"
 #include "Settings.h"
 
 namespace MiniFPS

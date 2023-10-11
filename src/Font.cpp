@@ -20,7 +20,12 @@ namespace MiniFPS
         }
         else
         {
-            std::cerr << "Font " << name << " at " << fontPath << " could not be loaded" << std::endl;
+            string warning;
+            warning += "Failed to load font ";
+            warning += name;
+            warning += " at ";
+            warning += fontPath;
+            LogHandler::GetInstance().LogWarning(warning.c_str());
         }
 
         this->pointSize = pointSize;
