@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Common.h"
+#include "LogHandler.h"
 #include "Vector.h"
 
 namespace MiniFPS
@@ -16,12 +17,12 @@ namespace MiniFPS
 
     public:
         // TODO: Abstract this out
-        std::map<short, std::string> m_textureIdMap; // Map of texture IDs to their names
+        std::map<short, string> m_textureIdMap; // Map of texture IDs to their names
         std::vector<std::pair<short, Vec2>> m_enemySpawnLocations;
 
         Level();
 
-        explicit Level(const std::string& filePath);
+        explicit Level(const string& filePath);
 
         short Get(const Vec2Int& point);
 
@@ -29,8 +30,6 @@ namespace MiniFPS
 
         bool IsPositionValid(const Vec2& point);
 
-        void Print();
-
-        void Load(const std::string& filePath);
+        void Load(const string& filePath);
     };
 }

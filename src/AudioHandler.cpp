@@ -22,9 +22,9 @@ namespace MiniFPS
         SetEffectVolume(settings.effectVolume);
         SetMusicVolume(settings.musicVolume);
 
-        const std::vector<std::string> folders = GetFoldersInDirectory(audioFolderPath);
+        const std::vector<string> folders = GetFoldersInDirectory(audioFolderPath);
 
-        for (const std::string& folder: folders)
+        for (const string& folder: folders)
         {
             if (folder == "effects")
             {
@@ -36,40 +36,55 @@ namespace MiniFPS
                     Mix_Chunk* effect = Mix_LoadWAV((effectFilePath).c_str());
                     if (effect)
                     {
-                        const std::string name = file.substr(0, file.size() - 4);
+                        const string name = file.substr(0, file.size() - 4);
                         m_effects[name] = Effect(effect);
                     }
                     else
                     {
-                        std::cerr << "Effect file " << file << " could not be loaded" << std::endl;
+                        if (file != ".DS_Store") // macOS-specific hidden file
+                        {
+                            string err;
+                            err += "Effect file ";
+                            err += file;
+                            err += " could not be loaded";
+                            LogHandler::GetInstance().LogError(err.c_str());
+                        }
                     }
                 }
             }
             else if (folder == "tracks")
             {
-                std::vector<std::string> const trackFiles = GetFilesInDirectory(audioFolderPath + folder);
+                std::vector<string> const trackFiles = GetFilesInDirectory(audioFolderPath + folder);
 
-                for (const std::string& file: trackFiles)
+                for (const string& file: trackFiles)
                 {
-                    const std::string trackFilePath = audioFolderPath + folder + "/" + file;
+                    const string trackFilePath = audioFolderPath + folder + "/" + file;
                     Mix_Music* track = Mix_LoadMUS((trackFilePath).c_str());
                     if (track)
                     {
-                        const std::string name = file.substr(0, file.size() - 4);
+                        const string name = file.substr(0, file.size() - 4);
                         m_tracks[name] = Track(track);
                     }
                     else
                     {
-                        if (file != ".DS_Store")
-                        { // macOS-specific hidden file
-                            std::cerr << "Track file " << file << " could not be loaded" << std::endl;
+                        if (file != ".DS_Store") // macOS-specific hidden file
+                        {
+                            string err;
+                            err += "Track file ";
+                            err += file;
+                            err += " could not be loaded";
+                            LogHandler::GetInstance().LogError(err.c_str());
                         }
                     }
                 }
             }
             else
             {
-                std::cerr << "Folder " << folder << " is not a valid folder for audio files" << std::endl;
+                string err;
+                err += "Folder ";
+                err += folder;
+                err += " is not a valid folder for audio files";
+                LogHandler::GetInstance().LogError(err.c_str());
             }
         }
     }
@@ -78,19 +93,21 @@ namespace MiniFPS
     {
         if (s_instance == nullptr)
         {
-            if (!s_initialized) {
+            if (!s_initialized)
+            {
                 s_instance = new AudioHandler(audioFolderPath, settings);
                 s_initialized = true;
             }
-            else {
-                std::cerr << "Attempting to reinitialize AudioHandler" << std::endl;
+            else
+            {
+                LogHandler::GetInstance().LogError("Attempting to reinitialize LogHandler");
             }
         }
 
         return *s_instance;
     }
 
-    bool AudioHandler::PlayEffect(const std::string& name, int loops)
+    bool AudioHandler::PlayEffect(const string& name, int loops)
     {
         if (m_effects.count(name) > 0)
         {
@@ -104,7 +121,7 @@ namespace MiniFPS
         return false;
     }
 
-    bool AudioHandler::PlayTrack(const std::string& name, int loops)
+    bool AudioHandler::PlayTrack(const string& name, int loops)
     {
         if (m_tracks.count(name) > 0)
         {

@@ -4,22 +4,41 @@ MiniFPS::Game::Game()
 {
     if (!InitSDL())
     {
-        std::cerr << "SDL could not be initialized:" << SDL_GetError();
+        string err = "Failed to initialize SDL: ";
+        err += SDL_GetError();
+
+        LogHandler::GetInstance().LogError(err.c_str());
+    }
+    else
+    {
+        LogHandler::GetInstance().Log("Initialized SDL");
     }
 
     if (!InitSDLImage())
     {
-        std::cerr << "SDL_image could not be initialized" << std::endl;
+        LogHandler::GetInstance().LogError("Failed to initialize SDL_image");
+    }
+    else
+    {
+        LogHandler::GetInstance().Log("Initialized SDL_image");
     }
 
     if (!InitSDLMixer())
     {
-        std::cerr << "SDL_mixer could not be initialized" << std::endl;
+        LogHandler::GetInstance().LogError("Failed to initialize SDL_mixer");
+    }
+    else
+    {
+        LogHandler::GetInstance().Log("Initialized SDL_mixer");
     }
 
     if (!InitSDLTTF())
     {
-        std::cerr << "SDL_ttf could not be initialized" << std::endl;
+        LogHandler::GetInstance().LogError("Failed to initialize SDL_ttf");
+    }
+    else
+    {
+        LogHandler::GetInstance().Log("Initialized SDL_ttf");
     }
 
     m_settings = Settings::LoadSettings(GetSDLAssetsFolderPath(), "settings.json");
@@ -34,12 +53,18 @@ MiniFPS::Game::Game()
 
     if (!InitWindow(&m_window, m_settings.screenWidth, m_settings.screenHeight))
     {
-        std::cerr << "Window could not be initialized" << std::endl;
+        LogHandler::GetInstance().LogError("Window could not be initialized");
+    }
+    else {
+        LogHandler::GetInstance().Log("Window initialized");
     }
 
     if (!InitRenderer(m_window, &m_sdlRenderer, m_settings.vSync))
     {
-        std::cerr << "Renderer could not be initialized" << std::endl;
+        LogHandler::GetInstance().LogError("Renderer could not be initialized");
+    }
+    else {
+        LogHandler::GetInstance().Log("Renderer initialized");
     }
 
     m_renderer = Renderer(m_sdlRenderer, m_settings);
@@ -50,6 +75,8 @@ MiniFPS::Game::Game()
 
 void MiniFPS::Game::Update()
 {
+    LogHandler::GetInstance().Update();
+
     if (m_mainMenu.m_player.InMainMenu() && !m_mainMenu.m_player.GameHasEnded())
     {
         m_renderer.DrawMainMenu(m_mainMenu);
@@ -61,6 +88,7 @@ void MiniFPS::Game::Update()
         {
             SetupGame();
             m_gameSetup = true;
+            LogHandler::GetInstance().Log("Game setup");
         }
 
         m_oldTime = m_curTime;
@@ -103,11 +131,11 @@ MiniFPS::Game::~Game()
 
 void MiniFPS::Game::LoadTextures()
 {
-    const std::vector<std::string> spriteFileNames = GetFilesInDirectory(GetSDLAssetsFolderPath() + "sprites/");
+    const std::vector<string> spriteFileNames = GetFilesInDirectory(GetSDLAssetsFolderPath() + "sprites/");
 
     for (const auto& file: spriteFileNames)
     {
-        const std::string name = file.substr(0, file.size() - 4);
+        const string name = file.substr(0, file.size() - 4);
 
         const Texture newTexture(name, GetSDLAssetsFolderPath() + "sprites/" + file);
         m_textureNameToTextureMap[name] = newTexture;

@@ -24,6 +24,7 @@ set(
         src/Font.cpp
         src/Game.cpp
         src/Level.cpp
+        src/LogHandler.cpp
         src/Menu.cpp
         src/Player.cpp
         src/Renderer.cpp
@@ -43,6 +44,7 @@ set(
         src/Font.h
         src/Game.h
         src/Level.h
+        src/LogHandler.h
         src/Menu.h
         src/Player.h
         src/Renderer.h

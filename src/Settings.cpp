@@ -18,12 +18,12 @@ namespace MiniFPS
         musicVolume = 0;
     }
 
-    Settings::Settings(const std::string& version, int screenWidth, int screenHeight,
+    Settings::Settings(const string& version, int screenWidth, int screenHeight,
                        int renderDistance, bool vSync,
                        float fieldOfView, float speedModifier, float rotationModifier, float playerStartX,
                        float playerStartY, float playerStartAngle,
                        float effectVolume, float musicVolume,
-                       const std::string& levelPath, const std::map<std::string, std::string>& fontPaths)
+                       const string& levelPath, const std::map<string, string>& fontPaths)
     {
         this->version = version;
         this->screenWidth = screenWidth;
@@ -46,7 +46,7 @@ namespace MiniFPS
         }
     }
 
-    Settings Settings::LoadSettings(const std::string& assetsFilePath, const std::string& settingsFilePath)
+    Settings Settings::LoadSettings(const string& assetsFilePath, const string& settingsFilePath)
     {
         std::ifstream f(assetsFilePath + settingsFilePath);
 
@@ -57,13 +57,13 @@ namespace MiniFPS
 
         json settingsAsJson = json::parse(f);
         int major, minor, patch;
-        std::string version;
+        string version;
         int screenWidth, screenHeight, renderDistance;
         float fieldOfView, speedModifier, rotationModifier, playerStartX, playerStartY,
             playerStartAngle, playerDistanceToProjectionPlane, effectVolume, musicVolume;
-        std::string levelPath;
-        std::map<std::string, std::string> texturePaths;
-        std::map<std::string, std::string> fontPaths;
+        string levelPath;
+        std::map<string, string> texturePaths;
+        std::map<string, string> fontPaths;
         bool vSync;
 
         major = settingsAsJson["game"]["version"]["major"];

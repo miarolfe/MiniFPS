@@ -2,6 +2,7 @@
 
 #include "AudioHandler.h"
 #include "Common.h"
+#include "LogHandler.h"
 #include "Renderer.h"
 #include "Settings.h"
 
@@ -33,17 +34,17 @@ namespace MiniFPS
 
     void Quit(SDL_Window* window, SDL_Renderer* renderer);
 
-    std::string GetFramesPerSecond(float frameDelta);
+    string GetFramesPerSecond(float frameDelta);
 
     float GetFrameTime(float oldTime, float curTime);
 
-    std::string GetSDLAssetsFolderPath();
+    string GetSDLAssetsFolderPath();
 
-    void ClearFile(const std::string& fileName);
+    void ClearFile(const string& fileName);
 
-    void WriteLineToFile(const std::string& fileName, const std::string& line);
+    void WriteLineToFile(const string& fileName, const string& line);
 
-    std::vector<std::string> GetFilesInDirectory(const std::string& directoryPath);
+    std::vector<string> GetFilesInDirectory(const string& directoryPath);
 
-    std::vector<std::string> GetFoldersInDirectory(const std::string& directoryPath);
+    std::vector<string> GetFoldersInDirectory(const string& directoryPath);
 }

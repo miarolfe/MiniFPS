@@ -53,7 +53,11 @@ namespace MiniFPS
         }
         else
         {
-            std::cerr << "Invalid texture: no texture mapped to id " << textureId << std::endl;
+            string warning;
+            warning += "Invalid texture: no texture mapped to id ";
+            warning += textureId;
+            LogHandler::GetInstance().LogWarning(warning.c_str());
+
             texture = m_textureMap[-1]; // Fallback texture
         }
 
@@ -220,7 +224,7 @@ namespace MiniFPS
         SDL_DestroyTexture(buttonTexture);
     }
 
-    void Renderer::DrawTextStr(const std::string& text, const Font& font, const Vec2& point, int width, int r = 255,
+    void Renderer::DrawTextStr(const string& text, const Font& font, const Vec2& point, int width, int r = 255,
                                int g = 255, int b = 255)
     {
         SDL_SetRenderTarget(m_sdlRenderer, m_renderFrameTexture);
@@ -242,7 +246,7 @@ namespace MiniFPS
         SDL_DestroyTexture(texture);
     }
 
-    void Renderer::DrawTextStrH(const std::string& text, const Font& font, const Vec2& point, int height, int r = 255,
+    void Renderer::DrawTextStrH(const string& text, const Font& font, const Vec2& point, int height, int r = 255,
                                 int g = 255, int b = 255)
     {
         SDL_SetRenderTarget(m_sdlRenderer, m_renderFrameTexture);
@@ -429,11 +433,11 @@ namespace MiniFPS
         // TODO: Scale this with frame
         // UI draw here
 
-        std::string healthDisplay =
+        string healthDisplay =
             "HP:" + std::to_string(player.m_currentHealth) + "/" + std::to_string(Player::MAX_HEALTH);
         DrawTextStrH(healthDisplay, font, {25, 25}, 25, 255, 255, 255);
 
-        std::string ammoDisplay;
+        string ammoDisplay;
         if (player.m_reloading)
         {
             ammoDisplay = "AMMO:RELOADING...";

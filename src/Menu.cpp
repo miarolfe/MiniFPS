@@ -26,7 +26,7 @@ namespace MiniFPS
         }
     }
 
-    SDL_Texture* RenderTextToTexture(SDL_Renderer* sdlRenderer, const Font& font, const std::string& text, int r, int g,
+    SDL_Texture* RenderTextToTexture(SDL_Renderer* sdlRenderer, const Font& font, const string& text, int r, int g,
                                      int b)
     {
         const SDL_Color textColor = {static_cast<Uint8>(r), static_cast<Uint8>(g), static_cast<Uint8>(b), 255};

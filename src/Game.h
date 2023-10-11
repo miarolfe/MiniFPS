@@ -4,6 +4,7 @@
 #include "Common.h"
 #include "Enemy.h"
 #include "Font.h"
+#include "LogHandler.h"
 #include "Settings.h"
 #include "Renderer.h"
 #include "Texture.h"
@@ -36,7 +37,7 @@ namespace MiniFPS
         Renderer m_renderer;
         Settings m_settings;
         Player m_gamePlayer;
-        std::map<std::string, Texture> m_textureNameToTextureMap;
+        std::map<string, Texture> m_textureNameToTextureMap;
         std::unordered_map<short, Texture> m_textureMap;
         std::vector<Enemy> m_enemies;
         float m_oldTime = 0.0;

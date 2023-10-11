@@ -9,7 +9,7 @@ namespace MiniFPS
         pointSize = -1;
     }
 
-    Font::Font(const std::string& name, const std::string& fontPath, int pointSize)
+    Font::Font(const string& name, const string& fontPath, int pointSize)
     {
         this->name = name;
 
@@ -20,13 +20,18 @@ namespace MiniFPS
         }
         else
         {
-            std::cerr << "Font " << name << " at " << fontPath << " could not be loaded" << std::endl;
+            string warning;
+            warning += "Failed to load font ";
+            warning += name;
+            warning += " at ";
+            warning += fontPath;
+            LogHandler::GetInstance().LogWarning(warning.c_str());
         }
 
         this->pointSize = pointSize;
     }
 
-    TTF_Font* Font::LoadFont(const std::string& fontPath, int pointSize)
+    TTF_Font* Font::LoadFont(const string& fontPath, int pointSize)
     {
         return TTF_OpenFont(fontPath.c_str(), pointSize);
     }

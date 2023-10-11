@@ -4,7 +4,7 @@ namespace MiniFPS
 {
     Level::Level() = default;
 
-    Level::Level(const std::string& filePath)
+    Level::Level(const string& filePath)
     {
         Load(filePath);
     }
@@ -70,31 +70,15 @@ namespace MiniFPS
         return (point.x >= 0 && point.x < m_width && point.y >= 0 && point.y < m_height);
     }
 
-    void Level::Print()
-    {
-        for (int i = 0; i < m_width; i++)
-        {
-            for (int j = 0; j < m_height; j++)
-            {
-                if (Get({j, i}) == 0)
-                {
-                    std::cout << "  ";
-                }
-                else
-                {
-                    std::cout << "* ";
-                }
-            }
-            std::cout << std::endl;
-        }
-    }
-
-    void Level::Load(const std::string& filePath)
+    void Level::Load(const string& filePath)
     {
         std::ifstream infile(filePath);
         if (!infile)
         {
-            std::cerr << "Error opening level file for reading: " << filePath << std::endl;
+            string err;
+            err += "Failed to open level file: ";
+            err += filePath;
+            LogHandler::GetInstance().LogError(err.c_str());
         }
 
         infile >> m_width >> m_height;
@@ -130,7 +114,7 @@ namespace MiniFPS
         {
             short id;
             infile >> id;
-            std::string textureName;
+            string textureName;
             infile >> textureName;
             m_textureIdMap[id] = textureName;
         }
