@@ -161,7 +161,7 @@ namespace MiniFPS
             string err;
             err += "Invalid platform: ";
             err += platform;
-            LogHandler::GetInstance().LogError(err.c_str());
+            LogHandler::LogError(err.c_str());
             filePath = "INVALID PLATFORM";
         }
 
@@ -203,7 +203,7 @@ namespace MiniFPS
             string err;
             err += "Failed to open dictionary: ";
             err += directoryPath;
-            LogHandler::GetInstance().LogError(err.c_str());
+            LogHandler::LogError(err.c_str());
         }
 
         return files;
@@ -235,7 +235,7 @@ namespace MiniFPS
             string err;
             err += "Failed to open dictionary: ";
             err += directoryPath;
-            LogHandler::GetInstance().LogError(err.c_str());
+            LogHandler::LogError(err.c_str());
         }
 
         return folders;

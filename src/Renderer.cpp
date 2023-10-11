@@ -56,7 +56,7 @@ namespace MiniFPS
             string warning;
             warning += "Invalid texture: no texture mapped to id ";
             warning += textureId;
-            LogHandler::GetInstance().LogWarning(warning.c_str());
+            LogHandler::LogWarning(warning.c_str());
 
             texture = m_textureMap[-1]; // Fallback texture
         }

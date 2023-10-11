@@ -39,10 +39,10 @@ namespace MiniFPS
         LogHandler(LogHandler&& other) = delete; // No move
         LogHandler& operator=(LogHandler&& other) = delete; // No move assignment
 
-        void Update();
-        void Log(const char* msg);
-        void LogWarning(const char* msg);
-        void LogError(const char* msg);
+        static void Update();
+        static void Log(const char* msg);
+        static void LogWarning(const char* msg);
+        static void LogError(const char* msg);
     };
 }
 

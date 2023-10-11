@@ -7,38 +7,38 @@ MiniFPS::Game::Game()
         string err = "Failed to initialize SDL: ";
         err += SDL_GetError();
 
-        LogHandler::GetInstance().LogError(err.c_str());
+        LogHandler::LogError(err.c_str());
     }
     else
     {
-        LogHandler::GetInstance().Log("Initialized SDL");
+        LogHandler::Log("Initialized SDL");
     }
 
     if (!InitSDLImage())
     {
-        LogHandler::GetInstance().LogError("Failed to initialize SDL_image");
+        LogHandler::LogError("Failed to initialize SDL_image");
     }
     else
     {
-        LogHandler::GetInstance().Log("Initialized SDL_image");
+        LogHandler::Log("Initialized SDL_image");
     }
 
     if (!InitSDLMixer())
     {
-        LogHandler::GetInstance().LogError("Failed to initialize SDL_mixer");
+        LogHandler::LogError("Failed to initialize SDL_mixer");
     }
     else
     {
-        LogHandler::GetInstance().Log("Initialized SDL_mixer");
+        LogHandler::Log("Initialized SDL_mixer");
     }
 
     if (!InitSDLTTF())
     {
-        LogHandler::GetInstance().LogError("Failed to initialize SDL_ttf");
+        LogHandler::LogError("Failed to initialize SDL_ttf");
     }
     else
     {
-        LogHandler::GetInstance().Log("Initialized SDL_ttf");
+        LogHandler::Log("Initialized SDL_ttf");
     }
 
     m_settings = Settings::LoadSettings(GetSDLAssetsFolderPath(), "settings.json");
@@ -53,18 +53,18 @@ MiniFPS::Game::Game()
 
     if (!InitWindow(&m_window, m_settings.screenWidth, m_settings.screenHeight))
     {
-        LogHandler::GetInstance().LogError("Window could not be initialized");
+        LogHandler::LogError("Window could not be initialized");
     }
     else {
-        LogHandler::GetInstance().Log("Window initialized");
+        LogHandler::Log("Window initialized");
     }
 
     if (!InitRenderer(m_window, &m_sdlRenderer, m_settings.vSync))
     {
-        LogHandler::GetInstance().LogError("Renderer could not be initialized");
+        LogHandler::LogError("Renderer could not be initialized");
     }
     else {
-        LogHandler::GetInstance().Log("Renderer initialized");
+        LogHandler::Log("Renderer initialized");
     }
 
     m_renderer = Renderer(m_sdlRenderer, m_settings);
@@ -75,7 +75,7 @@ MiniFPS::Game::Game()
 
 void MiniFPS::Game::Update()
 {
-    LogHandler::GetInstance().Update();
+    LogHandler::Update();
 
     if (m_mainMenu.m_player.InMainMenu() && !m_mainMenu.m_player.GameHasEnded())
     {
@@ -88,7 +88,7 @@ void MiniFPS::Game::Update()
         {
             SetupGame();
             m_gameSetup = true;
-            LogHandler::GetInstance().Log("Game setup");
+            LogHandler::Log("Game setup");
         }
 
         m_oldTime = m_curTime;

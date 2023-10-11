@@ -25,7 +25,7 @@ namespace MiniFPS
             warning += name;
             warning += " at ";
             warning += fontPath;
-            LogHandler::GetInstance().LogWarning(warning.c_str());
+            LogHandler::LogWarning(warning.c_str());
         }
 
         this->pointSize = pointSize;

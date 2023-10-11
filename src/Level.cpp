@@ -78,7 +78,7 @@ namespace MiniFPS
             string err;
             err += "Failed to open level file: ";
             err += filePath;
-            LogHandler::GetInstance().LogError(err.c_str());
+            LogHandler::LogError(err.c_str());
         }
 
         infile >> m_width >> m_height;

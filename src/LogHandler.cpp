@@ -15,6 +15,7 @@ namespace MiniFPS
     LogHandler::~LogHandler()
     {
         m_outfile.close();
+        delete s_instance;
     }
 
     LogHandler& LogHandler::GetInstance()
@@ -36,48 +37,50 @@ namespace MiniFPS
 
     void LogHandler::Update()
     {
-        if (!m_msgQueue.empty())
+        LogHandler::GetInstance();
+
+        if (!LogHandler::GetInstance().m_msgQueue.empty())
         {
-            while (!m_msgQueue.empty())
+            while (!LogHandler::GetInstance().m_msgQueue.empty())
             {
-                LogMsg logMsg = m_msgQueue.front();
+                LogMsg logMsg = LogHandler::GetInstance().m_msgQueue.front();
                 switch (logMsg.type)
                 {
                     case LOG_INFO:
                     {
-                        m_outfile << "[INFO   ] ";
+                        LogHandler::GetInstance().m_outfile << "[INFO   ] ";
                         break;
                     }
                     case LOG_WARNING:
                     {
-                        m_outfile << "[WARNING] ";
+                        LogHandler::GetInstance().m_outfile << "[WARNING] ";
                         break;
                     }
                     case LOG_ERROR:
                     {
-                        m_outfile << "[ERROR  ] ";
+                        LogHandler::GetInstance().m_outfile << "[ERROR  ] ";
                         break;
                     }
                 }
-                m_outfile << m_msgQueue.front().msg << std::endl;
-                m_msgQueue.pop();
+                LogHandler::GetInstance().m_outfile << LogHandler::GetInstance().m_msgQueue.front().msg << std::endl;
+                LogHandler::GetInstance().m_msgQueue.pop();
             }
         }
     }
 
     void LogHandler::Log(const char* msg)
     {
-        m_msgQueue.push({LOG_INFO, msg});
+        GetInstance().m_msgQueue.push({LOG_INFO, msg});
     }
 
     void LogHandler::LogWarning(const char* msg)
     {
-        m_msgQueue.push({LOG_WARNING, msg});
+        GetInstance().m_msgQueue.push({LOG_WARNING, msg});
     }
 
     void LogHandler::LogError(const char* msg)
     {
-        m_msgQueue.push({LOG_ERROR, msg});
+        GetInstance().m_msgQueue.push({LOG_ERROR, msg});
     }
 
     LogHandler* LogHandler::s_instance = nullptr;

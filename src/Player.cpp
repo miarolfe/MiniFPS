@@ -248,7 +248,7 @@ namespace MiniFPS
                     info += ", ";
                     info += std::to_string(enemy.m_pos.y);
                     info += ")";
-                    LogHandler::GetInstance().Log(info.c_str());
+                    LogHandler::Log(info.c_str());
 
                     enemy.SetVisible(false);
                     return true;

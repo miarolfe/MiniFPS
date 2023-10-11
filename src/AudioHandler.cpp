@@ -47,7 +47,7 @@ namespace MiniFPS
                             err += "Effect file ";
                             err += file;
                             err += " could not be loaded";
-                            LogHandler::GetInstance().LogError(err.c_str());
+                            LogHandler::LogError(err.c_str());
                         }
                     }
                 }
@@ -73,7 +73,7 @@ namespace MiniFPS
                             err += "Track file ";
                             err += file;
                             err += " could not be loaded";
-                            LogHandler::GetInstance().LogError(err.c_str());
+                            LogHandler::LogError(err.c_str());
                         }
                     }
                 }
@@ -84,7 +84,7 @@ namespace MiniFPS
                 err += "Folder ";
                 err += folder;
                 err += " is not a valid folder for audio files";
-                LogHandler::GetInstance().LogError(err.c_str());
+                LogHandler::LogError(err.c_str());
             }
         }
     }
@@ -100,7 +100,7 @@ namespace MiniFPS
             }
             else
             {
-                LogHandler::GetInstance().LogError("Attempting to reinitialize LogHandler");
+                LogHandler::LogError("Attempting to reinitialize LogHandler");
             }
         }
 
