@@ -76,7 +76,7 @@ namespace MiniFPS
 
         void DrawTextStr(const string& text, const Font& font, const Vec2& point, int width, int r, int g, int b);
 
-        void DrawTextStrH(const std::string& text, const Font& font, const Vec2& point, int height, int r, int g, int b);
+        void DrawTextStrH(const string& text, const Font& font, const Vec2& point, int height, int r, int g, int b);
 
     public:
         RaycastResult CastRay(int column, const Player& player);

@@ -6,6 +6,7 @@
 #include <vector>
 #include <cassert>
 #include <cstdint>
+#include <cstdio>
 #include <cmath>
 #include <map>
 #include <unordered_map>

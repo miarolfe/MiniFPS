@@ -9,7 +9,7 @@ namespace MiniFPS
         pointSize = -1;
     }
 
-    Font::Font(const std::string& name, const std::string& fontPath, int pointSize)
+    Font::Font(const string& name, const string& fontPath, int pointSize)
     {
         this->name = name;
 
@@ -26,7 +26,7 @@ namespace MiniFPS
         this->pointSize = pointSize;
     }
 
-    TTF_Font* Font::LoadFont(const std::string& fontPath, int pointSize)
+    TTF_Font* Font::LoadFont(const string& fontPath, int pointSize)
     {
         return TTF_OpenFont(fontPath.c_str(), pointSize);
     }

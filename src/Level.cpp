@@ -4,7 +4,7 @@ namespace MiniFPS
 {
     Level::Level() = default;
 
-    Level::Level(const std::string& filePath)
+    Level::Level(const string& filePath)
     {
         Load(filePath);
     }
@@ -89,7 +89,7 @@ namespace MiniFPS
         }
     }
 
-    void Level::Load(const std::string& filePath)
+    void Level::Load(const string& filePath)
     {
         std::ifstream infile(filePath);
         if (!infile)
@@ -130,7 +130,7 @@ namespace MiniFPS
         {
             short id;
             infile >> id;
-            std::string textureName;
+            string textureName;
             infile >> textureName;
             m_textureIdMap[id] = textureName;
         }

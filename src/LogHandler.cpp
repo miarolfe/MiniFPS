@@ -25,7 +25,8 @@ namespace MiniFPS
                 s_instance = new LogHandler();
                 s_initialized = true;
             }
-            else {
+            else
+            {
                 std::cerr << "Attempting to reinitialize LogHandler" << std::endl;
             }
         }
@@ -39,6 +40,25 @@ namespace MiniFPS
         {
             while (!m_msgQueue.empty())
             {
+                LogMsg logMsg = m_msgQueue.front();
+                switch (logMsg.type)
+                {
+                    case LOG_INFO:
+                    {
+                        m_outfile << "[INFO   ] ";
+                        break;
+                    }
+                    case LOG_WARNING:
+                    {
+                        m_outfile << "[WARNING] ";
+                        break;
+                    }
+                    case LOG_ERROR:
+                    {
+                        m_outfile << "[ERROR  ] ";
+                        break;
+                    }
+                }
                 m_outfile << m_msgQueue.front().msg << std::endl;
                 m_msgQueue.pop();
             }

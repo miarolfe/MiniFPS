@@ -131,7 +131,7 @@ namespace MiniFPS
         SDL_DestroyRenderer(renderer);
     }
 
-    std::string GetFramesPerSecond(const float frameDelta)
+    string GetFramesPerSecond(const float frameDelta)
     {
         return std::to_string(static_cast<int>((1.0f / frameDelta)));
     }
@@ -142,9 +142,9 @@ namespace MiniFPS
         return frameTime;
     }
 
-    std::string GetSDLAssetsFolderPath()
+    string GetSDLAssetsFolderPath()
     {
-        std::string filePath;
+        string filePath;
         const char* platform = SDL_GetPlatform();
 
         // strcmp returns 0 if two strings are identical
@@ -158,29 +158,32 @@ namespace MiniFPS
         }
         else
         {
-            std::cerr << "Invalid platform: " << platform << std::endl;
+            string err;
+            err += "Invalid platform: ";
+            err += platform;
+            LogHandler::GetInstance().LogError(err.c_str());
             filePath = "INVALID PLATFORM";
         }
 
         return filePath;
     }
 
-    void ClearFile(const std::string& fileName)
+    void ClearFile(const string& fileName)
     {
         std::ofstream outFile(fileName, std::ofstream::out | std::ofstream::trunc);
         outFile.close();
     }
 
-    void WriteLineToFile(const std::string& fileName, const std::string& line)
+    void WriteLineToFile(const string& fileName, const string& line)
     {
         std::ofstream outFile(fileName, std::ios::app);
         outFile << line << std::endl;
         outFile.close();
     }
 
-    std::vector<std::string> GetFilesInDirectory(const std::string& directoryPath)
+    std::vector<string> GetFilesInDirectory(const string& directoryPath)
     {
-        std::vector<std::string> files;
+        std::vector<string> files;
         DIR* dir;
         struct dirent* entry;
 
@@ -203,9 +206,9 @@ namespace MiniFPS
         return files;
     }
 
-    std::vector<std::string> GetFoldersInDirectory(const std::string& directoryPath)
+    std::vector<string> GetFoldersInDirectory(const string& directoryPath)
     {
-        std::vector<std::string> folders;
+        std::vector<string> folders;
         DIR* dir;
         struct dirent* entry;
 
@@ -215,7 +218,7 @@ namespace MiniFPS
             {
                 if (entry->d_type == DT_DIR)
                 {  // directory
-                    std::string folderName = entry->d_name;
+                    string folderName = entry->d_name;
                     if (folderName != "." && folderName != "..")
                     {
                         folders.push_back(folderName);
