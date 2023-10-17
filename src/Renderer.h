@@ -10,13 +10,11 @@
 
 namespace MiniFPS
 {
-    const Color RED = Color(0xFFFF0000);
-    const Color BLACK = Color(0xFF000000);
     const Color MAIN_MENU_BACKGROUND = Color(0xFF000000);
-    const Color CEILING = Color(0xFFA5A5A5);
-    const Color FLOOR = Color(0xFFBBBBDD);
     const Color BUTTON = Color(0xFFD0D0D0);
     const uint32_t TRANSPARENCY_MASK = 0xFF000000;
+    const short CEILING_ID = -3;
+    const short FLOOR_ID = -2;
 
     struct SDLTextureBuffer
     {
@@ -63,14 +61,12 @@ namespace MiniFPS
         GetTexX(const Vec2& startPos, const Vec2& intersectionPos, const Vec2& rayLength1D, const Vec2& rayUnitStepSize,
                 const Vec2& rayDir, int textureSize);
 
-        void CopyTextureToFrameTexture(SDLTextureBuffer buffer, const Texture& texture, const Vec2Int& point, int w, int h);
+        void CopyTextureToFrameTexture(const SDLTextureBuffer& buffer, const Texture& texture, const Vec2Int& point, int w, int h);
 
         void DrawTexturedColumn(const Texture& texture, const Camera& camera, SDLTextureBuffer buffer, float distance,
                                 const Vec2& cell, int rayX, int texX);
 
-        void DrawCeiling(const Camera& camera, SDLTextureBuffer buffer);
-
-        void DrawFloor(const Camera& camera, SDLTextureBuffer buffer);
+        void DrawGameBackground(const Camera& camera, const SDLTextureBuffer& buffer, const Texture& floorTexture, const Texture& ceilingTexture);
 
         void DrawButton(Button button);
 

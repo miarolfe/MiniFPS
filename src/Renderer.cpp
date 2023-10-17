@@ -55,7 +55,7 @@ namespace MiniFPS
         {
             string warning;
             warning += "Invalid texture: no texture mapped to id ";
-            warning += textureId;
+            warning += std::to_string(textureId);
             LogHandler::LogWarning(warning.c_str());
 
             texture = m_textureMap[-1]; // Fallback texture
@@ -100,7 +100,7 @@ namespace MiniFPS
     }
 
     void
-    Renderer::CopyTextureToFrameTexture(SDLTextureBuffer buffer, const Texture& texture, const Vec2Int& point, int w, int h)
+    Renderer::CopyTextureToFrameTexture(const SDLTextureBuffer& buffer, const Texture& texture, const Vec2Int& point, int w, int h)
     {
         const float scaleX = static_cast<float>(texture.size) / w;
         const float scaleY = static_cast<float>(texture.size) / h;
@@ -168,24 +168,67 @@ namespace MiniFPS
         }
     }
 
-    void Renderer::DrawCeiling(const Camera& camera, SDLTextureBuffer buffer)
+    void Renderer::DrawGameBackground(const Camera& camera, const SDLTextureBuffer& buffer, const Texture& floorTexture, const Texture& ceilingTexture)
     {
-        for (int frameY = 0; frameY < camera.viewportHeight / 2; frameY++)
+        const Vec2 leftRay
         {
-            for (int frameX = 0; frameX < camera.viewportWidth; frameX++)
-            {
-                SetPixel(buffer, CEILING, {frameX, frameY});
-            }
-        }
-    }
+            camera.direction.x + camera.plane.x,
+            camera.direction.y + camera.plane.y
+        };
 
-    void Renderer::DrawFloor(const Camera& camera, SDLTextureBuffer buffer)
-    {
-        for (int frameY = static_cast<int>(camera.viewportHeight / 2); frameY < camera.viewportHeight; frameY++)
+        const Vec2 rightRay
         {
+            camera.direction.x - camera.plane.x,
+            camera.direction.y - camera.plane.y
+        };
+
+        int halfViewportHeight = camera.viewportHeight / 2;
+
+        for (int frameY = halfViewportHeight; frameY < camera.viewportHeight; frameY++)
+        {
+            int horizonY = frameY - halfViewportHeight;
+            float cameraY = 0.5f * static_cast<float>(camera.viewportHeight);
+
+            // Check to avoid division by zero
+            if (horizonY == 0) continue;
+
+            float cameraToFloorDistance = cameraY / horizonY;
+
+            Vec2 floorStep
+                    {
+                            cameraToFloorDistance * (rightRay.x - leftRay.x) / camera.viewportWidth,
+                            cameraToFloorDistance * (rightRay.y - leftRay.y) / camera.viewportWidth
+                    };
+
+            Vec2 floorPos
+                    {
+                            camera.pos.x + cameraToFloorDistance * leftRay.x,
+                            camera.pos.y + cameraToFloorDistance * leftRay.y
+                    };
+
             for (int frameX = 0; frameX < camera.viewportWidth; frameX++)
             {
-                SetPixel(buffer, FLOOR, {frameX, frameY});
+                Vec2Int cellPos
+                {
+                    static_cast<int>(floorPos.x),
+                    static_cast<int>(floorPos.y)
+                };
+
+                Vec2Int textureCoordinates
+                {
+                    static_cast<int>(floorTexture.size * (floorPos.x - cellPos.x)) & (floorTexture.size - 1),
+                    static_cast<int>(floorTexture.size * (floorPos.y - cellPos.y)) & (floorTexture.size - 1)
+                };
+
+                floorPos += floorStep;
+
+                Color floorColor = floorTexture.buffer[textureCoordinates.y][textureCoordinates.x];
+                floorColor.argb = (floorColor.argb >> 1) & 8355711; // Darken pixel
+                SetPixel(buffer, floorColor, {frameX, frameY});
+
+                Color ceilingColor = ceilingTexture.buffer[textureCoordinates.y][textureCoordinates.x];
+                ceilingColor.argb = (ceilingColor.argb >> 1) & 8355711; // Darken pixel
+                SetPixel(buffer, ceilingColor, {frameX, camera.viewportHeight - frameY - 1});
             }
         }
     }
@@ -386,8 +429,10 @@ namespace MiniFPS
         SDLTextureBuffer buffer;
         SDL_LockTexture(m_streamingFrameTexture, nullptr, &buffer.pixels, &buffer.pitch);
 
-        DrawCeiling(player.m_camera, buffer);
-        DrawFloor(player.m_camera, buffer);
+        DrawGameBackground(player.m_camera,
+                           buffer,
+                           GetTexBuffer(FLOOR_ID),
+                           GetTexBuffer(CEILING_ID));
 
         // Cast rays
         for (int ray = 0; ray < player.m_camera.viewportWidth; ray++)
@@ -396,7 +441,7 @@ namespace MiniFPS
             m_zBuffer[ray] = result.adjustedDistance;
 
             Vec2 intersection;
-            if (result.collided)
+            if (result.collided) // TODO: Review this
             {
                 intersection = player.m_camera.pos;
                 intersection += result.direction * result.distance;
@@ -539,7 +584,9 @@ namespace MiniFPS
         { result.distance = sideDistance.y - deltaDistance.y; }
 
         if (!result.collided)
-        { result.distance = 1000.0f; }
+        {
+            result.distance = 1000.0f;
+        }
 
         const float adjustedDistance =
             result.distance * cosf(rayAngle - atan2f(player.m_camera.direction.y, player.m_camera.direction.x));
