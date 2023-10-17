@@ -69,31 +69,31 @@ namespace MiniFPS
         return (std::abs(point.x - floor(point.x + 0.5f)) > std::abs(point.y - floor(point.y + 0.5f)));
     }
 
-    int Renderer::GetTexX(const Vec2& startPos, const Vec2& intersectionPos,
-                          const Vec2& rayLength1D, const Vec2& rayUnitStepSize,
-                          const Vec2& rayDir, const int textureSize)
+    int Renderer::GetTexX(const Vec2& startPos, const RaycastResult& raycastResult, const int textureSize)
     {
         float wallX;
+        Vec2 intersection = startPos;
+        intersection += (raycastResult.direction * raycastResult.distance);
 
-        const bool wallIsWestOrEastFacing = WallIsWestOrEastFacing({intersectionPos.x, intersectionPos.y});
+        const bool wallIsWestOrEastFacing = WallIsWestOrEastFacing(intersection);
 
         if (!wallIsWestOrEastFacing)
         {
-            float perpWallDist = (rayLength1D.x - rayUnitStepSize.x);
-            wallX = startPos.y + perpWallDist * rayDir.y;
+            float perpWallDist = (raycastResult.sideDistance.x - raycastResult.deltaDistance.x);
+            wallX = startPos.y + perpWallDist * raycastResult.direction.y;
         }
         else
         {
-            float perpWallDist = (rayLength1D.y - rayUnitStepSize.y);
-            wallX = startPos.x + perpWallDist * rayDir.x;
+            float perpWallDist = (raycastResult.sideDistance.y - raycastResult.deltaDistance.y);
+            wallX = startPos.x + perpWallDist * raycastResult.direction.x;
         }
 
         wallX -= floor((wallX));
 
         int texX = int(wallX * float(textureSize));
-        if (!wallIsWestOrEastFacing && rayDir.x > 0)
+        if (!wallIsWestOrEastFacing && raycastResult.direction.x > 0)
         { texX = textureSize - texX - 1; }
-        if (wallIsWestOrEastFacing && rayDir.y < 0)
+        if (wallIsWestOrEastFacing && raycastResult.direction.y < 0)
         { texX = textureSize - texX - 1; }
 
         return texX;
@@ -448,9 +448,10 @@ namespace MiniFPS
             }
 
             const Texture texture = GetTexBuffer(result.id);
-            const int texX = GetTexX(player.m_camera.pos, intersection, result.sideDistance, result.deltaDistance,
-                                     result.direction,
-                                     texture.size);
+            const int texX = GetTexX(
+                player.m_camera.pos,
+                result,
+                texture.size);
 
             DrawTexturedColumn(
                 texture,

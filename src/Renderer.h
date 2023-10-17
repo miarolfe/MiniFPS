@@ -57,9 +57,7 @@ namespace MiniFPS
 
         bool WallIsWestOrEastFacing(const Vec2& point);
 
-        int
-        GetTexX(const Vec2& startPos, const Vec2& intersectionPos, const Vec2& rayLength1D, const Vec2& rayUnitStepSize,
-                const Vec2& rayDir, int textureSize);
+        int GetTexX(const Vec2& startPos, const RaycastResult& raycastResult, int textureSize);
 
         void CopyTextureToFrameTexture(const SDLTextureBuffer& buffer, const Texture& texture, const Vec2Int& point, int w, int h);
 
@@ -74,6 +72,8 @@ namespace MiniFPS
 
         void DrawTextStrH(const string& text, const Font& font, const Vec2& point, int height, int r, int g, int b);
 
+        static bool CompareEnemyDistancePair(const std::pair<float, Enemy*>& pair1, const std::pair<float, Enemy*>& pair2);
+
     public:
         RaycastResult CastRay(int column, const Player& player);
 
@@ -86,9 +86,5 @@ namespace MiniFPS
         void DrawGame(const Player& player, std::vector<Enemy>& enemies, const Font& font);
 
         void SetTextureMap(const std::unordered_map<short, Texture>& newTextureMap);
-
-    private:
-        static bool
-        CompareEnemyDistancePair(const std::pair<float, Enemy*>& pair1, const std::pair<float, Enemy*>& pair2);
     };
 }
