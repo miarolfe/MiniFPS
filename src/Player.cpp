@@ -186,11 +186,22 @@ namespace MiniFPS
             m_reloadTimer = 0.0f;
             m_reloading = false;
         }
+
+        if (m_justFired)
+        {
+            m_justFiredTimer += frameDelta;
+        }
+
+        if (m_justFiredTimer > JUST_FIRED_TIME)
+        {
+            m_justFiredTimer = 0.0f;
+            m_justFired = false;
+        }
     }
 
     bool Player::CanShoot()
     {
-        if (m_currentAmmo > 0 && !m_reloading)
+        if (m_currentAmmo > 0 && !m_reloading && !m_justFired)
         {
             return true;
         }
@@ -207,6 +218,7 @@ namespace MiniFPS
 
         if (CanShoot())
         {
+            m_justFired = true;
             audioHandler.PlayEffect("GunShoot4");
             m_currentAmmo--;
 

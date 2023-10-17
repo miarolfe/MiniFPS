@@ -167,7 +167,8 @@ void MiniFPS::Game::SetupGame()
     }
 
     m_gamePlayer = Player(&m_level, m_settings);
-    m_gamePlayer.m_weaponTexture = m_textureNameToTextureMap["Player_Weapon"];
+    m_gamePlayer.m_baseWeaponTexture = m_textureNameToTextureMap["PlayerWeapon-1"];
+    m_gamePlayer.m_muzzleFlashWeaponTexture = m_textureNameToTextureMap["PlayerWeapon-2"];
 
     m_renderer.SetTextureMap(m_textureMap);
 

@@ -10,7 +10,8 @@
 
 namespace MiniFPS
 {
-    const float MAX_SHOT_DISTANCE = 0.4f;
+    const float MAX_SHOT_DISTANCE = 0.2f;
+    const float JUST_FIRED_TIME = 0.05f;
 
     struct InputState
     {
@@ -31,13 +32,16 @@ namespace MiniFPS
         Level* m_level;
         Camera m_camera;
         InputState m_inputState;
-        Texture m_weaponTexture;
+        Texture m_baseWeaponTexture;
+        Texture m_muzzleFlashWeaponTexture;
 
         int m_currentHealth = MAX_HEALTH;
         int m_currentAmmo = MAG_SIZE;
 
         bool m_reloading = false;
-        float m_reloadTimer;
+        bool m_justFired = false;
+        float m_reloadTimer = 0.0f;
+        float m_justFiredTimer = 0.0f;
 
         void UpdateInputState();
 

@@ -466,10 +466,18 @@ namespace MiniFPS
         DrawEnemies(player, enemies, buffer);
 
         const int weaponTextureSize = player.m_camera.viewportWidth / 4;
-        CopyTextureToFrameTexture(buffer, player.m_weaponTexture, {player.m_camera.viewportWidth / 2,
-                                                                   player.m_camera.viewportHeight -
-                                                                   (weaponTextureSize / 2)}, weaponTextureSize,
-                                  weaponTextureSize);
+        if (player.m_justFired) {
+            CopyTextureToFrameTexture(buffer, player.m_muzzleFlashWeaponTexture, {player.m_camera.viewportWidth / 2,
+                                                                           player.m_camera.viewportHeight -
+                                                                           (weaponTextureSize / 2)}, weaponTextureSize,
+                                      weaponTextureSize);
+        } else {
+            CopyTextureToFrameTexture(buffer, player.m_baseWeaponTexture, {player.m_camera.viewportWidth / 2,
+                                                                           player.m_camera.viewportHeight -
+                                                                           (weaponTextureSize / 2)}, weaponTextureSize,
+                                      weaponTextureSize);
+        }
+
 
         SDL_UnlockTexture(m_streamingFrameTexture);
 
