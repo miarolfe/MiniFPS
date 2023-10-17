@@ -171,47 +171,54 @@ namespace MiniFPS
     void Renderer::DrawGameBackground(const Camera& camera, const SDLTextureBuffer& buffer, const Texture& floorTexture, const Texture& ceilingTexture)
     {
         const Vec2 leftRay
-        {
-            camera.direction.x + camera.plane.x,
-            camera.direction.y + camera.plane.y
-        };
+                {
+                        camera.direction.x + camera.plane.x,
+                        camera.direction.y + camera.plane.y
+                };
 
         const Vec2 rightRay
-        {
-            camera.direction.x - camera.plane.x,
-            camera.direction.y - camera.plane.y
-        };
+                {
+                        camera.direction.x - camera.plane.x,
+                        camera.direction.y - camera.plane.y
+                };
 
-        for (int frameY = 0; frameY < camera.viewportHeight / 2; frameY++)
+        int halfViewportHeight = camera.viewportHeight / 2;
+
+        for (int frameY = halfViewportHeight; frameY < camera.viewportHeight; frameY++)
         {
-            int horizonY = frameY - (camera.viewportHeight / 2);
+            int horizonY = frameY - halfViewportHeight;
             float cameraY = 0.5f * static_cast<float>(camera.viewportHeight);
+
+            // Check to avoid division by zero
+            if (horizonY == 0) continue;
+
             float cameraToFloorDistance = cameraY / horizonY;
+
             Vec2 floorStep
-            {
-                cameraToFloorDistance * (rightRay.x - leftRay.x) / camera.viewportWidth,
-                cameraToFloorDistance * (rightRay.y - leftRay.y) / camera.viewportWidth
-            };
+                    {
+                            cameraToFloorDistance * (rightRay.x - leftRay.x) / camera.viewportWidth,
+                            cameraToFloorDistance * (rightRay.y - leftRay.y) / camera.viewportWidth
+                    };
 
             Vec2 floorPos
-            {
-                camera.pos.x + cameraToFloorDistance * leftRay.x,
-                camera.pos.y + cameraToFloorDistance * leftRay.y
-            };
+                    {
+                            camera.pos.x + cameraToFloorDistance * leftRay.x,
+                            camera.pos.y + cameraToFloorDistance * leftRay.y
+                    };
 
             for (int frameX = 0; frameX < camera.viewportWidth; frameX++)
             {
                 Vec2Int cellPos
-                {
-                    static_cast<int>(floorPos.x),
-                    static_cast<int>(floorPos.y)
-                };
+                        {
+                                static_cast<int>(floorPos.x),
+                                static_cast<int>(floorPos.y)
+                        };
 
                 Vec2Int textureCoordinates
-                {
-                    static_cast<int>(floorTexture.size * (floorPos.x - cellPos.x)) & (floorTexture.size - 1),
-                    static_cast<int>(floorTexture.size * (floorPos.y - cellPos.y)) & (floorTexture.size - 1)
-                };
+                        {
+                                static_cast<int>(floorTexture.size * (floorPos.x - cellPos.x)) & (floorTexture.size - 1),
+                                static_cast<int>(floorTexture.size * (floorPos.y - cellPos.y)) & (floorTexture.size - 1)
+                        };
 
                 floorPos += floorStep;
 
@@ -225,6 +232,8 @@ namespace MiniFPS
             }
         }
     }
+
+
 
     void Renderer::DrawButton(Button button)
     {
@@ -422,7 +431,7 @@ namespace MiniFPS
         SDLTextureBuffer buffer;
         SDL_LockTexture(m_streamingFrameTexture, nullptr, &buffer.pixels, &buffer.pitch);
 
-        DrawGameBackground(player.m_camera, buffer, m_textureMap[-1], m_textureMap[-1]);
+        DrawGameBackground(player.m_camera, buffer, m_textureMap[3], m_textureMap[1]);
 
         // Cast rays
         for (int ray = 0; ray < player.m_camera.viewportWidth; ray++)

@@ -68,10 +68,6 @@ namespace MiniFPS
         void DrawTexturedColumn(const Texture& texture, const Camera& camera, SDLTextureBuffer buffer, float distance,
                                 const Vec2& cell, int rayX, int texX);
 
-        void DrawCeiling(const Camera& camera, const SDLTextureBuffer& buffer);
-
-        void DrawFloor(const Camera& camera, const SDLTextureBuffer& buffer);
-
         void DrawGameBackground(const Camera& camera, const SDLTextureBuffer& buffer, const Texture& floorTexture, const Texture& ceilingTexture);
 
         void DrawButton(Button button);
