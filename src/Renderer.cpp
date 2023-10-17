@@ -429,7 +429,10 @@ namespace MiniFPS
         SDLTextureBuffer buffer;
         SDL_LockTexture(m_streamingFrameTexture, nullptr, &buffer.pixels, &buffer.pitch);
 
-        DrawGameBackground(player.m_camera, buffer, m_textureMap[3], m_textureMap[1]);
+        DrawGameBackground(player.m_camera,
+                           buffer,
+                           GetTexBuffer(FLOOR_ID),
+                           GetTexBuffer(CEILING_ID));
 
         // Cast rays
         for (int ray = 0; ray < player.m_camera.viewportWidth; ray++)
@@ -581,7 +584,9 @@ namespace MiniFPS
         { result.distance = sideDistance.y - deltaDistance.y; }
 
         if (!result.collided)
-        { result.distance = 1000.0f; }
+        {
+            result.distance = 1000.0f;
+        }
 
         const float adjustedDistance =
             result.distance * cosf(rayAngle - atan2f(player.m_camera.direction.y, player.m_camera.direction.x));

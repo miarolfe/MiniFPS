@@ -10,11 +10,11 @@
 
 namespace MiniFPS
 {
-    const Color RED = Color(0xFFFF0000);
-    const Color BLACK = Color(0xFF000000);
     const Color MAIN_MENU_BACKGROUND = Color(0xFF000000);
     const Color BUTTON = Color(0xFFD0D0D0);
     const uint32_t TRANSPARENCY_MASK = 0xFF000000;
+    const short CEILING_ID = -3;
+    const short FLOOR_ID = -2;
 
     struct SDLTextureBuffer
     {
