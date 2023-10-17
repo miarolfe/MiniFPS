@@ -13,8 +13,6 @@ namespace MiniFPS
     const Color RED = Color(0xFFFF0000);
     const Color BLACK = Color(0xFF000000);
     const Color MAIN_MENU_BACKGROUND = Color(0xFF000000);
-    const Color CEILING = Color(0xFFA5A5A5);
-    const Color FLOOR = Color(0xFFBBBBDD);
     const Color BUTTON = Color(0xFFD0D0D0);
     const uint32_t TRANSPARENCY_MASK = 0xFF000000;
 
