@@ -89,6 +89,6 @@ namespace MiniFPS
 
     private:
         static bool
-        CompareEnemyDistancePair(const std::pair<float, Enemy>& pair1, const std::pair<float, Enemy>& pair2);
+        CompareEnemyDistancePair(const std::pair<float, Enemy*>& pair1, const std::pair<float, Enemy*>& pair2);
     };
 }

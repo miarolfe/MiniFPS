@@ -195,16 +195,16 @@ namespace MiniFPS
             float cameraToFloorDistance = cameraY / horizonY;
 
             Vec2 floorStep
-                    {
-                            cameraToFloorDistance * (rightRay.x - leftRay.x) / camera.viewportWidth,
-                            cameraToFloorDistance * (rightRay.y - leftRay.y) / camera.viewportWidth
-                    };
+            {
+                cameraToFloorDistance * (rightRay.x - leftRay.x) / camera.viewportWidth,
+                cameraToFloorDistance * (rightRay.y - leftRay.y) / camera.viewportWidth
+            };
 
             Vec2 floorPos
-                    {
-                            camera.pos.x + cameraToFloorDistance * leftRay.x,
-                            camera.pos.y + cameraToFloorDistance * leftRay.y
-                    };
+            {
+                camera.pos.x + cameraToFloorDistance * leftRay.x,
+                camera.pos.y + cameraToFloorDistance * leftRay.y
+            };
 
             for (int frameX = 0; frameX < camera.viewportWidth; frameX++)
             {
@@ -359,7 +359,7 @@ namespace MiniFPS
 
     void Renderer::DrawEnemies(const Player& player, std::vector<Enemy>& enemies, SDLTextureBuffer buffer)
     {
-        std::vector<std::pair<float, Enemy>> enemyDistances;
+        std::vector<std::pair<float, Enemy*>> enemyDistances;
 
         const Camera& cam = player.m_camera;
 
@@ -367,7 +367,7 @@ namespace MiniFPS
         {
             if (enemy.IsVisible())
             {
-                enemyDistances.emplace_back(player.m_camera.pos.Distance(enemy.m_pos), enemy);
+                enemyDistances.emplace_back(player.m_camera.pos.Distance(enemy.m_pos), &enemy);
             }
         }
 
@@ -375,8 +375,8 @@ namespace MiniFPS
 
         for (auto& enemyDistance: enemyDistances)
         {
-            const Vec2 enemyPos = enemyDistance.second.m_pos - cam.pos;
-            const Texture& texture = GetTexBuffer(enemyDistance.second.m_textureId);
+            const Vec2 enemyPos = enemyDistance.second->m_pos - cam.pos;
+            const Texture& texture = GetTexBuffer(enemyDistance.second->m_textureId);
 
             const float invDet = 1.0f / (cam.plane.x * cam.direction.y - cam.direction.x * cam.plane.y);
 
@@ -498,7 +498,7 @@ namespace MiniFPS
         SDL_RenderPresent(m_sdlRenderer);
     }
 
-    bool Renderer::CompareEnemyDistancePair(const std::pair<float, Enemy>& pair1, const std::pair<float, Enemy>& pair2)
+    bool Renderer::CompareEnemyDistancePair(const std::pair<float, Enemy*>& pair1, const std::pair<float, Enemy*>& pair2)
     {
         return pair1.first > pair2.first;
     }
