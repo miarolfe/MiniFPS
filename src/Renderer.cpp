@@ -171,16 +171,16 @@ namespace MiniFPS
     void Renderer::DrawGameBackground(const Camera& camera, const SDLTextureBuffer& buffer, const Texture& floorTexture, const Texture& ceilingTexture)
     {
         const Vec2 leftRay
-                {
-                        camera.direction.x + camera.plane.x,
-                        camera.direction.y + camera.plane.y
-                };
+        {
+            camera.direction.x + camera.plane.x,
+            camera.direction.y + camera.plane.y
+        };
 
         const Vec2 rightRay
-                {
-                        camera.direction.x - camera.plane.x,
-                        camera.direction.y - camera.plane.y
-                };
+        {
+            camera.direction.x - camera.plane.x,
+            camera.direction.y - camera.plane.y
+        };
 
         int halfViewportHeight = camera.viewportHeight / 2;
 
@@ -209,16 +209,16 @@ namespace MiniFPS
             for (int frameX = 0; frameX < camera.viewportWidth; frameX++)
             {
                 Vec2Int cellPos
-                        {
-                                static_cast<int>(floorPos.x),
-                                static_cast<int>(floorPos.y)
-                        };
+                {
+                    static_cast<int>(floorPos.x),
+                    static_cast<int>(floorPos.y)
+                };
 
                 Vec2Int textureCoordinates
-                        {
-                                static_cast<int>(floorTexture.size * (floorPos.x - cellPos.x)) & (floorTexture.size - 1),
-                                static_cast<int>(floorTexture.size * (floorPos.y - cellPos.y)) & (floorTexture.size - 1)
-                        };
+                {
+                    static_cast<int>(floorTexture.size * (floorPos.x - cellPos.x)) & (floorTexture.size - 1),
+                    static_cast<int>(floorTexture.size * (floorPos.y - cellPos.y)) & (floorTexture.size - 1)
+                };
 
                 floorPos += floorStep;
 
@@ -232,8 +232,6 @@ namespace MiniFPS
             }
         }
     }
-
-
 
     void Renderer::DrawButton(Button button)
     {
