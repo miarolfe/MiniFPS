@@ -14,6 +14,12 @@ namespace MiniFPS
                                                  static_cast<int>(settings.screenWidth),
                                                  static_cast<int>(settings.screenHeight));
 
+        m_targetTexture = SDL_CreateTexture(sdlRenderer,
+                                            SDL_PIXELFORMAT_ARGB8888,
+                                            SDL_TEXTUREACCESS_TARGET,
+                                            settings.screenWidth,
+                                            settings.screenHeight);
+
         m_zBuffer = static_cast<float*>(malloc(sizeof(float) * settings.screenWidth));
     }
 
@@ -134,6 +140,10 @@ namespace MiniFPS
 
             delete[] idTexturePair.second.buffer;
         }
+
+        SDL_DestroyTexture(m_streamingFrameTexture);
+        SDL_DestroyTexture(m_renderFrameTexture);
+        SDL_DestroyTexture(m_targetTexture);
     }
 
     void
