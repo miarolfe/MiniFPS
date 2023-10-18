@@ -8,8 +8,8 @@
   },
 
   "graphics": {
-    "screenWidth": 800,
-    "screenHeight": 450,
+    "screenWidth": 1600,
+    "screenHeight": 900,
     "horizontalFieldOfView": 90,
     "vSync": false
   },

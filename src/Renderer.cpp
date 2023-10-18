@@ -7,12 +7,17 @@ namespace MiniFPS
 
     Renderer::Renderer(SDL_Renderer* sdlRenderer, const Settings& settings) : m_sdlRenderer(sdlRenderer)
     {
-        m_streamingFrameTexture = SDL_CreateTexture(sdlRenderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING,
-                                                    static_cast<int>(settings.screenWidth),
-                                                    static_cast<int>(settings.screenHeight));
-        m_renderFrameTexture = SDL_CreateTexture(sdlRenderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_TARGET,
-                                                 static_cast<int>(settings.screenWidth),
-                                                 static_cast<int>(settings.screenHeight));
+        m_streamingFrameTexture = SDL_CreateTexture(sdlRenderer,
+                                                    SDL_PIXELFORMAT_ARGB8888,
+                                                    SDL_TEXTUREACCESS_STREAMING,
+                                                    CAMERA_RESOLUTION.x,
+                                                    CAMERA_RESOLUTION.y);
+
+        m_renderFrameTexture = SDL_CreateTexture(sdlRenderer,
+                                                 SDL_PIXELFORMAT_ARGB8888,
+                                                 SDL_TEXTUREACCESS_TARGET,
+                                                 CAMERA_RESOLUTION.x,
+                                                 CAMERA_RESOLUTION.y);
 
         m_zBuffer = static_cast<float*>(malloc(sizeof(float) * settings.screenWidth));
     }
@@ -134,6 +139,10 @@ namespace MiniFPS
 
             delete[] idTexturePair.second.buffer;
         }
+
+        SDL_DestroyTexture(m_streamingFrameTexture);
+        SDL_DestroyTexture(m_renderFrameTexture);
+        SDL_DestroyTexture(m_targetTexture);
     }
 
     void
@@ -489,7 +498,7 @@ namespace MiniFPS
 
         string healthDisplay =
             "HP:" + std::to_string(player.m_currentHealth) + "/" + std::to_string(Player::MAX_HEALTH);
-        DrawTextStrH(healthDisplay, font, {25, 25}, 25, 255, 255, 255);
+        DrawTextStrH(healthDisplay, font, {10, 10}, 30, 255, 255, 255);
 
         string ammoDisplay;
         if (player.m_reloading)
@@ -500,7 +509,7 @@ namespace MiniFPS
         {
             ammoDisplay = "AMMO:" + std::to_string(player.m_currentAmmo) + "/" + std::to_string(Player::MAG_SIZE);
         }
-        DrawTextStrH(ammoDisplay, font, {25, 50}, 25, 255, 255, 255);
+        DrawTextStrH(ammoDisplay, font, {10, 40}, 30, 255, 255, 255);
 
         SDL_SetRenderTarget(m_sdlRenderer, nullptr);
         SDL_RenderCopy(m_sdlRenderer, m_renderFrameTexture, nullptr, nullptr);

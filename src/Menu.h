@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Button.h"
+#include "Camera.h"
 #include "Common.h"
 #include "Font.h"
 #include "Player.h"
@@ -19,7 +20,7 @@ namespace MiniFPS
         Settings m_settings;
         Button m_startButton;
 
-        void Update();
+        void Update(const Vec2Int& displayResolution);
     };
 
     SDL_Texture*

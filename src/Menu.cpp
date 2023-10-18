@@ -10,16 +10,30 @@ namespace MiniFPS
         this->m_player.m_inputState.inMainMenu = true;
         this->m_settings = settings;
         this->m_font = font;
-        m_startButton = Button{{static_cast<float>(settings.screenWidth / 2),
-                                static_cast<float>(3 * settings.screenHeight / 4)},
-                               static_cast<float>(settings.screenWidth / 2),
-                               static_cast<float>(settings.screenHeight / 6)};
+        m_startButton = Button{{static_cast<float>(CAMERA_RESOLUTION.x / 2),
+                                static_cast<float>(3 * CAMERA_RESOLUTION.y / 4)},
+                               static_cast<float>(CAMERA_RESOLUTION.x / 2),
+                               static_cast<float>(CAMERA_RESOLUTION.y / 6)};
     }
 
-    void MainMenu::Update()
+
+    void MainMenu::Update(const Vec2Int& displayResolution)
     {
         m_player.Update(0, 0, 0);
-        if (m_startButton.Pressed(m_player.m_inputState.mousePosX, m_player.m_inputState.mousePosY) &&
+
+        const Vec2 mouseScalingFactor
+        {
+            static_cast<float>(CAMERA_RESOLUTION.x) / static_cast<float>(displayResolution.x),
+            static_cast<float>(CAMERA_RESOLUTION.y) / static_cast<float>(displayResolution.y)
+        };
+
+        const Vec2Int scaledMousePos
+        {
+            static_cast<int>(static_cast<float>(m_player.m_inputState.mousePosX) * mouseScalingFactor.x),
+            static_cast<int>(static_cast<float>(m_player.m_inputState.mousePosY) * mouseScalingFactor.y)
+        };
+
+        if (m_startButton.Pressed(scaledMousePos.x, scaledMousePos.y) &&
             m_player.m_inputState.leftMouseButtonPressed)
         {
             m_player.m_inputState.inMainMenu = false;
