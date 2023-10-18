@@ -11,17 +11,14 @@ namespace MiniFPS
         fieldOfView = 0;
         speedModifier = 0;
         rotationModifier = 0;
-        playerStartX = 0;
-        playerStartY = 0;
-        playerStartAngle = 0;
+        playerStartPos = {0.0, 0.0};
         effectVolume = 0;
         musicVolume = 0;
     }
 
     Settings::Settings(const string& version, int screenWidth, int screenHeight,
                        int renderDistance, bool vSync,
-                       float fieldOfView, float speedModifier, float rotationModifier, float playerStartX,
-                       float playerStartY, float playerStartAngle,
+                       float fieldOfView, float speedModifier, float rotationModifier, const Vec2& playerStartPos,
                        float effectVolume, float musicVolume,
                        const string& levelPath, const std::map<string, string>& fontPaths)
     {
@@ -32,9 +29,7 @@ namespace MiniFPS
         this->fieldOfView = fieldOfView;
         this->speedModifier = speedModifier;
         this->rotationModifier = rotationModifier;
-        this->playerStartX = playerStartX;
-        this->playerStartY = playerStartY;
-        this->playerStartAngle = playerStartAngle;
+        this->playerStartPos = playerStartPos;
         this->effectVolume = effectVolume;
         this->musicVolume = musicVolume;
         this->levelPath = levelPath;
@@ -59,8 +54,9 @@ namespace MiniFPS
         int major, minor, patch;
         string version;
         int screenWidth, screenHeight, renderDistance;
-        float fieldOfView, speedModifier, rotationModifier, playerStartX, playerStartY,
-            playerStartAngle, playerDistanceToProjectionPlane, effectVolume, musicVolume;
+        float fieldOfView, speedModifier, rotationModifier,
+            playerStartAngle, effectVolume, musicVolume;
+        Vec2 playerStartPos;
         string levelPath;
         std::map<string, string> texturePaths;
         std::map<string, string> fontPaths;
@@ -81,9 +77,7 @@ namespace MiniFPS
         vSync = settingsAsJson["graphics"]["vSync"];
         speedModifier = settingsAsJson["player"]["speedModifier"];
         rotationModifier = settingsAsJson["player"]["rotationModifier"];
-        playerStartX = settingsAsJson["player"]["startX"];
-        playerStartY = settingsAsJson["player"]["startY"];
-        playerStartAngle = settingsAsJson["player"]["startAngle"];
+        playerStartPos = {settingsAsJson["player"]["startX"], settingsAsJson["player"]["startY"]};
         effectVolume = settingsAsJson["audio"]["effectVolume"];
         musicVolume = settingsAsJson["audio"]["musicVolume"];
         levelPath = settingsAsJson["files"]["levelPath"];
@@ -91,7 +85,7 @@ namespace MiniFPS
 
         Settings settings(version, screenWidth, screenHeight, renderDistance, vSync, fieldOfView,
                           speedModifier,
-                          rotationModifier, playerStartX, playerStartY, playerStartAngle,
+                          rotationModifier, playerStartPos,
                           effectVolume, musicVolume, levelPath, fontPaths);
 
         return settings;

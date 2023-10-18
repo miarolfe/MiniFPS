@@ -2,37 +2,17 @@
 
 namespace MiniFPS
 {
-    float Camera::CalculateAspectRatio(size_t width, size_t height)
+    Camera::Camera(const Vec2& playerStartPos, float horizontalFieldOfView, int maxRenderDistance)
     {
-        return static_cast<float>(width) / static_cast<float>(height);
-    }
-
-    Camera::Camera(float _x, float _y, float _angle, float _horizontalFieldOfView, int _viewportWidth,
-                   int _viewportHeight,
-                   size_t _maxRendererDistance)
-    {
-        pos = {_x, _y};
-
-        // direction = {cosf(_angle), sinf(_angle)}
-        direction = {-1.0f, 0.0f};
+        this->pos = playerStartPos;
+        direction = CAMERA_START_DIRECTION;
+        plane = CAMERA_START_PLANE;
         direction.Normalize();
-        plane = {0.0f, 0.66f};
         plane.Normalize();
-        horizontalFieldOfView = _horizontalFieldOfView;
-        viewportWidth = _viewportWidth;
-        viewportHeight = _viewportHeight;
-        maxRenderDistance = _maxRendererDistance;
-    }
-
-    Camera::Camera()
-    {
-        pos = {0, 0};
-        direction = {0.0f, 0.0f};
-        plane = {0.0f, 0.0f};
-        horizontalFieldOfView = 0;
-        viewportWidth = 0;
-        viewportHeight = 0;
-        maxRenderDistance = 0;
+        this->horizontalFieldOfView = horizontalFieldOfView;
+        this->width = CAMERA_RESOLUTION.x;
+        this->height = CAMERA_RESOLUTION.y;
+        this->maxRenderDistance = maxRenderDistance;
     }
 }
 
