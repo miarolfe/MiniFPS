@@ -498,7 +498,7 @@ namespace MiniFPS
 
         string healthDisplay =
             "HP:" + std::to_string(player.m_currentHealth) + "/" + std::to_string(Player::MAX_HEALTH);
-        DrawTextStrH(healthDisplay, font, {25, 25}, 25, 255, 255, 255);
+        DrawTextStrH(healthDisplay, font, {10, 10}, 30, 255, 255, 255);
 
         string ammoDisplay;
         if (player.m_reloading)
@@ -509,7 +509,7 @@ namespace MiniFPS
         {
             ammoDisplay = "AMMO:" + std::to_string(player.m_currentAmmo) + "/" + std::to_string(Player::MAG_SIZE);
         }
-        DrawTextStrH(ammoDisplay, font, {25, 50}, 25, 255, 255, 255);
+        DrawTextStrH(ammoDisplay, font, {10, 40}, 30, 255, 255, 255);
 
         SDL_SetRenderTarget(m_sdlRenderer, nullptr);
         SDL_RenderCopy(m_sdlRenderer, m_renderFrameTexture, nullptr, nullptr);

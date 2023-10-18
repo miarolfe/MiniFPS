@@ -80,7 +80,7 @@ void MiniFPS::Game::Update()
     if (m_mainMenu.m_player.InMainMenu() && !m_mainMenu.m_player.GameHasEnded())
     {
         m_renderer.DrawMainMenu(m_mainMenu);
-        m_mainMenu.Update();
+        m_mainMenu.Update({m_settings.screenWidth, m_settings.screenHeight});
     }
     else if (!m_gamePlayer.GameHasEnded())
     {
