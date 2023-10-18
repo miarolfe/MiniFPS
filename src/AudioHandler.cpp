@@ -3,18 +3,6 @@
 
 namespace MiniFPS
 {
-    Effect::Effect() : chunk(nullptr)
-    {}
-
-    Effect::Effect(Mix_Chunk* chunk) : chunk(chunk)
-    {}
-
-    Track::Track() : music(nullptr)
-    {}
-
-    Track::Track(Mix_Music* music) : music(music)
-    {}
-
     AudioHandler::AudioHandler() = default;
 
     AudioHandler::AudioHandler(const string& audioFolderPath, const Settings& settings)
@@ -37,7 +25,7 @@ namespace MiniFPS
                     if (effect)
                     {
                         const string name = file.substr(0, file.size() - 4);
-                        m_effects[name] = Effect(effect);
+                        m_effects[name] = {effect};
                     }
                     else
                     {
@@ -63,7 +51,7 @@ namespace MiniFPS
                     if (track)
                     {
                         const string name = file.substr(0, file.size() - 4);
-                        m_tracks[name] = Track(track);
+                        m_tracks[name] = {track};
                     }
                     else
                     {

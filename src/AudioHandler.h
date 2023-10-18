@@ -8,19 +8,11 @@ namespace MiniFPS
 {
     struct Effect
     {
-        Effect();
-
-        explicit Effect(Mix_Chunk* chunk);
-
         Mix_Chunk* chunk;
     };
 
     struct Track
     {
-        Track();
-
-        explicit Track(Mix_Music* music);
-
         Mix_Music* music;
     };
 
@@ -43,6 +35,8 @@ namespace MiniFPS
 
         AudioHandler(const AudioHandler&) = delete; // No copy
         AudioHandler& operator=(const AudioHandler&) = delete; // No assignment
+        AudioHandler(AudioHandler&& other) = delete; // No move
+        AudioHandler& operator=(AudioHandler&& other) = delete; // No move assignment
 
         bool PlayEffect(const string& name, int loops = 0);
         bool PlayTrack(const string& name, int loops = 0);
