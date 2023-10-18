@@ -20,7 +20,11 @@ namespace MiniFPS
 
                 for (const string& file: effectFiles)
                 {
-                    const string effectFilePath = audioFolderPath + folder + "/" + file;
+                    string effectFilePath = audioFolderPath;
+                    effectFilePath += folder;
+                    effectFilePath += "/";
+                    effectFilePath += file;
+
                     Mix_Chunk* effect = Mix_LoadWAV((effectFilePath).c_str());
                     if (effect)
                     {
@@ -46,7 +50,11 @@ namespace MiniFPS
 
                 for (const string& file: trackFiles)
                 {
-                    const string trackFilePath = audioFolderPath + folder + "/" + file;
+                    string trackFilePath = audioFolderPath;
+                    trackFilePath += folder;
+                    trackFilePath += "/";
+                    trackFilePath += file;
+
                     Mix_Music* track = Mix_LoadMUS((trackFilePath).c_str());
                     if (track)
                     {
@@ -171,17 +179,17 @@ namespace MiniFPS
 
     void AudioHandler::FreeEffects()
     {
-        for (auto iter = m_effects.begin(); iter != m_effects.end(); iter++)
+        for (auto i = m_effects.begin(); i != m_effects.end(); i++)
         {
-            Mix_FreeChunk(iter->second.chunk);
+            Mix_FreeChunk(i->second.chunk);
         }
     }
 
     void AudioHandler::FreeTracks()
     {
-        for (auto iter = m_tracks.begin(); iter != m_tracks.end(); iter++)
+        for (auto i = m_tracks.begin(); i != m_tracks.end(); i++)
         {
-            Mix_FreeMusic(iter->second.music);
+            Mix_FreeMusic(i->second.music);
         }
     }
 

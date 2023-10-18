@@ -242,27 +242,28 @@ namespace MiniFPS
         }
     }
 
-    void Renderer::DrawButton(Button button)
+    void Renderer::DrawButton(const Button& button)
     {
+        const Vec2& buttonSize = button.GetSize();
         SDL_SetRenderTarget(m_sdlRenderer, m_renderFrameTexture);
 
         // TODO: Make this more efficient
         SDL_Texture* buttonTexture = SDL_CreateTexture(m_sdlRenderer, SDL_PIXELFORMAT_ARGB8888,
-                                                       SDL_TEXTUREACCESS_STREAMING, button.m_width, button.m_height);
+                                                       SDL_TEXTUREACCESS_STREAMING, buttonSize.x, buttonSize.y);
 
         const SDL_Rect sdlRect{
             static_cast<int>(button.GetLeftBound()),
             static_cast<int>(button.GetTopBound()),
-            static_cast<int>(button.m_width),
-            static_cast<int>(button.m_height)
+            static_cast<int>(buttonSize.x),
+            static_cast<int>(buttonSize.y)
         };
 
         SDLTextureBuffer buffer;
         SDL_LockTexture(buttonTexture, nullptr, &buffer.pixels, &buffer.pitch);
 
-        for (int x = 0; x < button.m_width; x++)
+        for (int x = 0; x < buttonSize.x; x++)
         {
-            for (int y = 0; y < button.m_height; y++)
+            for (int y = 0; y < buttonSize.y; y++)
             {
                 SetPixel(buffer, BUTTON, {x, y});
             }
@@ -342,8 +343,11 @@ namespace MiniFPS
         const int versionTextY = static_cast<int>(5 * (mainMenu.m_player.m_camera.height / 16));
         const int versionTextWidth = static_cast<int>(mainMenu.m_player.m_camera.width / 4);
 
-        const int startTextX = static_cast<int>(mainMenu.m_startButton.m_pos.x - mainMenu.m_startButton.m_width / 4);
-        const int startTextY = static_cast<int>(mainMenu.m_startButton.m_pos.y - mainMenu.m_startButton.m_height / 2);
+        const Vec2& startButtonSize = mainMenu.m_startButton.GetSize();
+        const Vec2& startButtonPos = mainMenu.m_startButton.GetPos();
+
+        const int startTextX = static_cast<int>(startButtonPos.x - startButtonSize.x / 4);
+        const int startTextY = static_cast<int>(startButtonPos.y - startButtonSize.y / 2);
 
         SDL_UnlockTexture(m_streamingFrameTexture);
         SDL_SetRenderTarget(m_sdlRenderer, m_renderFrameTexture);
@@ -359,7 +363,7 @@ namespace MiniFPS
 
         // TODO: Scale this properly with resolution, it doesn't stay with button atm
         DrawTextStrH("Start", mainMenu.m_font, {static_cast<float>(startTextX), static_cast<float>(startTextY)},
-                     mainMenu.m_startButton.m_height);
+                     startButtonSize.y);
 
         SDL_SetRenderTarget(m_sdlRenderer, nullptr);
         SDL_RenderCopy(m_sdlRenderer, m_renderFrameTexture, nullptr, nullptr);
