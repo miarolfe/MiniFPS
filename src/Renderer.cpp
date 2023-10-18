@@ -7,18 +7,17 @@ namespace MiniFPS
 
     Renderer::Renderer(SDL_Renderer* sdlRenderer, const Settings& settings) : m_sdlRenderer(sdlRenderer)
     {
-        m_streamingFrameTexture = SDL_CreateTexture(sdlRenderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING,
-                                                    static_cast<int>(settings.screenWidth),
-                                                    static_cast<int>(settings.screenHeight));
-        m_renderFrameTexture = SDL_CreateTexture(sdlRenderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_TARGET,
-                                                 static_cast<int>(settings.screenWidth),
-                                                 static_cast<int>(settings.screenHeight));
+        m_streamingFrameTexture = SDL_CreateTexture(sdlRenderer,
+                                                    SDL_PIXELFORMAT_ARGB8888,
+                                                    SDL_TEXTUREACCESS_STREAMING,
+                                                    CAMERA_RESOLUTION.x,
+                                                    CAMERA_RESOLUTION.y);
 
-        m_targetTexture = SDL_CreateTexture(sdlRenderer,
-                                            SDL_PIXELFORMAT_ARGB8888,
-                                            SDL_TEXTUREACCESS_TARGET,
-                                            settings.screenWidth,
-                                            settings.screenHeight);
+        m_renderFrameTexture = SDL_CreateTexture(sdlRenderer,
+                                                 SDL_PIXELFORMAT_ARGB8888,
+                                                 SDL_TEXTUREACCESS_TARGET,
+                                                 CAMERA_RESOLUTION.x,
+                                                 CAMERA_RESOLUTION.y);
 
         m_zBuffer = static_cast<float*>(malloc(sizeof(float) * settings.screenWidth));
     }

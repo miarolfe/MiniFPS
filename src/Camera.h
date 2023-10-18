@@ -5,6 +5,8 @@
 
 namespace MiniFPS
 {
+    const Vec2Int CAMERA_RESOLUTION {800, 450};
+
     struct Camera
     {
     public:
