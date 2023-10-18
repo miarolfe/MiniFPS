@@ -394,17 +394,19 @@ namespace MiniFPS
                 invDet * ((-cam.plane.y * enemyPos.x) + (cam.plane.x * enemyPos.y))
             };
 
+            const Vec2 enemyScale = {1.0f, 1.0f};
+
             const int enemyScreenX = static_cast<int>((cam.width / 2) * (1 + transform.x / transform.y));
 
-            const int enemyHeight = std::min(2000, std::abs(static_cast<int>(cam.height / (transform.y))));
-            int drawStartY = -enemyHeight / 2 + cam.height / 2;
+            const int enemyHeight = std::min(2000, std::abs(static_cast<int>(cam.height / (transform.y)))) * enemyScale.x;
+            int drawStartY = (-enemyHeight / 2 + cam.height / 2);
             if (drawStartY < 0)
             { drawStartY = 0; }
-            int drawEndY = enemyHeight / 2 + cam.height / 2;
+            int drawEndY = (enemyHeight / 2 + cam.height / 2);
             if (drawEndY >= cam.height)
             { drawEndY = cam.height - 1; }
 
-            const int enemyWidth = std::min(2000, std::abs(static_cast<int>(cam.height / (transform.y))));
+            const int enemyWidth = std::min(2000, std::abs(static_cast<int>(cam.height / (transform.y)))) * enemyScale.y;
             int drawStartX = (-enemyWidth / 2) + enemyScreenX;
             if (drawStartX < 0)
             { drawStartX = 0; }
