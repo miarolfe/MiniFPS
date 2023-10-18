@@ -99,7 +99,7 @@ void MiniFPS::Game::Update()
 
         if (m_gamePlayer.m_inputState.leftMouseButtonPressed)
         {
-            if (m_gamePlayer.Shoot(m_enemies, m_renderer.m_zBuffer[m_gamePlayer.m_camera.viewportWidth / 2]))
+            if (m_gamePlayer.Shoot(m_enemies, m_renderer.m_zBuffer[m_gamePlayer.m_camera.width / 2]))
             {
                 // audio.PlayEffect("testEffect");
             }

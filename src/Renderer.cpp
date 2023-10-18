@@ -149,16 +149,16 @@ namespace MiniFPS
     Renderer::DrawTexturedColumn(const Texture& texture, const Camera& camera, SDLTextureBuffer buffer, float distance,
                                  const Vec2& cell, int rayX, int texX)
     {
-        const int columnHeight = ((camera.viewportHeight)) / distance;
+        const int columnHeight = ((camera.height)) / distance;
 
         const bool shadePixel = ShouldShadePixel(cell);
 
-        const int drawStart = ((camera.viewportHeight / 2) - (columnHeight / 2));
+        const int drawStart = ((camera.height / 2) - (columnHeight / 2));
         const int drawEnd = drawStart + columnHeight;
 
         for (int rayY = drawStart; rayY < drawEnd; rayY++)
         {
-            if (rayY < 0 || rayY >= camera.viewportHeight)
+            if (rayY < 0 || rayY >= camera.height)
             {
                 continue;
             }
@@ -191,12 +191,12 @@ namespace MiniFPS
             camera.direction.y - camera.plane.y
         };
 
-        int halfViewportHeight = camera.viewportHeight / 2;
+        int halfViewportHeight = camera.height / 2;
 
-        for (int frameY = halfViewportHeight; frameY < camera.viewportHeight; frameY++)
+        for (int frameY = halfViewportHeight; frameY < camera.height; frameY++)
         {
             int horizonY = frameY - halfViewportHeight;
-            float cameraY = 0.5f * static_cast<float>(camera.viewportHeight);
+            float cameraY = 0.5f * static_cast<float>(camera.height);
 
             // Check to avoid division by zero
             if (horizonY == 0) continue;
@@ -205,8 +205,8 @@ namespace MiniFPS
 
             Vec2 floorStep
             {
-                cameraToFloorDistance * (rightRay.x - leftRay.x) / camera.viewportWidth,
-                cameraToFloorDistance * (rightRay.y - leftRay.y) / camera.viewportWidth
+                cameraToFloorDistance * (rightRay.x - leftRay.x) / camera.width,
+                cameraToFloorDistance * (rightRay.y - leftRay.y) / camera.width
             };
 
             Vec2 floorPos
@@ -215,7 +215,7 @@ namespace MiniFPS
                 camera.pos.y + cameraToFloorDistance * leftRay.y
             };
 
-            for (int frameX = 0; frameX < camera.viewportWidth; frameX++)
+            for (int frameX = 0; frameX < camera.width; frameX++)
             {
                 Vec2Int cellPos
                 {
@@ -237,7 +237,7 @@ namespace MiniFPS
 
                 Color ceilingColor = ceilingTexture.buffer[textureCoordinates.y][textureCoordinates.x];
                 ceilingColor.argb = (ceilingColor.argb >> 1) & 8355711; // Darken pixel
-                SetPixel(buffer, ceilingColor, {frameX, camera.viewportHeight - frameY - 1});
+                SetPixel(buffer, ceilingColor, {frameX, camera.height - frameY - 1});
             }
         }
     }
@@ -326,21 +326,21 @@ namespace MiniFPS
 
         SDL_LockTexture(m_streamingFrameTexture, nullptr, &buffer.pixels, &buffer.pitch);
 
-        for (int frameY = 0; frameY < static_cast<int>(mainMenu.m_player.m_camera.viewportHeight); frameY++)
+        for (int frameY = 0; frameY < static_cast<int>(mainMenu.m_player.m_camera.height); frameY++)
         {
-            for (int frameX = 0; frameX < static_cast<int>(mainMenu.m_player.m_camera.viewportWidth); frameX++)
+            for (int frameX = 0; frameX < static_cast<int>(mainMenu.m_player.m_camera.width); frameX++)
             {
                 SetPixel(buffer, MAIN_MENU_BACKGROUND, {frameX, frameY});
             }
         }
 
-        const int titleTextX = static_cast<int>(mainMenu.m_player.m_camera.viewportWidth / 4);
-        const int titleTextY = static_cast<int>(mainMenu.m_player.m_camera.viewportHeight / 16);
-        const int titleTextWidth = static_cast<int>(mainMenu.m_player.m_camera.viewportWidth / 2);
+        const int titleTextX = static_cast<int>(mainMenu.m_player.m_camera.width / 4);
+        const int titleTextY = static_cast<int>(mainMenu.m_player.m_camera.height / 16);
+        const int titleTextWidth = static_cast<int>(mainMenu.m_player.m_camera.width / 2);
 
-        const int versionTextX = static_cast<int>(3 * (mainMenu.m_player.m_camera.viewportWidth / 8));
-        const int versionTextY = static_cast<int>(5 * (mainMenu.m_player.m_camera.viewportHeight / 16));
-        const int versionTextWidth = static_cast<int>(mainMenu.m_player.m_camera.viewportWidth / 4);
+        const int versionTextX = static_cast<int>(3 * (mainMenu.m_player.m_camera.width / 8));
+        const int versionTextY = static_cast<int>(5 * (mainMenu.m_player.m_camera.height / 16));
+        const int versionTextWidth = static_cast<int>(mainMenu.m_player.m_camera.width / 4);
 
         const int startTextX = static_cast<int>(mainMenu.m_startButton.m_pos.x - mainMenu.m_startButton.m_width / 4);
         const int startTextY = static_cast<int>(mainMenu.m_startButton.m_pos.y - mainMenu.m_startButton.m_height / 2);
@@ -394,23 +394,23 @@ namespace MiniFPS
                 invDet * ((-cam.plane.y * enemyPos.x) + (cam.plane.x * enemyPos.y))
             };
 
-            const int enemyScreenX = static_cast<int>((cam.viewportWidth / 2) * (1 + transform.x / transform.y));
+            const int enemyScreenX = static_cast<int>((cam.width / 2) * (1 + transform.x / transform.y));
 
-            const int enemyHeight = std::min(2000, std::abs(static_cast<int>(cam.viewportHeight / (transform.y))));
-            int drawStartY = -enemyHeight / 2 + cam.viewportHeight / 2;
+            const int enemyHeight = std::min(2000, std::abs(static_cast<int>(cam.height / (transform.y))));
+            int drawStartY = -enemyHeight / 2 + cam.height / 2;
             if (drawStartY < 0)
             { drawStartY = 0; }
-            int drawEndY = enemyHeight / 2 + cam.viewportHeight / 2;
-            if (drawEndY >= cam.viewportHeight)
-            { drawEndY = cam.viewportHeight - 1; }
+            int drawEndY = enemyHeight / 2 + cam.height / 2;
+            if (drawEndY >= cam.height)
+            { drawEndY = cam.height - 1; }
 
-            const int enemyWidth = std::min(2000, std::abs(static_cast<int>(cam.viewportHeight / (transform.y))));
+            const int enemyWidth = std::min(2000, std::abs(static_cast<int>(cam.height / (transform.y))));
             int drawStartX = (-enemyWidth / 2) + enemyScreenX;
             if (drawStartX < 0)
             { drawStartX = 0; }
             int drawEndX = (enemyWidth / 2) + enemyScreenX;
-            if (drawEndX >= cam.viewportWidth)
-            { drawEndX = cam.viewportWidth - 1; }
+            if (drawEndX >= cam.width)
+            { drawEndX = cam.width - 1; }
 
             for (int stripe = drawStartX; stripe < drawEndX; stripe++)
             {
@@ -420,7 +420,7 @@ namespace MiniFPS
                 {
                     for (int y = drawStartY; y < drawEndY; y++)
                     {
-                        const int d = (y) * 256 - cam.viewportHeight * 128 + enemyHeight * 128;
+                        const int d = (y) * 256 - cam.height * 128 + enemyHeight * 128;
                         const int texY = ((d * texture.size) / enemyHeight) / 256;
                         const Color pixel = texture.buffer[texY][texX];
                         if ((pixel.argb & TRANSPARENCY_MASK) != 0)
@@ -444,7 +444,7 @@ namespace MiniFPS
                            GetTexBuffer(CEILING_ID));
 
         // Cast rays
-        for (int ray = 0; ray < player.m_camera.viewportWidth; ray++)
+        for (int ray = 0; ray < player.m_camera.width; ray++)
         {
             RaycastResult result = CastRay(ray, player);
             m_zBuffer[ray] = result.adjustedDistance;
@@ -474,15 +474,15 @@ namespace MiniFPS
 
         DrawEnemies(player, enemies, buffer);
 
-        const int weaponTextureSize = player.m_camera.viewportWidth / 4;
+        const int weaponTextureSize = player.m_camera.width / 4;
         if (player.m_justFired) {
-            CopyTextureToFrameTexture(buffer, player.m_muzzleFlashWeaponTexture, {player.m_camera.viewportWidth / 2,
-                                                                           player.m_camera.viewportHeight -
-                                                                           (weaponTextureSize / 2)}, weaponTextureSize,
+            CopyTextureToFrameTexture(buffer, player.m_muzzleFlashWeaponTexture, {player.m_camera.width / 2,
+                                                                                  player.m_camera.height -
+                                                                                  (weaponTextureSize / 2)}, weaponTextureSize,
                                       weaponTextureSize);
         } else {
-            CopyTextureToFrameTexture(buffer, player.m_baseWeaponTexture, {player.m_camera.viewportWidth / 2,
-                                                                           player.m_camera.viewportHeight -
+            CopyTextureToFrameTexture(buffer, player.m_baseWeaponTexture, {player.m_camera.width / 2,
+                                                                           player.m_camera.height -
                                                                            (weaponTextureSize / 2)}, weaponTextureSize,
                                       weaponTextureSize);
         }
@@ -526,7 +526,7 @@ namespace MiniFPS
         RaycastResult result;
 
         const float rayScreenPos = (
-            2.0f * static_cast<float>(column) / static_cast<float>((player.m_camera.viewportWidth)) - 1.0f);
+            2.0f * static_cast<float>(column) / static_cast<float>((player.m_camera.width)) - 1.0f);
         const float rayAngle = atan2f(player.m_camera.direction.y, player.m_camera.direction.x) +
                                atanf(rayScreenPos * tanf(player.m_camera.horizontalFieldOfView / 2));
 
