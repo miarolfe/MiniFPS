@@ -49,16 +49,19 @@ namespace MiniFPS
                     case LOG_INFO:
                     {
                         LogHandler::GetInstance().m_outfile << "[INFO   ] ";
+                        std::cout << "[INFO   ] " << LogHandler::GetInstance().m_msgQueue.front().msg << std::endl;
                         break;
                     }
                     case LOG_WARNING:
                     {
                         LogHandler::GetInstance().m_outfile << "[WARNING] ";
+                        std::cout << "[WARNING] " << LogHandler::GetInstance().m_msgQueue.front().msg << std::endl;
                         break;
                     }
                     case LOG_ERROR:
                     {
                         LogHandler::GetInstance().m_outfile << "[ERROR  ] ";
+                        std::cerr << "[ERROR  ] " << LogHandler::GetInstance().m_msgQueue.front().msg << std::endl;
                         break;
                     }
                 }

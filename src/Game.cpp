@@ -77,6 +77,10 @@ void MiniFPS::Game::Update()
 {
     LogHandler::Update();
 
+    m_oldTime = m_curTime;
+    m_curTime = static_cast<float>(SDL_GetTicks64());
+    m_frameDelta = GetFrameTime(m_oldTime, m_curTime);
+
     if (m_mainMenu.m_player.InMainMenu() && !m_mainMenu.m_player.GameHasEnded())
     {
         m_renderer.DrawMainMenu(m_mainMenu);
@@ -91,9 +95,14 @@ void MiniFPS::Game::Update()
             LogHandler::Log("Game setup");
         }
 
-        m_oldTime = m_curTime;
-        m_curTime = static_cast<float>(SDL_GetTicks64());
-        m_frameDelta = GetFrameTime(m_oldTime, m_curTime);
+//        m_oldTime = m_curTime;
+//        m_curTime = static_cast<float>(SDL_GetTicks64());
+//        m_frameDelta = GetFrameTime(m_oldTime, m_curTime);
+
+        for (Enemy& enemy : m_enemies)
+        {
+            enemy.Update(m_frameDelta);
+        }
 
         m_gamePlayer.Update(m_frameDelta, m_settings.speedModifier, m_settings.rotationModifier);
 

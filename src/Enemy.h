@@ -10,7 +10,7 @@ namespace MiniFPS
     public:
         explicit Enemy(const Vec2& pos, short textureID = -1);
 
-        void Update();
+        void Update(float frameDelta);
 
         bool IsVisible();
 
