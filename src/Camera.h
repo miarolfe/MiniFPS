@@ -5,7 +5,7 @@
 
 namespace MiniFPS
 {
-    const Vec2Int CAMERA_RESOLUTION {512, 288};
+    const Vec2Int CAMERA_RESOLUTION {800, 445};
     const Vec2 CAMERA_START_DIRECTION {-1.0f, 0.0f};
     const Vec2 CAMERA_START_PLANE {0.0f, 0.66f};
 
