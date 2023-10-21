@@ -93,14 +93,17 @@ void MiniFPS::Game::Update()
             SetupGame();
             m_gameSetup = true;
             LogHandler::Log("Game setup");
+
+            for (Enemy& enemy : m_enemies)
+            {
+                enemy.SetDestination(&m_level, {11.5, 14.5});
+            }
         }
 
         for (Enemy& enemy : m_enemies)
         {
             enemy.Update(m_frameDelta);
         }
-
-        Path path = CalculatePath(&m_level, {1, 1}, {7, 11});
 
         m_gamePlayer.Update(m_frameDelta, m_settings.speedModifier, m_settings.rotationModifier);
 

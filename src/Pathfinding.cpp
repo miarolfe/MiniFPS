@@ -72,7 +72,7 @@ namespace MiniFPS
 
         while (currentNode != nullptr)
         {
-            path.waypoints.push_back(currentNode->pos);
+            path.waypoints.push_back({static_cast<float>(currentNode->pos.x) + 0.5f, static_cast<float>(currentNode->pos.y) + 0.5f});
             currentNode = cameFrom[currentNode];
         }
 
@@ -134,7 +134,7 @@ namespace MiniFPS
 
     float CalculateNodeToGoalHeuristic(const PathfindingNode& start, const PathfindingNode& end)
     {
-        return std::sqrtf
+        return std::sqrt
         (
                 std::pow(start.pos.x - end.pos.x, 2) +
                 std::pow(start.pos.y - end.pos.y, 2)

@@ -42,7 +42,7 @@ namespace MiniFPS
 
     struct Path
     {
-        std::vector<Vec2Int> waypoints;
+        std::vector<Vec2> waypoints;
         bool valid = false;
     };
 
