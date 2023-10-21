@@ -93,11 +93,12 @@ void MiniFPS::Game::Update()
             SetupGame();
             m_gameSetup = true;
             LogHandler::Log("Game setup");
-        }
 
-//        m_oldTime = m_curTime;
-//        m_curTime = static_cast<float>(SDL_GetTicks64());
-//        m_frameDelta = GetFrameTime(m_oldTime, m_curTime);
+            for (Enemy& enemy : m_enemies)
+            {
+                enemy.SetDestination(&m_level, {11.5, 14.5});
+            }
+        }
 
         for (Enemy& enemy : m_enemies)
         {

@@ -6,6 +6,7 @@
 #include "Font.h"
 #include "LogHandler.h"
 #include "Settings.h"
+#include "Pathfinding.h"
 #include "Renderer.h"
 #include "Texture.h"
 #include "Utilities.h"

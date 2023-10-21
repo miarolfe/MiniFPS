@@ -61,6 +61,8 @@ namespace MiniFPS
 
         Vec2Int& operator=(const Vec2Int& otherVector);
 
+        bool operator==(const Vec2Int& otherVector);
+
         Vec2Int operator+(const Vec2Int& otherVector) const;
 
         Vec2Int& operator+=(const Vec2Int& otherVector);

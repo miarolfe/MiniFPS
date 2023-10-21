@@ -26,6 +26,7 @@ set(
         src/Level.cpp
         src/LogHandler.cpp
         src/Menu.cpp
+        src/Pathfinding.cpp
         src/Player.cpp
         src/Renderer.cpp
         src/Settings.cpp
@@ -46,6 +47,7 @@ set(
         src/Level.h
         src/LogHandler.h
         src/Menu.h
+        src/Pathfinding.h
         src/Player.h
         src/Renderer.h
         src/Settings.h

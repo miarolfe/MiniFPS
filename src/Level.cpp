@@ -70,6 +70,11 @@ namespace MiniFPS
         return (point.x >= 0 && point.x < m_width && point.y >= 0 && point.y < m_height);
     }
 
+    bool Level::IsPositionValid(const Vec2Int &point)
+    {
+        return (point.x >= 0 && point.x < m_width && point.y >= 0 && point.y < m_height);
+    }
+
     void Level::Load(const string& filePath)
     {
         std::ifstream infile(filePath);
@@ -120,5 +125,15 @@ namespace MiniFPS
         }
 
         infile.close();
+    }
+
+    int Level::GetWidth()
+    {
+        return m_width;
+    }
+
+    int Level::GetHeight()
+    {
+        return m_height;
     }
 }
