@@ -3,12 +3,13 @@
 
 namespace MiniFPS
 {
-    Player::Player(Level* level, const Settings& settings) : m_level(level)
+    Player::Player(Level* level, const Settings& settings, const Vec2Int& cameraResolution) : m_level(level)
     {
         m_inputState = InputState();
         m_camera = Camera(settings.playerStartPos,
                           settings.fieldOfView * PI_180,
-                          settings.renderDistance);
+                          settings.renderDistance,
+                          cameraResolution);
     }
 
     Player::Player() : m_level(nullptr)

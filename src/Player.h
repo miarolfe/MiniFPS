@@ -27,7 +27,7 @@ namespace MiniFPS
     public:
         Player();
 
-        Player(Level* level, const Settings& settings);
+        Player(Level* level, const Settings& settings, const Vec2Int& cameraResolution);
 
         Level* m_level;
         Camera m_camera;

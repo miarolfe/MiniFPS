@@ -5,7 +5,6 @@
 
 namespace MiniFPS
 {
-    const Vec2Int CAMERA_RESOLUTION {800, 445};
     const Vec2 CAMERA_START_DIRECTION {-1.0f, 0.0f};
     const Vec2 CAMERA_START_PLANE {0.0f, 0.66f};
 
@@ -13,7 +12,7 @@ namespace MiniFPS
     {
     public:
         Camera() {}
-        Camera(const Vec2& playerStartPos, float horizontalFieldOfView, int maxRenderDistance);
+        Camera(const Vec2& playerStartPos, float horizontalFieldOfView, int maxRenderDistance, const Vec2Int& cameraResolution);
 
         // Position relative to level cells (where x=0, y=0 would be the top-left corner of the level)
         Vec2 pos;

@@ -49,7 +49,7 @@ namespace MiniFPS
     public:
         Renderer();
 
-        Renderer(SDL_Renderer* sdlRenderer, const Settings& settings);
+        Renderer(SDL_Renderer* sdlRenderer, const Settings& settings, const Vec2Int& cameraResolution);
 
     private:
         inline void SetPixel(SDLTextureBuffer buffer, const Color& color, const Vec2Int& point);
