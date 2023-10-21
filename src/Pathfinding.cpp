@@ -136,8 +136,8 @@ namespace MiniFPS
     {
         return std::sqrtf
         (
-                std::powf(start.pos.x - end.pos.x, 2) +
-                std::powf(start.pos.y - end.pos.y, 2)
+                std::pow(start.pos.x - end.pos.x, 2) +
+                std::pow(start.pos.y - end.pos.y, 2)
         );
     }
 }
