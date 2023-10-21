@@ -33,7 +33,7 @@ jobs:
         run: mkdir bin
 
       - name: Setup Meson environment
-        run: meson setup bin . --wipe --prefix="$(pwd)/bin/MiniFPS.app" --bindir='Contents/MacOS'
+        run: meson setup bin . --wipe --prefix="$(pwd)/bin/MiniFPS.app" --bindir='Contents/MacOS' -Doptimization=3
 
       - name: Build game
         run: |

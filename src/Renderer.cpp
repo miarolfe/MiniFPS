@@ -31,14 +31,18 @@ namespace MiniFPS
         m_textureMap = newTextureMap;
     }
 
-    void Renderer::SetPixel(SDLTextureBuffer buffer, Color color, const Vec2Int& point)
+    inline void Renderer::SetPixel(SDLTextureBuffer buffer, const Color& color, const Vec2Int& point)
     {
-        if (point.x >= 0 && point.x < buffer.size.x && point.y >= 0 && point.y < buffer.size.y)
+        const int x = point.x;
+        const int y = point.y;
+
+        if (x >= 0 && x < buffer.size.x && y >= 0 && y < buffer.size.y)
         {
-            uint32_t* row = (uint32_t*) ((uint8_t*) buffer.pixels + point.y * buffer.pitch);
-            row[point.x] = color.argb;
+            uint32_t* row = (uint32_t*)((uint8_t*)buffer.pixels + y * buffer.pitch);
+            row[x] = color.argb;
         }
     }
+
 
     bool Renderer::ShouldShadePixel(const Vec2& point)
     {

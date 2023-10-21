@@ -81,6 +81,8 @@ void MiniFPS::Game::Update()
     m_curTime = static_cast<float>(SDL_GetTicks64());
     m_frameDelta = GetFrameTime(m_oldTime, m_curTime);
 
+    LogHandler::Log(GetFramesPerSecond(m_frameDelta).c_str());
+
     if (m_mainMenu.m_player.InMainMenu() && !m_mainMenu.m_player.GameHasEnded())
     {
         m_renderer.DrawMainMenu(m_mainMenu);

@@ -52,7 +52,7 @@ namespace MiniFPS
         Renderer(SDL_Renderer* sdlRenderer, const Settings& settings);
 
     private:
-        void SetPixel(SDLTextureBuffer buffer, Color color, const Vec2Int& point);
+        inline void SetPixel(SDLTextureBuffer buffer, const Color& color, const Vec2Int& point);
 
         static bool ShouldShadePixel(const Vec2& point);
 
