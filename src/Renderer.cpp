@@ -266,7 +266,7 @@ namespace MiniFPS
 
         SDLTextureBuffer buffer;
         SDL_LockTexture(buttonTexture, nullptr, &buffer.pixels, &buffer.pitch);
-        buffer.size = {static_cast<int>(button.m_width), static_cast<int>(button.m_height)};
+        buffer.size = {Vec2Int(button.GetSize())};
 
         for (int x = 0; x < buttonSize.x; x++)
         {
