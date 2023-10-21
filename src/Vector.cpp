@@ -15,12 +15,12 @@ namespace MiniFPS
 
     float Vec2::Length() const
     {
-        return sqrtf((x * x) + (y * y));
+        return std::sqrt((x * x) + (y * y));
     }
 
     float Vec2::Distance(const Vec2 &otherVector) const
     {
-        return sqrtf(powf(x - otherVector.x, 2) + powf(y - otherVector.y, 2));
+        return std::sqrt((x - otherVector.x) * (x - otherVector.x) + (y - otherVector.y) * (y - otherVector.y));
     }
 
 
@@ -32,8 +32,12 @@ namespace MiniFPS
     void Vec2::Normalize()
     {
         const float length = Length();
-        x = x / length;
-        y = y / length;
+
+        if (length != 0)
+        {
+            x = x / length;
+            y = y / length;
+        }
     }
 
     Vec2 &Vec2::operator=(const Vec2 &otherVector)
