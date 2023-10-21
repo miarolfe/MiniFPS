@@ -10,6 +10,7 @@
 #include "Renderer.h"
 #include "Texture.h"
 #include "Utilities.h"
+#include "Vector.h"
 
 namespace MiniFPS
 {
@@ -45,5 +46,6 @@ namespace MiniFPS
         float m_curTime = 0.0;
         float m_frameDelta = 0.0;
         bool m_gameSetup = false;
+        Vec2Int m_cameraResolution;
     };
 }

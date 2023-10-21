@@ -4,27 +4,27 @@ namespace MiniFPS
 {
     MainMenu::MainMenu() = default;
 
-    MainMenu::MainMenu(const Settings& settings, const Font& font)
+    MainMenu::MainMenu(const Settings& settings, const Font& font, const Vec2Int& cameraResolution)
     {
-        this->m_player = Player(nullptr, settings);
+        this->m_player = Player(nullptr, settings, cameraResolution);
         this->m_player.m_inputState.inMainMenu = true;
         this->m_settings = settings;
         this->m_font = font;
-        m_startButton = Button{{static_cast<float>(CAMERA_RESOLUTION.x / 2),
-                                static_cast<float>(3 * CAMERA_RESOLUTION.y / 4)},
-                               {static_cast<float>(CAMERA_RESOLUTION.x / 2),
-                               static_cast<float>(CAMERA_RESOLUTION.y / 6)}};
+        m_startButton = Button{{static_cast<float>(cameraResolution.x / 2),
+                                static_cast<float>(3 * cameraResolution.y / 4)},
+                               {static_cast<float>(cameraResolution.x / 2),
+                               static_cast<float>(cameraResolution.y / 6)}};
     }
 
 
-    void MainMenu::Update(const Vec2Int& displayResolution)
+    void MainMenu::Update(const Vec2Int& displayResolution, const Vec2Int& cameraResolution)
     {
         m_player.Update(0, 0, 0);
 
         const Vec2 mouseScalingFactor
         {
-            static_cast<float>(CAMERA_RESOLUTION.x) / static_cast<float>(displayResolution.x),
-            static_cast<float>(CAMERA_RESOLUTION.y) / static_cast<float>(displayResolution.y)
+            static_cast<float>(cameraResolution.x) / static_cast<float>(displayResolution.x),
+            static_cast<float>(cameraResolution.y) / static_cast<float>(displayResolution.y)
         };
 
         const Vec2Int scaledMousePos

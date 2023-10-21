@@ -13,14 +13,14 @@ namespace MiniFPS
     public:
         MainMenu();
 
-        MainMenu(const Settings& settings, const Font& font);
+        MainMenu(const Settings& settings, const Font& font, const Vec2Int& cameraResolution);
 
         Font m_font;
         Player m_player;
         Settings m_settings;
         Button m_startButton;
 
-        void Update(const Vec2Int& displayResolution);
+        void Update(const Vec2Int& displayResolution, const Vec2Int& cameraResolution);
     };
 
     SDL_Texture*

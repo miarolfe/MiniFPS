@@ -67,8 +67,14 @@ MiniFPS::Game::Game()
         LogHandler::Log("Renderer initialized");
     }
 
-    m_renderer = Renderer(m_sdlRenderer, m_settings);
-    m_mainMenu = MainMenu(m_settings, m_fontManager.m_fonts[0]);
+    m_cameraResolution =
+    {
+        m_settings.screenWidth / 2,
+        m_settings.screenHeight / 2
+    };
+
+    m_renderer = Renderer(m_sdlRenderer, m_settings, m_cameraResolution);
+    m_mainMenu = MainMenu(m_settings, m_fontManager.m_fonts[0], m_cameraResolution);
 
     SDL_SetRelativeMouseMode(SDL_FALSE);
 }
@@ -84,7 +90,7 @@ void MiniFPS::Game::Update()
     if (m_mainMenu.m_player.InMainMenu() && !m_mainMenu.m_player.GameHasEnded())
     {
         m_renderer.DrawMainMenu(m_mainMenu);
-        m_mainMenu.Update({m_settings.screenWidth, m_settings.screenHeight});
+        m_mainMenu.Update({m_settings.screenWidth, m_settings.screenHeight}, m_cameraResolution);
     }
     else if (!m_gamePlayer.GameHasEnded())
     {
@@ -176,7 +182,7 @@ void MiniFPS::Game::SetupGame()
         m_enemies.emplace_back(pair.second, pair.first);
     }
 
-    m_gamePlayer = Player(&m_level, m_settings);
+    m_gamePlayer = Player(&m_level, m_settings, m_cameraResolution);
     m_gamePlayer.m_baseWeaponTexture = m_textureNameToTextureMap["PlayerWeapon-1"];
     m_gamePlayer.m_muzzleFlashWeaponTexture = m_textureNameToTextureMap["PlayerWeapon-2"];
 
