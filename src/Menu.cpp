@@ -12,8 +12,8 @@ namespace MiniFPS
         this->m_font = font;
         m_startButton = Button{{static_cast<float>(CAMERA_RESOLUTION.x / 2),
                                 static_cast<float>(3 * CAMERA_RESOLUTION.y / 4)},
-                               static_cast<float>(CAMERA_RESOLUTION.x / 2),
-                               static_cast<float>(CAMERA_RESOLUTION.y / 6)};
+                               {static_cast<float>(CAMERA_RESOLUTION.x / 2),
+                               static_cast<float>(CAMERA_RESOLUTION.y / 6)}};
     }
 
 
@@ -33,7 +33,7 @@ namespace MiniFPS
             static_cast<int>(static_cast<float>(m_player.m_inputState.mousePosY) * mouseScalingFactor.y)
         };
 
-        if (m_startButton.Pressed(scaledMousePos.x, scaledMousePos.y) &&
+        if (m_startButton.Pressed(scaledMousePos) &&
             m_player.m_inputState.leftMouseButtonPressed)
         {
             m_player.m_inputState.inMainMenu = false;

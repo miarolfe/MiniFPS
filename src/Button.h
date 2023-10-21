@@ -7,23 +7,27 @@ namespace MiniFPS
 {
     class Button
     {
-    public:
+    private:
         Vec2 m_pos;
-        float m_width;
-        float m_height;
+        Vec2 m_size;
 
+    public:
         Button();
 
-        Button(const Vec2& pos, float width, float height);
+        Button(const Vec2& pos, const Vec2& size);
 
-        bool Pressed(int mouseX, int mouseY);
+        bool Pressed(const Vec2Int& mousePos) const;
 
-        float GetLeftBound();
+        float GetLeftBound() const;
 
-        float GetRightBound();
+        float GetRightBound() const;
 
-        float GetBottomBound();
+        float GetBottomBound() const;
 
-        float GetTopBound();
+        float GetTopBound() const;
+
+        const Vec2& GetPos() const;
+
+        const Vec2& GetSize() const;
     };
 }

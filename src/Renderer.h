@@ -67,7 +67,7 @@ namespace MiniFPS
 
         void DrawGameBackground(const Camera& camera, const SDLTextureBuffer& buffer, const Texture& floorTexture, const Texture& ceilingTexture);
 
-        void DrawButton(Button button);
+        void DrawButton(const Button& button);
 
         void DrawTextStr(const string& text, const Font& font, const Vec2& point, int width, int r, int g, int b);
 

@@ -2,16 +2,15 @@
 
 namespace MiniFPS
 {
-    Button::Button()
+    Button::Button() = default;
+
+    Button::Button(const Vec2& pos, const Vec2& size) : m_pos(pos), m_size(size)
     {}
 
-    Button::Button(const Vec2& pos, float width, float height) : m_pos(pos), m_width(width), m_height(height)
-    {}
-
-    bool Button::Pressed(int mouseX, int mouseY)
+    bool Button::Pressed(const Vec2Int& mousePos) const
     {
-        if (static_cast<float>(mouseX) >= GetLeftBound() && static_cast<float>(mouseX) <= GetRightBound() &&
-            static_cast<float>(mouseY) <= GetBottomBound() && static_cast<float>(mouseY) >= GetTopBound())
+        if (static_cast<float>(mousePos.x) >= GetLeftBound() && static_cast<float>(mousePos.x) <= GetRightBound() &&
+            static_cast<float>(mousePos.y) <= GetBottomBound() && static_cast<float>(mousePos.y) >= GetTopBound())
         {
             return true;
         }
@@ -21,23 +20,33 @@ namespace MiniFPS
         }
     }
 
-    float Button::GetLeftBound()
+    float Button::GetLeftBound() const
     {
-        return m_pos.x - (m_width / 2);
+        return m_pos.x - (m_size.x / 2);
     }
 
-    float Button::GetRightBound()
+    float Button::GetRightBound() const
     {
-        return m_pos.x + (m_width / 2);
+        return m_pos.x + (m_size.x / 2);
     }
 
-    float Button::GetBottomBound()
+    float Button::GetBottomBound() const
     {
-        return m_pos.y + (m_height / 2);
+        return m_pos.y + (m_size.y / 2);
     }
 
-    float Button::GetTopBound()
+    float Button::GetTopBound() const
     {
-        return m_pos.y - (m_height / 2);
+        return m_pos.y - (m_size.y / 2);
+    }
+
+    const Vec2& Button::GetPos() const
+    {
+        return m_pos;
+    }
+
+    const Vec2& Button::GetSize() const
+    {
+        return m_size;
     }
 }

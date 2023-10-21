@@ -44,7 +44,7 @@ MiniFPS::Game::Game()
     m_settings = Settings::LoadSettings(GetSDLAssetsFolderPath(), "settings.json");
 
     // Load in audio files
-    AudioHandler& instance = AudioHandler::GetInstance(GetSDLAssetsFolderPath() + "audio/", m_settings);
+    AudioHandler::GetInstance(GetSDLAssetsFolderPath() + "audio/", m_settings);
 
     // Load in font files
     m_fontManager = FontManager(m_settings);
