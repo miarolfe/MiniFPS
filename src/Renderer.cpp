@@ -588,7 +588,7 @@ namespace MiniFPS
                 side = 1;
             }
 
-            if (player.m_level->IsPositionValid({static_cast<float>(mapCheck.x), static_cast<float>(mapCheck.y)}))
+            if (player.m_level->IsPositionValid(Vec2{static_cast<float>(mapCheck.x), static_cast<float>(mapCheck.y)}))
             {
                 result.id = player.m_level->Get({mapCheck.x, mapCheck.y});
                 if (result.id != 0)

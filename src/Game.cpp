@@ -95,14 +95,12 @@ void MiniFPS::Game::Update()
             LogHandler::Log("Game setup");
         }
 
-//        m_oldTime = m_curTime;
-//        m_curTime = static_cast<float>(SDL_GetTicks64());
-//        m_frameDelta = GetFrameTime(m_oldTime, m_curTime);
-
         for (Enemy& enemy : m_enemies)
         {
             enemy.Update(m_frameDelta);
         }
+
+        Path path = CalculatePath(&m_level, {1, 1}, {7, 11});
 
         m_gamePlayer.Update(m_frameDelta, m_settings.speedModifier, m_settings.rotationModifier);
 
