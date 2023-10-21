@@ -13,11 +13,15 @@ namespace MiniFPS
                                                     CAMERA_RESOLUTION.x,
                                                     CAMERA_RESOLUTION.y);
 
+        m_streamingFrameTextureSize = CAMERA_RESOLUTION;
+
         m_renderFrameTexture = SDL_CreateTexture(sdlRenderer,
                                                  SDL_PIXELFORMAT_ARGB8888,
                                                  SDL_TEXTUREACCESS_TARGET,
                                                  CAMERA_RESOLUTION.x,
                                                  CAMERA_RESOLUTION.y);
+
+        m_renderFrameTextureSize = CAMERA_RESOLUTION;
 
         m_zBuffer = static_cast<float*>(malloc(sizeof(float) * settings.screenWidth));
     }
@@ -29,8 +33,11 @@ namespace MiniFPS
 
     void Renderer::SetPixel(SDLTextureBuffer buffer, Color color, const Vec2Int& point)
     {
-        uint32_t* row = (uint32_t*) ((uint8_t*) buffer.pixels + point.y * buffer.pitch);
-        row[point.x] = color.argb;
+        if (point.x >= 0 && point.x < buffer.size.x && point.y >= 0 && point.y < buffer.size.y)
+        {
+            uint32_t* row = (uint32_t*) ((uint8_t*) buffer.pixels + point.y * buffer.pitch);
+            row[point.x] = color.argb;
+        }
     }
 
     bool Renderer::ShouldShadePixel(const Vec2& point)
@@ -142,7 +149,6 @@ namespace MiniFPS
 
         SDL_DestroyTexture(m_streamingFrameTexture);
         SDL_DestroyTexture(m_renderFrameTexture);
-        SDL_DestroyTexture(m_targetTexture);
     }
 
     void
@@ -259,6 +265,7 @@ namespace MiniFPS
 
         SDLTextureBuffer buffer;
         SDL_LockTexture(buttonTexture, nullptr, &buffer.pixels, &buffer.pitch);
+        buffer.size = {static_cast<int>(button.m_width), static_cast<int>(button.m_height)};
 
         for (int x = 0; x < button.m_width; x++)
         {
@@ -323,8 +330,8 @@ namespace MiniFPS
     void Renderer::DrawMainMenu(const MainMenu& mainMenu)
     {
         SDLTextureBuffer buffer;
-
         SDL_LockTexture(m_streamingFrameTexture, nullptr, &buffer.pixels, &buffer.pitch);
+        buffer.size = m_streamingFrameTextureSize;
 
         for (int frameY = 0; frameY < static_cast<int>(mainMenu.m_player.m_camera.height); frameY++)
         {
@@ -439,6 +446,7 @@ namespace MiniFPS
     {
         SDLTextureBuffer buffer;
         SDL_LockTexture(m_streamingFrameTexture, nullptr, &buffer.pixels, &buffer.pitch);
+        buffer.size = m_streamingFrameTextureSize;
 
         DrawGameBackground(player.m_camera,
                            buffer,

@@ -9,7 +9,7 @@ namespace MiniFPS
         pathfindingLevel.size = {level->GetWidth(), level->GetHeight()};
         pathfindingLevel.nodes = new PathfindingNode* [level->GetWidth()];
 
-        // Allocate memory
+        // Allocate memory for nodes
         for (int i = 0; i < pathfindingLevel.size.x; i++)
         {
             pathfindingLevel.nodes[i] = new PathfindingNode[level->GetHeight()];
@@ -19,25 +19,20 @@ namespace MiniFPS
             }
         }
 
-        std::priority_queue<PathfindingPQEntry, std::vector<PathfindingPQEntry>, std::greater<PathfindingPQEntry>> frontier;
-        std::unordered_map<PathfindingNode*, PathfindingNode*> cameFrom;
-        std::unordered_map<PathfindingNode*, float> costSoFar;
-
         PathfindingNode* startNode = &pathfindingLevel.nodes[startPos.x][startPos.y];
         PathfindingNode* goalNode = &pathfindingLevel.nodes[goalPos.x][goalPos.y];
 
-        frontier.push({
+        pathfindingLevel.frontier.emplace(
             CalculateNodeToGoalHeuristic(*startNode, *goalNode),
             startNode
-        });
+        );
 
-        // cameFrom[startNode] = startNode;
-        costSoFar[startNode] = 0.0f;
+        pathfindingLevel.costSoFar[startNode] = 0.0f;
 
-        while (!frontier.empty())
+        while (!pathfindingLevel.frontier.empty())
         {
-            PathfindingNode* currentNode = frontier.top().node;
-            frontier.pop();
+            PathfindingNode* currentNode = pathfindingLevel.frontier.top().node;
+            pathfindingLevel.frontier.pop();
 
             if (currentNode->pos == goalPos)
             {
@@ -50,40 +45,25 @@ namespace MiniFPS
             {
                 if (neighborNode != nullptr)
                 {
-                    float newCost = costSoFar[currentNode] + MOVEMENT_COST;
+                    float newCost = pathfindingLevel.costSoFar[currentNode] + MOVEMENT_COST;
 
-                    if (costSoFar.find(neighborNode) == costSoFar.end() || newCost < costSoFar[neighborNode])
+                    if (pathfindingLevel.costSoFar.find(neighborNode) == pathfindingLevel.costSoFar.end() || newCost < pathfindingLevel.costSoFar[neighborNode])
                     {
-                        costSoFar[neighborNode] = newCost;
+                        pathfindingLevel.costSoFar[neighborNode] = newCost;
                         float priority = newCost + CalculateNodeToGoalHeuristic(*neighborNode, *goalNode);
-                        frontier.push({
+                        pathfindingLevel.frontier.emplace(
                            priority,
                            neighborNode
-                        });
-                        cameFrom[neighborNode] = currentNode;
+                        );
+                        pathfindingLevel.cameFrom[neighborNode] = currentNode;
                     }
                 }
             }
         }
 
-        Path path;
+        Path path = ReconstructPath(pathfindingLevel, &pathfindingLevel.nodes[goalPos.x][goalPos.y]);
 
-        PathfindingNode* currentNode = &pathfindingLevel.nodes[goalPos.x][goalPos.y];
-
-        while (currentNode != nullptr)
-        {
-            path.waypoints.push_back({static_cast<float>(currentNode->pos.x) + 0.5f, static_cast<float>(currentNode->pos.y) + 0.5f});
-            currentNode = cameFrom[currentNode];
-        }
-
-        if (path.waypoints.size() >= 2)
-        {
-            path.valid = true;
-        }
-
-        std::reverse(path.waypoints.begin(), path.waypoints.end());
-
-        // Free memory
+        // Free allocated memory
         for (int i = 0; i < pathfindingLevel.size.x; i++)
         {
             delete[] pathfindingLevel.nodes[i];
@@ -139,5 +119,25 @@ namespace MiniFPS
                 std::pow(start.pos.x - end.pos.x, 2) +
                 std::pow(start.pos.y - end.pos.y, 2)
         );
+    }
+
+    Path ReconstructPath(PathfindingLevel& pathfindingLevel, PathfindingNode* currentNode)
+    {
+        Path path;
+
+        while (currentNode != nullptr)
+        {
+            path.waypoints.push_back({static_cast<float>(currentNode->pos.x) + 0.5f, static_cast<float>(currentNode->pos.y) + 0.5f});
+            currentNode = pathfindingLevel.cameFrom[currentNode];
+        }
+
+        if (path.waypoints.size() >= 2)
+        {
+            path.valid = true;
+        }
+
+        std::reverse(path.waypoints.begin(), path.waypoints.end());
+
+        return path;
     }
 }

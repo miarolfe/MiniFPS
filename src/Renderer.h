@@ -20,6 +20,7 @@ namespace MiniFPS
     {
         void* pixels = nullptr;
         int pitch = -1;
+        Vec2Int size;
     };
 
     struct RaycastResult
@@ -38,8 +39,9 @@ namespace MiniFPS
     private:
         SDL_Renderer* m_sdlRenderer;
         SDL_Texture* m_streamingFrameTexture;
+        Vec2Int m_streamingFrameTextureSize;
         SDL_Texture* m_renderFrameTexture;
-        SDL_Texture* m_targetTexture;
+        Vec2Int m_renderFrameTextureSize;
         std::unordered_map<short, Texture> m_textureMap;
     public:
         float* m_zBuffer = nullptr;
