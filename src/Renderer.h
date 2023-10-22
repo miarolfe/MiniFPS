@@ -52,7 +52,7 @@ namespace MiniFPS
         Renderer(SDL_Renderer* sdlRenderer, const Settings& settings, const Vec2Int& cameraResolution);
 
     private:
-        inline void SetPixel(SDLTextureBuffer buffer, const Color& color, const Vec2Int& point);
+        inline void SetPixel(const SDLTextureBuffer& buffer, const Color& color, const Vec2Int& point);
 
         static bool ShouldShadePixel(const Vec2& point);
 
@@ -64,7 +64,7 @@ namespace MiniFPS
 
         void CopyTextureToFrameTexture(const SDLTextureBuffer& buffer, const Texture& texture, const Vec2Int& point, int w, int h);
 
-        void DrawTexturedColumn(const Texture& texture, const Camera& camera, SDLTextureBuffer buffer, float distance,
+        void DrawTexturedColumn(const Texture& texture, const Camera& camera, const SDLTextureBuffer& buffer, float distance,
                                 const Vec2& cell, int rayX, int texX);
 
         void DrawGameBackground(const Camera& camera, const SDLTextureBuffer& buffer, const Texture& floorTexture, const Texture& ceilingTexture);
@@ -84,7 +84,7 @@ namespace MiniFPS
 
         void DrawMainMenu(const MainMenu& mainMenu);
 
-        void DrawEnemies(const Player& player, std::vector<Enemy>& enemies, SDLTextureBuffer buffer);
+        void DrawEnemies(const Player& player, std::vector<Enemy>& enemies, const SDLTextureBuffer& buffer);
 
         void DrawGame(const Player& player, std::vector<Enemy>& enemies, const Font& font);
 

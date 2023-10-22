@@ -31,7 +31,7 @@ namespace MiniFPS
         m_textureMap = newTextureMap;
     }
 
-    inline void Renderer::SetPixel(SDLTextureBuffer buffer, const Color& color, const Vec2Int& point)
+    inline void Renderer::SetPixel(const SDLTextureBuffer& buffer, const Color& color, const Vec2Int& point)
     {
         const int x = point.x;
         const int y = point.y;
@@ -156,7 +156,7 @@ namespace MiniFPS
     }
 
     void
-    Renderer::DrawTexturedColumn(const Texture& texture, const Camera& camera, SDLTextureBuffer buffer, float distance,
+    Renderer::DrawTexturedColumn(const Texture& texture, const Camera& camera, const SDLTextureBuffer& buffer, float distance,
                                  const Vec2& cell, int rayX, int texX)
     {
         const int columnHeight = ((camera.height)) / distance;
@@ -381,7 +381,7 @@ namespace MiniFPS
         SDL_RenderPresent(m_sdlRenderer);
     }
 
-    void Renderer::DrawEnemies(const Player& player, std::vector<Enemy>& enemies, SDLTextureBuffer buffer)
+    void Renderer::DrawEnemies(const Player& player, std::vector<Enemy>& enemies, const SDLTextureBuffer& buffer)
     {
         std::vector<std::pair<float, Enemy*>> enemyDistances;
 
