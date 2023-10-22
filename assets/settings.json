@@ -8,10 +8,10 @@
   },
 
   "graphics": {
-    "screenWidth": 1600,
-    "screenHeight": 900,
+    "screenWidth": 1920,
+    "screenHeight": 1080,
     "horizontalFieldOfView": 90,
-    "vSync": false
+    "vSync": true
   },
 
   "rendering": {
@@ -33,7 +33,7 @@
   },
 
   "files": {
-    "levelPath": "levels/Demo2.lvl",
+    "levelPath": "levels/Demo.lvl",
     "fontPaths": {
       "Inconsolata-Medium": "fonts/Inconsolata-Medium.ttf"
     }

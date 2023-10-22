@@ -431,14 +431,26 @@ namespace MiniFPS
 
             for (int stripe = drawStartX; stripe < drawEndX; stripe++)
             {
-                const int texX = static_cast<int>(256 * (stripe - (-enemyWidth / 2 + enemyScreenX)) * texture.size /
+                int texX = static_cast<int>(256 * (stripe - (-enemyWidth / 2 + enemyScreenX)) * texture.size /
                                                   enemyWidth) / 256;
+
+                if (texX < 0) texX = 0;
+                if (texX > texture.size-1) texX = texture.size-1;
+
                 if (transform.y > 0 && transform.y < m_zBuffer[stripe])
                 {
                     for (int y = drawStartY; y < drawEndY; y++)
                     {
                         const int d = (y) * 256 - cam.height * 128 + enemyHeight * 128;
-                        const int texY = ((d * texture.size) / enemyHeight) / 256;
+                        int texY = ((d * texture.size) / enemyHeight) / 256;
+
+                        if (texY < 0) texY = 0;
+                        if (texY > texture.size-1) texY = texture.size-1;
+
+                        assert(texY >= 0);
+                        assert(texY < texture.size);
+                        assert(texX >= 0);
+                        assert(texX < texture.size);
                         const Color pixel = texture.buffer[texY][texX];
                         if ((pixel.argb & TRANSPARENCY_MASK) != 0)
                         {
