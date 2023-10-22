@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "Enemy.h"
 #include "Utilities.h"
 
 namespace MiniFPS
@@ -252,7 +253,7 @@ namespace MiniFPS
                     distanceToShot = closestPointOnLine.Distance(enemy.m_pos);
                 }
 
-                if (enemy.IsVisible() && distanceToShot < MAX_SHOT_DISTANCE)
+                if (enemy.IsEnabled() && distanceToShot < MAX_SHOT_DISTANCE)
                 {
                     string info;
                     info += "Hit enemy at (";
@@ -262,7 +263,7 @@ namespace MiniFPS
                     info += ")";
                     LogHandler::Log(info.c_str());
 
-                    enemy.SetVisible(false);
+                    enemy.SetEnabled(false);
                     return true;
                 }
             }

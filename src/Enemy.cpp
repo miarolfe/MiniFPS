@@ -1,11 +1,12 @@
 #include "Enemy.h"
+#include "Player.h"
 
 namespace MiniFPS
 {
     Enemy::Enemy(const MiniFPS::Vec2& pos, short textureId) : m_pos(pos), m_textureId(textureId)
     {}
 
-    void Enemy::Update(float frameDelta)
+    void Enemy::Update(float frameDelta, Player& player)
     {
         if (!m_waypoints.empty())
         {
@@ -22,20 +23,30 @@ namespace MiniFPS
 
             m_pos += (movementDirection * frameDelta * MOVEMENT_SPEED);
         }
+
+        if (m_pos.Distance(player.m_camera.pos) < PLAYER_DISTANCE_THRESHOLD)
+        {
+            SetEnabled(false);
+        }
     }
 
-    bool Enemy::IsVisible()
+    bool Enemy::IsEnabled()
     {
-        return m_visible;
+        return m_enabled;
     }
 
-    void Enemy::SetVisible(bool status)
+    void Enemy::SetEnabled(bool status)
     {
-        m_visible = status;
+        m_enabled = status;
     }
 
     bool Enemy::SetDestination(MiniFPS::Level* level, const MiniFPS::Vec2 &goalPos)
     {
+        while (!m_waypoints.empty())
+        {
+            m_waypoints.pop();
+        }
+
         Vec2Int pathStartPos = Vec2Int(m_pos);
         Vec2Int pathEndPos = Vec2Int(goalPos);
         Path path = CalculatePath(level, pathStartPos, pathEndPos);

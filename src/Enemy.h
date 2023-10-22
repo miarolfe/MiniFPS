@@ -6,7 +6,11 @@
 
 namespace MiniFPS
 {
+    // Forward declaration
+    class Player;
+
     const float WAYPOINT_DISTANCE_THRESHOLD = 0.05f;
+    const float PLAYER_DISTANCE_THRESHOLD = 0.05f;
     const float MOVEMENT_SPEED = 2.0f;
 
     class Enemy
@@ -14,11 +18,11 @@ namespace MiniFPS
     public:
         explicit Enemy(const Vec2& pos, short textureID = -1);
 
-        void Update(float frameDelta);
+        void Update(float frameDelta, Player& player);
 
-        bool IsVisible();
+        bool IsEnabled();
 
-        void SetVisible(bool status);
+        void SetEnabled(bool status);
 
         bool SetDestination(Level* level, const Vec2& goalPos);
 
@@ -26,7 +30,7 @@ namespace MiniFPS
         short m_textureId = -1;
 
     private:
-        bool m_visible = true;
+        bool m_enabled = true;
         std::queue<Vec2> m_waypoints;
     };
 }

@@ -87,6 +87,8 @@ void MiniFPS::Game::Update()
     m_curTime = static_cast<float>(SDL_GetTicks64());
     m_frameDelta = GetFrameTime(m_oldTime, m_curTime);
 
+    m_updateEnemyDestinationTimer += m_frameDelta;
+
     LogHandler::Log(GetFramesPerSecond(m_frameDelta).c_str());
 
     if (m_mainMenu.m_player.InMainMenu() && !m_mainMenu.m_player.GameHasEnded())
@@ -101,16 +103,25 @@ void MiniFPS::Game::Update()
             SetupGame();
             m_gameSetup = true;
             LogHandler::Log("Game setup");
-
-            for (Enemy& enemy : m_enemies)
-            {
-                enemy.SetDestination(&m_level, {11.5, 14.5});
-            }
         }
+
+        bool updateEnemyDestination = (m_updateEnemyDestinationTimer >= UPDATE_ENEMY_DESTINATION_TIME);
 
         for (Enemy& enemy : m_enemies)
         {
-            enemy.Update(m_frameDelta);
+            if (enemy.IsEnabled())
+            {
+                if (updateEnemyDestination)
+                {
+                    enemy.SetDestination(&m_level, m_gamePlayer.m_camera.pos);
+                }
+                enemy.Update(m_frameDelta, m_gamePlayer);
+            }
+        }
+
+        if (updateEnemyDestination)
+        {
+            m_updateEnemyDestinationTimer = 0.0f;
         }
 
         m_gamePlayer.Update(m_frameDelta, m_settings.speedModifier, m_settings.rotationModifier);

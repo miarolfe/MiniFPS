@@ -389,7 +389,7 @@ namespace MiniFPS
 
         for (Enemy& enemy: enemies)
         {
-            if (enemy.IsVisible())
+            if (enemy.IsEnabled())
             {
                 enemyDistances.emplace_back(player.m_camera.pos.Distance(enemy.m_pos), &enemy);
             }

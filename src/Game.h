@@ -7,6 +7,7 @@
 #include "LogHandler.h"
 #include "Settings.h"
 #include "Pathfinding.h"
+#include "Player.h"
 #include "Renderer.h"
 #include "Texture.h"
 #include "Utilities.h"
@@ -14,6 +15,8 @@
 
 namespace MiniFPS
 {
+    const float UPDATE_ENEMY_DESTINATION_TIME = 0.5f;
+
     class Game
     {
     public:
@@ -45,6 +48,7 @@ namespace MiniFPS
         float m_oldTime = 0.0;
         float m_curTime = 0.0;
         float m_frameDelta = 0.0;
+        float m_updateEnemyDestinationTimer = 0.0f;
         bool m_gameSetup = false;
         Vec2Int m_cameraResolution;
     };

@@ -3,13 +3,15 @@
 #include "AudioHandler.h"
 #include "Camera.h"
 #include "Common.h"
-#include "Enemy.h"
 #include "Level.h"
 #include "Settings.h"
 #include "Texture.h"
 
 namespace MiniFPS
 {
+    // Forward declaration
+    class Enemy;
+
     const float MAX_SHOT_DISTANCE = 0.2f;
     const float JUST_FIRED_TIME = 0.05f;
 
