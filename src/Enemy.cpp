@@ -23,9 +23,17 @@ namespace MiniFPS
 
             m_pos += (movementDirection * frameDelta * MOVEMENT_SPEED);
         }
+        else
+        {
+            Vec2 movementDirection = player.m_camera.pos - m_pos;
+            movementDirection.Normalize();
+
+            m_pos += (movementDirection * frameDelta * MOVEMENT_SPEED);
+        }
 
         if (m_pos.Distance(player.m_camera.pos) < PLAYER_DISTANCE_THRESHOLD)
         {
+            player.Damage(1);
             SetEnabled(false);
         }
     }

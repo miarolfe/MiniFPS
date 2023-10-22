@@ -293,6 +293,11 @@ namespace MiniFPS
         }
     }
 
+    void Player::Damage(int amount)
+    {
+        m_currentHealth -= amount;
+    }
+
     InputState::InputState()
     {
         moveLeft = false;
