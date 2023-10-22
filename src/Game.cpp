@@ -55,7 +55,8 @@ MiniFPS::Game::Game()
     {
         LogHandler::LogError("Window could not be initialized");
     }
-    else {
+    else
+    {
         LogHandler::Log("Window initialized");
     }
 
@@ -63,14 +64,17 @@ MiniFPS::Game::Game()
     {
         LogHandler::LogError("Renderer could not be initialized");
     }
-    else {
+    else
+    {
         LogHandler::Log("Renderer initialized");
     }
 
+    const float RENDER_SCALE = 0.5f;
+
     m_cameraResolution =
     {
-        m_settings.screenWidth / 2,
-        m_settings.screenHeight / 2
+        static_cast<int>(m_settings.screenWidth * RENDER_SCALE),
+        static_cast<int>(m_settings.screenHeight * RENDER_SCALE)
     };
 
     m_renderer = Renderer(m_sdlRenderer, m_settings, m_cameraResolution);
