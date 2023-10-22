@@ -212,7 +212,6 @@ namespace MiniFPS
         }
     }
 
-    // TODO: Make audio a singleton
     bool Player::Shoot(std::vector<Enemy>& enemies, float wallDistance)
     {
         AudioHandler& audioHandler = AudioHandler::GetInstance();
@@ -223,8 +222,22 @@ namespace MiniFPS
             audioHandler.PlayEffect("GunShoot4");
             m_currentAmmo--;
 
+            std::vector<std::pair<float, Enemy*>> distancesToEnemies;
+
             for (Enemy& enemy: enemies)
             {
+                distancesToEnemies.emplace_back(enemy.m_pos.Distance(m_camera.pos), &enemy);
+            }
+
+            std::sort(distancesToEnemies.begin(), distancesToEnemies.end(),
+                      [](const std::pair<float, Enemy*>& a, const std::pair<float, Enemy*>& b) {
+                return a.first < b.first;
+            });
+
+            for (const auto& pair : distancesToEnemies)
+            {
+                Enemy& enemy = *(pair.second);
+
                 Vec2 wallIntersectionPoint = m_camera.pos;
                 wallIntersectionPoint += (m_camera.direction * wallDistance);
 

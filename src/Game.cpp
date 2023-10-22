@@ -89,7 +89,7 @@ void MiniFPS::Game::Update()
 
     m_updateEnemyDestinationTimer += m_frameDelta;
 
-    LogHandler::Log(GetFramesPerSecond(m_frameDelta).c_str());
+    // LogHandler::Log(GetFramesPerSecond(m_frameDelta).c_str());
 
     if (m_mainMenu.m_player.InMainMenu() && !m_mainMenu.m_player.GameHasEnded())
     {
