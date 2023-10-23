@@ -116,15 +116,6 @@ namespace MiniFPS
         TTF_Quit();
     }
 
-    void FreeResources(Renderer renderer, AudioHandler& audio, FontManager fontManager)
-    {
-        renderer.FreeTextures();
-        free(renderer.m_zBuffer);
-        audio.FreeEffects();
-        audio.FreeTracks();
-        fontManager.FreeFonts();
-    }
-
     void Quit(SDL_Window* window, SDL_Renderer* renderer)
     {
         SDL_DestroyWindow(window);

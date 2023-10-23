@@ -6,11 +6,14 @@ using namespace MiniFPS;
 
 int main()
 {
-    Game game;
-    while (game.IsRunning())
+    Game* game = new Game();
+
+    while (game->IsRunning())
     {
-        game.Update();
+        game->Update();
     }
+
+    delete game;
 
     return 0;
 }

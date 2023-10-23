@@ -80,7 +80,7 @@ namespace MiniFPS
     public:
         RaycastResult CastRay(int column, const Player& player);
 
-        void FreeTextures();
+        void FreeTextures(std::map<string, Texture>& textureMap);
 
         void DrawMainMenu(const MainMenu& mainMenu);
 

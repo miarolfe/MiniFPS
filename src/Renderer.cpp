@@ -139,16 +139,16 @@ namespace MiniFPS
         }
     }
 
-    void Renderer::FreeTextures()
+    void Renderer::FreeTextures(std::map<string, Texture>& textureMap)
     {
-        for (const auto& idTexturePair: m_textureMap)
+        for (const auto& pair : textureMap)
         {
-            for (int row = 0; row < idTexturePair.second.size; row++)
+            for (int row = 0; row < pair.second.size; row++)
             {
-                delete[] idTexturePair.second.buffer[row];
+                delete[] pair.second.buffer[row];
             }
 
-            delete[] idTexturePair.second.buffer;
+            delete[] pair.second.buffer;
         }
 
         SDL_DestroyTexture(m_streamingFrameTexture);

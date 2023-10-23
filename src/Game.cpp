@@ -117,6 +117,7 @@ bool MiniFPS::Game::IsRunning()
 
 MiniFPS::Game::~Game()
 {
+    LogHandler::Log("Shutting down");
     FreeResources(m_renderer, AudioHandler::GetInstance(), m_fontManager);
     ShutdownSDL();
     ShutdownSDLImage();
@@ -243,4 +244,12 @@ void MiniFPS::Game::UpdateGameOver()
     m_renderer.DrawGameOverMenu(m_gameOverMenu);
 }
 
+void MiniFPS::Game::FreeResources(Renderer& renderer, AudioHandler& audio, FontManager& fontManager)
+{
+    renderer.FreeTextures(m_textureNameToTextureMap);
+    free(renderer.m_zBuffer);
+    audio.FreeEffects();
+    audio.FreeTracks();
+    fontManager.FreeFonts();
+}
 

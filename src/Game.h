@@ -46,6 +46,8 @@ namespace MiniFPS
 
         void UpdateGameOver();
 
+        void FreeResources(Renderer& renderer, AudioHandler& audio, FontManager& fontManager);
+
     private:
         GameState m_gameState = GAME_MAIN_MENU;
         SDL_Window* m_window = nullptr;
