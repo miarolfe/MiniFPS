@@ -98,20 +98,13 @@ void MiniFPS::Game::Update()
     switch (m_gameState)
     {
         case GAME_MAIN_MENU:
+            UpdateMainMenu();
             break;
         case GAME_IN_GAME:
+            UpdateInGame();
             break;
         case GAME_GAME_OVER:
             break;
-    }
-
-    if (m_mainMenu.m_player.InMainMenu() && !m_mainMenu.m_player.GameHasEnded())
-    {
-        UpdateMainMenu();
-    }
-    else if (!m_gamePlayer.GameHasEnded())
-    {
-        UpdateInGame();
     }
 }
 
@@ -183,6 +176,11 @@ void MiniFPS::Game::UpdateMainMenu()
 {
     m_renderer.DrawMainMenu(m_mainMenu);
     m_mainMenu.Update({m_settings.screenWidth, m_settings.screenHeight}, m_cameraResolution);
+
+    if (!m_mainMenu.m_player.InMainMenu())
+    {
+        m_gameState = GAME_IN_GAME;
+    }
 }
 
 void MiniFPS::Game::UpdateInGame()
