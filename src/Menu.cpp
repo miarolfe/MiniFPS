@@ -49,4 +49,16 @@ namespace MiniFPS
         SDL_FreeSurface(textSurface);
         return textTexture;
     }
+
+    GameOverMenu::GameOverMenu() = default;
+
+    GameOverMenu::GameOverMenu(const Settings& settings, const Font& font, const Vec2Int& cameraResolution)
+    {
+
+    }
+
+    void GameOverMenu::Update(const Vec2Int& displayResolution, const Vec2Int& cameraResolution)
+    {
+
+    }
 }

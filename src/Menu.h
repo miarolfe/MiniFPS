@@ -23,6 +23,21 @@ namespace MiniFPS
         void Update(const Vec2Int& displayResolution, const Vec2Int& cameraResolution);
     };
 
+    class GameOverMenu
+    {
+    public:
+        GameOverMenu();
+
+        GameOverMenu(const Settings& settings, const Font& font, const Vec2Int& cameraResolution);
+
+        Font m_font;
+        Player m_player;
+        Settings m_settings;
+        Button m_quitButton;
+
+        void Update(const Vec2Int& displayResolution, const Vec2Int& cameraResolution);
+    };
+
     SDL_Texture*
     RenderTextToTexture(SDL_Renderer* sdlRenderer, const Font& font, const string& text, int r, int g, int b);
 }

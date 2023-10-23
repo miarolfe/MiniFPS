@@ -227,11 +227,16 @@ void MiniFPS::Game::UpdateInGame()
     }
 
     m_renderer.DrawGame(m_gamePlayer, m_enemies, m_fontManager.m_fonts[0]);
+
+    if (m_gamePlayer.m_currentHealth <= 0)
+    {
+        m_gameState = GAME_GAME_OVER;
+    }
 }
 
 void MiniFPS::Game::UpdateGameOver()
 {
-
+    UpdateMainMenu();
 }
 
 
