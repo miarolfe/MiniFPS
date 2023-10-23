@@ -95,55 +95,23 @@ void MiniFPS::Game::Update()
 
     // LogHandler::Log(GetFramesPerSecond(m_frameDelta).c_str());
 
+    switch (m_gameState)
+    {
+        case GAME_MAIN_MENU:
+            break;
+        case GAME_IN_GAME:
+            break;
+        case GAME_GAME_OVER:
+            break;
+    }
+
     if (m_mainMenu.m_player.InMainMenu() && !m_mainMenu.m_player.GameHasEnded())
     {
-        m_renderer.DrawMainMenu(m_mainMenu);
-        m_mainMenu.Update({m_settings.screenWidth, m_settings.screenHeight}, m_cameraResolution);
+        UpdateMainMenu();
     }
     else if (!m_gamePlayer.GameHasEnded())
     {
-        if (!m_gameSetup)
-        {
-            SetupGame();
-            m_gameSetup = true;
-            LogHandler::Log("Game setup");
-        }
-
-        bool updateEnemyDestination = (m_updateEnemyDestinationTimer >= UPDATE_ENEMY_DESTINATION_TIME);
-
-        for (Enemy& enemy : m_enemies)
-        {
-            if (enemy.IsEnabled())
-            {
-                if (updateEnemyDestination)
-                {
-                    enemy.SetDestination(&m_level, m_gamePlayer.m_camera.pos);
-                }
-                enemy.Update(m_frameDelta, m_gamePlayer);
-            }
-        }
-
-        if (updateEnemyDestination)
-        {
-            m_updateEnemyDestinationTimer = 0.0f;
-        }
-
-        m_gamePlayer.Update(m_frameDelta, m_settings.speedModifier, m_settings.rotationModifier);
-
-        if (m_gamePlayer.m_inputState.leftMouseButtonPressed)
-        {
-            if (m_gamePlayer.Shoot(m_enemies, m_renderer.m_zBuffer[m_gamePlayer.m_camera.width / 2]))
-            {
-                // audio.PlayEffect("testEffect");
-            }
-        }
-
-        if (m_gamePlayer.m_inputState.rightMouseButtonPressed)
-        {
-            m_gamePlayer.Reload();
-        }
-
-        m_renderer.DrawGame(m_gamePlayer, m_enemies, m_fontManager.m_fonts[0]);
+        UpdateInGame();
     }
 }
 
@@ -210,3 +178,62 @@ void MiniFPS::Game::SetupGame()
 
     audioHandler.PlayTrack("DrumLoop1", -1);
 }
+
+void MiniFPS::Game::UpdateMainMenu()
+{
+    m_renderer.DrawMainMenu(m_mainMenu);
+    m_mainMenu.Update({m_settings.screenWidth, m_settings.screenHeight}, m_cameraResolution);
+}
+
+void MiniFPS::Game::UpdateInGame()
+{
+    if (!m_gameSetup)
+    {
+        SetupGame();
+        m_gameSetup = true;
+        LogHandler::Log("Game setup");
+    }
+
+    bool updateEnemyDestination = (m_updateEnemyDestinationTimer >= UPDATE_ENEMY_DESTINATION_TIME);
+
+    for (Enemy& enemy : m_enemies)
+    {
+        if (enemy.IsEnabled())
+        {
+            if (updateEnemyDestination)
+            {
+                enemy.SetDestination(&m_level, m_gamePlayer.m_camera.pos);
+            }
+            enemy.Update(m_frameDelta, m_gamePlayer);
+        }
+    }
+
+    if (updateEnemyDestination)
+    {
+        m_updateEnemyDestinationTimer = 0.0f;
+    }
+
+    m_gamePlayer.Update(m_frameDelta, m_settings.speedModifier, m_settings.rotationModifier);
+
+    if (m_gamePlayer.m_inputState.leftMouseButtonPressed)
+    {
+        if (m_gamePlayer.Shoot(m_enemies, m_renderer.m_zBuffer[m_gamePlayer.m_camera.width / 2]))
+        {
+            // audio.PlayEffect("testEffect");
+        }
+    }
+
+    if (m_gamePlayer.m_inputState.rightMouseButtonPressed)
+    {
+        m_gamePlayer.Reload();
+    }
+
+    m_renderer.DrawGame(m_gamePlayer, m_enemies, m_fontManager.m_fonts[0]);
+}
+
+void MiniFPS::Game::UpdateGameOver()
+{
+
+}
+
+

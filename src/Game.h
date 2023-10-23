@@ -17,6 +17,13 @@ namespace MiniFPS
 {
     const float UPDATE_ENEMY_DESTINATION_TIME = 0.5f;
 
+    enum GameState
+    {
+        GAME_MAIN_MENU,
+        GAME_IN_GAME,
+        GAME_GAME_OVER
+    };
+
     class Game
     {
     public:
@@ -33,7 +40,14 @@ namespace MiniFPS
 
         void SetupGame();
 
+        void UpdateMainMenu();
+
+        void UpdateInGame();
+
+        void UpdateGameOver();
+
     private:
+        GameState m_gameState = GAME_MAIN_MENU;
         SDL_Window* m_window = nullptr;
         SDL_Renderer* m_sdlRenderer = nullptr;
         FontManager m_fontManager;
