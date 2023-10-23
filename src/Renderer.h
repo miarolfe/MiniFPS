@@ -84,6 +84,8 @@ namespace MiniFPS
 
         void DrawMainMenu(const MainMenu& mainMenu);
 
+        void DrawGameOverMenu(const GameOverMenu& gameOverMenu);
+
         void DrawEnemies(const Player& player, std::vector<Enemy>& enemies, const SDLTextureBuffer& buffer);
 
         void DrawGame(const Player& player, std::vector<Enemy>& enemies, const Font& font);

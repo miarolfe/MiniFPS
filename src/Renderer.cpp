@@ -381,6 +381,51 @@ namespace MiniFPS
         SDL_RenderPresent(m_sdlRenderer);
     }
 
+    void Renderer::DrawGameOverMenu(const GameOverMenu& gameOverMenu)
+    {
+        SDLTextureBuffer buffer;
+        SDL_LockTexture(m_streamingFrameTexture, nullptr, &buffer.pixels, &buffer.pitch);
+        buffer.size = m_streamingFrameTextureSize;
+
+        for (int frameY = 0; frameY < static_cast<int>(gameOverMenu.m_player.m_camera.height); frameY++)
+        {
+            for (int frameX = 0; frameX < static_cast<int>(gameOverMenu.m_player.m_camera.width); frameX++)
+            {
+                SetPixel(buffer, MAIN_MENU_BACKGROUND, {frameX, frameY});
+            }
+        }
+
+        const int titleTextX = static_cast<int>(gameOverMenu.m_player.m_camera.width / 4);
+        const int titleTextY = static_cast<int>(gameOverMenu.m_player.m_camera.height / 16);
+        const int titleTextWidth = static_cast<int>(gameOverMenu.m_player.m_camera.width / 2);
+
+        const Vec2& startButtonSize = gameOverMenu.m_quitButton.GetSize();
+        const Vec2& startButtonPos = gameOverMenu.m_quitButton.GetPos();
+
+        const int startTextX = static_cast<int>(startButtonPos.x - startButtonSize.x / 4) + 25;
+        const int startTextY = static_cast<int>(startButtonPos.y - startButtonSize.y / 2) - 5;
+
+        SDL_UnlockTexture(m_streamingFrameTexture);
+        SDL_SetRenderTarget(m_sdlRenderer, m_renderFrameTexture);
+        SDL_RenderCopy(m_sdlRenderer, m_streamingFrameTexture, nullptr, nullptr);
+
+        // UI draw calls
+
+        DrawButton(gameOverMenu.m_quitButton);
+        DrawTextStr("GAME OVER", gameOverMenu.m_font, {static_cast<float>(titleTextX), static_cast<float>(titleTextY)},
+                    titleTextWidth);
+
+        // TODO: Scale this properly with resolution, it doesn't stay with button atm
+        DrawTextStrH("Quit", gameOverMenu.m_font, {static_cast<float>(startTextX), static_cast<float>(startTextY)},
+                     startButtonSize.y);
+
+        SDL_SetRenderTarget(m_sdlRenderer, nullptr);
+        SDL_SetRenderDrawColor(m_sdlRenderer, 0, 0, 0, 0);
+        SDL_RenderClear(m_sdlRenderer);
+        SDL_RenderCopy(m_sdlRenderer, m_renderFrameTexture, nullptr, nullptr);
+        SDL_RenderPresent(m_sdlRenderer);
+    }
+
     void Renderer::DrawEnemies(const Player& player, std::vector<Enemy>& enemies, const SDLTextureBuffer& buffer)
     {
         std::vector<std::pair<float, Enemy*>> enemyDistances;

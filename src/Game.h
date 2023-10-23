@@ -53,6 +53,7 @@ namespace MiniFPS
         FontManager m_fontManager;
         Level m_level;
         MainMenu m_mainMenu;
+        GameOverMenu m_gameOverMenu;
         Renderer m_renderer;
         Settings m_settings;
         Player m_gamePlayer;

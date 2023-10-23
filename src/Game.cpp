@@ -79,6 +79,7 @@ MiniFPS::Game::Game()
 
     m_renderer = Renderer(m_sdlRenderer, m_settings, m_cameraResolution);
     m_mainMenu = MainMenu(m_settings, m_fontManager.m_fonts[0], m_cameraResolution);
+    m_gameOverMenu = GameOverMenu(m_settings, m_fontManager.m_fonts[0], m_cameraResolution);
 
     SDL_SetRelativeMouseMode(SDL_FALSE);
 }
@@ -104,13 +105,14 @@ void MiniFPS::Game::Update()
             UpdateInGame();
             break;
         case GAME_GAME_OVER:
+            UpdateGameOver();
             break;
     }
 }
 
 bool MiniFPS::Game::IsRunning()
 {
-    return !m_gamePlayer.GameHasEnded();
+    return !m_gamePlayer.GameHasEnded() && !m_gameOverMenu.m_quit;
 }
 
 MiniFPS::Game::~Game()
@@ -174,8 +176,8 @@ void MiniFPS::Game::SetupGame()
 
 void MiniFPS::Game::UpdateMainMenu()
 {
-    m_renderer.DrawMainMenu(m_mainMenu);
     m_mainMenu.Update({m_settings.screenWidth, m_settings.screenHeight}, m_cameraResolution);
+    m_renderer.DrawMainMenu(m_mainMenu);
 
     if (!m_mainMenu.m_player.InMainMenu())
     {
@@ -231,12 +233,14 @@ void MiniFPS::Game::UpdateInGame()
     if (m_gamePlayer.m_currentHealth <= 0)
     {
         m_gameState = GAME_GAME_OVER;
+        SDL_SetRelativeMouseMode(SDL_FALSE);
     }
 }
 
 void MiniFPS::Game::UpdateGameOver()
 {
-    UpdateMainMenu();
+    m_gameOverMenu.Update({m_settings.screenWidth, m_settings.screenHeight}, m_cameraResolution);
+    m_renderer.DrawGameOverMenu(m_gameOverMenu);
 }
 
 

@@ -30,6 +30,7 @@ namespace MiniFPS
 
         GameOverMenu(const Settings& settings, const Font& font, const Vec2Int& cameraResolution);
 
+        bool m_quit = false;
         Font m_font;
         Player m_player;
         Settings m_settings;

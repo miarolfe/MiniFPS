@@ -54,11 +54,36 @@ namespace MiniFPS
 
     GameOverMenu::GameOverMenu(const Settings& settings, const Font& font, const Vec2Int& cameraResolution)
     {
-
+        this->m_player = Player(nullptr, settings, cameraResolution);
+        this->m_player.m_inputState.inMainMenu = true;
+        this->m_settings = settings;
+        this->m_font = font;
+        m_quitButton = Button{{static_cast<float>(cameraResolution.x / 2),
+                                   static_cast<float>(3 * cameraResolution.y / 4)},
+                               {static_cast<float>(cameraResolution.x / 2),
+                                   static_cast<float>(cameraResolution.y / 6)}};
     }
 
     void GameOverMenu::Update(const Vec2Int& displayResolution, const Vec2Int& cameraResolution)
     {
+        m_player.Update(0, 0, 0);
 
+        const Vec2 mouseScalingFactor
+            {
+                static_cast<float>(cameraResolution.x) / static_cast<float>(displayResolution.x),
+                static_cast<float>(cameraResolution.y) / static_cast<float>(displayResolution.y)
+            };
+
+        const Vec2Int scaledMousePos
+            {
+                static_cast<int>(static_cast<float>(m_player.m_inputState.mousePosX) * mouseScalingFactor.x),
+                static_cast<int>(static_cast<float>(m_player.m_inputState.mousePosY) * mouseScalingFactor.y)
+            };
+
+        if (m_quitButton.Pressed(scaledMousePos) &&
+            m_player.m_inputState.leftMouseButtonPressed)
+        {
+            m_quit = true;
+        }
     }
 }
