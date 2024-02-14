@@ -141,16 +141,6 @@ namespace MiniFPS
 
     void Renderer::FreeTextures()
     {
-        for (const auto& idTexturePair: m_textureMap)
-        {
-            for (int row = 0; row < idTexturePair.second.size; row++)
-            {
-                delete[] idTexturePair.second.buffer[row];
-            }
-
-            delete[] idTexturePair.second.buffer;
-        }
-
         SDL_DestroyTexture(m_streamingFrameTexture);
         SDL_DestroyTexture(m_renderFrameTexture);
     }
@@ -522,9 +512,6 @@ namespace MiniFPS
 
         SDL_SetRenderTarget(m_sdlRenderer, m_renderFrameTexture);
         SDL_RenderCopy(m_sdlRenderer, m_streamingFrameTexture, nullptr, nullptr);
-
-        // TODO: Scale this with frame
-        // UI draw here
 
         string healthDisplay =
             "HP:" + std::to_string(player.m_currentHealth) + "/" + std::to_string(Player::MAX_HEALTH);

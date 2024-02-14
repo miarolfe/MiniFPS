@@ -77,9 +77,9 @@ namespace MiniFPS
 
         static bool CompareEnemyDistancePair(const std::pair<float, Enemy*>& pair1, const std::pair<float, Enemy*>& pair2);
 
-    public:
         RaycastResult CastRay(int column, const Player& player);
 
+    public:
         void FreeTextures();
 
         void DrawMainMenu(const MainMenu& mainMenu);
