@@ -632,4 +632,38 @@ namespace MiniFPS
 
         return result;
     }
+
+    void Renderer::DrawGameOver(const Player& player, const Font& font)
+    {
+        SDLTextureBuffer buffer;
+        SDL_LockTexture(m_streamingFrameTexture, nullptr, &buffer.pixels, &buffer.pitch);
+        buffer.size = m_streamingFrameTextureSize;
+
+        for (int frameY = 0; frameY < static_cast<int>(player.m_camera.height); frameY++)
+        {
+            for (int frameX = 0; frameX < static_cast<int>(player.m_camera.width); frameX++)
+            {
+                SetPixel(buffer, MAIN_MENU_BACKGROUND, {frameX, frameY});
+            }
+        }
+
+        SDL_UnlockTexture(m_streamingFrameTexture);
+        SDL_SetRenderTarget(m_sdlRenderer, m_renderFrameTexture);
+        SDL_RenderCopy(m_sdlRenderer, m_streamingFrameTexture, nullptr, nullptr);
+
+        const int textX = static_cast<int>(player.m_camera.width / 4);
+        const int textY = static_cast<int>(player.m_camera.height / 8);
+        const int textWidth = static_cast<int>(player.m_camera.width / 2);
+
+        DrawTextStr("GAME OVER", font, {static_cast<float>(textX), static_cast<float>(2*textY)},
+                    textWidth);
+
+        DrawTextStr("Press ESC to quit", font, {static_cast<float>(textX), static_cast<float>(4*textY)},
+                    textWidth);
+
+
+        SDL_SetRenderTarget(m_sdlRenderer, nullptr);
+        SDL_RenderCopy(m_sdlRenderer, m_renderFrameTexture, nullptr, nullptr);
+        SDL_RenderPresent(m_sdlRenderer);
+    }
 }

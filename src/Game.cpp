@@ -147,7 +147,8 @@ void MiniFPS::Game::Update()
     }
     else
     {
-        n
+        m_renderer.DrawGameOver(m_gamePlayer, m_mainMenu.m_font);
+        m_gamePlayer.UpdateInputState();
     }
 }
 
