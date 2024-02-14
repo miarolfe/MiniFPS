@@ -100,7 +100,7 @@ void MiniFPS::Game::Update()
         m_renderer.DrawMainMenu(m_mainMenu);
         m_mainMenu.Update({m_settings.screenWidth, m_settings.screenHeight}, m_cameraResolution);
     }
-    else if (!m_gamePlayer.GameHasEnded())
+    else if (!m_gamePlayer.GameHasEnded() && m_gamePlayer.m_currentHealth > 0)
     {
         if (!m_gameSetup)
         {
@@ -144,6 +144,10 @@ void MiniFPS::Game::Update()
         }
 
         m_renderer.DrawGame(m_gamePlayer, m_enemies, m_fontManager.m_fonts[0]);
+    }
+    else
+    {
+        n
     }
 }
 

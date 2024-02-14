@@ -12,26 +12,30 @@ namespace MiniFPS
     {
         this->name = name;
 
-        SDL_Surface* tempTextureSurface = IMG_Load(filePath.c_str());
-        tempTextureSurface = SDL_ConvertSurfaceFormat(tempTextureSurface, SDL_PIXELFORMAT_ARGB8888, 0);
-
-        size = tempTextureSurface->w;
-        buffer = new Color* [size];
-        for (int row = 0; row < size; row++)
+        if (filePath.find(".DS_Store") == std::string::npos)
         {
-            buffer[row] = new Color[size];
-        }
+            SDL_Surface* tempTextureSurface = IMG_Load(filePath.c_str());
 
-        uint32_t* pixels = (uint32_t*) tempTextureSurface->pixels;
+            tempTextureSurface = SDL_ConvertSurfaceFormat(tempTextureSurface, SDL_PIXELFORMAT_ARGB8888, 0);
 
-        for (int row = 0; row < size; row++)
-        {
-            for (int col = 0; col < size; col++)
+            size = tempTextureSurface->w;
+            buffer = new Color* [size];
+            for (int row = 0; row < size; row++)
             {
-                buffer[row][col].argb = pixels[row * size + col];
+                buffer[row] = new Color[size];
             }
-        }
 
-        SDL_FreeSurface(tempTextureSurface);
+            uint32_t* pixels = (uint32_t*) tempTextureSurface->pixels;
+
+            for (int row = 0; row < size; row++)
+            {
+                for (int col = 0; col < size; col++)
+                {
+                    buffer[row][col].argb = pixels[row * size + col];
+                }
+            }
+
+            SDL_FreeSurface(tempTextureSurface);
+        }
     }
 }

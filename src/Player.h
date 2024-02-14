@@ -66,8 +66,8 @@ namespace MiniFPS
         void Damage(int amount);
 
     public:
-        static const int MAX_HEALTH = 5;
-        static const int MAG_SIZE = 12;
+        static const int MAX_HEALTH = 3;
+        static const int MAG_SIZE = 6;
         constexpr static const float RELOAD_TIME = 2.0f;
     };
 }
